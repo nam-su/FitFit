@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         // 바텀 네비게이션 뷰와 네비게이션을 묶는다.
         NavigationUI.setupWithNavController(binding.bottomNavigationView,navController)
 
+        // 기본 아이콘 색상 적용 안함
         binding.bottomNavigationView.itemIconTintList = null
 
     }
