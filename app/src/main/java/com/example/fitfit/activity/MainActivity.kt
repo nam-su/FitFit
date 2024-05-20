@@ -3,14 +3,17 @@ package com.example.fitfit.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.fitfit.R
 import com.example.fitfit.databinding.ActivityMainBinding
+import com.example.fitfit.fragment.SignUpFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,14 @@ class MainActivity : AppCompatActivity() {
 
         // 기본 아이콘 색상 적용 안함
         binding.bottomNavigationView.itemIconTintList = null
+
+
+        //sign-up 프래그먼트 띄우기 연습
+        supportFragmentManager.commit {
+            replace(R.id.fragmentContainerView, SignUpFragment())
+            setReorderingAllowed(true)
+            addToBackStack("")
+        }
 
     }
 }
