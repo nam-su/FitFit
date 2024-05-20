@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home_icon"
+        android:title="@string/home"
+        />
+
+    <item
+        android:id="@+id/exerciseFragment"
+        android:icon="@drawable/exercise_icon"
+        android:title="@string/exercise"
+        />
+
+    <item
+        android:id="@+id/diaryFragment"
+        android:icon="@drawable/diary_icon"
+        android:title="@string/diary"
+        />
+
+    <item
+        android:id="@+id/userFragment"
+        android:icon="@drawable/user_icon"
+        android:title="@string/user"
+        />
+
+</menu>
