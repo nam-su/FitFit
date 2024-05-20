@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 스플래시
-    fun startSplash() {
+    private fun startSplash() {
 
         CoroutineScope(Dispatchers.Main).launch {
 
