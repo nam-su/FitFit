@@ -5,25 +5,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.databinding.FragmentLoginBinding
+import com.example.fitfit.viewModel.LoginViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class LoginFragment() : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LoginFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+    private lateinit var binding: FragmentLoginBinding
+    private lateinit var viewModel: LoginViewModel
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
+
+        return binding.root
+
+    } // onCreateView()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setVariable()
+        setClickListener()
+
+    } // onViewCreated()
+
+    // 변수 초기화
+    private fun setVariable() {
+
+        viewModel = LoginViewModel()
+
+    } // setVariable
+
+
+    // 클릭리스너 초기화
+    private fun setClickListener() {
+
+        binding.buttonLogin.setOnClickListener {
+
+            (activity as MainActivity).successLogin()
+
+        }
+
+    } // setClickListener()
 
 }
