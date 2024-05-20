@@ -9,4 +9,10 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="fragmentTitle">
+        <item name="android:textColor">@color/personal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
 </resources>

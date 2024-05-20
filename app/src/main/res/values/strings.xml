@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">FitFit</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signUp">회원가입</string>
+    <string name="emailAuthentication">이메일 인증</string>
+    <string name="email">이메일</string>
+    <string name="authenticationCode">인증코드</string>
+    <string name="next">다음</string>
+    <string name="resend">재전송</string>
+    <string name="enterPassword">비밀번호 입력</string>
+    <string name="password">비밀번호</string>
+    <string name="reconfirmPassword">비밀번호 재확인</string>
+    <string name="nickname">닉네임</string>
+    <string name="enterNickname">닉네임 입력</string>
+    <string name="confirmUserInfo">회원정보 확인</string>
+    <string name="complete">완료</string>
+
 </resources>
