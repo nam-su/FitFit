@@ -4,11 +4,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".activity.MainActivity">
+
+        <!--스플래쉬 프래그먼트-->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentSplash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_splash"
+            />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/loginFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_login"
+            />
 
         <!-- 네비게이션 호스트 뷰를 담아주는 공간 (프래그먼트들이 보여질 컨테이너) -->
         <!-- 내가 지정한 그래프 를 사용 하는 코드-->
