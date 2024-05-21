@@ -3,10 +3,21 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--앱 이름-->
+    <string name="FitFit">FitFit</string>
+
+    <!--바텀 내비게이션 아이템-->
     <string name="home">홈</string>
     <string name="exercise">운동</string>
     <string name="diary">운동일지</string>
     <string name="user">내정보</string>
-    <string name="FitFit">FitFit</string>
+
+    <!--로그인 프래그먼트-->
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="findPassword">비밀번호 찾기</string>
+    <string name="signUp">회원가입</string>
+    <string name="login">로그인</string>
+
 
 </resources>

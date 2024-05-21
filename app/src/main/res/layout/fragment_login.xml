@@ -3,7 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="loginViewModel"
+            type="com.example.fitfit.viewModel.LoginViewModel" />
+
+    </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -30,7 +40,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="155dp"
             android:background="@drawable/login_edit_text"
-            android:hint="이메일"
+            android:hint="@string/email"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +53,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/login_edit_text"
-            android:hint="비밀번호"
+            android:hint="@string/password"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +63,7 @@
             android:id="@+id/textViewFindPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="비밀번호 찾기"
+            android:text="@string/findPassword"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
@@ -66,7 +76,7 @@
             android:id="@+id/textViewSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="회원가입"
+            android:text="@string/signUp"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/editTextLoginInputPassword"
@@ -81,9 +91,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/login_button"
-            android:text="로그인"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:onClick="@{()->loginViewModel.login(editTextLoginInputEmail.getText().toString,editTextLoginInputPassword.getText().toString())}"
             app:layout_constraintBottom_toTopOf="@+id/imageButtonNaverLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
