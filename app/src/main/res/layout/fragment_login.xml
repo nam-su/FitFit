@@ -1,21 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.LoginFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="loginViewModel"
+            type="com.example.fitfit.viewModel.LoginViewModel" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/white"
+        tools:context=".fragment.LoginFragment">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="회원가입"
-        />
+        <TextView
+            android:id="@+id/textViewFitFitLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/FitFit"
+            android:textColor="@color/personal"
+            android:textSize="56sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2" />
+
+        <EditText
+            android:id="@+id/editTextLoginInputEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="155dp"
+            android:background="@drawable/login_edit_text"
+            android:hint="@string/email"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFitFitLogo" />
+
+        <EditText
+            android:id="@+id/editTextLoginInputPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_edit_text"
+            android:hint="@string/password"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputEmail" />
+
+        <TextView
+            android:id="@+id/textViewFindPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/findPassword"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+            app:layout_constraintEnd_toEndOf="@+id/editTextLoginInputPassword"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="@+id/editTextLoginInputPassword"
+            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputPassword" />
+
+        <TextView
+            android:id="@+id/textViewSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signUp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextLoginInputPassword"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+            app:layout_constraintStart_toStartOf="@+id/editTextLoginInputPassword"
+            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputPassword" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/login_button"
+            android:text="@string/login"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:onClick="@{()->loginViewModel.login(editTextLoginInputEmail.getText().toString,editTextLoginInputPassword.getText().toString())}"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonNaverLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputPassword"
+            />
+
+        <ImageButton
+            android:id="@+id/imageButtonGoogleLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/google_logo"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonNaverLogin"
+            app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonNaverLogin"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonNaverLogin" />
+
+        <ImageButton
+            android:id="@+id/imageButtonNaverLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/naver_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonGoogleLogin"
+            app:layout_constraintStart_toEndOf="@+id/ImageButtonKakaoLogin" />
+
+        <ImageButton
+            android:id="@+id/ImageButtonKakaoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/kakao_logo"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonNaverLogin"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonNaverLogin"
+            app:layout_constraintHorizontal_bias="0.29"
+            app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonNaverLogin" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
 
 
-</FrameLayout>
