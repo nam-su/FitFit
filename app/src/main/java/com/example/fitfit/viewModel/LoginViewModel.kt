@@ -43,6 +43,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             } else {
 
                 Log.d(TAG, "login: ${response.message()}")
+                Log.d(TAG, "login: ${response.isSuccessful}")
+                Log.d(TAG, "login: ${response.body()}")
                 isSuccessLogin.value = "disconnect"
 
             }
