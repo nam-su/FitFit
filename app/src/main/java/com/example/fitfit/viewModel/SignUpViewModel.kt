@@ -1,25 +1,39 @@
 package com.example.fitfit.viewModel
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.fitfit.data.User
 import com.example.fitfit.model.SignUpModel
+import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
+
+    val TAG = "회원가입 뷰모델"
 
     private val model = SignUpModel()
     val pageCount: MutableLiveData<Int> = MutableLiveData(1)
     val isEmailFocus = MutableLiveData<Boolean>()
     val isCodeFocus = MutableLiveData<Boolean>()
     val isEmailValid = MutableLiveData<Boolean>()
-
-
+    val isEmailPossible = MutableLiveData<Boolean>()
 
 
     //다음 버튼 클릭
-    fun setOnButtonNextClick(){
-        pageCount.value = pageCount.value!! + 1
+    fun setOnButtonNextClick(email:String){
+        when(pageCount.value){
+            1 -> {
+                if(isEmailPossible.value == true){
+                    pageCount.value = pageCount.value!! + 1
+                }else{
+                    duplicateCheckId(email)
+                }
+
+            }
+        }
     }
 
 
@@ -55,4 +69,23 @@ class SignUpViewModel : ViewModel() {
     fun setOnButtonSendClick(email:String){
         model.sendMail(email)
     }
+
+
+
+    // 중복검사 메서드
+    fun duplicateCheckId(id: String){
+
+        viewModelScope.launch {
+            when(model.duplicateCheckId(id,"","duplicateCheckId")!!.result){
+
+                "possible" -> isEmailPossible.value = true
+
+                "impossible" -> isEmailPossible.value = false
+
+            }
+
+        }
+
+
+    } // login()
 }

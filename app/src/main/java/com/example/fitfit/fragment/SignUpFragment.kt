@@ -97,6 +97,8 @@ class SignUpFragment : Fragment() {
             Log.d(TAG, "setObserve: ${signUpViewModel.pageCount.value}")
             when(it) {
 
+                0 -> binding.linearLayoutCode.visibility = View.VISIBLE
+
                 1 -> {
                     binding.linearLayout1.visibility = View.VISIBLE
                     binding.linearLayout2.visibility = View.GONE
@@ -143,9 +145,8 @@ class SignUpFragment : Fragment() {
         //이메일 유효성 관찰
         signUpViewModel.isEmailValid.observe(viewLifecycleOwner){
             if(it) {
-//                binding.buttonNext.isEnabled = true
-//                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
-                binding.linearLayoutCode.visibility = View.VISIBLE
+                binding.buttonNext.isEnabled = true
+                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
                 binding.textViewValid.visibility = View.VISIBLE
                 binding.textViewInValid.visibility = View.GONE
             }else {
@@ -154,6 +155,18 @@ class SignUpFragment : Fragment() {
                 binding.linearLayoutCode.visibility = View.GONE
                 binding.textViewValid.visibility = View.GONE
                 binding.textViewInValid.visibility = View.VISIBLE
+            }
+        }
+
+
+
+        //사용 가능 이메일
+        signUpViewModel.isEmailPossible.observe(viewLifecycleOwner){
+            if (it){
+                binding.linearLayoutCode.visibility = View.VISIBLE
+                Toast.makeText(requireContext(), "사용가능한 이메일 입니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(), "사용할 수 없는 이메일 입니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
