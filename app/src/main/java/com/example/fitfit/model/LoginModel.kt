@@ -16,7 +16,7 @@ class LoginModel(context: Context) {
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
-    var sharedPreferences: SharedPreferences = context.getSharedPreferences("user",Context.MODE_PRIVATE)
+    private var sharedPreferences: SharedPreferences = context.getSharedPreferences("user",Context.MODE_PRIVATE)
     private var editor: SharedPreferences.Editor = sharedPreferences.edit()
 
 
