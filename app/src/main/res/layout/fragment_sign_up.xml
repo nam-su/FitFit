@@ -91,13 +91,34 @@
                     app:layout_constraintStart_toStartOf="@+id/textView4"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+                <TextView
+                    android:id="@+id/textViewInValid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/invalidEmailFormat"
+                    android:textColor="@color/red"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/textViewValid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/validEmailFormat"
+                    android:textColor="@color/green"
+                    android:visibility="gone"/>
+
                 <LinearLayout
+                    android:id="@+id/linearLayoutCode"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <EditText
                         android:id="@+id/editTextCode"
@@ -113,13 +134,15 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonSend"
                         style="@style/buttonTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:background="@drawable/login_button"
-                        android:text="@string/resend" />
+                        android:text="@string/send"
+                        android:onClick="@{()->SignUpViewModel.setOnButtonSendClick()}"/>
 
                 </LinearLayout>
 
@@ -196,6 +219,7 @@
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonNext"
             style="@style/buttonTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -203,6 +227,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="63dp"
             android:background="@drawable/login_button"
+            android:backgroundTint="@color/grey"
             android:text="@string/next"
             android:enabled="false"
             android:onClick="@{()->SignUpViewModel.setOnButtonNextClick()}"
