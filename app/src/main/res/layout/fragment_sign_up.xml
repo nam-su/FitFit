@@ -230,7 +230,7 @@
             android:backgroundTint="@color/grey"
             android:text="@string/next"
             android:enabled="false"
-            android:onClick="@{()->SignUpViewModel.setOnButtonNextClick(editTextEmail.getText().toString())}"
+            android:onClick="@{()->SignUpViewModel.setOnButtonNextClick(editTextEmail.getText().toString(),editTextCode.getText().toString())}"
             app:layout_constraintEnd_toEndOf="@+id/frameLayout"
             app:layout_constraintStart_toStartOf="@+id/frameLayout"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
