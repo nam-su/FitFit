@@ -33,57 +33,71 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2" />
 
-        <EditText
-            android:id="@+id/editTextLoginInputEmail"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="155dp"
-            android:background="@drawable/login_edit_text"
-            android:hint="@string/email"
-            android:textSize="12sp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFitFitLogo" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewFitFitLogo"
+            app:layout_constraintVertical_bias="0.35">
 
-        <EditText
-            android:id="@+id/editTextLoginInputPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/login_edit_text"
-            android:hint="@string/password"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputEmail" />
+            <EditText
+                android:id="@+id/editTextLoginInputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/login_edit_text"
+                android:hint="@string/email"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textViewFindPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/findPassword"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
-            app:layout_constraintEnd_toEndOf="@+id/editTextLoginInputPassword"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toStartOf="@+id/editTextLoginInputPassword"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputPassword" />
+            <EditText
+                android:id="@+id/editTextLoginInputPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_edit_text"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textViewSignUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/signUp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/editTextLoginInputPassword"
-            app:layout_constraintHorizontal_bias="0.75"
-            app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
-            app:layout_constraintStart_toStartOf="@+id/editTextLoginInputPassword"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputPassword" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textViewFindPassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/findPassword"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.25"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewSignUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/signUp"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.75"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonLogin"
@@ -91,15 +105,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/login_button"
+            android:onClick="@{()->loginViewModel.login(editTextLoginInputEmail.getText().toString,editTextLoginInputPassword.getText().toString())}"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:onClick="@{()->loginViewModel.login(editTextLoginInputEmail.getText().toString,editTextLoginInputPassword.getText().toString())}"
             app:layout_constraintBottom_toTopOf="@+id/imageButtonNaverLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLoginInputPassword"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.15" />
 
         <ImageButton
             android:id="@+id/imageButtonGoogleLogin"

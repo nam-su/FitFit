@@ -31,9 +31,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
 
-    private val splashFragment = SplashFragment()
-    private val loginFragment = LoginFragment()
-    private val homeFragment = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
