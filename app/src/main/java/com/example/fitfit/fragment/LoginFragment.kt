@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentLoginBinding
@@ -40,7 +39,6 @@ class LoginFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
-        setClickListener()
         setObserve()
 
     } // onViewCreated()
@@ -49,30 +47,26 @@ class LoginFragment() : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        loginViewModel = LoginViewModel()
+        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         binding.loginViewModel = loginViewModel
 
     } // setVariable
 
 
-    // 클릭리스너 초기화
-    private fun setClickListener() {
-
-    } // setClickListener()
-
 
     // Observe 관련 메서드
     private fun setObserve() {
 
+        // 로그인 버튼 클릭 했을때
         loginViewModel.isSuccessLogin.observe(viewLifecycleOwner) {
-
-            Log.d(TAG, "setClickListener: 버튼 눌렀을때 isSuccess" + loginViewModel.isSuccessLogin.value)
 
             when(it) {
 
-                true -> CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeNavHostFragment()}
+                "success" -> CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeNavHostFragment()}
 
-                false -> Toast.makeText(activity,"아이디 혹은 비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
+                "failure" -> Toast.makeText(activity,"아이디 혹은 비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
+
+                "disconnect" -> Toast.makeText(activity,"인터넷 연결이 원활하지 않습니다.",Toast.LENGTH_SHORT).show()
 
             }
 
