@@ -30,6 +30,8 @@ class LoginModel(context: Context) {
 
     } // login()
 
+
+    // 로그인 성공시 쉐어드에 유저정보 저장.
     fun setSharedPreferencesUserInfo(user: User) {
 
         editor.putString("id",user.id)
@@ -39,6 +41,6 @@ class LoginModel(context: Context) {
         editor.putString("subscribtion",user.subscribtion)
         editor.commit()
 
-    }
+    } // setSharedPreferencesUserInfo()
 
 }

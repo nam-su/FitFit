@@ -1,8 +1,5 @@
 package com.example.fitfit.fragment
 
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
@@ -44,7 +39,6 @@ class LoginFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
-        setClickListener()
         setObserve()
 
     } // onViewCreated()
@@ -55,23 +49,16 @@ class LoginFragment() : Fragment() {
 
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         binding.loginViewModel = loginViewModel
-        binding.lifecycleOwner = this
 
     } // setVariable
 
-
-    // 클릭리스너 초기화
-    private fun setClickListener() {
-
-    } // setClickListener()
 
 
     // Observe 관련 메서드
     private fun setObserve() {
 
+        // 로그인 버튼 클릭 했을때
         loginViewModel.isSuccessLogin.observe(viewLifecycleOwner) {
-
-            Log.d(TAG, "setClickListener: 버튼 눌렀을때 isSuccess" + loginViewModel.isSuccessLogin.value)
 
             when(it) {
 
