@@ -5,9 +5,6 @@ import com.example.fitfit.`class`.GmailSender
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SignUpModel {
 
@@ -16,13 +13,16 @@ class SignUpModel {
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
-    lateinit var id:String
+    var id = ""
+    var password = ""
+    var nickname = ""
     var randomString = ""
 
     // 로그인 통신으로 result 값 확인
-    suspend fun duplicateCheckId(id: String, password: String,mode: String): User? {
+    suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User? {
 
-        val response = retrofitInterface.selectUserData(id,password,mode)
+        val response = retrofitInterface.selectUserData(id,password,nickname,mode)
+        Log.d(TAG, "signUpProcess: ${response.isSuccessful}")
         return response.body()
 
     } // login()

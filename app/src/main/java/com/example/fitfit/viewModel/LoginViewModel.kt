@@ -3,6 +3,7 @@ package com.example.fitfit.viewModel
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -28,7 +29,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
         viewModelScope.launch {
 
-            val response = loginModel.login(id,password,"login")
+            val response = loginModel.login(id,password,"","login")
 
             if(response.isSuccessful && response.body() != null) {
 
