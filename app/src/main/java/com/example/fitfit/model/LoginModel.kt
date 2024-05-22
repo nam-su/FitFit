@@ -1,12 +1,11 @@
 package com.example.fitfit.model
 
-import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.fitfit.data.User
-import com.example.fitfit.network.NetworkManager
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
+
 import retrofit2.Response
 
 class LoginModel(context: Context) {

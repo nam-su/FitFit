@@ -21,6 +21,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     val isSuccessLogin = MutableLiveData<String>()
 
 
+    val navigateToSignUp = MutableLiveData<Boolean>()
+
     // 로그인 메서드
     fun login(id: String,password: String){
 
@@ -54,6 +56,17 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     } // login()
 
 
+    //회원가입 버튼 클릭 true
+    fun onSignUpClicked() {
+        navigateToSignUp.value = true
+    }
+
+    //회원가입 버튼 클릭 false
+    fun onSignUpNonClicked(){
+        navigateToSignUp.value = false
+    }
+
+
     // 로그인 성공했을때 Shared에 데이터 추가해준다.
     private fun setSharedPreferencesUserinfo(user: User) {
 
@@ -61,5 +74,6 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         loginModel.setSharedPreferencesUserInfo(user)
 
     } // setSharedPreferencesUserInfo()
+
 
 }

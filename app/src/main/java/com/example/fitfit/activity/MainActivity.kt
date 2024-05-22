@@ -7,13 +7,13 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
+
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.fitfit.R
 import com.example.fitfit.databinding.ActivityMainBinding
+
 import com.example.fitfit.fragment.HomeFragment
 import com.example.fitfit.fragment.LoginFragment
 import com.example.fitfit.fragment.SplashFragment
@@ -21,13 +21,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "메인액티비티"
 
     private lateinit var binding: ActivityMainBinding
+
 
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         // 기본 아이콘 색상 적용 안함
         binding.bottomNavigationView.itemIconTintList = null
 
+
         // 프래그먼트 백스택 관찰을 위한 리스너
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
 
@@ -101,6 +102,14 @@ class MainActivity : AppCompatActivity() {
 
     } // changeNavHostFragment()
 
+
+
+    // 로그인 했을때 홈 프래그먼트로 전환.
+    fun changeSignUpFragment() {
+
+        navController.navigate(R.id.action_loginFragment_to_signUpFragment)
+
+    } // changeNavHostFragment()
 
     // 스플래시에서 로그인 기록 없으면 로그인 프래그먼트로 전환
     fun changeSplashToLoginFragment() {
