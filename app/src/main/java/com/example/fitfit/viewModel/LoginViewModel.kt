@@ -19,7 +19,6 @@ class LoginViewModel: ViewModel() {
     fun login(id: String,password: String){
 
         viewModelScope.launch {
-
             when(model.login(id,password,"login")!!.result){
 
                 "failure" -> isSuccessLogin.value = false

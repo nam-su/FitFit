@@ -4,8 +4,6 @@ import android.util.Log
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
-import retrofit2.Call
-import retrofit2.Response
 
 class LoginModel {
 
@@ -19,7 +17,6 @@ class LoginModel {
     suspend fun login(id: String, password: String,mode: String): User? {
 
         val response = retrofitInterface.selectUserData(id,password,mode)
-
         return response.body()
 
     } // login()
