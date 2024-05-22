@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.User
 import com.example.fitfit.model.SignUpModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
@@ -16,23 +18,49 @@ class SignUpViewModel : ViewModel() {
 
     private val model = SignUpModel()
     val pageCount: MutableLiveData<Int> = MutableLiveData(1)
+    val course: MutableLiveData<String> = MutableLiveData("duplicateCheck")
     val isEmailFocus = MutableLiveData<Boolean>()
     val isCodeFocus = MutableLiveData<Boolean>()
     val isEmailValid = MutableLiveData<Boolean>()
     val isEmailPossible = MutableLiveData<Boolean>()
+    val isEmailSend = MutableLiveData<Boolean>()
+    val isCodeValid = MutableLiveData<Boolean>()
 
 
     //다음 버튼 클릭
-    fun setOnButtonNextClick(email:String){
-        when(pageCount.value){
-            1 -> {
-                if(isEmailPossible.value == true){
+    fun setOnButtonNextClick(email:String, code:String){
+
+        //현재 진행상황에 따라 버튼 클릭을 다르게 적용
+        when(course.value){
+
+            //진행상황이 중복체크일때
+            "duplicateCheck" -> {
+                    duplicateCheckId(email)
+                    if(isEmailPossible.value == false){
+                        course.value = "duplicateCheck"
+                    }else{
+                        course.value = "emailAuthentication"
+                    }
+            }
+
+            //진행상황이 이메일 인증일때
+            "emailAuthentication" -> {
+                Log.d(TAG, "보낸 인증코드: ${model.randomString}")
+                Log.d(TAG, "입력한 인증코드: ${code.toString()}")
+
+                if(model.randomString == code){
+                    isCodeValid.value = true
                     pageCount.value = pageCount.value!! + 1
                 }else{
-                    duplicateCheckId(email)
+                    isCodeValid.value = false
                 }
-
             }
+
+            //진행상황이 비밀번호 입력일때
+            "3" -> {}
+
+            //진행상황이 닉네임 입력일때
+            "4" -> {}
         }
     }
 
@@ -67,7 +95,10 @@ class SignUpViewModel : ViewModel() {
 
     //전송 버튼 클릭
     fun setOnButtonSendClick(email:String){
-        model.sendMail(email)
+
+           model.sendMail(email)
+            isEmailSend.value = true
+
     }
 
 

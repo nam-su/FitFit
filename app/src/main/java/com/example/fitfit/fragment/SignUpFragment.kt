@@ -97,8 +97,6 @@ class SignUpFragment : Fragment() {
             Log.d(TAG, "setObserve: ${signUpViewModel.pageCount.value}")
             when(it) {
 
-                0 -> binding.linearLayoutCode.visibility = View.VISIBLE
-
                 1 -> {
                     binding.linearLayout1.visibility = View.VISIBLE
                     binding.linearLayout2.visibility = View.GONE
@@ -121,7 +119,6 @@ class SignUpFragment : Fragment() {
 
         }
 
-
         //에딧텍스트 이메일 관찰
         signUpViewModel.isEmailFocus.observe(viewLifecycleOwner) {
             if (it) {
@@ -140,8 +137,6 @@ class SignUpFragment : Fragment() {
             }
         }
 
-
-
         //이메일 유효성 관찰
         signUpViewModel.isEmailValid.observe(viewLifecycleOwner){
             if(it) {
@@ -156,11 +151,18 @@ class SignUpFragment : Fragment() {
                 binding.textViewValid.visibility = View.GONE
                 binding.textViewInValid.visibility = View.VISIBLE
             }
+
+            //코드 유효성 관찰
+            signUpViewModel.isCodeValid.observe(viewLifecycleOwner){
+                if(it){
+                    Toast.makeText(requireContext(), "유효한 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(requireContext(), "유효하지 않은 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
-
-
-        //사용 가능 이메일
+        //사용 가능 이메일 관찰
         signUpViewModel.isEmailPossible.observe(viewLifecycleOwner){
             if (it){
                 binding.linearLayoutCode.visibility = View.VISIBLE
@@ -170,6 +172,20 @@ class SignUpFragment : Fragment() {
             }
         }
 
+
+        //이메일 전송 관찰
+        signUpViewModel.isEmailSend.observe(viewLifecycleOwner){
+            Log.d(TAG, "setObserve: ${it.toString()}")
+            if (it){
+                Toast.makeText(requireContext(), "인증코드를 전송 했습니다.", Toast.LENGTH_SHORT).show()
+                binding.buttonNext.isEnabled = true
+                binding.buttonSend.text = "재전송"
+            }else{
+                Toast.makeText(requireContext(), "전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     } // setObserve()
+
 
 }
