@@ -105,4 +105,12 @@ class MainActivity : AppCompatActivity() {
 
     } // changeNavHostFragment()
 
+
+    // 로그인 했을때 홈 프래그먼트로 전환.
+    fun changeSignUpFragment() {
+
+        navController.navigate(R.id.action_loginFragment_to_signUpFragment)
+
+    } // changeNavHostFragment()
+
 }

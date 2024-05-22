@@ -21,6 +21,7 @@
     <string name="login">로그인</string>
 
     <!--회원가입 프래그먼트-->
+    <string name="pageCount">(%s/4)</string>
     <string name="emailAuthentication">이메일 인증</string>
     <string name="authenticationCode">인증코드</string>
     <string name="next">다음</string>

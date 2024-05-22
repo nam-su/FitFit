@@ -78,6 +78,13 @@ class LoginFragment() : Fragment() {
 
         }
 
+        //임시 추가
+        loginViewModel.navigateToSignUp.observe(viewLifecycleOwner) {
+            if (it == true) {
+                CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeSignUpFragment()}
+            }
+        }
+
     } // setObserve()
 
 }

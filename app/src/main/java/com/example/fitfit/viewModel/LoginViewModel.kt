@@ -15,6 +15,8 @@ class LoginViewModel: ViewModel() {
 
     val isSuccessLogin = MutableLiveData<Boolean>()
 
+    val navigateToSignUp = MutableLiveData<Boolean>()
+
     // 로그인 메서드
     fun login(id: String,password: String){
 
@@ -31,5 +33,15 @@ class LoginViewModel: ViewModel() {
         Log.d(TAG, "login: " + isSuccessLogin.value)
 
     } // login()
+
+    //회원가입 버튼 클릭 true
+    fun onSignUpClicked() {
+        navigateToSignUp.value = true
+    }
+
+    //회원가입 버튼 클릭 false
+    fun onSignUpNonClicked(){
+        navigateToSignUp.value = false
+    }
 
 }
