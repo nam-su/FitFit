@@ -62,9 +62,11 @@ class LoginFragment() : Fragment() {
 
             when(it) {
 
-                true -> CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeNavHostFragment()}
+                "success" -> CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeNavHostFragment()}
 
-                false -> Toast.makeText(activity,"아이디 혹은 비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
+                "failure" -> Toast.makeText(activity,"아이디 혹은 비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
+
+                "disconnect" -> Toast.makeText(activity,"인터넷 연결이 원활하지 않습니다.",Toast.LENGTH_SHORT).show()
 
             }
 

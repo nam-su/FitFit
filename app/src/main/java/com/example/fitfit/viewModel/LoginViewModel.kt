@@ -18,7 +18,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
     private val loginModel = LoginModel(application.applicationContext)
 
-    val isSuccessLogin = MutableLiveData<Boolean>()
+    val isSuccessLogin = MutableLiveData<String>()
 
 
     // 로그인 메서드
@@ -26,18 +26,28 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
         viewModelScope.launch {
 
-            val user = loginModel.login(id,password,"login")!!
+            val response = loginModel.login(id,password,"login")
 
-            when(user.result){
+            if(response.isSuccessful && response.body() != null) {
 
-                "failure" -> isSuccessLogin.value = false
-                else -> setSharedPreferencesUserinfo(user)
+                val user = response.body()!!
+
+                when(user.result){
+
+                        "failure" -> isSuccessLogin.value = "failure"
+                        else -> setSharedPreferencesUserinfo(user)
+
+                    }
+
+                // 통신 실패의 경우
+            } else {
+
+                Log.d(TAG, "login: ${response.message()}")
+                isSuccessLogin.value = "disconnect"
 
             }
 
         }
-
-        Log.d(TAG, "login: " + isSuccessLogin.value)
 
     } // login()
 
@@ -45,7 +55,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     // 로그인 성공했을때 Shared에 데이터 추가해준다.
     private fun setSharedPreferencesUserinfo(user: User) {
 
-        isSuccessLogin.value = true
+        isSuccessLogin.value = "success"
         loginModel.setSharedPreferencesUserInfo(user)
 
     } // setSharedPreferencesUserInfo()

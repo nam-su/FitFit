@@ -1,13 +1,12 @@
 package com.example.fitfit.model
 
-import android.app.Application
+import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.fitfit.data.User
+import com.example.fitfit.network.NetworkManager
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
-import retrofit2.Call
 import retrofit2.Response
 
 class LoginModel(context: Context) {
@@ -22,11 +21,9 @@ class LoginModel(context: Context) {
 
 
     // 로그인 통신으로 result 값 확인
-    suspend fun login(id: String, password: String,mode: String): User? {
+    suspend fun login(id: String, password: String, mode: String): Response<User> {
 
-        val response = retrofitInterface.selectUserData(id,password,mode)
-
-        return response.body()
+        return retrofitInterface.selectUserData(id, password, mode)
 
     } // login()
 
