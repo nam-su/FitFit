@@ -52,7 +52,7 @@ class SignUpViewModel : ViewModel() {
 
 
     //전송 버튼 클릭
-    fun setOnButtonSendClick(){
-
+    fun setOnButtonSendClick(email:String){
+        model.sendMail(email)
     }
 }

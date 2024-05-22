@@ -118,7 +118,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/editTextCode"
@@ -142,7 +142,7 @@
                         android:layout_gravity="center"
                         android:background="@drawable/login_button"
                         android:text="@string/send"
-                        android:onClick="@{()->SignUpViewModel.setOnButtonSendClick()}"/>
+                        android:onClick="@{()->SignUpViewModel.setOnButtonSendClick(editTextEmail.getText().toString())}"/>
 
                 </LinearLayout>
 
