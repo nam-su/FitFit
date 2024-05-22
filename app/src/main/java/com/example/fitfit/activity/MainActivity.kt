@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -31,15 +32,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
 
-    private val splashFragment = SplashFragment()
-    private val loginFragment = LoginFragment()
-    private val homeFragment = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setView()
         setVariable()
+        setBackPressed()
+
     }
 
     override fun onStart() {
@@ -67,6 +67,12 @@ class MainActivity : AppCompatActivity() {
         // 기본 아이콘 색상 적용 안함
         binding.bottomNavigationView.itemIconTintList = null
 
+        // 프래그먼트 백스택 관찰을 위한 리스너
+        navHostFragment.childFragmentManager.addOnBackStackChangedListener {
+
+            Log.d(TAG, "setView: 백스택 : " + navHostFragment.childFragmentManager.backStackEntryCount.toString())
+        }
+
     } // setView()
 
 
@@ -84,15 +90,6 @@ class MainActivity : AppCompatActivity() {
         // 바텀네비게이션 view gone 해놓고 스플래시 프래그먼트로 진입
         binding.bottomNavigationView.visibility = View.GONE
 
-        // UI 변화 및 3초 딜레이 주기 위해서 코루틴 사용
-        CoroutineScope(Dispatchers.Main).launch {
-
-            delay(3000)
-
-            navController.navigate(R.id.action_splashFragment_to_loginFragment)
-
-        }
-
     } // startSplash()
 
 
@@ -103,5 +100,44 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.VISIBLE
 
     } // changeNavHostFragment()
+
+
+    // 스플래시에서 로그인 기록 없으면 로그인 프래그먼트로 전환
+    fun changeSplashToLoginFragment() {
+
+        navController.navigate(R.id.action_splashFragment_to_loginFragment)
+
+    } // changeLoginFragment()
+
+
+    // 스플래시에서 로그인 기록 있으면 홈 프래그먼트로 전환
+    fun changeSplashToHomeFragment() {
+
+        navController.navigate(R.id.action_splashFragment_to_homeFragment)
+        binding.bottomNavigationView.visibility = View.VISIBLE
+
+    } // changeSplashToHomeFragment()
+
+
+    //뒤로가기 버튼 클릭시
+    private fun setBackPressed() {
+
+        onBackPressedDispatcher.addCallback(this){
+
+            // R.id.fragment -> fragment에서 백버튼 눌렀을 때에대한 처리
+            when(navController.currentDestination?.id){
+
+                R.id.loginFragment -> finish()
+                R.id.homeFragment -> finish()
+                R.id.exerciseFragment -> finish()
+                R.id.diaryFragment -> finish()
+                R.id.userFragment -> finish()
+
+            }
+
+        }
+
+    } // setBackPressed()
+
 
 }

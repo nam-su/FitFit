@@ -7,5 +7,5 @@ class User(@SerializedName("id") val id: String,
        @SerializedName("loginType") val loginType: String, val nickname: String,
        @SerializedName("profileImagePath") val profileImagePath: String,
        @SerializedName("subscribtion") val subscribtion: String,
-       @SerializedName("result") val result: String) {
+       @SerializedName("result") val result: String?) {
 }
