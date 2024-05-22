@@ -20,9 +20,9 @@ class LoginModel(context: Context) {
 
 
     // 로그인 통신으로 result 값 확인
-    suspend fun login(id: String, password: String, mode: String): Response<User> {
+    suspend fun login(id: String, password: String, nickname: String,mode: String): Response<User> {
 
-        return retrofitInterface.selectUserData(id, password, mode)
+        return retrofitInterface.selectUserData(id, password,nickname ,mode)
 
     } // login()
 

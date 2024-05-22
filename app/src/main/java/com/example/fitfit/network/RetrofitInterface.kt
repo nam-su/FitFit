@@ -16,6 +16,7 @@ interface RetrofitInterface {
 
         @Field("id") id: String,
         @Field("password") password: String,
+        @Field("nickname") nickname: String,
         @Field("mode") mode: String
 
     ): Response<User>

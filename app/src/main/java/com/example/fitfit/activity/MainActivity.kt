@@ -111,6 +111,16 @@ class MainActivity : AppCompatActivity() {
 
     } // changeNavHostFragment()
 
+
+
+    // 회원가입 완료 되었을 때 로그인 프래그먼트로 전환
+    // 로그인 했을때 홈 프래그먼트로 전환.
+    fun changeSignUpToLoginFragment() {
+
+        navController.navigate(R.id.action_signUpFragment_to_loginFragment)
+
+    } // changeNavHostFragment()
+
     // 스플래시에서 로그인 기록 없으면 로그인 프래그먼트로 전환
     fun changeSplashToLoginFragment() {
 

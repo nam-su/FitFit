@@ -1,10 +1,7 @@
 package com.example.fitfit.fragment
 
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +12,11 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
-import com.example.fitfit.databinding.FragmentLoginBinding
 import com.example.fitfit.databinding.FragmentSignUpBinding
-import com.example.fitfit.viewModel.LoginViewModel
 import com.example.fitfit.viewModel.SignUpViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.math.sign
 
 
 class SignUpFragment : Fragment() {
@@ -70,19 +64,47 @@ class SignUpFragment : Fragment() {
             signUpViewModel.onEmailFocusChanged(hasFocus)
         }
         
-        //에딧텍스트 텍스트 체인지 리스너
+        //editTextEmail 텍스트 체인지 리스너
         binding.editTextEmail.addTextChangedListener { text ->
-            text?.let { signUpViewModel.validateEmail(it.toString()) }
+            text?.let { signUpViewModel.validationEmail(it.toString()) }
         }
 
+        //editTextPassword 텍스트 체인지 리스너
+        binding.editTextPassword.addTextChangedListener { text ->
+            text?.let { signUpViewModel.validationPassword(it.toString()) }
+        }
+
+        //editTextReConfirmPassword 텍스트 체인지 리스너
+        binding.editTextReconfirmPassword.addTextChangedListener { text ->
+            text?.let { signUpViewModel.correctPassword(binding.editTextPassword.text.toString(),it.toString()) }
+        }
+
+        //editTextNickname 텍스트 체인지 리스너
+        binding.editTextNickname.addTextChangedListener { text ->
+            text?.let {
+                val filtered = it.toString().replace(" ", "")
+                if (filtered != it.toString()) {
+                    binding.editTextNickname.setText(filtered)
+                    binding.editTextNickname.setSelection(filtered.length) // 커서를 끝으로 이동
+                }
+                signUpViewModel.validationNickname(it.toString())
+            }
+        }
 
         //에딧텍스트 코드 포커스 체인지 리스너
         binding.editTextCode.setOnFocusChangeListener { _, hasFocus ->
             signUpViewModel.onCodeFocusChanged(hasFocus)
         }
 
+        //에딧텍스트 패스워드 포커스 체인지 리스너
+        binding.editTextPassword.setOnFocusChangeListener{ _, hasFocus ->
+            signUpViewModel.onPasswordFocusChanged(hasFocus)
+        }
 
-        
+        //에딧텍스트 패스워드 재확인 포커스 체인지 리스너
+        binding.editTextReconfirmPassword.setOnFocusChangeListener{ _, hasFocus ->
+            signUpViewModel.onReconfirmPasswordFocusChanged(hasFocus)
+        }
 
     } // setListener()
 
@@ -95,24 +117,44 @@ class SignUpFragment : Fragment() {
         signUpViewModel.pageCount.observe(viewLifecycleOwner) {
 
             Log.d(TAG, "setObserve: ${signUpViewModel.pageCount.value}")
+
+            binding.buttonNext.isEnabled = false
+            binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+
             when(it) {
 
                 1 -> {
                     binding.linearLayout1.visibility = View.VISIBLE
                     binding.linearLayout2.visibility = View.GONE
                     binding.linearLayout3.visibility = View.GONE
+                    binding.linearLayout4.visibility = View.GONE
+                    binding.buttonNext.visibility = View.VISIBLE
                 }
 
                 2 -> {
                     binding.linearLayout1.visibility = View.GONE
                     binding.linearLayout2.visibility = View.VISIBLE
                     binding.linearLayout3.visibility = View.GONE
+                    binding.linearLayout4.visibility = View.GONE
+                    binding.buttonNext.visibility = View.VISIBLE
                 }
 
                 3 -> {
                     binding.linearLayout1.visibility = View.GONE
                     binding.linearLayout2.visibility = View.GONE
                     binding.linearLayout3.visibility = View.VISIBLE
+                    binding.linearLayout4.visibility = View.GONE
+                    binding.buttonNext.visibility = View.VISIBLE
+                    binding.buttonComplete.visibility = View.GONE
+                }
+
+                4 -> {
+                    binding.linearLayout1.visibility = View.GONE
+                    binding.linearLayout2.visibility = View.GONE
+                    binding.linearLayout3.visibility = View.GONE
+                    binding.linearLayout4.visibility = View.VISIBLE
+                    binding.buttonNext.visibility = View.GONE
+                    binding.buttonComplete.visibility = View.VISIBLE
                 }
 
             }
@@ -137,23 +179,42 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        //에딧텍스트 패스워드 관찰
+        signUpViewModel.isPasswordFocus.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.editTextPassword.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+            } else {
+                binding.editTextPassword.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+            }
+        }
+
+        //에딧텍스트 패스워드재확인 관찰
+        signUpViewModel.isReconfirmPasswordFocus.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.editTextReconfirmPassword.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+            } else {
+                binding.editTextReconfirmPassword.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+            }
+        }
+
         //이메일 유효성 관찰
         signUpViewModel.isEmailValid.observe(viewLifecycleOwner){
             if(it) {
                 binding.buttonNext.isEnabled = true
                 binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
-                binding.textViewValid.visibility = View.VISIBLE
-                binding.textViewInValid.visibility = View.GONE
+                binding.textViewEmailValid.visibility = View.VISIBLE
+                binding.textViewEmailValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
+                binding.textViewEmailValid.text = getString(R.string.validEmailFormat)
             }else {
                 binding.buttonNext.isEnabled = false
                 binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
                 binding.linearLayoutCode.visibility = View.GONE
-                binding.textViewValid.visibility = View.GONE
-                binding.textViewInValid.visibility = View.VISIBLE
+                binding.textViewEmailValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                binding.textViewEmailValid.text = getString(R.string.inValidPasswordFormat)
             }
 
-            //코드 유효성 관찰
-            signUpViewModel.isCodeValid.observe(viewLifecycleOwner){
+        //코드 유효성 관찰
+        signUpViewModel.isCodeValid.observe(viewLifecycleOwner){
                 if(it){
                     Toast.makeText(requireContext(), "유효한 인증코드 입니다.", Toast.LENGTH_SHORT).show()
                 }else{
@@ -172,7 +233,6 @@ class SignUpFragment : Fragment() {
             }
         }
 
-
         //이메일 전송 관찰
         signUpViewModel.isEmailSend.observe(viewLifecycleOwner){
             Log.d(TAG, "setObserve: ${it.toString()}")
@@ -182,6 +242,73 @@ class SignUpFragment : Fragment() {
                 binding.buttonSend.text = "재전송"
             }else{
                 Toast.makeText(requireContext(), "전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //패스워드 유효성 관찰
+        signUpViewModel.isPasswordValid.observe(viewLifecycleOwner){
+            if (it){
+                binding.editTextReconfirmPassword.visibility = View.VISIBLE
+                binding.textViewPasswordValid.text = getString(R.string.validPasswordFormat)
+                binding.textViewPasswordValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
+            }else{
+                binding.editTextReconfirmPassword.visibility = View.GONE
+                binding.textViewPasswordValid.visibility = View.VISIBLE
+                binding.textViewPasswordValid.text = getString(R.string.inValidPasswordFormat)
+                binding.textViewPasswordValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+            }
+        }
+
+        //패스워드 일치 여부 관찰
+        signUpViewModel.isPasswordCorrect.observe(viewLifecycleOwner){
+            if(it){
+                binding.buttonNext.isEnabled = true
+                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+                binding.textViewPasswordCorrect.visibility = View.VISIBLE
+                binding.textViewPasswordCorrect.text = getString(R.string.correctPasswordFormat)
+                binding.textViewPasswordCorrect.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
+            }else{
+                binding.buttonNext.isEnabled = false
+                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+                binding.textViewPasswordCorrect.visibility = View.VISIBLE
+                binding.textViewPasswordCorrect.text = getString(R.string.inCorrectPasswordFormat)
+                binding.textViewPasswordCorrect.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+            }
+        }
+
+        //닉네임 유효성 여부 관찰
+        signUpViewModel.isNicknameValid.observe(viewLifecycleOwner){
+            if(it){
+                binding.buttonNext.isEnabled = true
+                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+                binding.textViewNicknameValid.visibility = View.VISIBLE
+                binding.textViewNicknameValid.text = getString(R.string.validNicknameFormat)
+                binding.textViewNicknameValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
+            }else{
+                binding.buttonNext.isEnabled = false
+                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+                binding.textViewNicknameValid.visibility = View.VISIBLE
+                binding.textViewNicknameValid.text = getString(R.string.inValidNicknameFormat)
+                binding.textViewNicknameValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+            }
+        }
+
+        //닉네임 중복 여부
+        signUpViewModel.isNicknamePossible.observe(viewLifecycleOwner){
+            if(it) {
+                Toast.makeText(requireContext(), "사용 가능한 닉네임 입니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(), "이미 존재하는 닉네임 입니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //회원가입 성공 여부 관찰
+        signUpViewModel.isSignUpSuccess.observe(viewLifecycleOwner){
+            if(it) {
+                Toast.makeText(requireContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeSignUpToLoginFragment()}
+            }else {
+                Toast.makeText(requireContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
