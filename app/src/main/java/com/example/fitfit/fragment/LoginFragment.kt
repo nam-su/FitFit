@@ -55,7 +55,7 @@ class LoginFragment() : Fragment() {
 
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         binding.loginViewModel = loginViewModel
-
+        binding.lifecycleOwner = this
 
     } // setVariable
 
