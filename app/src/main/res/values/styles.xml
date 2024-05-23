@@ -9,10 +9,16 @@
         <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="fragmentTitle">
+    <style name="SignUpTitle">
         <item name="android:textColor">@color/personal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="SignUpContent">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="editTextStyle">

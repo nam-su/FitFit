@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            style="@style/fragmentTitle"
+            style="@style/SignUpTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signUp" />
@@ -37,7 +37,7 @@
             android:id="@+id/textViewPageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/fragmentTitle"
+            style="@style/SignUpTitle"
             android:layout_marginStart="10dp"
             android:textSize="20sp"
             android:text="@{@string/pageCount(SignUpViewModel.pageCount)}"/>
@@ -71,7 +71,7 @@
                 android:visibility="visible">
 
                 <TextView
-                    style="@style/fragmentTitle"
+                    style="@style/SignUpTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -147,7 +147,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    style="@style/fragmentTitle"
+                    style="@style/SignUpTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -213,7 +213,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    style="@style/fragmentTitle"
+                    style="@style/SignUpTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -249,29 +249,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:layout_marginHorizontal="50dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="50dp"
                     android:text="@string/userInfoCheck"
-                    style="@style/fragmentTitle"/>
+                    style="@style/SignUpTitle"/>
 
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_gravity="center"
+                   android:layout_marginTop="15dp"
                    android:text="@{@string/userEmail(SignUpViewModel.signUpEmail)}"
+                   style="@style/SignUpContent"
                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/personal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
                     android:text="@{@string/userNickname(SignUpViewModel.signUpNickname)}"
+                    style="@style/SignUpContent"
                     />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/personal"/>
 
             </LinearLayout>
             <!--회원가입 세번째 과정 끝-->
@@ -302,7 +315,7 @@
             android:layout_height="wrap_content"
             android:text="@string/complete"
             android:background="@color/personal"
-            android:visibility="visible"
+            android:visibility="gone"
             style="@style/buttonTextStyle"
             android:onClick="@{()->SignUpViewModel.setOnButtonCompleteClick(SignUpViewModel.signUpEmail,SignUpViewModel.signUpPassword,SignUpViewModel.signUpNickname)}"
             app:layout_constraintEnd_toEndOf="parent"
