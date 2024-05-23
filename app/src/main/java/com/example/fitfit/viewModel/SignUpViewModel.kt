@@ -2,6 +2,7 @@ package com.example.fitfit.viewModel
 
 import android.util.Log
 import android.util.Patterns
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +25,11 @@ class SignUpViewModel : ViewModel() {
     val isPasswordValid = MutableLiveData<Boolean>()
     val isEmailPossible = MutableLiveData<Boolean>()
     val isEmailSend = MutableLiveData<Boolean>()
-    val isCodeValid = MutableLiveData<Boolean>()
+
+    private val _isCodeValid = MutableLiveData<Boolean>()
+    val isCodeValid : LiveData<Boolean>
+        get() = _isCodeValid
+
     val isNicknameValid = MutableLiveData<Boolean>()
     val isNicknamePossible = MutableLiveData<Boolean>()
     val isSignUpSuccess = MutableLiveData<Boolean>()
@@ -32,12 +37,15 @@ class SignUpViewModel : ViewModel() {
     val signUpPassword = MutableLiveData<String>("")
     val signUpNickname = MutableLiveData<String>("")
 
-
+    var isAuthenticating = false
 
 
     //다음 버튼 클릭
     fun setOnButtonNextClick(email:String, code:String,password: String,nickname: String){
 
+        if(isAuthenticating){
+            return
+        }
         Log.d(TAG, "setOnButtonNextClick: ${course.value}")
         //현재 진행상황에 따라 버튼 클릭을 다르게 적용
         when(course.value){
@@ -49,17 +57,23 @@ class SignUpViewModel : ViewModel() {
 
             //진행상황이 이메일 인증일때
             "emailAuthentication" -> {
+                isAuthenticating =true
                 Log.d(TAG, "보낸 인증코드: ${model.randomString}")
                 Log.d(TAG, "입력한 인증코드: $code")
 
                 if(model.randomString == code){
-                    isCodeValid.value = true
+
+                    _isCodeValid.value = true
                     course.value = "passwordCheck"
                     pageCount.value = pageCount.value!! + 1
                     signUpEmail.value = email
+                    Log.d(TAG, "뷰모델: 요기")
                 }else{
-                    isCodeValid.value = false
+                    _isCodeValid.value = false
+                    Log.d(TAG, "뷰모델: 유효x")
+
                 }
+                isAuthenticating = false
             }
 
             //진행상황이 비밀번호 입력일때
@@ -83,7 +97,9 @@ class SignUpViewModel : ViewModel() {
 
     //뒤로가기 버튼 클릭
     fun setOnButtonBack(){
-        pageCount.value = pageCount.value!! - 1
+        if(pageCount.value!! > 0) {
+            pageCount.value = pageCount.value!! - 1
+        }
     }
 
 
@@ -205,10 +221,11 @@ class SignUpViewModel : ViewModel() {
         Log.d(TAG, "setOnButtonCompleteClick: ${nickname.toString()}")
 
         viewModelScope.launch {
-            when(model.signUpProcess("email","password","nickname","signUp")!!.result){
+            when(model.signUpProcess(email,password,nickname,"signUp")!!.result){
                 "success" -> isSignUpSuccess.value = true
                 else -> isSignUpSuccess.value = false
             }
         }
     }
+
 }

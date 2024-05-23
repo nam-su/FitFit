@@ -39,8 +39,9 @@ class SignUpModel {
     fun getRandomString() {
         val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
         randomString = (1..6)
-            .map { charset.random() }
+            .map { charset.random()}
             .joinToString("")
+
     }
 
 }
