@@ -55,4 +55,9 @@
     <!--운동 프래그먼트-->
     <string name="todayExerciseStart">오늘의 운동 시작</string>
 
+
+    <!--유저 프래그먼트-->
+    <string name="loginType">로그인 방식</string>
+    <string name="subscribtion">플러스 구독</string>
+
 </resources>
