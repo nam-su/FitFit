@@ -6,6 +6,7 @@ import android.content.Context
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,16 +14,21 @@ import com.example.fitfit.data.User
 import com.example.fitfit.model.LoginModel
 import kotlinx.coroutines.launch
 
-class LoginViewModel(application: Application): AndroidViewModel(application) {
+class LoginViewModel: ViewModel() {
 
     val TAG = "로그인 뷰모델"
 
-    private val loginModel = LoginModel(application.applicationContext)
+    private val loginModel = LoginModel()
 
-    val isSuccessLogin = MutableLiveData<String>()
+    private val _isSuccessLogin = MutableLiveData<String>()
+    val isSuccessLogin: LiveData<String>
+        get() = _isSuccessLogin
 
 
-    val navigateToSignUp = MutableLiveData<Boolean>()
+    private val _navigateToSignUp = MutableLiveData<Boolean>()
+    val navigateToSignUp: LiveData<Boolean>
+        get() = _navigateToSignUp
+
 
     // 로그인 메서드
     fun login(id: String,password: String){
@@ -37,7 +43,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
                 when(user.result){
 
-                        "failure" -> isSuccessLogin.value = "failure"
+                        "failure" -> _isSuccessLogin.value = "failure"
                         else -> setSharedPreferencesUserinfo(user)
 
                     }
@@ -48,7 +54,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                 Log.d(TAG, "login: ${response.message()}")
                 Log.d(TAG, "login: ${response.isSuccessful}")
                 Log.d(TAG, "login: ${response.body()}")
-                isSuccessLogin.value = "disconnect"
+                _isSuccessLogin.value = "disconnect"
 
             }
 
@@ -59,19 +65,19 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
     //회원가입 버튼 클릭 true
     fun onSignUpClicked() {
-        navigateToSignUp.value = true
+        _navigateToSignUp.value = true
     }
 
     //회원가입 버튼 클릭 false
     fun onSignUpNonClicked(){
-        navigateToSignUp.value = false
+        _navigateToSignUp.value = false
     }
 
 
     // 로그인 성공했을때 Shared에 데이터 추가해준다.
     private fun setSharedPreferencesUserinfo(user: User) {
 
-        isSuccessLogin.value = "success"
+        _isSuccessLogin.value = "success"
         loginModel.setSharedPreferencesUserInfo(user)
 
     } // setSharedPreferencesUserInfo()
