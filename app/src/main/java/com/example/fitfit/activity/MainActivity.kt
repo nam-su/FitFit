@@ -138,6 +138,15 @@ class MainActivity : AppCompatActivity() {
     } // changeSplashToHomeFragment()
 
 
+    // 운동 프래그먼트에서 동작감지 프래그먼트로 전환.
+    fun changeExerciseToPoseDetectionFragment() {
+
+        navController.navigate(R.id.action_exerciseFragment_to_poseDetectionFragment)
+        binding.bottomNavigationView.visibility = View.GONE
+
+    } // changeExerciseToPoseDetectionFragment()
+
+
     //뒤로가기 버튼 클릭시
     private fun setBackPressed() {
 
@@ -151,6 +160,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.exerciseFragment -> finish()
                 R.id.diaryFragment -> finish()
                 R.id.userFragment -> finish()
+                R.id.poseDetectionFragment -> {
+
+                    navController.popBackStack()
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+
+                }
 
             }
 

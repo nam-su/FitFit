@@ -52,4 +52,7 @@
     <string name="variableExercisePlay">다양한 운동을 즐겨보세요</string>
     <string name="viewAll">전체보기</string>
 
+    <!--운동 프래그먼트-->
+    <string name="todayExerciseStart">오늘의 운동 시작</string>
+
 </resources>
