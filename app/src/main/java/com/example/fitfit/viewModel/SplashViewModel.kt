@@ -3,6 +3,7 @@ package com.example.fitfit.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.model.SplashModel
 import kotlinx.coroutines.CoroutineScope
@@ -10,9 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashViewModel(application: Application): AndroidViewModel(application) {
+class SplashViewModel(): ViewModel() {
 
-    private val splashModel = SplashModel(application.applicationContext)
+    private val splashModel = SplashModel()
 
     var isCheckLogin = MutableLiveData<Boolean>()
 
