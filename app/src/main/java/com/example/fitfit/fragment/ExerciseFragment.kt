@@ -48,6 +48,7 @@ class ExerciseFragment : Fragment() {
     } // setVariable()
 
 
+    // 클릭리스너 초기화
     private fun setClickListener() {
 
         binding.buttonStartTodayExercise.setOnClickListener {
@@ -56,6 +57,6 @@ class ExerciseFragment : Fragment() {
 
         }
 
-    }
+    } // setClickListener()
 
 }
