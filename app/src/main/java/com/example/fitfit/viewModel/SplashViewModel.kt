@@ -2,6 +2,7 @@ package com.example.fitfit.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fitfit.activity.MainActivity
@@ -15,7 +16,10 @@ class SplashViewModel(): ViewModel() {
 
     private val splashModel = SplashModel()
 
-    var isCheckLogin = MutableLiveData<Boolean>()
+    private val _isCheckLogin = MutableLiveData<Boolean>()
+    val isCheckLogin: LiveData<Boolean>
+        get() = _isCheckLogin
+
 
 
     // 로그인 정보 확인하는 메서드
@@ -25,11 +29,11 @@ class SplashViewModel(): ViewModel() {
 
             // 쉐어드에 정보가 있는 경우
             true -> CoroutineScope(Dispatchers.Main).launch { delay(3000)
-            isCheckLogin.value = true
+            _isCheckLogin.value = true
             }
             // 쉐어드에 정보가 없는 경우
             false -> CoroutineScope(Dispatchers.Main).launch { delay(3000)
-            isCheckLogin.value = false
+            _isCheckLogin.value = false
             }
 
         }
