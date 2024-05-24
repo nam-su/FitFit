@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.navigate(R.id.action_loginFragment_to_signUpFragment)
 
-    } // changeNavHostFragment()
+    } // changeSignUpFragment()
 
 
 
@@ -119,14 +119,14 @@ class MainActivity : AppCompatActivity() {
 
         navController.navigate(R.id.action_signUpFragment_to_loginFragment)
 
-    } // changeNavHostFragment()
+    } // changeSignUpToLoginFragment()
 
     // 스플래시에서 로그인 기록 없으면 로그인 프래그먼트로 전환
     fun changeSplashToLoginFragment() {
 
         navController.navigate(R.id.action_splashFragment_to_loginFragment)
 
-    } // changeLoginFragment()
+    } // changeSplashToLoginFragment()
 
 
     // 스플래시에서 로그인 기록 있으면 홈 프래그먼트로 전환
