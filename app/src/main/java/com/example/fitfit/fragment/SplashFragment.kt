@@ -14,6 +14,7 @@ import com.example.fitfit.databinding.FragmentSplashBinding
 import com.example.fitfit.viewModel.SplashViewModel
 
 class SplashFragment : Fragment() {
+    
     private lateinit var binding: FragmentSplashBinding
     private lateinit var splashViewModel: SplashViewModel
 
@@ -38,7 +39,7 @@ class SplashFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        splashViewModel = ViewModelProvider(this)[SplashViewModel::class.java]
+        splashViewModel = SplashViewModel()
 
     } // setVariable()
 
