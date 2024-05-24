@@ -28,6 +28,12 @@ class Preferences(context: Context) {
 
     } // getUser()
 
+    fun getUserNickname(): String {
+
+        return preferences.getString("nickname", "").toString()
+
+    }
+
 
     // 유저 정보 쉐어드에 저장 하는 메서드
     fun setUser(user: User) {

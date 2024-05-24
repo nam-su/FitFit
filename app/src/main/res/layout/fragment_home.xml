@@ -19,7 +19,7 @@
         tools:context=".fragment.HomeFragment">
 
         <TextView
-            android:id="@+id/textViewFragmentTitle"
+            android:id="@+id/textViewHomeFragmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
@@ -42,7 +42,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFragmentTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewHomeFragmentTitle" />
 
 
         <!-- 이번주 운동량 체크 레이아웃-->
@@ -90,7 +90,8 @@
                     android:layout_gravity="center"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
-                    android:src="@drawable/button_forward"/>
+                    android:src="@drawable/button_forward"
+                    android:contentDescription="@drawable/button_forward" />
 
             </LinearLayout>
 
