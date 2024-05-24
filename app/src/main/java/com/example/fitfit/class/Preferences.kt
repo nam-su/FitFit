@@ -28,11 +28,21 @@ class Preferences(context: Context) {
 
     } // getUser()
 
+
+    // 유저 아이디만 조회하는 메서드
+    fun getUserId(): String {
+
+        return preferences.getString("id", "").toString()
+
+    } // getUserId()
+
+
+    // 유저 닉네임만 조회하는 메서드
     fun getUserNickname(): String {
 
         return preferences.getString("nickname", "").toString()
 
-    }
+    } // getUserNickname()
 
 
     // 유저 정보 쉐어드에 저장 하는 메서드
