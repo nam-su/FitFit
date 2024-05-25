@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.navigate(R.id.action_loginFragment_to_signUpFragment)
 
-    } // changeNavHostFragment()
+    } // changeSignUpFragment()
 
 
 
@@ -119,14 +119,14 @@ class MainActivity : AppCompatActivity() {
 
         navController.navigate(R.id.action_signUpFragment_to_loginFragment)
 
-    } // changeNavHostFragment()
+    } // changeSignUpToLoginFragment()
 
     // 스플래시에서 로그인 기록 없으면 로그인 프래그먼트로 전환
     fun changeSplashToLoginFragment() {
 
         navController.navigate(R.id.action_splashFragment_to_loginFragment)
 
-    } // changeLoginFragment()
+    } // changeSplashToLoginFragment()
 
 
     // 스플래시에서 로그인 기록 있으면 홈 프래그먼트로 전환
@@ -136,6 +136,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.VISIBLE
 
     } // changeSplashToHomeFragment()
+
+
+    // 운동 프래그먼트에서 동작감지 프래그먼트로 전환.
+    fun changeExerciseToPoseDetectionFragment() {
+
+        navController.navigate(R.id.action_exerciseFragment_to_poseDetectionFragment)
+        binding.bottomNavigationView.visibility = View.GONE
+
+    } // changeExerciseToPoseDetectionFragment()
 
 
     //뒤로가기 버튼 클릭시
@@ -151,6 +160,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.exerciseFragment -> finish()
                 R.id.diaryFragment -> finish()
                 R.id.userFragment -> finish()
+                R.id.poseDetectionFragment -> {
+
+                    navController.popBackStack()
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+
+                }
 
             }
 

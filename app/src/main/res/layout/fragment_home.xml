@@ -19,7 +19,7 @@
         tools:context=".fragment.HomeFragment">
 
         <TextView
-            android:id="@+id/textViewFragmentTitle"
+            android:id="@+id/textViewHomeFragmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
@@ -42,7 +42,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFragmentTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewHomeFragmentTitle" />
 
 
         <!-- 이번주 운동량 체크 레이아웃-->
@@ -90,11 +90,25 @@
                     android:layout_gravity="center"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
-                    android:src="@drawable/button_forward"/>
+                    android:src="@drawable/button_forward"
+                    android:contentDescription="@drawable/button_forward" />
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCheckWeekExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCheckWeekExercise"
+            tools:listitem="@layout/item_view_check_week_exercise" />
+
         <!-- 이번주 운동량 체크 레이아웃 끝-->
 
 
@@ -107,7 +121,7 @@
             android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCheckWeekExercise">
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCheckWeekExercise">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -148,18 +162,30 @@
 
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
         <!-- 이달의 챌린지 랭킹 레이아웃 끝-->
 
 
         <!-- 다양한 운동을 즐겨보세요 레이아웃-->
         <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView2">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -184,7 +210,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/viewAll"
                     android:textColor="@color/black"
                     android:textSize="12sp"
@@ -200,7 +226,20 @@
 
 
         </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.0" />
+
         <!-- 다양한 운동을 즐겨보세요 레이아웃 끝-->
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

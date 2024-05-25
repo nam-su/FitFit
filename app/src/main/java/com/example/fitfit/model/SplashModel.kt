@@ -2,16 +2,19 @@ package com.example.fitfit.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.fitfit.`class`.MyApplication
+import com.example.fitfit.network.RetrofitBuilder
+import com.example.fitfit.network.RetrofitInterface
 
-class SplashModel(context: Context) {
+class SplashModel() {
 
-    var sharedPreferences: SharedPreferences = context.getSharedPreferences("user",Context.MODE_PRIVATE)
-
+    private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
     // 로그인 정보 확인하는 메서드
     fun checkLogin(): Boolean {
 
-        return when(sharedPreferences.getString("id","")) {
+        return when(MyApplication.sharedPreferences.getUserId()) {
 
             ""-> false
             else -> true

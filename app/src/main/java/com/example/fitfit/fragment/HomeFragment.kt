@@ -1,26 +1,20 @@
 package com.example.fitfit.fragment
 
+import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fitfit.R
+import com.example.fitfit.adapter.CheckWeekExerciseAdapter
 import com.example.fitfit.databinding.FragmentHomeBinding
 import com.example.fitfit.viewModel.HomeViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
@@ -48,9 +42,14 @@ class HomeFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
 
-    }
+        binding.recyclerViewCheckWeekExercise.layoutManager = GridLayoutManager(activity?.applicationContext,7)
+        binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
+
+        // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
+
+    } // setVariable()
 
 }

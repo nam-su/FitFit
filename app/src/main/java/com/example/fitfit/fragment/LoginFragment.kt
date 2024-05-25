@@ -47,7 +47,7 @@ class LoginFragment() : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        loginViewModel = LoginViewModel()
         binding.loginViewModel = loginViewModel
 
     } // setVariable
