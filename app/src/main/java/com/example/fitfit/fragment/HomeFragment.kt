@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
 
         binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter()
