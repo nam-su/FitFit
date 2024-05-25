@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.fitfit.R
+import com.example.fitfit.adapter.CheckWeekExerciseAdapter
 import com.example.fitfit.databinding.FragmentHomeBinding
 import com.example.fitfit.viewModel.HomeViewModel
 
@@ -41,6 +42,10 @@ class HomeFragment : Fragment() {
         homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
 
-    }
+        binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
+
+        // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
+
+    } // setVariable()
 
 }
