@@ -6,11 +6,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="5dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textViewDay"
-            android:text="일"
             android:textSize="12sp"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -18,8 +18,9 @@
             android:layout_height="wrap_content"/>
 
         <View
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/viewCheckExercise"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:background="@drawable/login_button"
             android:layout_marginTop="5dp"/>
 

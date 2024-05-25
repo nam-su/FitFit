@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.model.HomeModel
 
 class HomeViewModel(): ViewModel() {
@@ -26,5 +27,13 @@ class HomeViewModel(): ViewModel() {
         return weekStatus
 
     } // setWeekStatus()
+
+
+    // 이번주 운동량을 리사이클러뷰에 띄워주는 메서드
+    fun setRecyclerViewWeekStatus(): ArrayList<ExerciseDiary>{
+
+        return homeModel.setWeekStatusList()
+
+    }
 
 }

@@ -99,13 +99,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCheckWeekExercise"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_view_check_week_exercise"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCheckWeekExercise" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCheckWeekExercise"
+            tools:listitem="@layout/item_view_check_week_exercise" />
 
         <!-- 이번주 운동량 체크 레이아웃 끝-->
 
