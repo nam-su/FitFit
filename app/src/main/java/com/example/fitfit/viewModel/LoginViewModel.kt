@@ -21,7 +21,6 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
     val isSuccessLogin = MutableLiveData<String>()
 
-
     val navigateToSignUp = MutableLiveData<Boolean>()
 
     // 로그인 메서드

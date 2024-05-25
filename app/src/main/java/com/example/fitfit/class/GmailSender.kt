@@ -1,11 +1,9 @@
 package com.example.fitfit.`class`
 
 import android.util.Log
-import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.util.*
 import javax.mail.*
 import javax.mail.internet.InternetAddress

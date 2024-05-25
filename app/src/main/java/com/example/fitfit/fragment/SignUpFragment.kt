@@ -133,10 +133,10 @@ class SignUpFragment : Fragment() {
                     binding.linearLayout3.visibility = View.GONE
                     binding.linearLayout4.visibility = View.GONE
                     binding.buttonNext.visibility = View.VISIBLE
-                    signUpViewModel.course.value = "duplicateCheck"
                     binding.editTextEmail.setText("")
                     binding.textViewEmailValid.text = ""
                     binding.editTextCode.setText("")
+                    signUpViewModel.changeCourseValue("duplicateCheck")
                 }
 
                 2 -> {
@@ -145,11 +145,11 @@ class SignUpFragment : Fragment() {
                     binding.linearLayout3.visibility = View.GONE
                     binding.linearLayout4.visibility = View.GONE
                     binding.buttonNext.visibility = View.VISIBLE
-                    signUpViewModel.course.value = "passwordCheck"
                     binding.editTextPassword.setText("")
                     binding.textViewPasswordValid.text = ""
                     binding.textViewPasswordCorrect.text = ""
                     binding.editTextReconfirmPassword.setText("")
+                    signUpViewModel.changeCourseValue("passwordCheck")
 
                 }
 
@@ -160,9 +160,9 @@ class SignUpFragment : Fragment() {
                     binding.linearLayout4.visibility = View.GONE
                     binding.buttonNext.visibility = View.VISIBLE
                     binding.buttonComplete.visibility = View.GONE
-                    signUpViewModel.course.value = "nicknameCheck"
                     binding.textViewNicknameValid.text = ""
                     binding.editTextNickname.setText("")
+                    signUpViewModel.changeCourseValue("nicknameCheck")
 
                 }
 
@@ -173,7 +173,7 @@ class SignUpFragment : Fragment() {
                     binding.linearLayout4.visibility = View.VISIBLE
                     binding.buttonNext.visibility = View.GONE
                     binding.buttonComplete.visibility = View.VISIBLE
-                    signUpViewModel.course.value = "lastCheck"
+                    signUpViewModel.changeCourseValue("lastCheck")
 
                 }
 
@@ -231,13 +231,12 @@ class SignUpFragment : Fragment() {
                 binding.linearLayoutCode.visibility = View.GONE
                 binding.textViewEmailValid.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
                 binding.textViewEmailValid.text = getString(R.string.inValidEmailFormat)
-                signUpViewModel.course.value = "duplicateCheck"
             }
 
 
         //코드 유효성 관찰
         signUpViewModel.isCodeValid.observe(viewLifecycleOwner){
-            Log.d(TAG, "setObserve: ${signUpViewModel.isCodeValid.value}")
+            Log.d(TAG, "setObserve: ${it.toString()}")
 
             if(it == true){
                     Toast.makeText(requireContext(), "유효한 인증코드 입니다.", Toast.LENGTH_SHORT).show()
@@ -256,7 +255,7 @@ class SignUpFragment : Fragment() {
                 binding.linearLayoutCode.visibility = View.VISIBLE
                 Toast.makeText(requireContext(), "사용가능한 이메일 입니다.", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(requireContext(), "사용할 수 없는 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "이미 존재하는 이메일 입니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -343,6 +342,15 @@ class SignUpFragment : Fragment() {
                 CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeSignUpToLoginFragment()}
             }else {
                 Toast.makeText(requireContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        
+        
+        //이메일 인증
+        signUpViewModel.signUpEmail.observe(viewLifecycleOwner){
+            when(it){
+                "" -> if(signUpViewModel.isEmailSend.value == true)Toast.makeText(requireContext(), "유효하지 않은 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                else -> if(signUpViewModel.isEmailSend.value == true) Toast.makeText(requireContext(), "코드 인증에 성공 했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 

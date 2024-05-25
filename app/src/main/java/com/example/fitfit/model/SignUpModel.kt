@@ -5,6 +5,9 @@ import com.example.fitfit.`class`.GmailSender
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SignUpModel {
 
@@ -37,11 +40,12 @@ class SignUpModel {
 
     //6자리 난수 만들기
     fun getRandomString() {
-        val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
-        randomString = (1..6)
-            .map { charset.random()}
-            .joinToString("")
 
+            val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
+            var randomString = (1..6)
+                .map { charset.random() }
+                .joinToString("")
+            this.randomString = randomString
     }
 
 }
