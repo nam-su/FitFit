@@ -14,41 +14,85 @@ class SignUpViewModel : ViewModel() {
     val TAG = "회원가입 뷰모델"
 
     private val model = SignUpModel()
-    val pageCount: MutableLiveData<Int> = MutableLiveData(1)
-    val course: MutableLiveData<String> = MutableLiveData("duplicateCheck")
-    val isEmailFocus = MutableLiveData<Boolean>()
-    val isCodeFocus = MutableLiveData<Boolean>()
-    val isPasswordFocus = MutableLiveData<Boolean>()
-    val isReconfirmPasswordFocus = MutableLiveData<Boolean>()
-    val isPasswordCorrect = MutableLiveData<Boolean>()
-    val isEmailValid = MutableLiveData<Boolean>()
-    val isPasswordValid = MutableLiveData<Boolean>()
-    val isEmailPossible = MutableLiveData<Boolean>()
-    val isEmailSend = MutableLiveData<Boolean>()
+    private val _pageCount: MutableLiveData<Int> = MutableLiveData(1)
+    val pageCount: LiveData<Int>
+        get() = _pageCount
+
+    private val _course: MutableLiveData<String> = MutableLiveData("duplicateCheck")
+    val course: LiveData<String>
+        get() = _course
+
+    private val _isEmailFocus = MutableLiveData<Boolean>()
+    val isEmailFocus: LiveData<Boolean>
+        get() = _isEmailFocus
+
+    private val _isCodeFocus = MutableLiveData<Boolean>()
+    val isCodeFocus: LiveData<Boolean>
+        get() = _isCodeFocus
+
+    private val _isPasswordFocus = MutableLiveData<Boolean>()
+    val isPasswordFocus: LiveData<Boolean>
+        get() = _isPasswordFocus
+
+    private val _isReconfirmPasswordFocus = MutableLiveData<Boolean>()
+    val isReconfirmPasswordFocus: LiveData<Boolean>
+        get() = _isReconfirmPasswordFocus
+
+    private val _isPasswordCorrect = MutableLiveData<Boolean>()
+    val isPasswordCorrect: LiveData<Boolean>
+        get() = _isPasswordCorrect
+
+    private val _isEmailValid = MutableLiveData<Boolean>()
+    val isEmailValid: LiveData<Boolean>
+        get() = _isEmailValid
+
+    private val _isPasswordValid = MutableLiveData<Boolean>()
+    val isPasswordValid: LiveData<Boolean>
+        get() = _isPasswordValid
+
+    private val _isEmailPossible = MutableLiveData<Boolean>()
+    val isEmailPossible: LiveData<Boolean>
+        get() = _isEmailPossible
+
+    private val _isEmailSend = MutableLiveData<Boolean>()
+    val isEmailSend: LiveData<Boolean>
+        get() = _isEmailSend
 
     private val _isCodeValid = MutableLiveData<Boolean>()
     val isCodeValid : LiveData<Boolean>
         get() = _isCodeValid
 
-    val isNicknameValid = MutableLiveData<Boolean>()
-    val isNicknamePossible = MutableLiveData<Boolean>()
-    val isSignUpSuccess = MutableLiveData<Boolean>()
-    val signUpEmail = MutableLiveData<String>("")
-    val signUpPassword = MutableLiveData<String>("")
-    val signUpNickname = MutableLiveData<String>("")
+    private val _isNicknameValid = MutableLiveData<Boolean>()
+    val isNicknameValid: LiveData<Boolean>
+        get() = _isNicknameValid
 
-    var isAuthenticating = false
+    private val _isNicknamePossible = MutableLiveData<Boolean>()
+    val isNicknamePossible: LiveData<Boolean>
+        get() = _isNicknamePossible
+
+    private val _isSignUpSuccess = MutableLiveData<Boolean>()
+    val isSignUpSuccess: LiveData<Boolean>
+        get() = _isSignUpSuccess
+
+    private val _signUpEmail = MutableLiveData<String>("")
+    val signUpEmail: LiveData<String>
+        get() = _signUpEmail
+
+    private val _signUpPassword = MutableLiveData<String>("")
+    val signUpPassword: LiveData<String>
+        get() = _signUpPassword
+
+    private val _signUpNickname = MutableLiveData<String>("")
+    val signUpNickname: LiveData<String>
+        get() = _signUpNickname
 
 
     //다음 버튼 클릭
     fun setOnButtonNextClick(email:String, code:String,password: String,nickname: String){
 
-        if(isAuthenticating){
-            return
-        }
-        Log.d(TAG, "setOnButtonNextClick: ${course.value}")
+        Log.d(TAG, "setOnButtonNextClick: ${_course.value}")
         //현재 진행상황에 따라 버튼 클릭을 다르게 적용
-        when(course.value){
+        when(_course.value){
 
             //진행상황이 중복체크일때
             "duplicateCheck" -> {
@@ -57,31 +101,28 @@ class SignUpViewModel : ViewModel() {
 
             //진행상황이 이메일 인증일때
             "emailAuthentication" -> {
-                isAuthenticating =true
                 Log.d(TAG, "보낸 인증코드: ${model.randomString}")
                 Log.d(TAG, "입력한 인증코드: $code")
 
-                if(model.randomString == code){
-
-                    _isCodeValid.value = true
-                    course.value = "passwordCheck"
-                    pageCount.value = pageCount.value!! + 1
-                    signUpEmail.value = email
-                    Log.d(TAG, "뷰모델: 요기")
-                }else{
-                    _isCodeValid.value = false
-                    Log.d(TAG, "뷰모델: 유효x")
+                when(model.randomString == code && code != ""){
+                    true -> {
+                        _pageCount.value = _pageCount.value!! + 1
+                        _signUpEmail.value = email
+                        Log.d(TAG, "뷰모델: 요기")}
+                    false -> {
+                        _signUpEmail.value = ""
+                        Log.d(TAG, "뷰모델: 유효x")
+                    }
 
                 }
-                isAuthenticating = false
+
             }
 
             //진행상황이 비밀번호 입력일때
             "passwordCheck" -> {
                 if(isPasswordCorrect.value == true){
-                    course.value = "nicknameCheck"
-                    pageCount.value = pageCount.value!! + 1
-                    signUpPassword.value = password
+                    _pageCount.value = _pageCount.value!! + 1
+                    _signUpPassword.value = password
                 }
             }
 
@@ -98,7 +139,7 @@ class SignUpViewModel : ViewModel() {
     //뒤로가기 버튼 클릭
     fun setOnButtonBack(){
         if(pageCount.value!! > 0) {
-            pageCount.value = pageCount.value!! - 1
+            _pageCount.value = pageCount.value!! - 1
         }
     }
 
@@ -106,34 +147,34 @@ class SignUpViewModel : ViewModel() {
 
     //이메일 포커스
     fun onEmailFocusChanged(hasFocus: Boolean) {
-        isEmailFocus.value = hasFocus
+        _isEmailFocus.value = hasFocus
     }
 
 
 
     //코드요청 포커스
     fun onCodeFocusChanged(hasFocus: Boolean) {
-        isCodeFocus.value = hasFocus
+        _isCodeFocus.value = hasFocus
     }
 
 
 
     //비밀번호 포커스
     fun onPasswordFocusChanged(hasFocus: Boolean) {
-        isPasswordFocus.value = hasFocus
+        _isPasswordFocus.value = hasFocus
     }
 
 
 
     //비밀번호 재확인 포커스
     fun onReconfirmPasswordFocusChanged(hasFocus: Boolean) {
-        isReconfirmPasswordFocus.value = hasFocus
+        _isReconfirmPasswordFocus.value = hasFocus
     }
 
 
     //이메일 유효성 결정
     fun validationEmail(email:String){
-        isEmailValid.value = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        _isEmailValid.value = Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
 
@@ -141,21 +182,21 @@ class SignUpViewModel : ViewModel() {
     //패스워드 유효성 여부
     fun validationPassword(password: String){
         val pattern = Regex("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,15}$")
-        isPasswordValid.value = pattern.matches(password)
+        _isPasswordValid.value = pattern.matches(password)
     }
 
 
 
     //닉네임 유효성 여부
     fun validationNickname(nickname: String){
-        val pattern = Regex("^[a-zA-Z가-힣]{3,8}$")
-        isNicknameValid.value = pattern.matches(nickname)
+        val pattern = Regex("^[가-힣]{3,8}$")
+        _isNicknameValid.value = pattern.matches(nickname)
     }
 
 
     //패스워드 일치 여부
     fun correctPassword(password: String, reconfirmPassword:String){
-        isPasswordCorrect.value = password == reconfirmPassword
+        _isPasswordCorrect.value = password == reconfirmPassword
     }
 
 
@@ -164,7 +205,7 @@ class SignUpViewModel : ViewModel() {
     fun setOnButtonSendClick(email:String){
 
            model.sendMail(email)
-            isEmailSend.value = true
+            _isEmailSend.value = true
 
     }
 
@@ -178,12 +219,16 @@ class SignUpViewModel : ViewModel() {
             when(model.signUpProcess(id,"","","duplicateCheckId")!!.result){
 
                 "possible" -> {
-                    isEmailPossible.value = true
-                    course.value = "emailAuthentication"
+                    _isEmailPossible.value = true
+                    _course.value = "emailAuthentication"
+
+                    //메일도 동시에 보내기
+                    model.sendMail(id)
+                    _isEmailSend.value = true
                 }
                 "impossible" -> {
-                    isEmailPossible.value = false
-                    course.value = "duplicateCheck"
+                    _isEmailPossible.value = false
+                    _course.value = "duplicateCheck"
                 }
 
             }
@@ -201,12 +246,11 @@ class SignUpViewModel : ViewModel() {
             when(model.signUpProcess("","",nickname,"duplicateCheckNickname")!!.result){
 
                 "possible" -> {
-                    isNicknamePossible.value = true
-                    pageCount.value = pageCount.value!! + 1
-                    course.value = "lastCheck"
-                    signUpNickname.value = nickname
+                    _isNicknamePossible.value = true
+                    _pageCount.value = _pageCount.value!! + 1
+                    _signUpNickname.value = nickname
                 }
-                "impossible" -> isNicknamePossible.value = false
+                "impossible" -> _isNicknamePossible.value = false
             }
 
         }
@@ -216,16 +260,22 @@ class SignUpViewModel : ViewModel() {
 
     // 완료버튼 ( 서버 저장 + 로그인 프래그먼트로 이동)
     fun setOnButtonCompleteClick(email: String,password: String,nickname: String){
-        Log.d(TAG, "setOnButtonCompleteClick: ${email.toString()}")
-        Log.d(TAG, "setOnButtonCompleteClick: ${password.toString()}")
-        Log.d(TAG, "setOnButtonCompleteClick: ${nickname.toString()}")
+        Log.d(TAG, "setOnButtonCompleteClick: $email")
+        Log.d(TAG, "setOnButtonCompleteClick: $password")
+        Log.d(TAG, "setOnButtonCompleteClick: $nickname")
 
         viewModelScope.launch {
             when(model.signUpProcess(email,password,nickname,"signUp")!!.result){
-                "success" -> isSignUpSuccess.value = true
-                else -> isSignUpSuccess.value = false
+                "success" -> _isSignUpSuccess.value = true
+                else -> _isSignUpSuccess.value = false
             }
         }
+    }
+
+
+    //course value 변경
+    fun changeCourseValue(value:String){
+        _course.value = value
     }
 
 }

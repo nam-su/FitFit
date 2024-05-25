@@ -24,7 +24,6 @@ class LoginViewModel: ViewModel() {
     val isSuccessLogin: LiveData<String>
         get() = _isSuccessLogin
 
-
     private val _navigateToSignUp = MutableLiveData<Boolean>()
     val navigateToSignUp: LiveData<Boolean>
         get() = _navigateToSignUp
