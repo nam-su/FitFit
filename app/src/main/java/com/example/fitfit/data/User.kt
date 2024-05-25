@@ -2,7 +2,7 @@ package com.example.fitfit.data
 
 import com.google.gson.annotations.SerializedName
 
-class User(@SerializedName("id") val id: String,
+data class User(@SerializedName("id") val id: String,
        @SerializedName("loginType") val loginType: String,
        @SerializedName("nickname")  val nickname: String,
        @SerializedName("profileImagePath") val profileImagePath: String,

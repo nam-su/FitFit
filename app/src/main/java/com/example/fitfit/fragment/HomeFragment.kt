@@ -8,19 +8,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.fitfit.R
+import com.example.fitfit.adapter.CheckWeekExerciseAdapter
 import com.example.fitfit.databinding.FragmentHomeBinding
 import com.example.fitfit.viewModel.HomeViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
@@ -51,6 +42,10 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         binding.homeViewModel = homeViewModel
 
-    }
+        binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter()
+
+        // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
+
+    } // setVariable()
 
 }
