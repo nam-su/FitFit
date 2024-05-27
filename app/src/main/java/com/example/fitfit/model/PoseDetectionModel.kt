@@ -6,7 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
-import com.example.fitfit.function.pose.PosePushUp
+import com.example.fitfit.function.pose.PushUp
 import com.example.fitfit.ml.AutoModel4
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -19,6 +19,7 @@ import kotlin.math.sqrt
 
 class PoseDetectionModel(context: Context) {
 
+    private val TAG = "포즈 추정 모델"
     // 이미지 처리를 위한 ImageProcessor 초기화
     private val imageProcessor: ImageProcessor = ImageProcessor.Builder()
         .add(ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR))
@@ -29,6 +30,10 @@ class PoseDetectionModel(context: Context) {
 
     // 그리기 위한 Paint 객체 초기화
     private val paint = Paint().apply { color = Color.YELLOW }
+
+    private val pushUp = PushUp()
+
+    var count = 0
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
     fun processImage(bitmap: Bitmap): Pair<Bitmap, Int> {
@@ -53,15 +58,10 @@ class PoseDetectionModel(context: Context) {
         val w = bitmap.width
 
         var x = 0
-        var angle: Double?
-        var count = 0
 
-        Log.d("카운트", "onSurfaceTextureUpdated: $count")
-
-        // 운동 상태 플래그 초기화
-        var stand = false
-        var sit = false
-
+        if(pushUp.posePushUp(outputFeature0)){
+            count++
+        }
 
         // 찍히는 point 17 개 배열 51 개 배열안에 한 인덱스가 3개씩 차지.
         // 엉덩이 포인트 : 왼쪽 궁둥이 11 오른쪽 궁둥이 12 환산하면 33 , 36
@@ -73,39 +73,16 @@ class PoseDetectionModel(context: Context) {
         // 왼쪽 엉덩이 = X == 33 일때
         // 왼쪽 무릎 = X == 39 일때
 
-
         // 추론된 점들을 그리기
         while (x <= 49) {
             // 신뢰도가 0.45 이상인 점들만 처리
             if (outputFeature0[x + 2] > 0.45) {
-                if (stand && sit) {
-                    stand = false
-                    sit = false
-                }
-
                 // 캔버스에 점 그리기
                 canvas.drawCircle(outputFeature0[x + 1] * w, outputFeature0[x] * h, 10f, paint)
-
-                // 각도 계산
-                angle = calculateAngle(
-                    outputFeature0[34] * w, outputFeature0[33] * h,
-                    outputFeature0[40] * w, outputFeature0[39] * h,
-                    outputFeature0[46] * w, outputFeature0[45] * h
-                )
-
-                // 앉은 상태 감지
-                if (angle!! in 70.0..120.0) {
-                    sit = true
-                }
-
-                // 선 상태 감지 및 카운트 증가
-                if (angle in 160.0..180.0 && sit) {
-                    stand = true
-                    count++
-                }
             }
             x += 3
-        }
+            }
+
 
         return Pair(mutableBitmap, count)
     }
