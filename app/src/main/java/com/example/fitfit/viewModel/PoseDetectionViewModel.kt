@@ -76,10 +76,12 @@ class PoseDetectionViewModel : ViewModel() {
 
             override fun onDisconnected(camera: CameraDevice) {
                 // 카메라 연결 끊김 처리
+                Log.d(TAG, "onDisconnected: ")
             }
 
             override fun onError(camera: CameraDevice, error: Int) {
                 // 카메라 에러 처리
+                Log.d(TAG, "onError: $error")
             }
         }, null)
     } // cameraManager.openCamera 코루틴 끝
