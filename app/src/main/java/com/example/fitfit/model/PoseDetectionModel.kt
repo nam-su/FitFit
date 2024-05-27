@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
+import com.example.fitfit.function.pose.PosePushUp
 import com.example.fitfit.ml.AutoModel4
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
