@@ -1,4 +1,4 @@
-package com.example.fitfit.`class`
+package com.example.fitfit.function
 
 import android.content.Context
 import com.example.fitfit.data.User

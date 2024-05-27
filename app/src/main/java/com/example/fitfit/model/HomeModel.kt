@@ -1,9 +1,6 @@
 package com.example.fitfit.model
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.icu.util.Calendar
-import com.example.fitfit.`class`.MyApplication
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 
 class HomeModel() {
