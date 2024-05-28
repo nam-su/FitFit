@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
@@ -54,11 +56,14 @@ class ExerciseChoiceFragment : Fragment() {
 
         // 운동 선택 아이템 클릭 리스너
         exerciseChoiceAdapter.exerciseChoiceItemClick = object :ExerciseChoiceAdapter.ExerciseChoiceItemClick{
-
             // 아이템 클릭 시 동작 인식 프래그먼트로 전환.
             override fun onClick(view: View, position: Int) {
 
-                CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeExerciseChoiceToPoseDetectionFragment()}
+                val exerciseName = exerciseChoiceAdapter.exerciseChoiceList[position].exerciseName
+
+                val bundle = bundleOf("exerciseName" to exerciseName)
+
+                view.findNavController().navigate(R.id.action_exerciseChoiceFragment_to_poseDetectionFragment,bundle)
 
             }
         }

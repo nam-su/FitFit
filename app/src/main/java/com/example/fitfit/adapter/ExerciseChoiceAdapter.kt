@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ExerciseChoiceAdapter(private val exerciseChoiceList: ArrayList<ExerciseChoice>): RecyclerView.Adapter<ExerciseChoiceAdapter.ExerciseChoiceViewHolder>() {
+class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<ExerciseChoice>): RecyclerView.Adapter<ExerciseChoiceAdapter.ExerciseChoiceViewHolder>() {
 
     lateinit var binding: ItemViewExerciseChoiceBinding
     var exerciseChoiceItemClick: ExerciseChoiceItemClick? = null

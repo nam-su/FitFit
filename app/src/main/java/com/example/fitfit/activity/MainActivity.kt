@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 
