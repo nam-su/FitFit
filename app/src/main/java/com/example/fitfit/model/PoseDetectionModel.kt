@@ -65,19 +65,12 @@ class PoseDetectionModel(context: Context) {
 //        if (pushUp.posePushUp(outputFeature0)) {
 //            count++
 //        }
+
+        // 런지 true 일때 count ++
         if(lunge.poseLunge(outputFeature0)) {
             count ++
         }
 
-        // 찍히는 point 17 개 배열 51 개 배열안에 한 인덱스가 3개씩 차지.
-        // 엉덩이 포인트 : 왼쪽 궁둥이 11 오른쪽 궁둥이 12 환산하면 33 , 36
-        // 무릎 포인트 : 왼쪽 13 오른쪽 14 환산하면 39 , 42
-        // 어깨 포인트 : 왼쪽 5 오른쪽 6 환산하면 15 , 18
-
-        // 왼쪽 발목 = x == 45
-        // 왼쪽 어깨 = X == 15일때
-        // 왼쪽 엉덩이 = X == 33 일때
-        // 왼쪽 무릎 = X == 39 일때
 
         // 추론된 점들을 그리기
         while (x <= 49) {
