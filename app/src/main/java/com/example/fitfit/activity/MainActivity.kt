@@ -145,6 +145,14 @@ class MainActivity : AppCompatActivity() {
     } // changeExerciseToPoseDetectionFragment()
 
 
+    // 운동선택 프래그먼트에서 동작 인식 프래그먼트로 전환.
+    fun changeExerciseChoiceToPoseDetectionFragment() {
+
+        navController.navigate(R.id.action_exerciseChoiceFragment_to_poseDetectionFragment)
+
+    } // changeExerciseChoiceToPoseDetectionFragment()
+
+
     //뒤로가기 버튼 클릭시
     private fun setBackPressed() {
 
@@ -162,6 +170,11 @@ class MainActivity : AppCompatActivity() {
 
                     navController.popBackStack()
                     binding.bottomNavigationView.visibility = View.VISIBLE
+
+                }
+                R.id.poseDetectionFragment -> {
+
+                    navController.popBackStack()
 
                 }
 

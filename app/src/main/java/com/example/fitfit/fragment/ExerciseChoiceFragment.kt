@@ -7,14 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.databinding.FragmentExerciseChoiceBinding
 import com.example.fitfit.viewModel.ExerciseChoiceViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ExerciseChoiceFragment : Fragment() {
 
     lateinit var binding: FragmentExerciseChoiceBinding
     lateinit var exerciseChoiceViewModel: ExerciseChoiceViewModel
+    lateinit var exerciseChoiceAdapter: ExerciseChoiceAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -29,6 +34,7 @@ class ExerciseChoiceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
+        setClickListener()
 
     } // onViewCreated
 
@@ -36,8 +42,27 @@ class ExerciseChoiceFragment : Fragment() {
     fun setVariable() {
 
         exerciseChoiceViewModel = ExerciseChoiceViewModel()
-        binding.recyclerViewExerciseChoice.adapter = ExerciseChoiceAdapter(exerciseChoiceViewModel.setRecyclerViewExerciseChoice())
+        exerciseChoiceAdapter = ExerciseChoiceAdapter(exerciseChoiceViewModel.setRecyclerViewExerciseChoice())
+        binding.recyclerViewExerciseChoice.adapter = exerciseChoiceAdapter
+
 
     } // setVariable
+
+
+    // 클릭 리스너 초기화
+    private fun setClickListener() {
+
+        // 운동 선택 아이템 클릭 리스너
+        exerciseChoiceAdapter.exerciseChoiceItemClick = object :ExerciseChoiceAdapter.ExerciseChoiceItemClick{
+
+            // 아이템 클릭 시 동작 인식 프래그먼트로 전환.
+            override fun onClick(view: View, position: Int) {
+
+                CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeExerciseChoiceToPoseDetectionFragment()}
+
+            }
+        }
+
+    } // setClickListener()
 
 }
