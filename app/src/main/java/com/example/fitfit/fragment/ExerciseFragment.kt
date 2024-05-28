@@ -53,7 +53,7 @@ class ExerciseFragment : Fragment() {
 
         binding.buttonStartTodayExercise.setOnClickListener {
 
-            CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeExerciseToPoseDetectionFragment()}
+            CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeExerciseToExerciseChoiceFragment()}
 
         }
 

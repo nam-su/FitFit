@@ -136,10 +136,10 @@ class MainActivity : AppCompatActivity() {
     } // changeSplashToHomeFragment()
 
 
-    // 운동 프래그먼트에서 동작감지 프래그먼트로 전환.
-    fun changeExerciseToPoseDetectionFragment() {
+    // 운동 프래그먼트에서 운동 선택 프래그먼트로 전환.
+    fun changeExerciseToExerciseChoiceFragment() {
 
-        navController.navigate(R.id.action_exerciseFragment_to_poseDetectionFragment)
+        navController.navigate(R.id.action_exerciseFragment_to_exerciseChoiceFragment)
         binding.bottomNavigationView.visibility = View.GONE
 
     } // changeExerciseToPoseDetectionFragment()
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.exerciseFragment -> finish()
                 R.id.diaryFragment -> finish()
                 R.id.userFragment -> finish()
-                R.id.poseDetectionFragment -> {
+                R.id.exerciseChoiceFragment -> {
 
                     navController.popBackStack()
                     binding.bottomNavigationView.visibility = View.VISIBLE
