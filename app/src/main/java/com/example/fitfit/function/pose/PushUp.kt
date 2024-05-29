@@ -45,17 +45,17 @@ class PushUp {
          * 오른쪽 무릎각도가 160도에서 180도 사이일때 : isKneeBend = false
          * 오른쪽 무릎각도가 160도에서 180도 사이가 아닐때 : isKneeBend = true
          */
-        var isKneeBend = rightKneeAngle !in 150.0..180.0
+        val isKneeBend = rightKneeAngle !in 150.0..180.0
 
         /**
          * 오른쪽 팔꿈치 각도가 30도에서 80도 사이일때 : isElbowBend = true
          **/
-        var isElbowBend = rightElbowBend in 30.0..120.0
+        val isElbowBend = rightElbowBend in 30.0..120.0
 
         /**
          * 오른쪽 팔꿈치 각도가 160도에서 180도 사이일때 : isElbowExtend = true
          **/
-        var isElbowExtend = rightElbowBend in 160.0..180.0
+        val isElbowExtend = rightElbowBend in 160.0..180.0
 
 
         Log.d(TAG, "isElbowBend : $isElbowBend ")

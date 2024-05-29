@@ -63,7 +63,7 @@ class Lunge() {
 
         }
 
-//         선 상태 감지 및 카운트 증가
+        // 선 상태 감지 및 카운트 증가
         if (angleRight in 160.0..180.0 && angleLeft in 160.0..180.0 && sit) {
 
             Log.d(TAG, "상태: 앉았다가 선상태")
