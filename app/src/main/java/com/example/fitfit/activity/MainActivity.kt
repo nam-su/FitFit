@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 
@@ -99,10 +100,15 @@ class MainActivity : AppCompatActivity() {
                 R.id.exerciseFragment -> finish()
                 R.id.diaryFragment -> finish()
                 R.id.userFragment -> finish()
-                R.id.poseDetectionFragment -> {
+                R.id.exerciseChoiceFragment -> {
 
                     navController.popBackStack()
                     binding.bottomNavigationView.visibility = View.VISIBLE
+
+                }
+                R.id.poseDetectionFragment -> {
+
+                    navController.popBackStack()
 
                 }
 
