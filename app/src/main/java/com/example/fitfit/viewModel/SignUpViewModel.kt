@@ -103,8 +103,8 @@ class SignUpViewModel : ViewModel() {
             "emailAuthentication" -> {
                 Log.d(TAG, "보낸 인증코드: ${model.randomString}")
                 Log.d(TAG, "입력한 인증코드: $code")
-
-                when(model.randomString == code && code != ""){
+                Log.d(TAG, "setOnButtonNextClick: ${isCodeValid()}")
+                when(model.randomString == code && code != "" && isCodeValid()){
                     true -> {
                         _pageCount.value = _pageCount.value!! + 1
                         _signUpEmail.value = email
@@ -211,8 +211,8 @@ class SignUpViewModel : ViewModel() {
 
 
 
-    // 아이디 중복검사 메서드
-    fun duplicateCheckId(id: String){
+    // 아이디 중복 검사 메서드
+    private fun duplicateCheckId(id: String){
 
         viewModelScope.launch {
 
@@ -239,7 +239,7 @@ class SignUpViewModel : ViewModel() {
 
 
     // 닉네임 중복검사 메서드
-    fun duplicateCheckNickname(nickname: String){
+    private fun duplicateCheckNickname(nickname: String){
 
         viewModelScope.launch {
 
@@ -278,4 +278,13 @@ class SignUpViewModel : ViewModel() {
         _course.value = value
     }
 
+
+
+    // 생성된 코드가 유효한지 확인하는 메소드
+    private fun isCodeValid(): Boolean {
+        // 현재 시간과 코드 생성 시간의 차이를 계산하여 1분(60초) 이내인지 확인
+        val currentTime = System.currentTimeMillis()
+        _isCodeValid.value = (currentTime - model.codeGeneratedTime) <= 10 * 1000
+        return _isCodeValid.value!! // 1분(60초) 이내인지 확인
+    }
 }
