@@ -18,6 +18,9 @@ class SignUpModel {
     var nickname = ""
     var randomString = ""
 
+    /** 코드 만들어서 메일 보낸 시간 변수 **/
+    var codeGeneratedTime : Long = 0
+
     // 로그인 통신으로 result 값 확인
     suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User? {
 
@@ -29,14 +32,17 @@ class SignUpModel {
 
 
     fun sendMail(email:String){
+
         getRandomString()
         GmailSender().sendEmail(email,"FitFit 인증번호",randomString)
+
+        codeGeneratedTime = System.currentTimeMillis()
     }
 
 
 
     //6자리 난수 만들기
-    fun getRandomString() {
+    private fun getRandomString() {
 
             val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
             var randomString = (1..6)
@@ -44,5 +50,6 @@ class SignUpModel {
                 .joinToString("")
             this.randomString = randomString
     }
+
 
 }
