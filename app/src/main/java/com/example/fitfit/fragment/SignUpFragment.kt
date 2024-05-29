@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentSignUpBinding
@@ -124,7 +125,9 @@ class SignUpFragment : Fragment() {
             when(it) {
 
                 0 -> {
-                    CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeSignUpToLoginFragment()}
+
+                    this.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+
                 }
 
                 1 -> {
@@ -339,10 +342,15 @@ class SignUpFragment : Fragment() {
         signUpViewModel.isSignUpSuccess.observe(viewLifecycleOwner){
             if(it) {
                 Toast.makeText(requireContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeSignUpToLoginFragment()}
+
+                this.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+
             }else {
+
                 Toast.makeText(requireContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+
             }
+
         }
         
         

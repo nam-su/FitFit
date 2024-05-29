@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentLoginBinding
@@ -62,7 +63,12 @@ class LoginFragment() : Fragment() {
 
             when(it) {
 
-                "success" -> CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeNavHostFragment()}
+                "success" -> {
+
+                    this.findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    (activity as MainActivity).visibleBottomNavi()
+
+                }
 
                 "failure" -> Toast.makeText(activity,"아이디 혹은 비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
 
@@ -74,9 +80,13 @@ class LoginFragment() : Fragment() {
 
         //임시 추가
         loginViewModel.navigateToSignUp.observe(viewLifecycleOwner) {
+
             if (it == true) {
-                CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeSignUpFragment()}
+
+                this.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+
             }
+
         }
 
     } // setObserve()
