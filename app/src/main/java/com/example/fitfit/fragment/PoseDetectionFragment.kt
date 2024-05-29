@@ -3,6 +3,7 @@ package com.example.fitfit.fragment
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
@@ -11,12 +12,16 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
 import com.example.fitfit.viewModel.PoseDetectionViewModel
 
 class PoseDetectionFragment : Fragment() {
 
+    private val TAG = "포즈추정 프래그먼트"
     // 데이터 바인딩 객체
     private lateinit var binding: FragmentPoseDetectionBinding
 
@@ -52,7 +57,7 @@ class PoseDetectionFragment : Fragment() {
         binding.poseDetectionViewModel = poseDetectionViewModel
 
         // ViewModel을 초기화합니다.
-        poseDetectionViewModel.initialize(requireContext())
+        poseDetectionViewModel.initialize(requireContext().applicationContext)
 
     } // setVariable
 

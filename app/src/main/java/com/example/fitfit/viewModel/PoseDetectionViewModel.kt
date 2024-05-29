@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
+import android.util.Log
 import android.view.Surface
 import android.view.TextureView
 import androidx.lifecycle.LiveData
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class PoseDetectionViewModel : ViewModel() {
 
+    private val TAG = "포즈 추정 뷰 모델"
     // 포즈 감지 모델 객체
     private lateinit var poseDetectionModel: PoseDetectionModel
     // 카메라 매니저 객체
@@ -47,7 +49,7 @@ class PoseDetectionViewModel : ViewModel() {
     @SuppressLint("MissingPermission")
     fun openCamera(textureView: TextureView) {
         viewModelScope.launch(Dispatchers.Main) {
-        cameraManager.openCamera(cameraManager.cameraIdList[1], object : CameraDevice.StateCallback() {
+        cameraManager.openCamera(cameraManager.cameraIdList[0], object : CameraDevice.StateCallback() {
 
             override fun onOpened(cameraDevice: CameraDevice) {
                 viewModelScope.launch(Dispatchers.Main) {
@@ -74,10 +76,12 @@ class PoseDetectionViewModel : ViewModel() {
 
             override fun onDisconnected(camera: CameraDevice) {
                 // 카메라 연결 끊김 처리
+                Log.d(TAG, "onDisconnected: ")
             }
 
             override fun onError(camera: CameraDevice, error: Int) {
                 // 카메라 에러 처리
+                Log.d(TAG, "onError: $error")
             }
         }, null)
     } // cameraManager.openCamera 코루틴 끝

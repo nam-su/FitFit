@@ -64,12 +64,24 @@
         android:label="fragment_exercise"
         tools:layout="@layout/fragment_exercise">
 
+
         <action
-            android:id="@+id/action_exerciseFragment_to_poseDetectionFragment"
+            android:id="@+id/action_exerciseFragment_to_exerciseChoiceFragment"
+            app:destination="@id/exerciseChoiceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/exerciseChoiceFragment"
+        android:name="com.example.fitfit.fragment.ExerciseChoiceFragment"
+        android:label="fragment_exerciseChoice"
+        tools:layout="@layout/fragment_exercise_choice">
+        <action
+            android:id="@+id/action_exerciseChoiceFragment_to_poseDetectionFragment"
             app:destination="@id/poseDetectionFragment"
             app:popUpToInclusive="true"/>
 
     </fragment>
+
 
     <fragment
         android:id="@+id/diaryFragment"
