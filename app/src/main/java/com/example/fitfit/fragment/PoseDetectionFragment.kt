@@ -9,6 +9,7 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -27,6 +28,8 @@ class PoseDetectionFragment : Fragment() {
 
     // ViewModel 객체
     private lateinit var poseDetectionViewModel: PoseDetectionViewModel
+
+    private lateinit var exerciseName: String
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,6 +62,8 @@ class PoseDetectionFragment : Fragment() {
         // ViewModel을 초기화합니다.
         poseDetectionViewModel.initialize(requireContext().applicationContext)
 
+        exerciseName = requireArguments().getString("exerciseName").toString()
+
     } // setVariable
 
 
@@ -83,7 +88,7 @@ class PoseDetectionFragment : Fragment() {
 
             // TextureView가 업데이트될 때 호출됩니다.
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-                poseDetectionViewModel.processImage(binding.textureView.bitmap!!)
+                poseDetectionViewModel.processImage(binding.textureView.bitmap!!,exerciseName)
             }
         }
 
