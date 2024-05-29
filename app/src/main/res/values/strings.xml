@@ -55,6 +55,8 @@
     <!--운동 프래그먼트-->
     <string name="todayExerciseStart">오늘의 운동 시작</string>
 
+    <!--운동 선택 프래그먼트-->
+    <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
 
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>
