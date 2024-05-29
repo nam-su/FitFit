@@ -37,15 +37,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setView()
-        setVariable()
         setBackPressed()
     }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart: ")
-        startSplash()
-    } // onStart()
 
 
     // 뷰관련 초기화
@@ -66,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         // 기본 아이콘 색상 적용 안함
         binding.bottomNavigationView.itemIconTintList = null
 
+        // 바인딩 라이프사이클 오너 초기화
+        binding.lifecycleOwner = this
 
         // 프래그먼트 백스택 관찰을 위한 리스너
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
@@ -76,82 +71,20 @@ class MainActivity : AppCompatActivity() {
     } // setView()
 
 
-    // 변수 초기화
-    private fun setVariable() {
+    // 바텀 내비 visible 메서드
+    fun visibleBottomNavi() {
 
-        binding.lifecycleOwner = this
-
-    } // setVariable()
-
-
-    // 스플래시 시작
-    private fun startSplash() {
-
-        // 바텀네비게이션 view gone 해놓고 스플래시 프래그먼트로 진입
-        binding.bottomNavigationView.visibility = View.GONE
-
-    } // startSplash()
-
-
-    // 로그인 했을때 홈 프래그먼트로 전환.
-    fun changeNavHostFragment() {
-
-        navController.navigate(R.id.action_loginFragment_to_homeFragment)
         binding.bottomNavigationView.visibility = View.VISIBLE
 
-    } // changeNavHostFragment()
+    } // visibleBottomNavi()
 
 
+    // 바텀내비 gone 메서드
+    fun goneBottomNavi() {
 
-    // 로그인 했을때 홈 프래그먼트로 전환.
-    fun changeSignUpFragment() {
-
-        navController.navigate(R.id.action_loginFragment_to_signUpFragment)
-
-    } // changeSignUpFragment()
-
-
-
-    // 회원가입 완료 되었을 때 로그인 프래그먼트로 전환
-    // 로그인 했을때 홈 프래그먼트로 전환.
-    fun changeSignUpToLoginFragment() {
-
-        navController.navigate(R.id.action_signUpFragment_to_loginFragment)
-
-    } // changeSignUpToLoginFragment()
-
-    // 스플래시에서 로그인 기록 없으면 로그인 프래그먼트로 전환
-    fun changeSplashToLoginFragment() {
-
-        navController.navigate(R.id.action_splashFragment_to_loginFragment)
-
-    } // changeSplashToLoginFragment()
-
-
-    // 스플래시에서 로그인 기록 있으면 홈 프래그먼트로 전환
-    fun changeSplashToHomeFragment() {
-
-        navController.navigate(R.id.action_splashFragment_to_homeFragment)
-        binding.bottomNavigationView.visibility = View.VISIBLE
-
-    } // changeSplashToHomeFragment()
-
-
-    // 운동 프래그먼트에서 운동 선택 프래그먼트로 전환.
-    fun changeExerciseToExerciseChoiceFragment() {
-
-        navController.navigate(R.id.action_exerciseFragment_to_exerciseChoiceFragment)
         binding.bottomNavigationView.visibility = View.GONE
 
-    } // changeExerciseToPoseDetectionFragment()
-
-
-    // 운동선택 프래그먼트에서 동작 인식 프래그먼트로 전환.
-    fun changeExerciseChoiceToPoseDetectionFragment() {
-
-        navController.navigate(R.id.action_exerciseChoiceFragment_to_poseDetectionFragment)
-
-    } // changeExerciseChoiceToPoseDetectionFragment()
+    } // goneBottomNavi()
 
 
     //뒤로가기 버튼 클릭시

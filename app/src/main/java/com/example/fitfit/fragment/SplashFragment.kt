@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentSplashBinding
@@ -40,6 +41,7 @@ class SplashFragment : Fragment() {
     private fun setVariable() {
 
         splashViewModel = SplashViewModel()
+        (activity as MainActivity).goneBottomNavi()
 
     } // setVariable()
 
@@ -52,8 +54,14 @@ class SplashFragment : Fragment() {
 
             when(it) {
 
-                true -> (activity as MainActivity).changeSplashToHomeFragment()
-                else -> (activity as MainActivity).changeSplashToLoginFragment()
+                true -> {
+
+                    this.findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+                    (activity as MainActivity).visibleBottomNavi()
+
+                }
+
+                else -> this.findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
 
             }
 
