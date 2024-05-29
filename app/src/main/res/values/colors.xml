@@ -6,5 +6,9 @@
     <color name="personal">#FF496FF6</color>
     <color name="red">#E33333</color>
     <color name="green">#4CFF00</color>
+    <color name="squat">#901040BB</color>
+    <color name="pushUp">#9019B2B2</color>
+    <color name="lunge">#90EF5555</color>
+
 
 </resources>
