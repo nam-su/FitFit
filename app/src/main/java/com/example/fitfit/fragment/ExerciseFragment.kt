@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentExerciseBinding
@@ -53,7 +54,8 @@ class ExerciseFragment : Fragment() {
 
         binding.buttonStartTodayExercise.setOnClickListener {
 
-            CoroutineScope(Dispatchers.Main).launch {(activity as MainActivity).changeExerciseToPoseDetectionFragment()}
+            it.findNavController().navigate(R.id.action_exerciseFragment_to_poseDetectionFragment)
+            (activity as MainActivity).goneBottomNavi()
 
         }
 
