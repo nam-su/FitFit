@@ -47,7 +47,6 @@ class ExerciseChoiceFragment : Fragment() {
         exerciseChoiceAdapter = ExerciseChoiceAdapter(exerciseChoiceViewModel.setRecyclerViewExerciseChoice())
         binding.recyclerViewExerciseChoice.adapter = exerciseChoiceAdapter
 
-
     } // setVariable
 
 

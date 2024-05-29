@@ -15,10 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
 import com.example.fitfit.viewModel.PoseDetectionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PoseDetectionFragment : Fragment() {
 
@@ -67,7 +72,6 @@ class PoseDetectionFragment : Fragment() {
     } // setVariable
 
 
-
     //리스너 관련 메서드
     private fun setListener(){
 
@@ -106,11 +110,32 @@ class PoseDetectionFragment : Fragment() {
 
         // ViewModel의 count LiveData를 관찰하여 UI를 업데이트합니다.
         poseDetectionViewModel.count.observe(viewLifecycleOwner, Observer { count ->
+
+            // 현재 카운트를 텍스트뷰에 띄워줌
             binding.textViewCount.text = count.toString()
+
+            // 일정 카운트 달성했을때 화면전환
+            if(count == 5) { finishExercise() }
+
         })
 
     } //setObserve()
 
+
+    // 운동 개수를 다 채웠을때 호출하는 메서드
+    private fun finishExercise() {
+
+        CoroutineScope(Dispatchers.Main).launch {
+
+            // 쉐어드에 데이터 갱신 해줘야될듯 여기서
+
+            delay(500)
+
+            this@PoseDetectionFragment.findNavController().navigate(R.id.exerciseChoiceFragment)
+
+        }
+
+    } // finishExercise()
 
 
     // 카메라 권한을 체크

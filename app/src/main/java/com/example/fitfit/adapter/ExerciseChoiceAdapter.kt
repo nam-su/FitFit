@@ -1,6 +1,8 @@
 package com.example.fitfit.adapter
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +67,16 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<ExerciseChoice>): 
 
     class ExerciseChoiceViewHolder(val binding: ItemViewExerciseChoiceBinding): RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun onBind(exerciseChoice: ExerciseChoice) {
+
+            binding.exerciseChoice = exerciseChoice
+
+            val exerciseCount= exerciseChoice.exerciseCount.toString()
+            val goalExerciseCount= exerciseChoice.goalExerciseCount.toString()
+
+            // 목표 운동 개수와 현재 진행한 운동 개수 표시
+            binding.textViewExerciseCount.text = "$exerciseCount / $goalExerciseCount"
 
             // 운동 객체가 갖고있는 카테고리에 따라 배경색 지정.
             binding.constraintLayoutStartExercise.backgroundTintList = when(exerciseChoice.category) {

@@ -1,4 +1,4 @@
 package com.example.fitfit.data
 
-class ExerciseChoice(val category: String,val exerciseName: String) {
+data class ExerciseChoice(val category: String,val exerciseName: String,val exerciseCount: Int,val goalExerciseCount: Int) {
 }

@@ -102,7 +102,6 @@ class PoseDetectionViewModel : ViewModel() {
     }
 
 
-
     // ViewModel이 소멸될 때 호출되는 메서드
     override fun onCleared() {
         super.onCleared()
