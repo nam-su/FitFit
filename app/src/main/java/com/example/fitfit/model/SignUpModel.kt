@@ -20,6 +20,7 @@ class SignUpModel {
 
     /** 코드 만들어서 메일 보낸 시간 변수 **/
     var codeGeneratedTime : Long = 0
+    var timeLimit = 180
 
     // 로그인 통신으로 result 값 확인
     suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User? {
