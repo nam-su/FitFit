@@ -169,7 +169,10 @@ class SignUpFragment : Fragment() {
 
             when(it){
                 true ->  Toast.makeText(requireContext(), "유효한 인증코드 입니다.", Toast.LENGTH_SHORT).show()
-                false -> Toast.makeText(requireContext(), "유효하지 않은 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                false -> {
+                    Log.d(TAG, "setObserve: 또반복?")
+                    Toast.makeText(requireContext(), "유효하지 않은 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
         }
@@ -196,7 +199,6 @@ class SignUpFragment : Fragment() {
                 true -> {
                     Toast.makeText(requireContext(), "인증코드를 전송 했습니다.", Toast.LENGTH_SHORT).show()
                     binding.buttonNext.isEnabled = true
-                    binding.buttonSend.text = "재전송"
                 }
                 false ->Toast.makeText(requireContext(), "전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -237,13 +239,6 @@ class SignUpFragment : Fragment() {
 
         }
 
-        //이메일 인증
-        signUpViewModel.signUpEmail.observe(viewLifecycleOwner){
-            when(it){
-                "" -> if(signUpViewModel.isEmailSend.value == true)Toast.makeText(requireContext(), "유효하지 않은 인증코드 입니다.", Toast.LENGTH_SHORT).show()
-                else -> if(signUpViewModel.isEmailSend.value == true) Toast.makeText(requireContext(), "코드 인증에 성공 했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     } // setObserve()
 
