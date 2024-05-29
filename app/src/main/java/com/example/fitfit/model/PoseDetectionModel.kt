@@ -8,7 +8,6 @@ import android.graphics.Paint
 import android.util.Log
 import com.example.fitfit.function.pose.Lunge
 import com.example.fitfit.function.pose.PushUp
-import com.example.fitfit.function.pose.Squat
 import com.example.fitfit.ml.AutoModel4
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -36,15 +35,12 @@ class PoseDetectionModel(context: Context) {
 
     private val pushUp = PushUp()
     private val lunge = Lunge()
-    private val squat = Squat()
 
     var count = 0
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
-    fun processImage(bitmap: Bitmap,exerciseName: String): Pair<Bitmap, Int> {
+    fun processImage(bitmap: Bitmap): Pair<Bitmap, Int> {
 
-        Log.d(TAG, "processImage: 프로세스 이미지")
-        
         // 비트맵을 TensorImage 객체에 로드
         var tensorImage = TensorImage(DataType.UINT8)
         tensorImage.load(bitmap)
@@ -66,8 +62,15 @@ class PoseDetectionModel(context: Context) {
 
         var x = 0
 
-        // 여기서 운동 이름이 뭐냐에 따른 운동 실행 메서드 호출
-        poseExercise(exerciseName,outputFeature0)
+//        if (pushUp.posePushUp(outputFeature0)) {
+//            count++
+//        }
+
+        // 런지 true 일때 count ++
+        if(lunge.poseLunge(outputFeature0)) {
+            count ++
+        }
+
 
         // 추론된 점들을 그리기
         while (x <= 49) {
@@ -81,32 +84,11 @@ class PoseDetectionModel(context: Context) {
 
 
         return Pair(mutableBitmap, count)
-
-    } // processImage()
-
-
-    // 매개변수의 운동이름에 따라 맞는 운동을 호출하는 메서드
-    private fun poseExercise(exerciseName: String,floatArray: FloatArray) {
-
-        Log.d(TAG, "poseExercise: poseExercise")
-        Log.d(TAG, "poseExercise: 운동 이름 : $exerciseName")
-        
-        // 각 운동의 조건이 맞을때 count ++
-        when(exerciseName) {
-
-            "기본 스쿼트" -> if(squat.poseSquat(floatArray)){count ++}
-            "기본 푸시업" -> if(pushUp.posePushUp(floatArray)){count ++}
-            "기본 런지" -> if(lunge.poseLunge(floatArray)){count ++}
-
-        }
-
-    } // poseExercise()
-
+    }
 
     // 모델을 닫는 메서드
     fun close() {
         model.close()
-    } // close()
-
+    }
 }
 

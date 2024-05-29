@@ -14,28 +14,29 @@ class Squat() {
 
     fun poseSquat(outputFeature0 : FloatArray) : Boolean{
 
-        Log.d(TAG, "poseSquat: 호출됌")
+        Log.d(TAG, "posePushUp: 호출됌")
+        var count = 0
         var angle = 0.0
 
         Log.d(TAG, "poseSquat: ${outputFeature0[33]},${outputFeature0[39]},${outputFeature0[45]}")
         // 각도 계산
         if (outputFeature0[35] > 0.3 && outputFeature0[41] > 0.3 && outputFeature0[47] > 0.3) {
             angle = calculateAngle(
-                outputFeature0[34], outputFeature0[33],
-                outputFeature0[40], outputFeature0[39],
-                outputFeature0[46], outputFeature0[45]
+                outputFeature0[34]!!, outputFeature0[33]!!,
+                outputFeature0[40]!!, outputFeature0[39]!!,
+                outputFeature0[46]!!, outputFeature0[45]!!
             )
         }
 
         Log.d(TAG, "각도 : $angle")
         // 앉은 상태 감지
-        if (angle in 70.0..110.0 && !sit) {
+        if (angle!! in 80.0..100.0 && !sit) {
             Log.d(TAG, "상태: 앉은상태")
             sit = true
         }
 
         // 선 상태 감지 및 카운트 증가
-        if (angle in 150.0..180.0 && sit) {
+        if (angle in 160.0..180.0 && sit) {
             Log.d(TAG, "상태: 앉았다가 선상태")
             sit = false
             stand = false
@@ -44,6 +45,7 @@ class Squat() {
 
         return false
     }
+
 
 
     // 세 점의 좌표를 받아서 각도를 계산하는 메서드

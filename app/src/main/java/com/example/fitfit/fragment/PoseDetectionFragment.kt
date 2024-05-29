@@ -28,10 +28,6 @@ class PoseDetectionFragment : Fragment() {
     // ViewModel 객체
     private lateinit var poseDetectionViewModel: PoseDetectionViewModel
 
-    // 받은 bundle 데이터
-    private var exerciseName: String? = null
-
-
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // 데이터 바인딩 설정
@@ -63,10 +59,6 @@ class PoseDetectionFragment : Fragment() {
         // ViewModel을 초기화합니다.
         poseDetectionViewModel.initialize(requireContext().applicationContext)
 
-        // 번들에서 받아온 데이터에 따라 운동 종류를 다르게 설정
-        exerciseName = requireArguments().getString("exerciseName")
-        Log.d(TAG, "setVariable: $exerciseName")
-
     } // setVariable
 
 
@@ -91,9 +83,7 @@ class PoseDetectionFragment : Fragment() {
 
             // TextureView가 업데이트될 때 호출됩니다.
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-
-                poseDetectionViewModel.processImage(binding.textureView.bitmap!!,exerciseName!!)
-
+                poseDetectionViewModel.processImage(binding.textureView.bitmap!!)
             }
         }
 

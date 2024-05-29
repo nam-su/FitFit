@@ -33,21 +33,15 @@ class PoseDetectionViewModel : ViewModel() {
     private val _count = MutableLiveData<Int>()
     val count: LiveData<Int> get() = _count        // 외부에서 읽을 수 있는 카운트 LiveData
 
-//    private val _exerciseName = MutableLiveData<String>()
-//    val exerciseName: LiveData<String> get() = _exerciseName
-
 
 
     // ViewModel 초기화 메서드
     fun initialize(context: Context) {
-
         // 포즈 감지 모델 초기화
         poseDetectionModel = PoseDetectionModel(context)
-
         // 카메라 매니저 초기화
         cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-
-    } // initialize()
+    }
 
 
 
@@ -91,24 +85,22 @@ class PoseDetectionViewModel : ViewModel() {
             }
         }, null)
     } // cameraManager.openCamera 코루틴 끝
-
     } //openCamera()
 
 
 
     // 이미지 처리 메서드
-    fun processImage(bitmap: Bitmap,exerciseName: String) {
-
+    fun processImage(bitmap: Bitmap) {
         viewModelScope.launch{
         // 이미지 처리
-        val (processedBitmap, detectedCount) = poseDetectionModel.processImage(bitmap,exerciseName)
+        val (processedBitmap, detectedCount) = poseDetectionModel.processImage(bitmap)
         // 처리된 비트맵 업데이트
         _bitmap.postValue(processedBitmap)
         // 감지된 카운트 업데이트
         _count.postValue(detectedCount)
         }
+    }
 
-    } // processImage()
 
 
     // ViewModel이 소멸될 때 호출되는 메서드
@@ -116,5 +108,5 @@ class PoseDetectionViewModel : ViewModel() {
         super.onCleared()
         // 모델 리소스 해제
         poseDetectionModel.close()
-    } // onCleared()
+    }
 }

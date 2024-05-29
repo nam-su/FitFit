@@ -54,7 +54,7 @@ class ExerciseFragment : Fragment() {
 
         binding.buttonStartTodayExercise.setOnClickListener {
 
-            it.findNavController().navigate(R.id.action_exerciseFragment_to_exerciseChoiceFragment)
+            it.findNavController().navigate(R.id.action_exerciseChoiceFragment_to_poseDetectionFragment)
             (activity as MainActivity).goneBottomNavi()
 
         }
