@@ -92,7 +92,9 @@ class PoseDetectionFragment : Fragment() {
 
             // TextureView가 업데이트될 때 호출됩니다.
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-                poseDetectionViewModel.processImage(binding.textureView.bitmap!!,exerciseName)
+
+                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!,exerciseName)
+
             }
         }
 
@@ -108,30 +110,36 @@ class PoseDetectionFragment : Fragment() {
             binding.imageView.setImageBitmap(bitmap)
         })
 
-        // ViewModel의 count LiveData를 관찰하여 UI를 업데이트합니다.
-        poseDetectionViewModel.count.observe(viewLifecycleOwner, Observer { count ->
 
-            // 현재 카운트를 텍스트뷰에 띄워줌
-            binding.textViewCount.text = count.toString()
+        // 운동 카운트 감지.
+        poseDetectionViewModel.checkExerciseCount.observe(viewLifecycleOwner) {
 
-            // 일정 카운트 달성했을때 화면전환
-            if(count == 5) { finishExercise() }
+            if(it) {
 
-        })
+                // 감지 리스너를 새로 초기화 해줘야 데이터가 중첩 안됨.
+                // 초기화 해주지 않으면 감지가 계속 호출될때 마다 변수 감지해서 중첩됨.
+                binding.textureView.surfaceTextureListener = null
+
+                finishExercise(exerciseName)
+
+            }
+
+        }
 
     } //setObserve()
 
 
     // 운동 개수를 다 채웠을때 호출하는 메서드
-    private fun finishExercise() {
+    private fun finishExercise(exerciseName: String) {
 
         CoroutineScope(Dispatchers.Main).launch {
 
-            // 쉐어드에 데이터 갱신 해줘야될듯 여기서
-
             delay(500)
 
-            this@PoseDetectionFragment.findNavController().navigate(R.id.exerciseChoiceFragment)
+            // 쉐어드에 데이터 갱신
+            poseDetectionViewModel.updatePoseExercise(exerciseName)
+
+            this@PoseDetectionFragment.findNavController().popBackStack()
 
         }
 

@@ -58,7 +58,8 @@ class ExerciseChoiceFragment : Fragment() {
             // 아이템 클릭 시 동작 인식 프래그먼트로 전환.
             override fun onClick(view: View, position: Int) {
 
-                val exerciseName = exerciseChoiceAdapter.exerciseChoiceList[position].exerciseName
+                // 뷰모델을 통해서 쉐어드에 저장하는 메서드 호출 , 이름값 리턴 후 동작인식 프래그먼트로 전송
+                val exerciseName = exerciseChoiceViewModel.setPoseExercise(exerciseChoiceAdapter.exerciseChoiceList[position])
 
                 val bundle = bundleOf("exerciseName" to exerciseName)
 

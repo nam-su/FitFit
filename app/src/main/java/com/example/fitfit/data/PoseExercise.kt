@@ -1,10 +1,10 @@
 package com.example.fitfit.data
 
 class PoseExercise(
-    val date: String,
+    var date: String,
     val category: String,
     val exerciseName: String,
-    val exerciseCount: Int,
+    var exerciseCount: Int,
     val goalExerciseCount: Int) {
 
 
