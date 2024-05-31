@@ -7,7 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfit.model.SignUpModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.log
+import kotlin.time.ExperimentalTime
 
 class SignUpViewModel : ViewModel() {
 
@@ -86,6 +90,13 @@ class SignUpViewModel : ViewModel() {
     val signUpNickname: LiveData<String>
         get() = _signUpNickname
 
+    /**타이머 관려 변수들**/
+    private val _timerCount = MutableLiveData<Int>()
+    val timerCount: LiveData<Int>
+        get() = _timerCount
+
+    private lateinit var job: Job
+
 
     //다음 버튼 클릭
     fun setOnButtonNextClick(email:String, code:String,password: String,nickname: String){
@@ -103,12 +114,14 @@ class SignUpViewModel : ViewModel() {
             "emailAuthentication" -> {
                 Log.d(TAG, "보낸 인증코드: ${model.randomString}")
                 Log.d(TAG, "입력한 인증코드: $code")
-                Log.d(TAG, "setOnButtonNextClick: ${isCodeValid()}")
-                when(model.randomString == code && code != "" && isCodeValid()){
+                when(isCodeValid(code)){
                     true -> {
                         _pageCount.value = _pageCount.value!! + 1
                         _signUpEmail.value = email
-                        Log.d(TAG, "뷰모델: 요기")}
+                        Log.d(TAG, "뷰모델: 요기")
+                        timerStop()
+                    }
+
                     false -> {
                         _signUpEmail.value = ""
                         Log.d(TAG, "뷰모델: 유효x")
@@ -204,8 +217,10 @@ class SignUpViewModel : ViewModel() {
     //전송 버튼 클릭
     fun setOnButtonSendClick(email:String){
 
-           model.sendMail(email)
+            model.sendMail(email)
             _isEmailSend.value = true
+
+            timerStart()
 
     }
 
@@ -222,9 +237,12 @@ class SignUpViewModel : ViewModel() {
                     _isEmailPossible.value = true
                     _course.value = "emailAuthentication"
 
-                    //메일도 동시에 보내기
+                    //메일보내기
                     model.sendMail(id)
                     _isEmailSend.value = true
+
+                    //타이머 시작
+                    timerStart()
                 }
                 "impossible" -> {
                     _isEmailPossible.value = false
@@ -281,10 +299,49 @@ class SignUpViewModel : ViewModel() {
 
 
     // 생성된 코드가 유효한지 확인하는 메소드
-    private fun isCodeValid(): Boolean {
+    private fun isCodeValid(code:String): Boolean {
         // 현재 시간과 코드 생성 시간의 차이를 계산하여 1분(60초) 이내인지 확인
-        val currentTime = System.currentTimeMillis()
-        _isCodeValid.value = (currentTime - model.codeGeneratedTime) <= 10 * 1000
+        if(model.randomString == code && code != "") {
+            val currentTime = System.currentTimeMillis()
+            _isCodeValid.value = (currentTime - model.codeGeneratedTime) <= model.timeLimit * 1000
+        }else{
+            _isCodeValid.value = false
+        }
         return _isCodeValid.value!! // 1분(60초) 이내인지 확인
+    }
+
+
+    //타이머 시작
+    private fun timerStart(){
+
+        timerStop()
+
+        //타이머 초기값
+        _timerCount.value = model.timeLimit
+
+      job = viewModelScope.launch {
+            while(_timerCount.value!! > 0) {
+                _timerCount.value = _timerCount.value!!.minus(1)
+                delay(1000L)
+            }
+        }
+    }
+
+
+
+    //타이머 중지
+    private fun timerStop(){
+        if(::job.isInitialized) job.cancel()
+    }
+
+
+
+    //타이머 포맷으로 바꾸기
+    fun setTimerFormat(time:Int):String{
+
+        val minutes = time.div(60)
+        val seconds = time.rem(60)
+
+        return "%02d:%02d".format(minutes, seconds)
     }
 }

@@ -110,12 +110,16 @@
                     android:orientation="horizontal"
                     android:visibility="gone">
 
-                    <EditText
-                        android:id="@+id/editTextCode"
-                        style="@style/editTextStyle"
+                    <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
+                        >
+                    <EditText
+                        android:id="@+id/editTextCode"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:backgroundTint="@color/grey"
                         android:hint="@string/authenticationCode"
                         android:inputType="text"
@@ -123,15 +127,27 @@
                         app:layout_constraintStart_toStartOf="@+id/textView4"
                         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+                        <TextView
+                            android:id="@+id/textViewTimer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center"
+                            android:layout_marginEnd="10dp"
+                            android:text="@{SignUpViewModel.setTimerFormat(SignUpViewModel.timerCount)}"
+                            style="@style/SignUpTitle"
+                            android:textColor="@color/black"
+                            />
+
+                    </FrameLayout>
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/buttonSend"
+                        android:id="@+id/buttonResend"
                         style="@style/buttonTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:background="@drawable/login_button"
-                        android:text="@string/send"
+                        android:text="@string/resend"
                         android:onClick="@{()->SignUpViewModel.setOnButtonSendClick(editTextEmail.getText().toString())}"/>
 
                 </LinearLayout>
