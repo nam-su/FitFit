@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group >
+    <item android:id = "@+id/profileEdit"
+        android:title = "@string/profileEdit"
+        />
+
+    <item android:id = "@+id/passwordChange"
+        android:title = "@string/passwordChange"
+        />
+
+    <item android:id = "@+id/logout"
+        android:title = "@string/logout"
+        />
+    </group>
+
+    <group
+        android:enabled="true">
+        <item android:title = "" />
+        <item android:title = "" />
+        <item android:title = "" />
+        <item android:title = "" />
+        <item android:title = "" />
+        <item android:title = "" />
+        <item android:title = "" />
+
+    </group>
+
+
+    <group>
+
+    <item android:id = "@+id/withdrawal"
+        android:title = "@string/withdrawal"
+        />
+    </group>
+</menu>

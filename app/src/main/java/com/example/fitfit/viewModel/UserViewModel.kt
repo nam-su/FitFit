@@ -38,4 +38,10 @@ class UserViewModel : ViewModel() {
 
     } // setUserInformation()
 
+
+
+    //설정 버튼 누르기
+    fun setOnImageButtonSettingClick(){
+    }
+
 }
