@@ -1,7 +1,7 @@
 package com.example.fitfit.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.fitfit.data.ExerciseChoice
+import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.ExerciseChoiceModel
 
 class ExerciseChoiceViewModel: ViewModel(){
@@ -10,7 +10,7 @@ class ExerciseChoiceViewModel: ViewModel(){
 
 
     // 모델의 exerciseChoiceList를 가져오는 메서드.
-    fun setRecyclerViewExerciseChoice(): ArrayList<ExerciseChoice>{
+    fun setRecyclerViewExerciseChoice(): ArrayList<PoseExercise>{
 
         return exerciseChoiceModel.setExerciseChoiceList()
 

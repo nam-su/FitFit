@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="exerciseChoice"
-            type="com.example.fitfit.data.ExerciseChoice" />
+            name="poseExercise"
+            type="com.example.fitfit.data.PoseExercise" />
 
     </data>
 
