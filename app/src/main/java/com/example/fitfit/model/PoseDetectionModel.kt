@@ -98,13 +98,6 @@ class PoseDetectionModel(context: Context) {
     } // poseExercise()
 
 
-    // 운동 카운트가 목표 카운트에 도달하는지 체크하는 메서드
-    fun checkExerciseCount(exerciseName: String) {
-
-        val poseExercise = MyApplication.sharedPreferences.getPoseExercise("")
-
-    }
-
     // 쉐어드에 운동 후 기록 저장하는 메서드.
     fun updatePoseExercise(exerciseName: String) {
 
