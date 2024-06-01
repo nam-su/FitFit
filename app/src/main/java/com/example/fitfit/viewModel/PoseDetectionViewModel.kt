@@ -60,14 +60,12 @@ class PoseDetectionViewModel : ViewModel() {
                     override fun onOpened(cameraDevice: CameraDevice) {
                         viewModelScope.launch(Dispatchers.Main) {
 
-                            val captureRequest =
-                                cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+                            val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
                             val surface = Surface(textureView.surfaceTexture)
 
                             captureRequest.addTarget(surface)
 
-                            cameraDevice.createCaptureSession(
-                                listOf(surface), object : CameraCaptureSession.StateCallback() {
+                            cameraDevice.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
 
                                     override fun onConfigured(session: CameraCaptureSession) {
 
@@ -168,4 +166,5 @@ class PoseDetectionViewModel : ViewModel() {
         Log.d(TAG, "onCleared:모델 리소스 해제")
 
     }
+
 }
