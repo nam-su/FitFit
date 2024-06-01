@@ -36,6 +36,8 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>): Recy
 
         fun onBind(rank: Rank) {
 
+            binding.rank = rank
+
         } // onBind()
 
     }
