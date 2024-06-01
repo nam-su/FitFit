@@ -102,5 +102,11 @@
         tools:layout="@layout/fragment_pose_detection"
         app:popUpToInclusive="true"/>
 
+    <fragment
+        android:id="@+id/payFragment"
+        android:name="com.example.fitfit.fragment.PayFragment"
+        android:label="fragment_pay"
+        tools:layout="@layout/fragment_pay"
+        />
 
 </navigation>
