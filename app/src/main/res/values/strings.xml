@@ -58,6 +58,7 @@
 
     <!--운동 선택 프래그먼트-->
     <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
+    <string name="exerciseCount">%1$d / %2$d</string>
 
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>

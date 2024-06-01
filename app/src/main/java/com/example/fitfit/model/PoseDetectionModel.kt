@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
 import com.example.fitfit.function.pose.PushUp
 import com.example.fitfit.function.pose.Squat
@@ -95,6 +96,22 @@ class PoseDetectionModel(context: Context) {
         }
 
     } // poseExercise()
+
+
+    // 쉐어드에 운동 후 기록 저장하는 메서드.
+    fun updatePoseExercise(exerciseName: String) {
+
+        // 쉐어드로 운동객체 호출 하고 , 그 객체 갱신 후 리스트 갱신 해줘야함.
+        val poseExercise = MyApplication.sharedPreferences.getPoseExercise(exerciseName)
+
+        // 운동 카운트 갱신
+        poseExercise.exerciseCount += count
+        poseExercise.date = "오늘 날짜"
+
+        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
+        MyApplication.sharedPreferences.updatePoseExerciseList(poseExercise)
+
+    } // updatePoseExercise()
 
 
     // 모델을 닫는 메서드
