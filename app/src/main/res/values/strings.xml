@@ -1,5 +1,67 @@
 <resources>
     <string name="app_name">FitFit</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--앱 이름-->
+    <string name="FitFit">FitFit</string>
+
+    <!--바텀 내비게이션 아이템-->
+    <string name="home">홈</string>
+    <string name="exercise">운동</string>
+    <string name="diary">운동일지</string>
+    <string name="user">내정보</string>
+
+    <!--로그인 프래그먼트-->
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="findPassword">비밀번호 찾기</string>
+    <string name="signUp">회원가입</string>
+    <string name="login">로그인</string>
+
+    <!--회원가입 프래그먼트-->
+    <string name="pageCount">(%s/4)</string>
+    <string name="emailAuthentication">이메일 인증</string>
+    <string name="authenticationCode">인증코드</string>
+    <string name="next">다음</string>
+    <string name="resend">재전송</string>
+    <string name="passwordHint">영어, 숫자, 특수문자 조합으로 이루어진 8~15자의 문자</string>
+    <string name="enterPassword">비밀번호 입력</string>
+    <string name="reconfirmPassword">비밀번호 재확인</string>
+    <string name="nickname">닉네임</string>
+    <string name="enterNickname">닉네임 입력</string>
+    <string name="confirmUserInfo">회원정보 확인</string>
+    <string name="complete">완료</string>
+    <string name="validEmailFormat">올바른 이메일 형식 입니다.</string>
+    <string name="inValidEmailFormat">이메일 형식이 올바르지 않습니다.</string>
+    <string name="validPasswordFormat">올바른 비밀번호 형식 입니다.</string>
+    <string name="inValidPasswordFormat">비밀번호 형식이 올바르지 않습니다.</string>
+    <string name="correctPasswordFormat">비밀번호가 일치합니다.</string>
+    <string name="inCorrectPasswordFormat">비밀번호가 일치하지 않습니다.</string>
+    <string name="validNicknameFormat">올바른 닉네임 형식 입니다.</string>
+    <string name="inValidNicknameFormat">닉네임 형식이 올바르지 않습니다.</string>
+    <string name="userInfoCheck">회원정보 확인</string>
+    <string name="userEmail">이메일 : %s</string>
+    <string name="userNickname">닉네임 : %s</string>
+    <string name="timer">00:00</string>
+
+
+    <!--홈 프래그먼트-->
+    <string name="weekExerciseCheck">이번 주 운동량 체크</string>
+    <string name="monthChallengeRanking">이달의 챌린지 랭킹</string>
+    <string name="variableExercisePlay">다양한 운동을 즐겨보세요</string>
+    <string name="viewAll">전체보기</string>
+
+    <!--운동 프래그먼트-->
+    <string name="todayExerciseStart">오늘의 운동 시작</string>
+
+    <!--운동 선택 프래그먼트-->
+    <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
+    <string name="exerciseCount">%1$d / %2$d</string>
+
+    <!--유저 프래그먼트-->
+    <string name="loginType">로그인 방식</string>
+    <string name="subscribtion">플러스 구독</string>
+
 </resources>
