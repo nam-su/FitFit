@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentUserBinding
 import com.example.fitfit.viewModel.HomeViewModel
@@ -87,7 +88,7 @@ class UserFragment : Fragment() {
     }
 
 
-    
+
     //drawerLayout에 체크된 메뉴아이템 관찰 대한 처리
     private fun setSelectedMenuItem(it:Int){
         //모든 메뉴 아이템의 체크 상태를 false로 설정
@@ -113,6 +114,8 @@ class UserFragment : Fragment() {
             binding.navigationView.menu.getItem(2).itemId   -> {
                 //로그아웃 다이얼로그
                 Log.d(TAG, "setObserve: 로그아웃 다이얼로그")
+                userViewModel.setOnLogoutButtonClick()
+                this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
             }
             binding.navigationView.menu.getItem(10).itemId   -> {
                 //회원탈퇴 다이얼로그

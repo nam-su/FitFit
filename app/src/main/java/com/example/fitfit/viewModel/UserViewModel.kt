@@ -1,7 +1,5 @@
 package com.example.fitfit.viewModel
 
-import android.view.Menu
-import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,7 +37,7 @@ class UserViewModel : ViewModel() {
         _email.value = user.id
         _nickname.value = user.nickname
         _loginType.value = user.loginType
-        _subscription.value = user.subscribtion
+        _subscription.value = user.subscription
 
     } // setUserInformation()
 
@@ -50,5 +48,13 @@ class UserViewModel : ViewModel() {
         _selectedMenuItem.value = itemId
     }
 
+
+
+    // 로그인 성공했을때 Shared에 데이터 추가해준다.
+    fun setOnLogoutButtonClick() {
+
+        userModel.setSharedPreferencesRemoveUserInfo()
+
+    } // setSharedPreferencesUserInfo()
 
 }
