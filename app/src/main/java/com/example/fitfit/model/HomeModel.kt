@@ -2,6 +2,8 @@ package com.example.fitfit.model
 
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
+import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.data.Rank
 
 class HomeModel() {
 
@@ -28,6 +30,52 @@ class HomeModel() {
 
         return exerciseDiaryList
 
-    }
+    } // setWeekStatusList()
+
+
+    // 챌린지 랭킹 정보 리스트 리턴하는 메서드
+    fun setChallengeRankList(): ArrayList<Rank> {
+
+        val challengeRankList = ArrayList<Rank>()
+
+        challengeRankList.add(Rank(1,"언더테이커",""))
+        challengeRankList.add(Rank(2,"케인",""))
+        challengeRankList.add(Rank(3,"유형선",""))
+
+        return challengeRankList
+
+    } // setChallengeRankList()
+
+
+    // 다양한 운동 리스트 리턴하는 메서드
+    fun setAllExerciseList(): ArrayList<PoseExercise> {
+
+        val allExerciseList = ArrayList<PoseExercise>()
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+
+        return allExerciseList
+
+    } // setAllExerciseList()
 
 }

@@ -6,15 +6,24 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
+import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.data.User
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
 import com.example.fitfit.function.pose.PushUp
 import com.example.fitfit.function.pose.Squat
 import com.example.fitfit.ml.AutoModel4
+import com.example.fitfit.network.RetrofitBuilder
+import com.example.fitfit.network.RetrofitInterface
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Objects
 import kotlin.math.acos
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -22,6 +31,10 @@ import kotlin.math.sqrt
 class PoseDetectionModel(context: Context) {
 
     private val TAG = "포즈 추정 모델"
+
+    // 레트로핏 관련 초기화
+    private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
     // 이미지 처리를 위한 ImageProcessor 초기화
     private val imageProcessor: ImageProcessor = ImageProcessor.Builder()
@@ -95,6 +108,46 @@ class PoseDetectionModel(context: Context) {
         }
 
     } // poseExercise()
+
+
+    // 쉐어드에 운동 후 기록 저장하는 메서드.
+    suspend fun updatePoseExercise(exerciseName: String): Response<PoseExercise> {
+
+        // 쉐어드로 운동객체 호출 하고 , 그 객체 갱신 후 리스트 갱신 해줘야함.
+        val poseExercise = MyApplication.sharedPreferences.getPoseExercise(exerciseName)
+
+        // 운동 카운트 갱신
+        poseExercise.exerciseCount += count
+
+        // 오늘 날짜 시스템 시간으로 받아옴.
+        poseExercise.date = System.currentTimeMillis().toString()
+
+        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
+
+        val id = MyApplication.sharedPreferences.getUserId()
+
+        // 서버로 insert 요청.
+        return retrofitInterface.insertIntoPoseExercise(
+
+            id,
+            poseExercise.category,
+            poseExercise.exerciseName,
+            poseExercise.exerciseCount,
+            poseExercise.goalExerciseCount,
+            poseExercise.date,
+            "insertUserExercise")
+
+    } // updatePoseExercise()
+
+
+    fun updatePoseExerciseList(exerciseName: String) {
+
+        val poseExercise = MyApplication.sharedPreferences.getPoseExercise(exerciseName)
+
+        // 여기서 통신 하고 통신 성공했을 때 쉐어드 운동 리스트 갱신해야됨.
+        MyApplication.sharedPreferences.updatePoseExerciseList(poseExercise)
+
+    } // updatePoseExerciseToServer
 
 
     // 모델을 닫는 메서드

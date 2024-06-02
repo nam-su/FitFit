@@ -1,6 +1,8 @@
 package com.example.fitfit.adapter
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +12,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
-import com.example.fitfit.data.ExerciseChoice
+import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
 import com.example.fitfit.databinding.ItemViewExerciseChoiceBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<ExerciseChoice>): RecyclerView.Adapter<ExerciseChoiceAdapter.ExerciseChoiceViewHolder>() {
+class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): RecyclerView.Adapter<ExerciseChoiceAdapter.ExerciseChoiceViewHolder>() {
 
     lateinit var binding: ItemViewExerciseChoiceBinding
     var exerciseChoiceItemClick: ExerciseChoiceItemClick? = null
@@ -65,10 +67,19 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<ExerciseChoice>): 
 
     class ExerciseChoiceViewHolder(val binding: ItemViewExerciseChoiceBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(exerciseChoice: ExerciseChoice) {
+        @SuppressLint("SetTextI18n")
+        fun onBind(poseExercise: PoseExercise) {
+
+            binding.poseExercise = poseExercise
+
+            val exerciseCount= poseExercise.exerciseCount.toString()
+            val goalExerciseCount= poseExercise.goalExerciseCount.toString()
+
+            // 목표 운동 개수와 현재 진행한 운동 개수 표시
+            binding.textViewExerciseCount.text = "$exerciseCount / $goalExerciseCount"
 
             // 운동 객체가 갖고있는 카테고리에 따라 배경색 지정.
-            binding.constraintLayoutStartExercise.backgroundTintList = when(exerciseChoice.category) {
+            binding.constraintLayoutStartExercise.backgroundTintList = when(poseExercise.category) {
 
                 "스쿼트" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.squat))
                 "푸시업" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.pushUp))
@@ -77,8 +88,8 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<ExerciseChoice>): 
 
             }
 
-            binding.textViewExerciseCategory.text = exerciseChoice.category
-            binding.textViewExerciseName.text = exerciseChoice.exerciseName
+            binding.textViewExerciseCategory.text = poseExercise.category
+            binding.textViewExerciseName.text = poseExercise.exerciseName
 
         } // onBind()
 

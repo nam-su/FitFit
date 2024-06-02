@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/textViewCount"
                 android:gravity="center"
-                android:text="테스트"
+                android:text="@{poseDetectionViewModel.count.toString()}"
                 android:textSize="30sp"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"

@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fitfit.data.ExerciseDiary
+import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.data.Rank
 import com.example.fitfit.model.HomeModel
 
 class HomeViewModel(): ViewModel() {
@@ -33,6 +35,19 @@ class HomeViewModel(): ViewModel() {
     fun setRecyclerViewWeekStatus(): ArrayList<ExerciseDiary>{
 
         return homeModel.setWeekStatusList()
+
+    } // setRecyclerViewWeekStatus()
+
+
+    fun setRecyclerViewChallengeRank(): ArrayList<Rank> {
+
+        return homeModel.setChallengeRankList()
+
+    }
+
+    fun setRecyclerViewAllExercise(): ArrayList<PoseExercise> {
+
+        return homeModel.setAllExerciseList()
 
     }
 

@@ -15,10 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
 import com.example.fitfit.viewModel.PoseDetectionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PoseDetectionFragment : Fragment() {
 
@@ -67,7 +72,6 @@ class PoseDetectionFragment : Fragment() {
     } // setVariable
 
 
-
     //리스너 관련 메서드
     private fun setListener(){
 
@@ -88,7 +92,9 @@ class PoseDetectionFragment : Fragment() {
 
             // TextureView가 업데이트될 때 호출됩니다.
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-                poseDetectionViewModel.processImage(binding.textureView.bitmap!!,exerciseName)
+
+                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!,exerciseName)
+
             }
         }
 
@@ -104,13 +110,40 @@ class PoseDetectionFragment : Fragment() {
             binding.imageView.setImageBitmap(bitmap)
         })
 
-        // ViewModel의 count LiveData를 관찰하여 UI를 업데이트합니다.
-        poseDetectionViewModel.count.observe(viewLifecycleOwner, Observer { count ->
-            binding.textViewCount.text = count.toString()
-        })
+
+        // 운동 카운트 감지.
+        poseDetectionViewModel.checkExerciseCount.observe(viewLifecycleOwner) {
+
+            if(it) {
+
+                // 감지 리스너를 새로 초기화 해줘야 데이터가 중첩 안됨.
+                // 초기화 해주지 않으면 감지가 계속 호출될때 마다 변수 감지해서 중첩됨.
+                binding.textureView.surfaceTextureListener = null
+
+                finishExercise(exerciseName)
+
+            }
+
+        }
 
     } //setObserve()
 
+
+    // 운동 개수를 다 채웠을때 호출하는 메서드
+    private fun finishExercise(exerciseName: String) {
+
+        CoroutineScope(Dispatchers.Main).launch {
+
+            delay(500)
+
+            // 쉐어드에 데이터 갱신
+            poseDetectionViewModel.updatePoseExercise(exerciseName)
+
+            this@PoseDetectionFragment.findNavController().popBackStack()
+
+        }
+
+    } // finishExercise()
 
 
     // 카메라 권한을 체크
