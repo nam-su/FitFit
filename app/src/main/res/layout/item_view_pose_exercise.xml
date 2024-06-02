@@ -13,17 +13,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="5dp">
         
         <ImageView
             android:id="@+id/imageViewExerciseCategory"
             android:background="@drawable/layout_border"
+            android:backgroundTint="@color/squat"
             android:padding="10dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imageViewPremiumBadge"
+            android:src="@drawable/primium_badge"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="2dp"
+            app:layout_constraintStart_toStartOf="@id/imageViewExerciseCategory"
+            app:layout_constraintTop_toTopOf="@id/imageViewExerciseCategory"/>
 
         <TextView
             android:id="@+id/textViewExerciseName"

@@ -55,9 +55,24 @@ class HomeModel() {
         allExerciseList.add(PoseExercise("","스쿼트","",0,0))
         allExerciseList.add(PoseExercise("","푸시업","",0,0))
         allExerciseList.add(PoseExercise("","런지","",0,0))
+
         allExerciseList.add(PoseExercise("","스쿼트","",0,0))
         allExerciseList.add(PoseExercise("","푸시업","",0,0))
         allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
+        allExerciseList.add(PoseExercise("","푸시업","",0,0))
+        allExerciseList.add(PoseExercise("","런지","",0,0))
+
+        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
 
         return allExerciseList
 
