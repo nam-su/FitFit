@@ -21,14 +21,14 @@ class Preferences(context: Context) {
         preferences.getString("nickname", "")
         preferences.getString("loginType", "")
         preferences.getString("profileImagePath", "")
-        preferences.getString("subscribtion", "")
+        preferences.getString("subscription", "")
 
         return User(
             preferences.getString("id", "").toString(),
             preferences.getString("loginType", "").toString(),
             preferences.getString("nickname", "").toString(),
             preferences.getString("profileImagePath", "").toString(),
-            preferences.getString("subscribtion", "").toString()
+            preferences.getString("subscription", "").toString()
         )
 
     } // getUser()
@@ -57,10 +57,24 @@ class Preferences(context: Context) {
         editor.putString("nickname", user.nickname)
         editor.putString("loginType", user.loginType)
         editor.putString("profileImagePath", user.profileImagePath)
-        editor.putString("subscribtion", user.subscribtion)
+        editor.putString("subscription", user.subscription)
         editor.apply()
 
     } // setUser()
+
+
+
+    //유저 정보 쉐어드에서 삭제하는 메서드
+    fun removeUser(){
+
+        editor.remove("id")
+        editor.remove("nickname")
+        editor.remove("loginType")
+        editor.remove("profileImagePath")
+        editor.remove("subscription")
+        editor.apply()
+
+    } //removeUser()
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드

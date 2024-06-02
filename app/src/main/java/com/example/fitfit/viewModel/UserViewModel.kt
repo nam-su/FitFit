@@ -21,10 +21,13 @@ class UserViewModel : ViewModel() {
     val loginType: LiveData<String>
         get() = _loginType
 
-    private var _subscribtion = MutableLiveData<String>()
+    private var _subscription = MutableLiveData<String>()
     val subscription: LiveData<String>
-        get() = _subscribtion
+        get() = _subscription
 
+    private var _selectedMenuItem = MutableLiveData<Int>()
+    val selectedMenuItem: LiveData<Int>
+        get() = _selectedMenuItem
 
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation() {
@@ -34,8 +37,24 @@ class UserViewModel : ViewModel() {
         _email.value = user.id
         _nickname.value = user.nickname
         _loginType.value = user.loginType
-        _subscribtion.value = user.subscribtion
+        _subscription.value = user.subscription
 
     } // setUserInformation()
+
+
+
+    //체크된 아이템 저장
+    fun selectItem(itemId: Int) {
+        _selectedMenuItem.value = itemId
+    }
+
+
+
+    // 로그인 성공했을때 Shared에 데이터 추가해준다.
+    fun setOnLogoutButtonClick() {
+
+        userModel.setSharedPreferencesRemoveUserInfo()
+
+    } // setSharedPreferencesUserInfo()
 
 }

@@ -6,7 +6,7 @@ data class User(@SerializedName("id") val id: String,
        @SerializedName("loginType") val loginType: String,
        @SerializedName("nickname")  val nickname: String,
        @SerializedName("profileImagePath") val profileImagePath: String,
-       @SerializedName("subscribtion") val subscribtion: String) {
+       @SerializedName("subscription") val subscription: String) {
 
        @SerializedName("result") var result: String? = null
 

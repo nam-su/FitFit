@@ -66,5 +66,9 @@
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>
     <string name="subscribtion">플러스 구독</string>
+    <string name="profileEdit">프로필 수정</string>
+    <string name="logout">로그아웃</string>
+    <string name="passwordChange">비밀번호 변경</string>
+    <string name="withdrawal">회원탈퇴</string>
 
 </resources>

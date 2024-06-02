@@ -93,7 +93,11 @@
         android:id="@+id/userFragment"
         android:name="com.example.fitfit.fragment.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user"/>
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/poseDetectionFragment"
