@@ -152,7 +152,29 @@ class PoseDetectionViewModel : ViewModel() {
     // 운동 끝난 후 운동 후 데이터 쉐어드에 갱신
     fun updatePoseExercise(exerciseName: String) {
 
-        poseDetectionModel.updatePoseExercise(exerciseName)
+        viewModelScope.launch {
+
+            val response = poseDetectionModel.updatePoseExercise(exerciseName)
+
+            Log.d(TAG, "updatePoseExercise: ${response.isSuccessful}")
+            Log.d(TAG, "updatePoseExercise: ${response.body()}")
+
+            if(response.isSuccessful && response.body() != null) {
+
+                Log.d(TAG, "updatePoseExercise: 서버에 성공적으로 저장?")
+                Log.d(TAG, "updatePoseExercise: ${response.body()!!.result}")
+
+                // 서버에 운동기록 저장 성공 시 쉐어드 운동 리스트 갱신해준다.
+                poseDetectionModel.updatePoseExerciseList(exerciseName)
+
+            } else {
+
+                Log.d(TAG, "updatePoseExercise: onFail")
+                Log.d(TAG, "updatePoseExercise: ${response.message()}")
+
+            }
+
+        }
 
     } // updatePoseExercise()
 
