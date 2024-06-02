@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fitfit.R
 import com.example.fitfit.adapter.ChallengeRankAdapter
 import com.example.fitfit.adapter.CheckWeekExerciseAdapter
+import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.databinding.FragmentHomeBinding
 import com.example.fitfit.viewModel.HomeViewModel
 
@@ -50,6 +51,8 @@ class HomeFragment : Fragment() {
         binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
 
         binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewChallengeRank())
+
+        binding.recyclerViewAllExercise.adapter = PoseExerciseAdapter(homeViewModel.setRecyclerViewAllExercise(),false)
 
         // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
 
