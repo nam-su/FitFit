@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.fitfit'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.fitfit"
-        minSdk 25
-        targetSdk 33
+        minSdk 26
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -42,9 +42,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
@@ -55,7 +55,9 @@ dependencies {
     // bottomNavigation
     // Kotlin
     def nav_version = "2.5.3"
+    //noinspection GradleDependency
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    //noinspection GradleDependency
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     // retrofit
