@@ -1,5 +1,7 @@
 package com.example.fitfit.viewModel
 
+import android.view.Menu
+import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,10 +23,13 @@ class UserViewModel : ViewModel() {
     val loginType: LiveData<String>
         get() = _loginType
 
-    private var _subscribtion = MutableLiveData<String>()
+    private var _subscription = MutableLiveData<String>()
     val subscription: LiveData<String>
-        get() = _subscribtion
+        get() = _subscription
 
+    private var _selectedMenuItem = MutableLiveData<Int>()
+    val selectedMenuItem: LiveData<Int>
+        get() = _selectedMenuItem
 
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation() {
@@ -34,14 +39,16 @@ class UserViewModel : ViewModel() {
         _email.value = user.id
         _nickname.value = user.nickname
         _loginType.value = user.loginType
-        _subscribtion.value = user.subscribtion
+        _subscription.value = user.subscribtion
 
     } // setUserInformation()
 
 
 
-    //설정 버튼 누르기
-    fun setOnImageButtonSettingClick(){
+    //체크된 아이템 저장
+    fun selectItem(itemId: Int) {
+        _selectedMenuItem.value = itemId
     }
+
 
 }
