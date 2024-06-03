@@ -11,5 +11,6 @@ class PoseExercise(
 
     @SerializedName("result") var result: String? = null
     @SerializedName("checkList") var checkList: Boolean? = false
+    @SerializedName("primium") var isPrimium: Boolean = false
 
 }

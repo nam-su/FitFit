@@ -10,16 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfit.R
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.databinding.ItemViewPoseExerciseBinding
+import com.example.fitfit.databinding.ItemViewPoseExerciseGridBinding
 
-class PoseExerciseAdapter(private val poseExerciseList: ArrayList<PoseExercise>,private val checkVisibleExerciseName: Boolean): RecyclerView.Adapter<PoseExerciseAdapter.PoseExerciseViewHolder>() {
+class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExercise>): RecyclerView.Adapter<PoseExerciseGridAdapter.PoseExerciseGridViewHolder>() {
 
-    lateinit var binding: ItemViewPoseExerciseBinding
+    lateinit var binding: ItemViewPoseExerciseGridBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoseExerciseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoseExerciseGridViewHolder {
 
-        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_pose_exercise,parent,false)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_pose_exercise_grid,parent,false)
 
-        return PoseExerciseViewHolder(binding)
+        return PoseExerciseGridViewHolder(binding)
 
     } // onCreateViewHolder()
 
@@ -29,15 +30,15 @@ class PoseExerciseAdapter(private val poseExerciseList: ArrayList<PoseExercise>,
 
     } // getItemCount()
 
-    override fun onBindViewHolder(holder: PoseExerciseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PoseExerciseGridViewHolder, position: Int) {
 
-        holder.onBind(poseExerciseList[position],checkVisibleExerciseName)
+        holder.onBind(poseExerciseList[position])
 
-    } // onBindViewHolder()
+    } // onBindViewHolder
 
-    class PoseExerciseViewHolder(val binding: ItemViewPoseExerciseBinding) : RecyclerView.ViewHolder(binding.root) {
+    class PoseExerciseGridViewHolder(val binding: ItemViewPoseExerciseGridBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(poseExercise: PoseExercise,checkVisibleExerciseName: Boolean) {
+        fun onBind(poseExercise: PoseExercise) {
 
             // 구독 후 이용가능한 프리미엄 운동이면 뱃지 보이게
             when(poseExercise.isPrimium) {
@@ -47,24 +48,11 @@ class PoseExerciseAdapter(private val poseExerciseList: ArrayList<PoseExercise>,
 
             }
 
-            // 운동 객체가 갖고 있는 카테고리에 따라 뷰 지정
             setPoseExerciseView(poseExercise)
-
-            // 운동이름 판별 후 textView 처리함.
-            when(checkVisibleExerciseName) {
-
-                // 운동 아이콘 + 운동 이름 보이게
-                true -> binding.textViewExerciseName.text = poseExercise.exerciseName
-
-                // 운동 이름이 안보이고 운동 아이콘 이미지만 보이게
-                else -> binding.textViewExerciseName.visibility = View.GONE
-
-            }
 
         } // onBind()
 
 
-        // 운동 종류에 따라 뷰 초기화 하는 메서드
         private fun setPoseExerciseView(poseExercise: PoseExercise){
 
             when(poseExercise.category) {
