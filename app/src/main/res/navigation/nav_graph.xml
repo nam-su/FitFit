@@ -55,7 +55,6 @@
         android:name="com.example.fitfit.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home"
-        app:popUpToInclusive="true"
         />
 
     <fragment
@@ -94,9 +93,13 @@
         android:name="com.example.fitfit.fragment.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user">
+
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true"
+            />
+
     </fragment>
 
     <fragment

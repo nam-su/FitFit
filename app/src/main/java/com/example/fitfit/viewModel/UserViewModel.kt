@@ -1,11 +1,15 @@
 package com.example.fitfit.viewModel
 
+import android.util.Log
+import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fitfit.model.UserModel
 
 class UserViewModel : ViewModel() {
+
+    private val TAG = "유저 뷰모델"
 
     private val userModel = UserModel()
 
@@ -25,9 +29,14 @@ class UserViewModel : ViewModel() {
     val subscription: LiveData<String>
         get() = _subscription
 
-    private var _selectedMenuItem = MutableLiveData<Int>()
-    val selectedMenuItem: LiveData<Int>
+    private var _selectedMenuItem = MutableLiveData<MenuItem>()
+    val selectedMenuItem: LiveData<MenuItem>
         get() = _selectedMenuItem
+
+    private var _isLogout = MutableLiveData<Boolean>()
+    val isLogout: LiveData<Boolean>
+        get() = _isLogout
+
 
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation() {
@@ -44,17 +53,34 @@ class UserViewModel : ViewModel() {
 
 
     //체크된 아이템 저장
-    fun selectItem(itemId: Int) {
-        _selectedMenuItem.value = itemId
+    fun selectItem(item: MenuItem) {
+        _selectedMenuItem.value = item
     }
 
 
 
     // 로그인 성공했을때 Shared에 데이터 추가해준다.
-    fun setOnLogoutButtonClick() {
+    fun setOnDialogOkButtonClick(buttonOkText: String) {
 
-        userModel.setSharedPreferencesRemoveUserInfo()
+        when(buttonOkText){
+            "로그아웃" -> {
+                userModel.setSharedPreferencesRemoveUserInfo()
+                setIsLogout(true)
+            }
+            "회원탈퇴" -> Log.d(TAG, "setOnDialogOkButtonClick: 회원탈퇴")
+            "진행" -> Log.d(TAG, "setOnDialogOkButtonClick: 확인")
+
+        }
+
 
     } // setSharedPreferencesUserInfo()
+
+
+
+
+    //isLogout 값 변경
+    fun setIsLogout(value:Boolean){
+        _isLogout.value = value
+    }
 
 }
