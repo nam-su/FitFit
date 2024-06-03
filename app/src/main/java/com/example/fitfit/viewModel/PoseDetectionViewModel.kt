@@ -164,9 +164,6 @@ class PoseDetectionViewModel : ViewModel() {
                 Log.d(TAG, "updatePoseExercise: 서버에 성공적으로 저장?")
                 Log.d(TAG, "updatePoseExercise: ${response.body()!!.result}")
 
-                // 서버에 운동기록 저장 성공 시 쉐어드 운동 리스트 갱신해준다.
-                poseDetectionModel.updatePoseExerciseList(exerciseName)
-
             } else {
 
                 Log.d(TAG, "updatePoseExercise: onFail")

@@ -1,6 +1,5 @@
 package com.example.fitfit.model
 
-import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 
@@ -15,9 +14,9 @@ class ExerciseChoiceModel {
 
             0 ->{
 
-                exerciseChoiceList.add(PoseExercise("2024-05-31","스쿼트","기본 스쿼트",0,10))
-                exerciseChoiceList.add(PoseExercise("2024-05-31","푸시업","기본 푸시업",0,10))
-                exerciseChoiceList.add(PoseExercise("2024-05-31","런지","기본 런지",0,10))
+                exerciseChoiceList.add(PoseExercise(System.currentTimeMillis().toString(),"스쿼트","기본 스쿼트",0,10))
+                exerciseChoiceList.add(PoseExercise(System.currentTimeMillis().toString(),"푸시업","기본 푸시업",0,10))
+                exerciseChoiceList.add(PoseExercise(System.currentTimeMillis().toString(),"런지","기본 런지",0,10))
 
                 MyApplication.sharedPreferences.setPoseExerciseList(exerciseChoiceList)
 

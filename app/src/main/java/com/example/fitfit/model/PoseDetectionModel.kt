@@ -1,13 +1,12 @@
 package com.example.fitfit.model
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import com.example.fitfit.data.PoseExercise
-import com.example.fitfit.data.User
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
 import com.example.fitfit.function.pose.PushUp
@@ -21,12 +20,9 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import retrofit2.Response
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.Objects
-import kotlin.math.acos
-import kotlin.math.pow
-import kotlin.math.sqrt
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class PoseDetectionModel(context: Context) {
 
@@ -116,38 +112,81 @@ class PoseDetectionModel(context: Context) {
         // 쉐어드로 운동객체 호출 하고 , 그 객체 갱신 후 리스트 갱신 해줘야함.
         val poseExercise = MyApplication.sharedPreferences.getPoseExercise(exerciseName)
 
-        // 운동 카운트 갱신
-        poseExercise.exerciseCount += count
-
-        // 오늘 날짜 시스템 시간으로 받아옴.
-        poseExercise.date = System.currentTimeMillis().toString()
-
-        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
-
+        // 유저 id 값을 불러와서 서버와 통신.
         val id = MyApplication.sharedPreferences.getUserId()
 
-        // 서버로 insert 요청.
-        return retrofitInterface.insertIntoPoseExercise(
+        // 최근 운동 날짜와 방금 운동한 날짜가 같을 떄는 update()
+        if(isSameDate(poseExercise)) {
 
-            id,
-            poseExercise.category,
-            poseExercise.exerciseName,
-            poseExercise.exerciseCount,
-            poseExercise.goalExerciseCount,
-            poseExercise.date,
-            "insertUserExercise")
+            // 서버로 update 요청.
+            return retrofitInterface.updatePoseExercise(
+
+                id,
+                poseExercise.category,
+                poseExercise.exerciseName,
+                poseExercise.exerciseCount,
+                poseExercise.goalExerciseCount,
+                poseExercise.date,
+                "updateUserExercise")
+
+        // 날짜가 다른 경우에 insert 해준다.
+        } else {
+
+            // 서버로 insert 요청.
+            return retrofitInterface.insertPoseExercise(
+
+                id,
+                poseExercise.category,
+                poseExercise.exerciseName,
+                poseExercise.exerciseCount,
+                poseExercise.goalExerciseCount,
+                poseExercise.date,
+                "insertUserExercise")
+
+        }
 
     } // updatePoseExercise()
 
 
-    fun updatePoseExerciseList(exerciseName: String) {
+    // 날짜 비교해서 쉐어드 다르게 들어가야하는 메서드
+    private fun isSameDate(poseExercise: PoseExercise): Boolean {
 
-        val poseExercise = MyApplication.sharedPreferences.getPoseExercise(exerciseName)
+        // 여기서 현재 날짜와 그전 데이터 날짜 값 시스템 시간에서 현재 날짜 형식으로 변환
+        val beforeDate: String = LocalDate.ofEpochDay(poseExercise.date / (24 * 60 * 60 * 1000))
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-        // 여기서 통신 하고 통신 성공했을 때 쉐어드 운동 리스트 갱신해야됨.
+        val afterDate: String = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+        val checkDate: Boolean
+
+        // 날짜가 같은 경우
+        if(beforeDate == afterDate) {
+
+            // 운동 카운트,시스템 시간 초기화
+            poseExercise.exerciseCount += count
+            poseExercise.date = System.currentTimeMillis()
+            checkDate = true
+
+        // 날짜가 다른 경우
+        } else {
+
+            // 운동 카운트 초기화 , 시스템 시간 초기화
+            poseExercise.exerciseCount = count
+            poseExercise.date = System.currentTimeMillis()
+            checkDate = false
+
+        }
+
+        // 운동 객체 초기화 해줌.
+        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
+
+        // 쉐어드 운동 리스트 갱신해준다.
         MyApplication.sharedPreferences.updatePoseExerciseList(poseExercise)
 
-    } // updatePoseExerciseToServer
+        return checkDate
+
+    } // compareDate()
 
 
     // 모델을 닫는 메서드

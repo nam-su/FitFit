@@ -24,20 +24,35 @@ interface RetrofitInterface {
     ): Response<User>
 
 
+    // 운동 정보를 insert 해주는 메서드
     @FormUrlEncoded
     @POST("userProcess.php")
-    suspend fun insertIntoPoseExercise(
+    suspend fun insertPoseExercise(
 
         @Field("id") id: String,
         @Field("category") category: String,
         @Field("exerciseName") exerciseName: String,
         @Field("exerciseCount") exerciseCount: Int,
         @Field("goalExerciseCount") goalExerciseCount: Int,
-        @Field("date") date: String,
+        @Field("date") date: Long,
         @Field("mode") mode: String
 
     ): Response<PoseExercise>
 
 
+    // 운동 정보 update 해주는 메서드
+    @FormUrlEncoded
+    @POST("userProcess.php")
+    suspend fun updatePoseExercise(
+
+        @Field("id") id: String,
+        @Field("category") category: String,
+        @Field("exerciseName") exerciseName: String,
+        @Field("exerciseCount") exerciseCount: Int,
+        @Field("goalExerciseCount") goalExerciseCount: Int,
+        @Field("date") date: Long,
+        @Field("mode") mode: String
+
+    ): Response<PoseExercise>
 
 }
