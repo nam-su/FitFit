@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.GridLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ChallengeRankAdapter
 import com.example.fitfit.adapter.CheckWeekExerciseAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
@@ -84,6 +86,13 @@ class HomeFragment : Fragment() {
 
             binding.constraintLayoutHome.visibility = View.VISIBLE
             binding.constraintLayoutAllExercise.visibility = View.GONE
+
+        }
+
+        binding.buttonSubscribe.setOnClickListener {
+
+            it.findNavController().navigate(R.id.payFragment)
+            (activity as MainActivity).goneBottomNavi()
 
         }
 
