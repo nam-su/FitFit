@@ -68,6 +68,10 @@
         <action
             android:id="@+id/action_exerciseFragment_to_exerciseChoiceFragment"
             app:destination="@id/exerciseChoiceFragment" />
+        <action
+            android:id="@+id/action_exerciseFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+
     </fragment>
 
     <fragment
