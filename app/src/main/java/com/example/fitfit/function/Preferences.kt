@@ -1,7 +1,6 @@
 package com.example.fitfit.function
 
 import android.content.Context
-import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import com.google.gson.Gson
@@ -95,7 +94,7 @@ class Preferences(context: Context) {
 
                     PoseExercise(
 
-                        jsonObject.get("date").toString(),
+                        jsonObject.get("date").toString().toLong(),
                         jsonObject.get("category").toString(),
                         jsonObject.get("exerciseName").toString(),
                         jsonObject.get("exerciseCount").toString().toInt(),
@@ -150,12 +149,6 @@ class Preferences(context: Context) {
 
         val jsonObject = Gson().toJson(poseExercise)
 
-        Log.d("쉐어드에 저장", "updatePoseExercise: 날짜 : ${poseExercise.date}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 카운트 : ${poseExercise.exerciseCount}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 목표 : ${poseExercise.goalExerciseCount}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 이름 : ${poseExercise.exerciseName}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 분류 : ${poseExercise.category}")
-
         editor.putString(poseExercise.exerciseName, jsonObject)
         editor.apply()
 
@@ -171,7 +164,7 @@ class Preferences(context: Context) {
 
         return PoseExercise(
 
-            jsonObject.get("date").toString(),
+            jsonObject.get("date").toString().toLong(),
             jsonObject.get("category").toString(),
             jsonObject.get("exerciseName").toString(),
             jsonObject.get("exerciseCount").toString().toInt(),
