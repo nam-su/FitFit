@@ -5,7 +5,9 @@ import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.model.UserModel
+import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
@@ -33,9 +35,21 @@ class UserViewModel : ViewModel() {
     val selectedMenuItem: LiveData<MenuItem>
         get() = _selectedMenuItem
 
-    private var _isLogout = MutableLiveData<Boolean>()
-    val isLogout: LiveData<Boolean>
-        get() = _isLogout
+    private var _isLogoutButtonClick = MutableLiveData<Boolean>()
+    val isLogoutButtonClick: LiveData<Boolean>
+        get() = _isLogoutButtonClick
+
+    private var _isProgressButtonClick = MutableLiveData<Boolean>()
+    val isProgressButtonClick: LiveData<Boolean>
+        get() = _isProgressButtonClick
+
+    private var _isWithdrawalButtonClick = MutableLiveData<Boolean>()
+    val isWithdrawalButtonClick: LiveData<Boolean>
+        get() = _isWithdrawalButtonClick
+
+    private var _isWithdrawalSuccess = MutableLiveData<String>()
+    val isWithdrawalSuccess: LiveData<String>
+        get() = _isWithdrawalSuccess
 
 
     // 유저 정보 쉐어드에서 호출
@@ -63,24 +77,77 @@ class UserViewModel : ViewModel() {
     fun setOnDialogOkButtonClick(buttonOkText: String) {
 
         when(buttonOkText){
+
             "로그아웃" -> {
                 userModel.setSharedPreferencesRemoveUserInfo()
-                setIsLogout(true)
+                setIsLogoutButtonClick(true)
             }
-            "회원탈퇴" -> Log.d(TAG, "setOnDialogOkButtonClick: 회원탈퇴")
-            "진행" -> Log.d(TAG, "setOnDialogOkButtonClick: 확인")
+            "회원탈퇴" -> { setIsWithdrawalButtonClick(true) }
 
+            "진행" -> {
+                setIsProgressButtonClick(true)
+
+                Log.d(TAG, "setOnDialogOkButtonClick: 진행")
+            }
         }
-
 
     } // setSharedPreferencesUserInfo()
 
 
 
+    //_isLogoutButtonClick 값 변경
+    fun setIsLogoutButtonClick(value:Boolean){
+        _isLogoutButtonClick.value = value
+    }
 
-    //isLogout 값 변경
-    fun setIsLogout(value:Boolean){
-        _isLogout.value = value
+
+
+    //_isLogoutButtonClick 값 변경
+    fun setIsProgressButtonClick(value:Boolean){
+        _isProgressButtonClick.value = value
+    }
+
+
+
+    //_isWithdrawalButtonClick 값 변경
+    fun setIsWithdrawalButtonClick(value:Boolean){
+        _isWithdrawalButtonClick.value = value
+    }
+
+
+    //회원탈퇴 통신 메서드
+    fun withdrawal(){
+
+        /**서버 데이터 삭제 메서드**/
+        viewModelScope.launch {
+
+            Log.d(TAG, "코루틴 시작")
+            val response =  userModel.withdrawalProcess(userModel.getUser().id,"withdrawal")
+
+            if(response.isSuccessful && response.body() != null) {
+
+                val user = response.body()!!
+
+                when(user.result){
+
+                    "failure" -> _isWithdrawalSuccess.value = "failure"
+                    else -> {
+                        _isWithdrawalSuccess.value = "success"
+                        userModel.setSharedPreferencesRemoveUserInfo()
+                    }
+                }
+
+                // 통신 실패의 경우
+            } else {
+                Log.d(TAG, "withdrawal: ${response.message()}")
+                Log.d(TAG, "withdrawal: ${response.isSuccessful}")
+                Log.d(TAG, "withdrawal: ${response.body()}")
+                _isWithdrawalSuccess.value = "disconnect"
+            }
+
+        }
+
+        Log.d(TAG, "setOnDialogOkButtonClick: 회원탈퇴")
     }
 
 }

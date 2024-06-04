@@ -92,12 +92,16 @@
         android:id="@+id/userFragment"
         android:name="com.example.fitfit.fragment.UserFragment"
         android:label="fragment_user"
+        app:popUpToInclusive="true"
         tools:layout="@layout/fragment_user">
 
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_userFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
             />
 
     </fragment>

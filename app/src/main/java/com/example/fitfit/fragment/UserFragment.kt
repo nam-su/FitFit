@@ -10,9 +10,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
@@ -28,11 +32,13 @@ class UserFragment : Fragment() {
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
     lateinit var userViewModel: UserViewModel
 
-
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user,container,false)
+
+        setVariable()
+        setBackPressed()
 
         return binding.root
 
@@ -43,7 +49,6 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setVariable()
         setListener()
         setObserve()
 
@@ -69,13 +74,18 @@ class UserFragment : Fragment() {
 
         //설정 버튼 누르기
         binding.imageButtonSetting.setOnClickListener {
-           binding.drawerLayout.openDrawer(GravityCompat.END)
+
+            setAllMenuFalse()
+
+            binding.drawerLayout.openDrawer(GravityCompat.END)
         }
+
 
 
         // NavigationView의 아이템 선택 리스너 설정
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             userViewModel.selectItem(menuItem)
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
             true
         }
     }
@@ -88,23 +98,19 @@ class UserFragment : Fragment() {
         //메뉴 선택에 대한 리스너
         userViewModel.selectedMenuItem.observe(viewLifecycleOwner){ setSelectedMenuItem(it) }
 
-        //로그아웃 버튼 클릭
-        userViewModel.isLogout.observe(viewLifecycleOwner){
+        //로그아웃 버튼 클릭 관찰
+        userViewModel.isLogoutButtonClick.observe(viewLifecycleOwner){ setIsLogoutButtonClick(it) }
 
-            when(it){
-                true -> { // 로그아웃 버튼 클릭 감지하면 로그아웃 프래그먼트로 이동 후 로그아웃 false값으로 변경
-                    this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
-                    userViewModel.setIsLogout(false)
+        //다이얼로그 회원 탈퇴 절차 진행 버튼 클릭 관찰
+        userViewModel.isProgressButtonClick.observe(viewLifecycleOwner){ setIsProgressButtonClick(it) }
 
-                    //바텀 네비게이션 GONE 처리
-                    (activity as MainActivity).goneBottomNavi()
-                }
-                false -> {}
-            }
+        //다이얼로그 회원 탈퇴 버튼 클릭 관찰
+        userViewModel.isWithdrawalButtonClick.observe(viewLifecycleOwner){ setIsWithdrawalButtonClick(it) }
 
-        }
+        //다이얼로그 회원 탈퇴 버튼 클릭 관찰
+        userViewModel.isWithdrawalSuccess.observe(viewLifecycleOwner) { setIsWithdrawalSuccess(it) }
 
-    }
+    } //setObserve()
 
 
 
@@ -120,13 +126,76 @@ class UserFragment : Fragment() {
 
 
 
+    // 로그아웃 버튼 클릭 상태에 대한 처리
+    private fun setIsLogoutButtonClick(it:Boolean){
+
+        if(it){
+            // 로그아웃 버튼 클릭 감지하면 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
+            this.findNavController().navigate(R.id.action_userFragment_to_loginFragment, null,
+                NavOptions.Builder().setPopUpTo(findNavController().graph.startDestinationId, true).build())
+
+            userViewModel.setIsLogoutButtonClick(false)
+            //바텀 네비게이션 GONE 처리
+            (activity as MainActivity).goneBottomNavi()
+        }
+
+    } //setIsLogoutButtonClick()
+
+
+
+    // 다이얼로그 내의 진행버튼 클릭 상태에 대한 처리
+    private fun setIsProgressButtonClick(it: Boolean){
+
+        if(it){
+            setCustomDialog(getString(R.string.withdrawal),getString(R.string.withdrawalDialogContent))
+            customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            userViewModel.setIsProgressButtonClick(false)
+        }
+
+    }
+
+
+
+    // 다이얼로그 내의 회원탈퇴 클릭 상태에 대한 처리
+    private fun setIsWithdrawalButtonClick(it: Boolean){
+
+        if(it){
+            userViewModel.withdrawal()
+            userViewModel.setIsWithdrawalButtonClick(false)
+        }
+
+    }
+
+
+
+    // 회원탈퇴 성공 여부에 대한 처리
+    private fun setIsWithdrawalSuccess(it: String){
+        when(it){
+            "success" -> {
+                // 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
+                this.findNavController().navigate(R.id.action_userFragment_to_loginFragment, null,
+                    NavOptions.Builder().setPopUpTo(findNavController().graph.startDestinationId, true).build())
+
+                userViewModel.setIsWithdrawalButtonClick(false)
+
+                //바텀 네비게이션 GONE 처리
+                (activity as MainActivity).goneBottomNavi()
+
+                Toast.makeText(requireActivity(), "회원탈퇴가 정상적으로 처리 되었습니다.",Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(requireContext(), "인터넷 연결이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }//setIsWithdrawalSuccess()
+
+    
+
     //drawerLayout에 체크된 메뉴아이템 관찰 대한 처리
     private fun setSelectedMenuItem(it : MenuItem){
 
-        setAllMenuFalse()
-
-        //네비게이션 메뉴 선택 효과 주기
-        //isChecked = true : 메뉴 텍스트 굵기가 굵어짐.
+        // 네비게이션 메뉴 선택 효과 주기
+        // isChecked = true : 메뉴 텍스트 굵기가 굵어짐.
         it.isChecked = true
 
         Log.d(TAG, "setObserve: $it")
@@ -148,7 +217,7 @@ class UserFragment : Fragment() {
             "회원탈퇴"  -> {
                 //회원탈퇴 진행 다이얼로그
                 Log.d(TAG, "setObserve: 회원탈퇴 다이얼로그")
-                setCustomDialog(getString(R.string.progress),getString(R.string.withdrawalDialogContent))
+                setCustomDialog(getString(R.string.progress),getString(R.string.progressDialogContent))
                 customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
 
             }
@@ -170,7 +239,7 @@ class UserFragment : Fragment() {
         //다이얼로그 생성
         val dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
-            .setCancelable(false)
+            .setCancelable(true)
             .create()
 
         //뒷배경 투명으로 바꿔서 둥근모서리 보이게
@@ -195,5 +264,34 @@ class UserFragment : Fragment() {
 
 
 
+    // DrawerLayout을 닫는 메서드 추가
+    private fun closeDrawerIfNeeded() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+        }
+    }
+
+
+
+
+    //뒤로가기 버튼 제어
+    private fun setBackPressed() {
+
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+
+            closeDrawerIfNeeded() // 뒤로가기 버튼을 누를 때 DrawerLayout을 닫습니다.
+
+            if (!binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                requireActivity().finish()
+            }
+
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        closeDrawerIfNeeded()
+    }
 
 }

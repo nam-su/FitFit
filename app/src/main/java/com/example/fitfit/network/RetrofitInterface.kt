@@ -24,6 +24,32 @@ interface RetrofitInterface {
     ): Response<User>
 
 
+
+    // 회원가입
+    @FormUrlEncoded
+    @POST("userProcess.php")
+    suspend fun signUp(
+
+        @Field("id") id: String,
+        @Field("password") password: String,
+        @Field("nickname") nickname: String,
+        @Field("mode") mode: String
+
+    ): Response<User>
+
+
+
+    // 회원가입
+    @FormUrlEncoded
+    @POST("userProcess.php")
+    suspend fun withdrawal(
+
+        @Field("id") id: String,
+        @Field("mode") mode: String
+
+    ): Response<User>
+
+
     @FormUrlEncoded
     @POST("userProcess.php")
     suspend fun insertIntoPoseExercise(

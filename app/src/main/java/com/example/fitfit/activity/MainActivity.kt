@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 
@@ -15,13 +14,6 @@ import androidx.navigation.ui.NavigationUI
 import com.example.fitfit.R
 import com.example.fitfit.databinding.ActivityMainBinding
 
-import com.example.fitfit.fragment.HomeFragment
-import com.example.fitfit.fragment.LoginFragment
-import com.example.fitfit.fragment.SplashFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
