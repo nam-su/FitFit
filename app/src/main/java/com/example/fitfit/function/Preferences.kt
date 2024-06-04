@@ -64,19 +64,6 @@ class Preferences(context: Context) {
 
 
 
-    //유저 정보 쉐어드에서 삭제하는 메서드
-    fun removeUser(){
-
-        editor.remove("id")
-        editor.remove("nickname")
-        editor.remove("loginType")
-        editor.remove("profileImagePath")
-        editor.remove("subscription")
-        editor.apply()
-
-    } //removeUser()
-
-
     // 스케쥴링한 운동 리스트 불러오는 메서드
     fun getPoseExerciseList(): ArrayList<PoseExercise> {
 
@@ -180,5 +167,13 @@ class Preferences(context: Context) {
         )
 
     } // loadPoseExercise
+
+
+
+    //로그아웃 또는 회원탈퇴 시 쉐어드 모든 데이터 삭제
+    fun removeAll(){
+        editor.clear()
+        editor.apply()
+    }
 
 }

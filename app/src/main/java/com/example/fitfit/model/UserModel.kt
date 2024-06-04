@@ -41,7 +41,7 @@ class UserModel {
     // 쉐어드에 유저 정보 삭제
     fun setSharedPreferencesRemoveUserInfo() {
 
-        MyApplication.sharedPreferences.removeUser()
+        MyApplication.sharedPreferences.removeAll()
 
     } // setSharedPreferencesUserInfo()
 

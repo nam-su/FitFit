@@ -5,12 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="userViewModel"
             type="com.example.fitfit.viewModel.UserViewModel" />
-
     </data>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
@@ -46,8 +45,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--유저 프로필 이미지-->
-        <ImageView
-            android:id="@+id/imageViewUserProfile"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewUserProfile"
             android:src="@drawable/user_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +63,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewUserProfile">
+            app:layout_constraintTop_toBottomOf="@id/circleImageViewUserProfile">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -131,9 +131,7 @@ class UserFragment : Fragment() {
 
         if(it){
             // 로그아웃 버튼 클릭 감지하면 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
-            this.findNavController().navigate(R.id.action_userFragment_to_loginFragment, null,
-                NavOptions.Builder().setPopUpTo(findNavController().graph.startDestinationId, true).build())
-
+            this.findNavController().popBackStack()
             userViewModel.setIsLogoutButtonClick(false)
             //바텀 네비게이션 GONE 처리
             (activity as MainActivity).goneBottomNavi()
@@ -189,7 +187,7 @@ class UserFragment : Fragment() {
         }
     }//setIsWithdrawalSuccess()
 
-    
+
 
     //drawerLayout에 체크된 메뉴아이템 관찰 대한 처리
     private fun setSelectedMenuItem(it : MenuItem){
@@ -203,6 +201,8 @@ class UserFragment : Fragment() {
             "프로필 수정"  -> {
                 //프로필 수정 프래그먼트로 이동
                 Log.d(TAG, "setObserve: 프로필 수정 프래그먼트로 이동")
+                this.findNavController().navigate(R.id.action_userFragment_to_userEditFragment)
+                (activity as MainActivity).goneBottomNavi()
             }
            "비밀번호 변경"   -> {
                 //비밀번호 변경 프래그먼트로 이동
@@ -216,9 +216,14 @@ class UserFragment : Fragment() {
             }
             "회원탈퇴"  -> {
                 //회원탈퇴 진행 다이얼로그
-                Log.d(TAG, "setObserve: 회원탈퇴 다이얼로그")
-                setCustomDialog(getString(R.string.progress),getString(R.string.progressDialogContent))
-                customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                Log.d(TAG, "회원탈퇴 다이얼로그 구독권기한 ${userViewModel.subscription.value}")
+                if(userViewModel.subscription.value != ""){ //유저정보에 구독권 기간이 존재하면
+                    setCustomDialog(getString(R.string.progress),getString(R.string.progressDialogContent))
+                    customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                }else{ //구독권 기간이 존재하지 않으면
+                    userViewModel.setIsProgressButtonClick(true)
+                }
+
 
             }
             else -> {
@@ -293,5 +298,6 @@ class UserFragment : Fragment() {
         super.onDestroyView()
         closeDrawerIfNeeded()
     }
+
 
 }

@@ -1,60 +1,105 @@
 package com.example.fitfit.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
+import com.example.fitfit.databinding.FragmentUserBinding
+import com.example.fitfit.databinding.FragmentUserEditBinding
+import com.example.fitfit.viewModel.UserEditViewModel
+import com.example.fitfit.viewModel.UserViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UserEditFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UserEditFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val TAG = "유저 프래그먼트"
+
+    lateinit var binding: FragmentUserEditBinding
+    lateinit var userEditViewModel: UserEditViewModel
+
+    private val activityResultImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                userEditViewModel.setImageUri(uri,requireActivity())
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_edit, container, false)
+
+    // onCreateView
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user_edit,container,false)
+
+        setVariable()
+
+        return binding.root
+
+    } // onCreateView()
+
+
+    // onViewCreated
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setListener()
+        setObserve()
+
+    } // onViewCreated()
+
+
+    // 변수 초기화
+    private fun setVariable() {
+
+        userEditViewModel = UserEditViewModel()
+        binding.userEditViewModel = userEditViewModel
+
+        userEditViewModel.setUserInformation()
+
+
+    } // setVariable()
+
+
+
+    //setListener(){
+    private fun setListener(){
+
+        binding.imageViewBack.setOnClickListener{
+            this.findNavController().popBackStack()
+            (activity as MainActivity).visibleBottomNavi()
+        }
+
+        binding.imageViewAdd.setOnClickListener {
+            activityResultImage.launch(userEditViewModel.getGalleryIntent())
+        }
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserEditFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserEditFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
+
+    //setObserve()
+    private fun setObserve(){
+
+        userEditViewModel.selectedImageUri.observe(viewLifecycleOwner) {
+                Glide.with(this)
+                    .load(it)
+                    .into(binding.circleImageViewUserProfile)
             }
+        }
+
     }
-}
+
+
