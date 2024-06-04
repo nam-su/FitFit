@@ -1,31 +1,25 @@
 package com.example.fitfit.fragment
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.GravityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
-import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
-import com.example.fitfit.databinding.FragmentUserBinding
 import com.example.fitfit.databinding.FragmentUserEditBinding
 import com.example.fitfit.viewModel.UserEditViewModel
-import com.example.fitfit.viewModel.UserViewModel
 
 class UserEditFragment : Fragment() {
 
-    private val TAG = "유저 프래그먼트"
+    private val TAG = "유저 에딧 프래그먼트"
 
     lateinit var binding: FragmentUserEditBinding
     lateinit var userEditViewModel: UserEditViewModel
@@ -49,6 +43,7 @@ class UserEditFragment : Fragment() {
         return binding.root
 
     } // onCreateView()
+
 
 
     // onViewCreated
@@ -85,6 +80,12 @@ class UserEditFragment : Fragment() {
         binding.imageViewAdd.setOnClickListener {
             activityResultImage.launch(userEditViewModel.getGalleryIntent())
         }
+        
+        //nickname 다르게 입력할때마다 유효성 체크
+        binding.editTextNickname.addTextChangedListener {
+            userEditViewModel.validationNickname(it.toString())
+        }
+
 
     }
 
@@ -94,12 +95,54 @@ class UserEditFragment : Fragment() {
     private fun setObserve(){
 
         userEditViewModel.selectedImageUri.observe(viewLifecycleOwner) {
+
                 Glide.with(this)
                     .load(it)
                     .into(binding.circleImageViewUserProfile)
-            }
+
+            setTextViewComplete(userEditViewModel.isNicknameValid.value)
+
         }
 
+
+        userEditViewModel.isNicknameValid.observe(viewLifecycleOwner){
+
+            if(!userEditViewModel.selectedImageUri.isInitialized) {
+                if (it && userEditViewModel.nickname.value != binding.editTextNickname.text.toString()) {
+                    setTextViewComplete(true)
+                } else {
+                    setTextViewComplete(false)
+                }
+            }else{
+                setTextViewComplete(it)
+            }
+
+        }
+
+        }
+
+
+    //완료할수있는지 여부에 따른 뷰
+    private fun setTextViewComplete(it: Boolean?){
+
+        when(it){
+            true -> {
+                binding.textViewComplete.isEnabled = true
+                binding.textViewComplete.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+            }
+            else -> {
+                binding.textViewComplete.isEnabled = false
+                binding.textViewComplete.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.halfGrey
+                    )
+                )
+
+            }
+
+        }
+    }
     }
 
 

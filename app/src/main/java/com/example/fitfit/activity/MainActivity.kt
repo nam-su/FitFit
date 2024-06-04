@@ -82,31 +82,31 @@ class MainActivity : AppCompatActivity() {
     //뒤로가기 버튼 클릭시
     private fun setBackPressed() {
 
-//        onBackPressedDispatcher.addCallback(this){
-//
-//            // R.id.fragment -> fragment에서 백버튼 눌렀을 때에대한 처리
-//            when(navController.currentDestination?.id){
-//
-//                R.id.loginFragment -> finish()
-//                R.id.homeFragment -> finish()
-//                R.id.exerciseFragment -> finish()
-//                R.id.diaryFragment -> finish()
-//                R.id.userFragment -> finish()
-//                R.id.exerciseChoiceFragment -> {
-//
-//                    navController.popBackStack()
-//                    binding.bottomNavigationView.visibility = View.VISIBLE
-//
-//                }
-//                R.id.poseDetectionFragment -> {
-//
-//                    navController.popBackStack()
-//
-//                }
-//
-//            }
-//
-//        }
+        onBackPressedDispatcher.addCallback(this){
+
+            // R.id.fragment -> fragment에서 백버튼 눌렀을 때에대한 처리
+            when(navController.currentDestination?.id){
+
+                R.id.loginFragment -> finish()
+                R.id.homeFragment -> finish()
+                R.id.exerciseFragment -> finish()
+                R.id.diaryFragment -> finish()
+                R.id.userFragment -> finish()
+                R.id.exerciseChoiceFragment -> {
+
+                    navController.popBackStack()
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+
+                }
+                R.id.poseDetectionFragment -> {
+
+                    navController.popBackStack()
+
+                }
+
+            }
+
+        }
 
     } // setBackPressed()
 

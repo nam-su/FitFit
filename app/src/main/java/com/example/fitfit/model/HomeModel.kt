@@ -4,9 +4,7 @@ import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
-
 class HomeModel() {
-
 
     // 홈에서 이번주 운동 상태 관련 메시지 정보
     fun setWeekStatus(): String {

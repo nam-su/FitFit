@@ -32,6 +32,14 @@ class UserEditViewModel {
     val selectedImageUri: LiveData<Uri>
         get() = _selectedImageUri
 
+    private val _isNicknameValid = MutableLiveData<Boolean>()
+    val isNicknameValid: LiveData<Boolean>
+        get() = _isNicknameValid
+
+    private val _isCompleteValid = MutableLiveData<Boolean>()
+    val isCompleteValid: LiveData<Boolean>
+        get() = _isCompleteValid
+
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation() {
 
@@ -50,12 +58,31 @@ class UserEditViewModel {
     }
 
 
-
-
+    // 갤러리에서 선택한 이미지 uri로 받아오기
     fun setImageUri(uri: Uri, activity:Activity) {
         _selectedImageUri.value = uri
         val contentResolver = activity.application.contentResolver
         contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
 
+
+
+    //닉네임 유효성 여부
+    fun validationNickname(nickname: String){
+
+        val pattern = Regex("^[가-힣]{3,8}$")
+
+        // (닉네임 3~8자 이내이면서 쉐어드의 닉네임과 다른경우) true
+        if(userEditModel.getUser().nickname == nickname){
+            _isNicknameValid.value = true
+        }else{
+            _isNicknameValid.value = pattern.matches(nickname)
+        }
+    }
+
+
+    //완료가능한지 여부 체크
+    fun validationComplete(value: Boolean){
+        _isCompleteValid.value = value
+    }
 }
