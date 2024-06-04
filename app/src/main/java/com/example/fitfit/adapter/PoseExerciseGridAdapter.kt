@@ -43,8 +43,8 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
             // 구독 후 이용가능한 프리미엄 운동이면 뱃지 보이게
             when(poseExercise.isPrimium) {
 
-                true -> binding.imageViewPremiumBadge.visibility = View.VISIBLE
-                else -> binding.imageViewPremiumBadge.visibility = View.GONE
+                1 -> binding.imageViewPremiumBadge.visibility = View.VISIBLE
+                0 -> binding.imageViewPremiumBadge.visibility = View.GONE
 
             }
 

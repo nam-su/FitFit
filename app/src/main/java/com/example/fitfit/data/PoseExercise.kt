@@ -7,10 +7,10 @@ class PoseExercise(
     @SerializedName("category") val category: String,
     @SerializedName("exerciseName") val exerciseName: String,
     @SerializedName("exerciseCount") var exerciseCount: Int,
-    @SerializedName("goalExerciseCount") val goalExerciseCount: Int) {
+    @SerializedName("goalExerciseCount") val goalExerciseCount: Int,
+    @SerializedName("checkList") var checkList: Int) {
 
     @SerializedName("result") var result: String? = null
-    @SerializedName("checkList") var checkList: Boolean? = false
-    @SerializedName("primium") var isPrimium: Boolean = false
+    @SerializedName("primium") var isPrimium: Int = 0
 
 }

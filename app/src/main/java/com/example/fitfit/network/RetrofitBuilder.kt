@@ -18,7 +18,7 @@ class RetrofitBuilder {
         if (retrofit == null) {
 
             retrofit = Retrofit.Builder()
-                .baseUrl("http://13.209.76.164/")
+                .baseUrl("http://15.164.49.94/")
                 .addConverterFactory(NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()

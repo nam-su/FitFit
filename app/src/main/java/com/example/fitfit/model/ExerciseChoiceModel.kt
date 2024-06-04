@@ -14,9 +14,9 @@ class ExerciseChoiceModel {
 
             0 ->{
 
-                exerciseChoiceList.add(PoseExercise(System.currentTimeMillis(),"스쿼트","기본 스쿼트",0,10))
-                exerciseChoiceList.add(PoseExercise(System.currentTimeMillis(),"푸시업","기본 푸시업",0,10))
-                exerciseChoiceList.add(PoseExercise(System.currentTimeMillis(),"런지","기본 런지",0,10))
+                exerciseChoiceList.add(PoseExercise(0,"스쿼트","기본 스쿼트",0,10,1))
+                exerciseChoiceList.add(PoseExercise(0,"푸시업","기본 푸시업",0,10,1))
+                exerciseChoiceList.add(PoseExercise(0,"런지","기본 런지",0,10,1))
 
                 MyApplication.sharedPreferences.setPoseExerciseList(exerciseChoiceList)
 

@@ -52,31 +52,31 @@ class HomeModel() {
 
         val allExerciseList = ArrayList<PoseExercise>()
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","",0,0))
-        allExerciseList.add(PoseExercise(0,"런지","",0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","",0,0))
-        allExerciseList.add(PoseExercise(0,"런지","",0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","",0,0))
-        allExerciseList.add(PoseExercise(0,"런지","",0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","",0,0))
-        allExerciseList.add(PoseExercise(0,"런지","",0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","",0,0))
-        allExerciseList.add(PoseExercise(0,"런지","",0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","",0,0,0))
 
         for (i:Int in 3 until allExerciseList.size) {
 
-            allExerciseList[i].isPrimium = true
+            allExerciseList[i].isPrimium = 1
 
         }
 

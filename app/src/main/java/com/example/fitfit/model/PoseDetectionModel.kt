@@ -1,6 +1,5 @@
 package com.example.fitfit.model
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -20,7 +19,6 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import retrofit2.Response
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -127,6 +125,7 @@ class PoseDetectionModel(context: Context) {
                 poseExercise.exerciseCount,
                 poseExercise.goalExerciseCount,
                 poseExercise.date,
+                poseExercise.checkList,
                 "updateUserExercise")
 
         // 날짜가 다른 경우에 insert 해준다.
@@ -141,6 +140,7 @@ class PoseDetectionModel(context: Context) {
                 poseExercise.exerciseCount,
                 poseExercise.goalExerciseCount,
                 poseExercise.date,
+                poseExercise.checkList,
                 "insertUserExercise")
 
         }

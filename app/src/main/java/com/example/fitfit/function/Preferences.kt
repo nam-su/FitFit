@@ -98,7 +98,8 @@ class Preferences(context: Context) {
                         jsonObject.get("category").toString(),
                         jsonObject.get("exerciseName").toString(),
                         jsonObject.get("exerciseCount").toString().toInt(),
-                        jsonObject.get("goalExerciseCount").toString().toInt()
+                        jsonObject.get("goalExerciseCount").toString().toInt(),
+                        jsonObject.get("checkList").toString().toInt()
 
                     )
 
@@ -168,7 +169,8 @@ class Preferences(context: Context) {
             jsonObject.get("category").toString(),
             jsonObject.get("exerciseName").toString(),
             jsonObject.get("exerciseCount").toString().toInt(),
-            jsonObject.get("goalExerciseCount").toString().toInt()
+            jsonObject.get("goalExerciseCount").toString().toInt(),
+            jsonObject.get("checkList").toString().toInt()
 
         )
 
