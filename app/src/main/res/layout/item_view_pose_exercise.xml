@@ -12,17 +12,36 @@
     
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp">
-        
+        android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/imageViewExerciseCategory"
             android:background="@drawable/layout_border"
             android:backgroundTint="@color/squat"
+            android:layout_margin="5dp"
             android:padding="10dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/imageButtonAddExerciseItem"
+            android:background="@drawable/button_add_exercise_item"
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/imageButtonDeleteExerciseItem"
+            android:background="@drawable/button_delete_exercise_item"
+            android:visibility="gone"
+            android:layout_margin="1dp"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 

@@ -11,6 +11,39 @@ class Preferences(context: Context) {
 
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
+    private val allExerciseList = ArrayList<PoseExercise>()
+
+    init {
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","기본 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","기본 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","기본 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","1번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","1번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","1번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","2번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","2번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","2번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","3번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","3번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","3번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","4번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","4번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","4번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","5번 스쿼트",0,0,0))
+
+        for (i:Int in 3 until allExerciseList.size) {
+
+            allExerciseList[i].isPrimium = 1
+
+        }
+
+    }
 
 
     // 유저 정보 불러오는 메서드
@@ -175,5 +208,13 @@ class Preferences(context: Context) {
         )
 
     } // loadPoseExercise
+
+
+    // 제공되는 운동 리스트 리턴
+    fun getAllExerciseList(): ArrayList<PoseExercise> {
+
+        return allExerciseList
+
+    }
 
 }
