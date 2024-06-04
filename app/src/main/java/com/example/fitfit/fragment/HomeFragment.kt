@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
 
         binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewChallengeRank())
 
-        binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.setRecyclerViewAllExercise(),false)
+        binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.setRecyclerViewAllExercise(),false,"")
         binding.recyclerViewPagedAllExercise.layoutManager = LinearLayoutManager(activity?.applicationContext,LinearLayoutManager.HORIZONTAL,false)
 
         binding.recyclerViewAllExercise.layoutManager = GridLayoutManager(activity?.applicationContext,4)

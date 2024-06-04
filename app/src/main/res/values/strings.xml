@@ -63,6 +63,12 @@
     <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
     <string name="exerciseCount">%1$d / %2$d</string>
 
+    <!--운동 편집 프래그먼트-->
+    <string name="myExerciseList">내 운동 리스트</string>
+    <string name="squat">스쿼트</string>
+    <string name="pushUp">푸시업</string>
+    <string name="lunge">런지</string>
+
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>
     <string name="subscribtion">플러스 구독</string>
