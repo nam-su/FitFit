@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
@@ -33,6 +34,14 @@ class ExerciseEditFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_edit,container,false)
 
+        // 뷰모델 초기화
+        exerciseEditViewModel = ExerciseEditViewModel()
+
+        // xml 파일에 뷰모델 연결
+        binding.exerciseEditViewModel = exerciseEditViewModel
+
+        binding.lifecycleOwner = viewLifecycleOwner
+
         return binding.root
 
     } // onCreateView()
@@ -43,15 +52,13 @@ class ExerciseEditFragment : Fragment() {
 
         setVariable()
         setClickListener()
+        setObserve()
 
     } // onViewCreated
 
 
     // 변수 초기화 메서드
     private fun setVariable() {
-
-        // 뷰모델 초기화
-        exerciseEditViewModel = ExerciseEditViewModel()
 
         // 내 운동 리스트 리사이클러뷰
         myPoseExerciseAdapter =
@@ -83,6 +90,34 @@ class ExerciseEditFragment : Fragment() {
     } // setVariable()
 
 
+    // observe하는 메서드
+    private fun setObserve() {
+
+        // 최소 사이즈 감지 후 토스트
+        exerciseEditViewModel.checkMyExerciseListSizeMin.observe(viewLifecycleOwner) {
+
+            if (!it) {
+
+                Toast.makeText(requireContext(),"최소 3개 이상의 운동이 있어야 합니다.",Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+
+        // 최대 사이즈 감지 후 토스트
+        exerciseEditViewModel.checkMyExerciseListSizeMax.observe(viewLifecycleOwner) {
+
+            if(!it) {
+
+                Toast.makeText(requireContext(),"최대 20개 이상의 운동까지 추가 가능합니다.",Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+
+    } // setObserve
+
+
     // 클릭 리스너 초기화 하는 메서드
     private fun setClickListener() {
 
@@ -94,39 +129,61 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
+        // 내 운동리스트에서 삭제 버튼 눌렀을 때
         myPoseExerciseAdapter.exerciseEditItemDeleteButtonClick = object :PoseExerciseAdapter.ExerciseEditItemDeleteButtonClick{
 
             override fun onDeleteButtonClick(view: View, position: Int) {
 
                 exerciseEditViewModel.deleteExerciseItem(myPoseExerciseAdapter.poseExerciseList,position)
-//                myPoseExerciseAdapter.poseExerciseList.removeAt(position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
 
             }
 
         }
 
+
+        // 스쿼트리스트에서 추가 버튼 눌렀을 때
         allSquatAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
             override fun onAddButtonClick(view: View, position: Int) {
-                TODO("Not yet implemented")
+
+                exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)
+                myPoseExerciseAdapter.notifyDataSetChanged()
+
             }
 
         }
 
+
+        // 푸시업 리스트에서 추가버튼 눌렀을 때
         allPushUpAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
             override fun onAddButtonClick(view: View, position: Int) {
-                TODO("Not yet implemented")
+
+                exerciseEditViewModel.addExerciseItem(allPushUpAdapter.poseExerciseList,position)
+                myPoseExerciseAdapter.notifyDataSetChanged()
+
             }
 
         }
 
+
+        // 런지 리스트에서 추가버튼 눌렀을 때
         allLungeAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
             override fun onAddButtonClick(view: View, position: Int) {
-                TODO("Not yet implemented")
+
+                exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)
+                myPoseExerciseAdapter.notifyDataSetChanged()
+
             }
+
+        }
+
+
+        // 리스트 편집 후 완료 버튼 눌렀을 때
+        binding.textViewEditComplete.setOnClickListener {
+
 
         }
 

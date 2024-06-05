@@ -24,6 +24,8 @@ class ExerciseEditModel {
 
     }
 
+
+    // 내 운동리스트 읽어와서 세팅한다.
     fun setMyExerciseList(): ArrayList<PoseExercise> {
 
         myExerciseList = MyApplication.sharedPreferences.getPoseExerciseList()
@@ -53,36 +55,12 @@ class ExerciseEditModel {
     } // setAllCategoryList()
 
 
-    // 모든 스쿼트 리스트 세팅하는 메서드
-    fun setAllSquatList(): ArrayList<PoseExercise> {
-
-        Log.d(TAG, "setAllSquatList: 내 운동리스트 사이즈" +myExerciseList.size )
-        Log.d(TAG, "setAllSquatList: 스쿼트 리스트 사이즈 " + allSquatList.size)
-
-        for (i:Int in 0 until myExerciseList.size){
-
-            Log.d(TAG, "setAllSquatList: " + allSquatList.contains(myExerciseList[i]))
-
-            if(allSquatList.contains(myExerciseList[i])){
-
-                Log.d(TAG, "setAllSquatList: 여기로 들어오는가")
-                allSquatList.remove(myExerciseList[i])
-
-            }
-
-        }
-
-        return allSquatList
-
-    } // getAllSquatList()
-
-
-    // 모든 스쿼트 리스트 리턴하는 메서드
+    // 모든 스쿼트 리스트 리턴
     fun getAllSquatList(): ArrayList<PoseExercise> {
 
         return allSquatList
 
-    }
+    } // getAllSquatList()
 
 
     // 모든 푸시업 리스트 리턴하는 메서드
@@ -102,18 +80,36 @@ class ExerciseEditModel {
 
 
     // 내 운동 리스트에서 아이템 삭제하는 메서드
-    fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int) {
+    fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int): Boolean {
 
-//        when(allExerciseList[position].category) {
-//
-//            "스쿼트" -> allSquatList.add(allExerciseList[position])
-//            "푸시업" -> allPushUpList.add(allExerciseList[position])
-//            "런지" ->  allLungeList.add(allExerciseList[position])
-//
-//        }
+        return if (myExerciseList.size > 3) {
 
-        myExerciseList.removeAt(position)
+            myExerciseList.removeAt(position)
+            true
+
+        } else {
+
+            false
+
+        }
 
     } // deleteExerciseItem()
+
+
+    // 내 운동 리스트에 아이템 추가하는 메서드
+    fun addExerciseItem(poseExercise: PoseExercise): Boolean {
+
+        return if(myExerciseList.size < 20) {
+
+            myExerciseList.add(poseExercise)
+            true
+
+        } else {
+
+            false
+
+        }
+
+    } // addExerciseItem()
 
 }

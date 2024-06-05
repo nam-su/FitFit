@@ -51,6 +51,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageButtonEditBack"/>
 
+        <TextView
+            android:id="@+id/textViewMyExerciseListSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{exerciseEditViewModel.myExerciseListSize}"
+            style="@style/defaultBlackTextStyle"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="@id/textViewMyExerciseList"
+            app:layout_constraintEnd_toEndOf="@id/textViewMyExerciseList"
+            app:layout_constraintBottom_toBottomOf="@id/textViewMyExerciseList"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMyPoseExerciseList"
             android:layout_margin="10dp"
