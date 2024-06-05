@@ -38,9 +38,17 @@ class UserEditModel {
 
 
     // 프로필 수정한 값 서버에 저장
-    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody): Response<User> {
+    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody, mode: RequestBody): Response<User> {
 
-        return retrofitInterface.profileEdit(image,id,nickname)
+        return retrofitInterface.profileEdit(image,id,nickname, mode)
+
+    } // withdrawalProcess()
+
+
+    // 프로필 수정한 값 서버에 저장
+    suspend fun profileEditWithoutImage(id: String, nickname: String, mode: String): Response<User> {
+
+        return retrofitInterface.profileEditWithoutImage(id,nickname,mode)
 
     } // withdrawalProcess()
 

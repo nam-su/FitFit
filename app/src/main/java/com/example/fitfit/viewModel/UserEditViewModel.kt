@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -94,31 +95,47 @@ class UserEditViewModel :ViewModel() {
 
     // 프로필 수정 메서드
     fun profileEdit(activity: Activity, nickname: String){
+
         Log.d(TAG, "profileEdit: 1")
         viewModelScope.launch {
 
             Log.d(TAG, "profileEdit: 2")
 
+            var mode:String = if(selectedImageUri.value != null){ "withImage" }else{ "withoutImage" }
+
             val image = if(selectedImageUri.value != null){
                 val imageFile = File(getRealPathFromUri(activity, selectedImageUri.value))
                 val requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
                 MultipartBody.Part.createFormData("image", imageFile.name, requestBody)
-            } else{
-                null
-            }
+            } else{ null }
 
                Log.d(TAG, "profileEdit: 3")
             // 문자열 값을 RequestBody로 변환합니다.
+            Log.d(TAG, "profileEdit: $image")
+            Log.d(TAG, "profileEdit: $mode")
+
             val requestBodyId: RequestBody = RequestBody.create(MediaType.parse("text/plain"), userEditModel.getUser().id)
             val requestBodyNickname: RequestBody = RequestBody.create(MediaType.parse("text/plain"), nickname)
+            val requestBodyMode: RequestBody = RequestBody.create(MediaType.parse("text/plain"), mode)
 
+            val response = if(selectedImageUri.value != null){
+                userEditModel.profileEdit(image!!,requestBodyId,requestBodyNickname, requestBodyMode)
+            }else{
+                userEditModel.profileEditWithoutImage(userEditModel.getUser().id,nickname,mode)
+            }
 
-            val response =  userEditModel.profileEdit(image!!,requestBodyId,requestBodyNickname)
+            Log.d(TAG, "profileEdit: ${response.isSuccessful}")
+            Log.d(TAG, "profileEdit: ${response.body()!!.result}")
 
             if(response.isSuccessful && response.body() != null){
+
                     _profileEditResult.value = response.body()!!.result
+
+                // 이미지업로드와 닉네임변경 성공했을 때만 쉐어드 갱신
+                if(_profileEditResult.value == "success"){
                     setSharedPreferencesUserinfo(response.body()!!)
                     setUserInformation()
+                }
             }else{
                 _profileEditResult.value = "failure"
             }

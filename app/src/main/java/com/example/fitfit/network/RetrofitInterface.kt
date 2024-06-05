@@ -79,9 +79,25 @@ interface RetrofitInterface {
 
         @Part image: MultipartBody.Part?,
         @Part("id") id: RequestBody,
-        @Part("nickname") nickname: RequestBody
+        @Part("nickname") nickname: RequestBody,
+        @Part("mode") mode: RequestBody
+
+
+        ): Response<User>
+
+
+
+    //프로필 수정
+    @FormUrlEncoded
+    @POST("profileEditProcess.php")
+    suspend fun profileEditWithoutImage(
+
+        @Field("id") id: String,
+        @Field("nickname") nickname: String,
+        @Field("mode") mode: String
 
     ): Response<User>
+
 
 
 

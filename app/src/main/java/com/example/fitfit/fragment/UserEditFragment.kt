@@ -156,8 +156,8 @@ class UserEditFragment : Fragment() {
                 "success" -> {
                     Toast.makeText(requireContext(), "프로필 수정이 완료 되었습니다.", Toast.LENGTH_SHORT).show()
                 }
-                "nicknameDuplicate" -> Toast.makeText(requireContext(), "중복검사에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                else -> Toast.makeText(requireContext(), "통신이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
+                "nicknameDuplicate" -> Toast.makeText(requireContext(), "사용할 수 없는 닉네임 입니다.", Toast.LENGTH_SHORT).show()
+                else -> Toast.makeText(requireContext(), "통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
             }
             this.findNavController().popBackStack()
             (activity as MainActivity).visibleBottomNavi()
