@@ -2,11 +2,15 @@ package com.example.fitfit.network
 
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import java.util.Objects
 
 interface RetrofitInterface {
@@ -39,7 +43,7 @@ interface RetrofitInterface {
 
 
 
-    // 회원가입
+    // 회원 탈퇴
     @FormUrlEncoded
     @POST("userProcess.php")
     suspend fun withdrawal(
@@ -50,6 +54,8 @@ interface RetrofitInterface {
     ): Response<User>
 
 
+
+    //운동정보 추가
     @FormUrlEncoded
     @POST("userProcess.php")
     suspend fun insertIntoPoseExercise(
@@ -63,6 +69,20 @@ interface RetrofitInterface {
         @Field("mode") mode: String
 
     ): Response<PoseExercise>
+
+
+
+    //프로필 수정
+    @Multipart
+    @POST("profileEditProcess.php")
+    suspend fun profileEdit(
+
+        @Part image: MultipartBody.Part?,
+        @Part("id") id: RequestBody,
+        @Part("nickname") nickname: RequestBody
+
+    ): Response<User>
+
 
 
 

@@ -2,10 +2,15 @@ package com.example.fitfit.model
 
 import android.content.Intent
 import android.provider.MediaStore
+import android.util.Log
+import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Response
 
 class UserEditModel {
 
@@ -30,5 +35,30 @@ class UserEditModel {
         }
         return intent
     }
+
+
+    // 프로필 수정한 값 서버에 저장
+    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody): Response<User> {
+
+        return retrofitInterface.profileEdit(image,id,nickname)
+
+    } // withdrawalProcess()
+
+
+
+    // 쉐어드에 유저정보 저장.
+    fun setSharedPreferencesUserInfo(user: User) {
+
+        MyApplication.sharedPreferences.setUser(user)
+
+    } // setSharedPreferencesUserInfo()
+
+
+
+    // 레트로핏에서 baseurl 경로 받아오기
+    fun getBaseUrl(): String{
+        return retrofitBuilder.baseUrl.toString()
+    }
+
 
 }

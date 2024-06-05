@@ -45,4 +45,11 @@ class UserModel {
 
     } // setSharedPreferencesUserInfo()
 
+
+
+    // 레트로핏에서 baseurl 경로 받아오기
+    fun getBaseUrl(): String{
+        return retrofitBuilder.baseUrl.toString()
+    }
+
 }

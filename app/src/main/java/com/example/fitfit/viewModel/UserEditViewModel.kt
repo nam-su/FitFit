@@ -1,20 +1,27 @@
 package com.example.fitfit.viewModel
 
 import android.app.Activity
-import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
-import androidx.activity.result.contract.ActivityResultContracts
+import android.os.ParcelFileDescriptor
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.Glide
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.fitfit.data.User
 import com.example.fitfit.model.UserEditModel
-import com.example.fitfit.model.UserModel
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 
 
-class UserEditViewModel {
+class UserEditViewModel :ViewModel() {
 
     private val TAG = "유저 에딧 뷰모델"
 
@@ -36,9 +43,12 @@ class UserEditViewModel {
     val isNicknameValid: LiveData<Boolean>
         get() = _isNicknameValid
 
-    private val _isCompleteValid = MutableLiveData<Boolean>()
-    val isCompleteValid: LiveData<Boolean>
-        get() = _isCompleteValid
+
+    private val _profileEditResult = MutableLiveData<String>()
+    val profileEditResult: LiveData<String>
+        get() = _profileEditResult
+
+    var baseUrl: String = userEditModel.getBaseUrl()
 
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation() {
@@ -81,8 +91,104 @@ class UserEditViewModel {
     }
 
 
-    //완료가능한지 여부 체크
-    fun validationComplete(value: Boolean){
-        _isCompleteValid.value = value
+
+    // 프로필 수정 메서드
+    fun profileEdit(activity: Activity, nickname: String){
+        Log.d(TAG, "profileEdit: 1")
+        viewModelScope.launch {
+
+            Log.d(TAG, "profileEdit: 2")
+
+            val image = if(selectedImageUri.value != null){
+                val imageFile = File(getRealPathFromUri(activity, selectedImageUri.value))
+                val requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
+                MultipartBody.Part.createFormData("image", imageFile.name, requestBody)
+            } else{
+                null
+            }
+
+               Log.d(TAG, "profileEdit: 3")
+            // 문자열 값을 RequestBody로 변환합니다.
+            val requestBodyId: RequestBody = RequestBody.create(MediaType.parse("text/plain"), userEditModel.getUser().id)
+            val requestBodyNickname: RequestBody = RequestBody.create(MediaType.parse("text/plain"), nickname)
+
+
+            val response =  userEditModel.profileEdit(image!!,requestBodyId,requestBodyNickname)
+
+            if(response.isSuccessful && response.body() != null){
+                    _profileEditResult.value = response.body()!!.result
+                    setSharedPreferencesUserinfo(response.body()!!)
+                    setUserInformation()
+            }else{
+                _profileEditResult.value = "failure"
+            }
+
+        }
+    } // profileEdit()
+
+
+    //uri에서 realpath 뽑아오기
+    private fun getRealPathFromUri(activity: Activity, uri: Uri?): String? {
+
+        var filePath: String? = null
+        var parcelFileDescriptor: ParcelFileDescriptor? = null
+        var fileInputStream: FileInputStream? = null
+        var fileOutputStream: FileOutputStream? = null
+
+            try {
+                parcelFileDescriptor = activity.contentResolver.openFileDescriptor(uri!!, "r")
+                if (parcelFileDescriptor != null) {
+                    fileInputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+
+                    // 파일을 저장할 임시 디렉토리를 만든다.
+                    val tempDir = activity.applicationContext.cacheDir
+                    val tempFile =
+                        File.createTempFile("profile" + userEditModel.getUser().id, null, tempDir)
+
+                    // 파일을 복사합니다.
+                    fileOutputStream = FileOutputStream(tempFile)
+                    val buffer = ByteArray(1024)
+                    var bytesRead: Int
+                    while (fileInputStream.read(buffer).also { bytesRead = it } != -1) {
+                        fileOutputStream.write(buffer, 0, bytesRead)
+                    }
+
+                    // 파일 경로 설정
+                    filePath = tempFile.absolutePath
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+                // 리소스 해제
+                try {
+                    fileInputStream?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                try {
+                    fileOutputStream?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                try {
+                    parcelFileDescriptor?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+
+
+        Log.d(TAG, "getRealPathFromUri: $filePath")
+        return filePath
     }
+
+
+
+    // 프로필 수정 성공했을때 Shared에 데이터 추가해준다.
+    private fun setSharedPreferencesUserinfo(user: User) {
+        Log.d(TAG, "setSharedPreferencesUserinfo: 여그?")
+        userEditModel.setSharedPreferencesUserInfo(user)
+
+    } // setSharedPreferencesUserInfo()
+
 }

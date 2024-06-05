@@ -15,6 +15,8 @@ class UserViewModel : ViewModel() {
 
     private val userModel = UserModel()
 
+    var baseUrl: String = userModel.getBaseUrl()
+
     private var _email = MutableLiveData<String>()
     val email: LiveData<String>
         get() = _email
@@ -26,6 +28,11 @@ class UserViewModel : ViewModel() {
     private var _loginType = MutableLiveData<String>()
     val loginType: LiveData<String>
         get() = _loginType
+
+    private var _profileImagePath = MutableLiveData<String>()
+    val profileImagePath: LiveData<String>
+        get() = _profileImagePath
+
 
     private var _subscription = MutableLiveData<String>()
     val subscription: LiveData<String>
@@ -61,6 +68,7 @@ class UserViewModel : ViewModel() {
         _nickname.value = user.nickname
         _loginType.value = user.loginType
         _subscription.value = user.subscription
+        _profileImagePath.value = userModel.getBaseUrl()+user.profileImagePath
 
     } // setUserInformation()
 

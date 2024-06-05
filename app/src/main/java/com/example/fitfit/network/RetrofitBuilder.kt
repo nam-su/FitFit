@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitBuilder {
 
     var retrofit: Retrofit? = null
+    var baseUrl: String? = "http://15.164.49.94/"
 
     fun getRetrofitObject(): Retrofit? {
 
@@ -18,7 +19,7 @@ class RetrofitBuilder {
         if (retrofit == null) {
 
             retrofit = Retrofit.Builder()
-                .baseUrl("http://15.164.49.94/")
+                .baseUrl(baseUrl)
                 .addConverterFactory(NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()

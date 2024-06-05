@@ -52,7 +52,6 @@ class Preferences(context: Context) {
 
     // 유저 정보 쉐어드에 저장 하는 메서드
     fun setUser(user: User) {
-
         editor.putString("id", user.id)
         editor.putString("nickname", user.nickname)
         editor.putString("loginType", user.loginType)

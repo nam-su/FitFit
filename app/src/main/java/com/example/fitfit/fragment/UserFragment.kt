@@ -18,6 +18,8 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
@@ -39,6 +41,7 @@ class UserFragment : Fragment() {
 
         setVariable()
         setBackPressed()
+        setCircleImageView()
 
         return binding.root
 
@@ -171,8 +174,7 @@ class UserFragment : Fragment() {
         when(it){
             "success" -> {
                 // 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
-                this.findNavController().navigate(R.id.action_userFragment_to_loginFragment, null,
-                    NavOptions.Builder().setPopUpTo(findNavController().graph.startDestinationId, true).build())
+                this.findNavController().popBackStack()
 
                 userViewModel.setIsWithdrawalButtonClick(false)
 
@@ -297,6 +299,22 @@ class UserFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         closeDrawerIfNeeded()
+    }
+
+
+
+    //프로필이미지뷰 셋
+    private fun setCircleImageView(){
+
+        Log.d(TAG, "setCircleImageView: ${userViewModel.profileImagePath.value}")
+        Glide.with(this)
+            //baseurl+쉐어드의 이미지경로
+            .load(userViewModel.profileImagePath.value)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.loading)
+            .into(binding.circleImageViewUserProfile)
+
     }
 
 
