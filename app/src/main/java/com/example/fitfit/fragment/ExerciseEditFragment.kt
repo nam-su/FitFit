@@ -125,7 +125,6 @@ class ExerciseEditFragment : Fragment() {
         binding.imageButtonEditBack.setOnClickListener {
 
             findNavController().popBackStack()
-            (activity as MainActivity).visibleBottomNavi()
 
         }
 
