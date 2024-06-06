@@ -48,31 +48,7 @@ class HomeModel() {
     // 다양한 운동 리스트 리턴하는 메서드
     fun setAllExerciseList(): ArrayList<PoseExercise> {
 
-        val allExerciseList = ArrayList<PoseExercise>()
-
-        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
-        allExerciseList.add(PoseExercise("","푸시업","",0,0))
-        allExerciseList.add(PoseExercise("","런지","",0,0))
-
-        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
-        allExerciseList.add(PoseExercise("","푸시업","",0,0))
-        allExerciseList.add(PoseExercise("","런지","",0,0))
-
-        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
-        allExerciseList.add(PoseExercise("","푸시업","",0,0))
-        allExerciseList.add(PoseExercise("","런지","",0,0))
-
-        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
-        allExerciseList.add(PoseExercise("","푸시업","",0,0))
-        allExerciseList.add(PoseExercise("","런지","",0,0))
-
-        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
-        allExerciseList.add(PoseExercise("","푸시업","",0,0))
-        allExerciseList.add(PoseExercise("","런지","",0,0))
-
-        allExerciseList.add(PoseExercise("","스쿼트","",0,0))
-
-        return allExerciseList
+        return MyApplication.sharedPreferences.getAllExerciseList()
 
     } // setAllExerciseList()
 

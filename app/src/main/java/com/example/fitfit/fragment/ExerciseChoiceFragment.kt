@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
@@ -66,6 +67,15 @@ class ExerciseChoiceFragment : Fragment() {
                 view.findNavController().navigate(R.id.action_exerciseChoiceFragment_to_poseDetectionFragment,bundle)
 
             }
+        }
+
+
+        // 운동 리스트 편집 클릭 리스너
+        binding.textViewEditExerciseList.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_exerciseChoiceFragment_to_exerciseEditFragment)
+            (activity as MainActivity).goneBottomNavi()
+
         }
 
     } // setClickListener()

@@ -1,7 +1,6 @@
 package com.example.fitfit.function
 
 import android.content.Context
-import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import com.google.gson.Gson
@@ -12,6 +11,39 @@ class Preferences(context: Context) {
 
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
+    private val allExerciseList = ArrayList<PoseExercise>()
+
+    init {
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","기본 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","기본 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","기본 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","1번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","1번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","1번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","2번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","2번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","2번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","3번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","3번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","3번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","4번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","4번 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","4번 런지",0,0,0))
+
+        allExerciseList.add(PoseExercise(0,"스쿼트","5번 스쿼트",0,0,0))
+
+        for (i:Int in 3 until allExerciseList.size) {
+
+            allExerciseList[i].isPrimium = 1
+
+        }
+
+    }
 
 
     // 유저 정보 불러오는 메서드
@@ -81,11 +113,12 @@ class Preferences(context: Context) {
 
                     PoseExercise(
 
-                        jsonObject.get("date").toString(),
+                        jsonObject.get("date").toString().toLong(),
                         jsonObject.get("category").toString(),
                         jsonObject.get("exerciseName").toString(),
                         jsonObject.get("exerciseCount").toString().toInt(),
-                        jsonObject.get("goalExerciseCount").toString().toInt()
+                        jsonObject.get("goalExerciseCount").toString().toInt(),
+                        jsonObject.get("checkList").toString().toInt()
 
                     )
 
@@ -136,12 +169,6 @@ class Preferences(context: Context) {
 
         val jsonObject = Gson().toJson(poseExercise)
 
-        Log.d("쉐어드에 저장", "updatePoseExercise: 날짜 : ${poseExercise.date}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 카운트 : ${poseExercise.exerciseCount}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 목표 : ${poseExercise.goalExerciseCount}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 이름 : ${poseExercise.exerciseName}")
-        Log.d("쉐어드에 저장", "updatePoseExercise: 분류 : ${poseExercise.category}")
-
         editor.putString(poseExercise.exerciseName, jsonObject)
         editor.apply()
 
@@ -157,11 +184,12 @@ class Preferences(context: Context) {
 
         return PoseExercise(
 
-            jsonObject.get("date").toString(),
+            jsonObject.get("date").toString().toLong(),
             jsonObject.get("category").toString(),
             jsonObject.get("exerciseName").toString(),
             jsonObject.get("exerciseCount").toString().toInt(),
-            jsonObject.get("goalExerciseCount").toString().toInt()
+            jsonObject.get("goalExerciseCount").toString().toInt(),
+            jsonObject.get("checkList").toString().toInt()
 
         )
 
@@ -170,9 +198,18 @@ class Preferences(context: Context) {
 
 
     //로그아웃 또는 회원탈퇴 시 쉐어드 모든 데이터 삭제
-    fun removeAll(){
+    fun removeAll() {
         editor.clear()
         editor.apply()
+    }
+
+
+
+    // 제공되는 운동 리스트 리턴
+    fun getAllExerciseList(): ArrayList<PoseExercise> {
+
+        return allExerciseList
+
     }
 
 }

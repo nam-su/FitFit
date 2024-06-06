@@ -59,6 +59,13 @@ class ExerciseFragment : Fragment() {
 
         }
 
+        binding.textViewAllExercise.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_exerciseFragment_to_payFragment)
+            (activity as MainActivity).goneBottomNavi()
+
+        }
+
     } // setClickListener()
 
 }

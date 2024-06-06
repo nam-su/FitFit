@@ -92,15 +92,24 @@ class MainActivity : AppCompatActivity() {
                 R.id.exerciseFragment -> finish()
                 R.id.diaryFragment -> finish()
                 R.id.userFragment -> finish()
+
                 R.id.exerciseChoiceFragment -> {
 
                     navController.popBackStack()
                     binding.bottomNavigationView.visibility = View.VISIBLE
 
                 }
+
                 R.id.poseDetectionFragment -> {
 
                     navController.popBackStack()
+
+                }
+
+                R.id.payFragment -> {
+
+                    navController.popBackStack()
+                    binding.bottomNavigationView.visibility = View.VISIBLE
 
                 }
 
