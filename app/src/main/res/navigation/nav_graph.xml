@@ -141,6 +141,9 @@
             android:id="@+id/action_userFragment_to_userEditFragment"
             app:destination="@id/userEditFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_userFragment_to_findPasswordFragment"
+            app:destination="@id/findPasswordFragment" />
 
     </fragment>
 
@@ -173,6 +176,16 @@
             android:id="@+id/action_userEditFragment_to_userFragment"
             app:destination="@id/userFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/findPasswordFragment"
+        android:name="com.example.fitfit.fragment.FindPasswordFragment"
+        android:label="fragment_find_password"
+        tools:layout="@layout/fragment_find_password"
+        >
+
+
     </fragment>
 
 </navigation>

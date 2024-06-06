@@ -79,8 +79,8 @@ class UserFragment : Fragment() {
         binding.imageButtonSetting.setOnClickListener {
 
             setAllMenuFalse()
-
             binding.drawerLayout.openDrawer(GravityCompat.END)
+
         }
 
 
@@ -209,6 +209,8 @@ class UserFragment : Fragment() {
            "비밀번호 변경"   -> {
                 //비밀번호 변경 프래그먼트로 이동
                 Log.d(TAG, "setObserve: 비밀번호 변경 프래그먼트로 이동")
+               this.findNavController().navigate(R.id.action_userFragment_to_findPasswordFragment)
+               (activity as MainActivity).goneBottomNavi()
             }
             "로그아웃"   -> {
                 //로그아웃 다이얼로그
