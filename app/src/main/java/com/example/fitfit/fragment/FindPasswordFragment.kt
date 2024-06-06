@@ -1,60 +1,95 @@
 package com.example.fitfit.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
 import com.example.fitfit.R
+import com.example.fitfit.databinding.FragmentFindPasswordBinding
+import com.example.fitfit.viewModel.FindPasswordViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FindPasswordFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FindPasswordFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    val TAG = "비밀번호 재설정 프래그먼트"
+
+    private lateinit var binding: FragmentFindPasswordBinding
+    private lateinit var findPasswordViewModel: FindPasswordViewModel
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_find_password, container, false)
+
+        setVariable()
+
+        return binding.root
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_find_password, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setObserve()
+        setListener()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FindPasswordFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FindPasswordFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
+
+    // 변수 초기화
+    private fun setVariable() {
+
+        binding.lifecycleOwner = this
+
+        findPasswordViewModel = FindPasswordViewModel()
+        binding.findPasswordViewModel = findPasswordViewModel
+
+    } // setVariable
+
+
+
+    //리스너 세팅
+    private fun setListener(){
+
+
+       binding.editTextEmail.addTextChangedListener {
+
+           //쉐어드의 유저 아이디와 입력 아이디가 일치하면 버튼 활성화
+           when(findPasswordViewModel.isEmailCorrect(it.toString())){
+               true ->   {
+                   binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+                   binding.textViewEmailCorrect.text = getString(R.string.correctUserEmail)
+                   binding.textViewEmailCorrect.setTextColor(ContextCompat.getColor(requireContext(),R.color.personal))
+               }
+               false -> {
+                   binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+                   binding.textViewEmailCorrect.text = getString(R.string.inCorrectUserEmail)
+                   binding.textViewEmailCorrect.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+               }
+           }
+
+       }
+
+        //에딧텍스트 포커스 체인지 리스너
+        binding.editTextEmail.setOnFocusChangeListener { view, hasFocus ->
+            when(hasFocus){
+                true ->  view.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+                false ->  view.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
             }
-    }
+        }
+
+    } // setListener()
+
+
+
+    // Observe 관련 메서드
+    private fun setObserve() {
+
+
+    } // setObserve()
+    
 }

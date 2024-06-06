@@ -3,6 +3,7 @@ package com.example.fitfit.model
 import android.util.Log
 import com.example.fitfit.function.GmailSender
 import com.example.fitfit.data.User
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 
@@ -50,6 +51,14 @@ class FindPasswordModel {
             .map { charset.random() }
             .joinToString("")
         this.randomString = randomString
+    }
+
+
+    //쉐어드에서 유저정보 가져오기
+    fun getUserEmail(): String {
+
+        return MyApplication.sharedPreferences.getUserId()
+
     }
 
 
