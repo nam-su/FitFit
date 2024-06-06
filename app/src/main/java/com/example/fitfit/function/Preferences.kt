@@ -84,7 +84,6 @@ class Preferences(context: Context) {
 
     // 유저 정보 쉐어드에 저장 하는 메서드
     fun setUser(user: User) {
-
         editor.putString("id", user.id)
         editor.putString("nickname", user.nickname)
         editor.putString("loginType", user.loginType)
@@ -94,19 +93,6 @@ class Preferences(context: Context) {
 
     } // setUser()
 
-
-
-    //유저 정보 쉐어드에서 삭제하는 메서드
-    fun removeUser(){
-
-        editor.remove("id")
-        editor.remove("nickname")
-        editor.remove("loginType")
-        editor.remove("profileImagePath")
-        editor.remove("subscription")
-        editor.apply()
-
-    } //removeUser()
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드
@@ -208,6 +194,15 @@ class Preferences(context: Context) {
         )
 
     } // loadPoseExercise
+
+
+
+    //로그아웃 또는 회원탈퇴 시 쉐어드 모든 데이터 삭제
+    fun removeAll() {
+        editor.clear()
+        editor.apply()
+    }
+
 
 
     // 제공되는 운동 리스트 리턴

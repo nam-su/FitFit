@@ -58,7 +58,7 @@ class SignUpFragment : Fragment() {
 
 
     //리스너 세팅
-    fun setListener(){
+    private fun setListener(){
 
         //에딧텍스트 이메일 포커스 체인지 리스너
         binding.editTextEmail.setOnFocusChangeListener { _, hasFocus ->

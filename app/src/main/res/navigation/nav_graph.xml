@@ -16,7 +16,8 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            />
 
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
@@ -63,7 +64,6 @@
         android:name="com.example.fitfit.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home"
-        app:popUpToInclusive="true"
         />
 
 
@@ -127,9 +127,21 @@
         android:name="com.example.fitfit.fragment.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user">
+
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_userFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
+            />
+        <action
+            android:id="@+id/action_userFragment_to_userEditFragment"
+            app:destination="@id/userEditFragment"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
 
@@ -149,5 +161,18 @@
         android:label="fragment_pay"
         tools:layout="@layout/fragment_pay"
         />
+
+    <fragment
+        android:id="@+id/userEditFragment"
+        android:name="com.example.fitfit.fragment.UserEditFragment"
+        android:label="fragment_user_edit"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_user_edit"
+        >
+        <action
+            android:id="@+id/action_userEditFragment_to_userFragment"
+            app:destination="@id/userFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 </navigation>

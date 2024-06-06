@@ -25,7 +25,7 @@ class SignUpModel {
     // 로그인 통신으로 result 값 확인
     suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User? {
 
-        val response = retrofitInterface.selectUserData(id,password,nickname,mode)
+        val response = retrofitInterface.signUp(id,password,nickname,mode)
         Log.d(TAG, "signUpProcess: ${response.isSuccessful}")
         return response.body()
 

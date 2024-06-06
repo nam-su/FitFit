@@ -1,5 +1,6 @@
 package com.example.fitfit.model
 
+import android.util.Log
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
@@ -25,7 +26,6 @@ class LoginModel() {
 
     // 로그인 성공시 쉐어드에 유저정보 저장.
     fun setSharedPreferencesUserInfo(user: User) {
-
         MyApplication.sharedPreferences.setUser(user)
 
     } // setSharedPreferencesUserInfo()

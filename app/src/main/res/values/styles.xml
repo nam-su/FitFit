@@ -36,6 +36,25 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+
+    <style name="dialogText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ProfileEditTitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="ProfileEditCompleteButton">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="defaultPersonalTextStyle">
         <item name="android:textColor">@color/personal</item>
         <item name="android:textStyle">bold</item>
