@@ -168,10 +168,10 @@ class SignUpFragment : Fragment() {
         signUpViewModel.isCodeValid.observe(viewLifecycleOwner){
 
             when(it){
-                true ->  Toast.makeText(requireContext(), "유효한 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                true ->  Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
                 false -> {
                     Log.d(TAG, "setObserve: 또반복?")
-                    Toast.makeText(requireContext(), "유효하지 않은 인증코드 입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.code_verification_failure), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -212,9 +212,7 @@ class SignUpFragment : Fragment() {
         signUpViewModel.isPasswordCorrect.observe(viewLifecycleOwner){ setPasswordCorrect(it) }
 
         //닉네임 유효성 여부 관찰
-        signUpViewModel.isNicknameValid.observe(viewLifecycleOwner){setNicknameValid(it)
-
-        }
+        signUpViewModel.isNicknameValid.observe(viewLifecycleOwner){setNicknameValid(it) }
 
         //닉네임 중복 여부
         signUpViewModel.isNicknamePossible.observe(viewLifecycleOwner){

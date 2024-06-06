@@ -135,19 +135,9 @@ class UserEditFragment : Fragment() {
         }
 
         //닉네임 유효성 검사
-        userEditViewModel.isNicknameValid.observe(viewLifecycleOwner){
+        userEditViewModel.isNicknameValid.observe(viewLifecycleOwner){ setNicknameValid(it) }
 
-            if(!userEditViewModel.selectedImageUri.isInitialized) {
-                if (it && userEditViewModel.nickname.value != binding.editTextNickname.text.toString()) {
-                    setTextViewComplete(true)
-                } else {
-                    setTextViewComplete(false)
-                }
-            }else{
-                setTextViewComplete(it)
-            }
 
-        }
 
         //통신 결과 관찰
         userEditViewModel.profileEditResult.observe(viewLifecycleOwner){
@@ -230,6 +220,25 @@ class UserEditFragment : Fragment() {
             .into(binding.circleImageViewUserProfile)
 
     }
+
+
+
+    //닉네임 유효성에 따른 처리
+    private fun setNicknameValid(it:Boolean){
+
+        //완료 버튼 처리
+        if(!userEditViewModel.selectedImageUri.isInitialized) {
+            if (it && userEditViewModel.nickname.value != binding.editTextNickname.text.toString()) {
+                setTextViewComplete(true)
+            } else {
+                setTextViewComplete(false)
+            }
+        }else{
+            setTextViewComplete(it)
+        }
+
+
+    } //setNicknameValid()
 
     }
 
