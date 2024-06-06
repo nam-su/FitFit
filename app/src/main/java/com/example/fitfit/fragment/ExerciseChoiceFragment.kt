@@ -78,6 +78,14 @@ class ExerciseChoiceFragment : Fragment() {
 
         }
 
+        // 뒤로가기 버튼 클릭
+        binding.imageButtonBackExerciseChoice.setOnClickListener {
+
+            it.findNavController().popBackStack()
+            (activity as MainActivity).visibleBottomNavi()
+
+        }
+
     } // setClickListener()
 
 }

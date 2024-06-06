@@ -11,7 +11,7 @@
         tools:context=".fragment.ExerciseChoiceFragment">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/imageButtonBackExerciseChoice"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="20dp"
