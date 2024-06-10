@@ -80,18 +80,9 @@ class ExerciseEditModel {
 
 
     // 내 운동 리스트에서 아이템 삭제하는 메서드
-    fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int): Boolean {
+    fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int){
 
-        return if (myExerciseList.size > 3) {
-
-            myExerciseList.removeAt(position)
-            true
-
-        } else {
-
-            false
-
-        }
+        myExerciseList.removeAt(position)
 
     } // deleteExerciseItem()
 

@@ -93,17 +93,6 @@ class ExerciseEditFragment : Fragment() {
     // observe하는 메서드
     private fun setObserve() {
 
-        // 최소 사이즈 감지 후 토스트
-        exerciseEditViewModel.checkMyExerciseListSizeMin.observe(viewLifecycleOwner) {
-
-            if (!it) {
-
-                Toast.makeText(requireContext(),"최소 3개 이상의 운동이 있어야 합니다.",Toast.LENGTH_SHORT).show()
-
-            }
-
-        }
-
         // 최대 사이즈 감지 후 토스트
         exerciseEditViewModel.checkMyExerciseListSizeMax.observe(viewLifecycleOwner) {
 
@@ -127,6 +116,7 @@ class ExerciseEditFragment : Fragment() {
             findNavController().popBackStack()
 
         }
+
 
         // 내 운동리스트에서 삭제 버튼 눌렀을 때
         myPoseExerciseAdapter.exerciseEditItemDeleteButtonClick = object :PoseExerciseAdapter.ExerciseEditItemDeleteButtonClick{
@@ -183,6 +173,15 @@ class ExerciseEditFragment : Fragment() {
         // 리스트 편집 후 완료 버튼 눌렀을 때
         binding.textViewEditComplete.setOnClickListener {
 
+            if(!exerciseEditViewModel.checkMyExerciseListSizeMin()) {
+
+                Toast.makeText(requireContext(),"최소 3개 이상의 운동이 있어야 합니다.",Toast.LENGTH_SHORT).show()
+
+            } else {
+
+                // 여기에 서버와 통신해서 리스트 갱신해주는 메서드 필요.
+
+            }
 
         }
 

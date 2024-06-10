@@ -10,10 +10,6 @@ class ExerciseEditViewModel: ViewModel() {
 
     private val exerciseEditModel = ExerciseEditModel()
 
-    private val _checkMyExerciseListSizeMin = MutableLiveData<Boolean>()
-    val checkMyExerciseListSizeMin: LiveData<Boolean>
-        get() = _checkMyExerciseListSizeMin
-
     private val _checkMyExerciseListSizeMax = MutableLiveData<Boolean>()
     val checkMyExerciseListSizeMax: LiveData<Boolean>
         get() = _checkMyExerciseListSizeMax
@@ -62,8 +58,7 @@ class ExerciseEditViewModel: ViewModel() {
     // 리스트에서 아이템 삭제
     fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int) {
 
-        _checkMyExerciseListSizeMin.value = exerciseEditModel.deleteExerciseItem(myExerciseList,position)
-
+        exerciseEditModel.deleteExerciseItem(myExerciseList,position)
         _myExerciseListSize.value = exerciseEditModel.myExerciseList.size.toString() + " 개"
 
     } // deleteExerciseItem()
@@ -77,5 +72,13 @@ class ExerciseEditViewModel: ViewModel() {
         _myExerciseListSize.value = exerciseEditModel.myExerciseList.size.toString() + " 개"
 
     } // addExerciseItem()
+
+
+    // 내 운동 리스트가 최소 3개인지 판별
+    fun checkMyExerciseListSizeMin(): Boolean{
+
+        return exerciseEditModel.myExerciseList.size > 2
+
+    } // checkMyExerciseListSizeMin()
 
 }
