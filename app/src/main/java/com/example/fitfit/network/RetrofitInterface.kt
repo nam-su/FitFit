@@ -51,6 +51,15 @@ interface RetrofitInterface {
     ): Response<User>
 
 
+    // 유저 운동 정보 읽어오는 메서드
+    @FormUrlEncoded
+    @POST("userProcess.php")
+    suspend fun selectUserExercise(
+
+        @Field("id") id: String,
+        @Field("mode") mode: String
+
+    ): Response<ArrayList<PoseExercise>>
 
 
     // 운동 정보를 insert 해주는 메서드

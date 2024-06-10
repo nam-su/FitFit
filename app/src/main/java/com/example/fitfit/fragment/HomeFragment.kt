@@ -1,6 +1,7 @@
 package com.example.fitfit.fragment
 
 import android.app.Application
+import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitfit.R
@@ -28,6 +32,8 @@ class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var homeViewModel: HomeViewModel
 
+    private lateinit var callback: OnBackPressedCallback
+
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -36,6 +42,15 @@ class HomeFragment : Fragment() {
         return binding.root
 
     } // onCreateView()
+
+
+    // onAttach
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
 
 
     // onViewCreated
@@ -74,6 +89,8 @@ class HomeFragment : Fragment() {
 
         // 랭킹 모두보기 어댑터
         binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewAllChallengeRank())
+
+        homeViewModel.selectUserExercise()
 
         // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
 
@@ -126,6 +143,44 @@ class HomeFragment : Fragment() {
 
         }
 
+
     } // setOnClickListener()
+
+
+    // 뒤로가기 클릭 리스너
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                // 운동 전체보기 페이지에서 뒤로가기 눌렀을 때
+                if (binding.constraintLayoutAllExercise.visibility == View.VISIBLE) {
+
+                    binding.constraintLayoutHome.visibility = View.VISIBLE
+                    binding.constraintLayoutAllExercise.visibility = View.GONE
+
+                }
+
+                // 전체 챌린지 랭킹페이지에서 뒤로가기 눌렀을 때
+                else if(binding.constraintLayoutAllChallenge.visibility == View.VISIBLE) {
+
+                    binding.constraintLayoutHome.visibility = View.VISIBLE
+                    binding.constraintLayoutAllChallenge.visibility = View.GONE
+
+                // 다른 상황에서 뒤로가기 눌렀을 때
+                } else {
+
+                    (activity as MainActivity).finish()
+
+                }
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    }
 
 }

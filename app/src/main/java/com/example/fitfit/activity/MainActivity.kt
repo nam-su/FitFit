@@ -88,11 +88,9 @@ class MainActivity : AppCompatActivity() {
             when(navController.currentDestination?.id){
 
                 R.id.loginFragment -> finish()
-                R.id.homeFragment -> finish()
                 R.id.exerciseFragment -> finish()
                 R.id.diaryFragment -> finish()
                 R.id.userFragment -> finish()
-
                 R.id.exerciseChoiceFragment -> {
 
                     navController.popBackStack()
