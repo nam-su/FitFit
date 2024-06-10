@@ -1,14 +1,17 @@
 package com.example.fitfit.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
 import com.example.fitfit.model.HomeModel
+import kotlinx.coroutines.launch
 
 class HomeViewModel(): ViewModel() {
 
@@ -19,6 +22,34 @@ class HomeViewModel(): ViewModel() {
     private val _weekStatus: MutableLiveData<String> = MutableLiveData()
     private val weekStatus: LiveData<String>
         get() = _weekStatus
+
+
+
+    // 서버에 요청한 유저 운동정보 응답 받는 메서드
+    fun selectUserExercise() {
+
+        viewModelScope.launch {
+
+            val response = homeModel.selectUserExercise()
+
+            Log.d(TAG, "selectUserExercise: ${response.isSuccessful}")
+            Log.d(TAG, "selectUserExercise: ${response.body()}")
+            Log.d(TAG, "selectUserExercise: ${response.message()}")
+
+            if(response.isSuccessful && response.body() != null) {
+
+                Log.d(TAG, "selectUserExercise: 통신 성공")
+
+            } else {
+
+                Log.d(TAG, "selectUserExercise: 통신실패")
+
+            }
+
+
+        }
+
+    } // selectUserExercise()
 
 
     // 이번주 운동량에 따른 메시지 출력을 위한 메서드
