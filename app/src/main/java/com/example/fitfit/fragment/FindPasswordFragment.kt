@@ -20,6 +20,7 @@ class FindPasswordFragment : Fragment() {
 
     private lateinit var binding: FragmentFindPasswordBinding
     private lateinit var findPasswordViewModel: FindPasswordViewModel
+    private lateinit var mode:String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -47,6 +48,8 @@ class FindPasswordFragment : Fragment() {
 
         findPasswordViewModel = FindPasswordViewModel()
         binding.findPasswordViewModel = findPasswordViewModel
+        
+        findPasswordViewModel.setMode(requireArguments().getString("mode").toString())
 
     } // setVariable
 
@@ -62,11 +65,13 @@ class FindPasswordFragment : Fragment() {
            when(findPasswordViewModel.isEmailCorrect(it.toString())){
                true ->   {
                    binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+                   binding.buttonNext.isEnabled = true
                    binding.textViewEmailCorrect.text = getString(R.string.correctUserEmail)
                    binding.textViewEmailCorrect.setTextColor(ContextCompat.getColor(requireContext(),R.color.personal))
                }
                false -> {
                    binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+                   binding.buttonNext.isEnabled = false
                    binding.textViewEmailCorrect.text = getString(R.string.inCorrectUserEmail)
                    binding.textViewEmailCorrect.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
                }
@@ -89,6 +94,29 @@ class FindPasswordFragment : Fragment() {
     // Observe 관련 메서드
     private fun setObserve() {
 
+        findPasswordViewModel.mode.observe(viewLifecycleOwner){
+            when(it){
+                "passwordChange" -> {
+                    binding.linearLayout1.visibility = View.VISIBLE
+                    binding.linearLayout2.visibility = View.GONE
+                }
+                "passwordReset" -> {
+                    binding.linearLayout1.visibility = View.VISIBLE
+                    binding.linearLayout2.visibility = View.GONE
+                }
+                "emailVerification" -> {
+                    binding.linearLayoutCode.visibility = View.VISIBLE
+                }
+                "password" -> {
+                    binding.linearLayout1.visibility = View.GONE
+                    binding.linearLayout2.visibility = View.VISIBLE
+                }
+                "complete" -> {
+                    binding.linearLayout2.visibility = View.GONE
+                    binding.linearLayout3.visibility = View.VISIBLE
+                }
+            }
+        }
 
     } // setObserve()
     

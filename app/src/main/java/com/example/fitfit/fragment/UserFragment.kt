@@ -14,9 +14,11 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -209,7 +211,9 @@ class UserFragment : Fragment() {
            "비밀번호 변경"   -> {
                 //비밀번호 변경 프래그먼트로 이동
                 Log.d(TAG, "setObserve: 비밀번호 변경 프래그먼트로 이동")
-               this.findNavController().navigate(R.id.action_userFragment_to_findPasswordFragment)
+
+               val bundle = bundleOf("mode" to "passwordChange")
+               this.findNavController().navigate(R.id.action_userFragment_to_findPasswordFragment,bundle)
                (activity as MainActivity).goneBottomNavi()
             }
             "로그아웃"   -> {

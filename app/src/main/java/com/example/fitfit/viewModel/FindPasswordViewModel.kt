@@ -24,6 +24,10 @@ class FindPasswordViewModel : ViewModel() {
     val isEmailCorrect: LiveData<Boolean>
         get() = _isEmailCorrect
 
+    private val _mode = MutableLiveData<String>()
+    val mode: LiveData<String>
+        get() = _mode
+
     fun setOnButtonBack(){
 
     }
@@ -31,4 +35,25 @@ class FindPasswordViewModel : ViewModel() {
     fun isEmailCorrect( inputText : String) : Boolean{
         return model.getUserEmail() == inputText
     }
+
+
+
+    /**다음버튼 클릭 메서드
+     * 클릭할때마다 모드 변경**/
+    fun setOnNextButtonClick(){
+        when(mode.value){
+            "passwordChange" -> setMode("emailVerification")
+            "passwordReset" -> setMode("emailVerification")
+            "emailVerification" -> setMode("password")
+            "password" -> setMode("complete")
+            else -> {}
+
+        }
+    } //setOnNextButtonClick()
+
+
+
+    //모드 변경
+    fun setMode(value: String){ _mode.value = value }
+    //setMode()
 }

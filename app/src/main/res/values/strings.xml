@@ -90,7 +90,7 @@
 
     
     <string name="passwordReset">비밀번호 재설정</string>
-    <string name="inCorrectUserEmail">회원정보와 일치하지 않는 이메일 입니다.</string>
+    <string name="inCorrectUserEmail">유효하지 않은 이메일 입니다.</string>
     <string name="correctUserEmail">회원정보와 일치하는 이메일 입니다.</string>
 
 
