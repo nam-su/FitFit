@@ -23,6 +23,7 @@
         <!-- 홈 화면 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutHome"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -168,6 +169,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/textViewViewAllChallenge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/viewAll"
@@ -386,8 +388,79 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- 모든 운동 보기 레이아웃 끝 -->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!--챌린지 랭킹 모두보기 레이아웃-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutAllChallenge"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewAllChallengeRankTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/challengeRanking"
+                style="@style/defaultBlackTextStyle"
+                android:textSize="25sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imageButtonBackAllChallenge"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/back_black"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAllChallengeRankTitle" />
+
+            <TextView
+                style="@style/defaultBlackTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="000 님의 현재 랭킹은 00위 입니다."
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageButtonBackAllChallenge"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButtonBackAllChallenge"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAllChallengeRank"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintVertical_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_view_challenge_rank"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/buttonNextRankingView"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonBackAllChallenge"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonNextRankingView"
+                android:background="@drawable/login_button"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="다음 순위 보기"
+                style="@style/buttonTextStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewAllChallengeRank"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--챌린지 랭킹 모두보기 레이아웃 끝-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

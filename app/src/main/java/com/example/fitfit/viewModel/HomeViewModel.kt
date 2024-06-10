@@ -39,16 +39,27 @@ class HomeViewModel(): ViewModel() {
     } // setRecyclerViewWeekStatus()
 
 
-    fun setRecyclerViewChallengeRank(): ArrayList<Rank> {
+    // 랭킹 전체보기 리스트 리사이클러뷰에 띄워주는 메서드
+    fun setRecyclerViewAllChallengeRank(): ArrayList<Rank> {
 
-        return homeModel.setChallengeRankList()
+        return homeModel.setAllChallengeRankList()
 
-    }
+    } // setRecyclerViewAllChallengeRank()
 
+
+    // 홈 프래그먼트에서 보이는 랭킹 리사이클러뷰 띄워주는 메서드
+    fun setRecyclerViewPagedChallengeRank(): ArrayList<Rank> {
+
+        return homeModel.setPagedChallengeRankList()
+
+    } // setRecyclerViewPagedChallengeRank()
+
+
+    // 운동 전체보기 리사이클러뷰 띄워주는 메서드
     fun setRecyclerViewAllExercise(): ArrayList<PoseExercise> {
 
         return homeModel.setAllExerciseList()
 
-    }
+    } // setRecyclerViewAllExercise()
 
 }

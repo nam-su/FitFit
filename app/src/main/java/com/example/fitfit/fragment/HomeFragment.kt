@@ -54,18 +54,26 @@ class HomeFragment : Fragment() {
         homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
 
+        // 일주일 동안 운동양 체크하는 리사이클러뷰 어댑터
         binding.recyclerViewCheckWeekExercise.layoutManager = GridLayoutManager(activity?.applicationContext,7)
         binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
 
-        binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewChallengeRank())
+        // 홈 프래그먼트에서 보이는 랭킹 어댑터
+        binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewPagedChallengeRank())
 
+        // 홈 프래그먼트에서 보이는 운동리스트 어댑터
         binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.setRecyclerViewAllExercise(),false,"")
         binding.recyclerViewPagedAllExercise.layoutManager = LinearLayoutManager(activity?.applicationContext,LinearLayoutManager.HORIZONTAL,false)
 
+        // 운동 전체보기 리사이클러뷰 레이아웃 메니저 설정
         binding.recyclerViewAllExercise.layoutManager = GridLayoutManager(activity?.applicationContext,4)
         binding.recyclerViewAllExercise.addItemDecoration(GridSpacingItemDecoration(4,(10f * Resources.getSystem().displayMetrics.density).toInt()))
 
+        // 운동 전체보기 어댑터
         binding.recyclerViewAllExercise.adapter = PoseExerciseGridAdapter(homeViewModel.setRecyclerViewAllExercise())
+
+        // 랭킹 모두보기 어댑터
+        binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewAllChallengeRank())
 
         // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
 
@@ -75,6 +83,7 @@ class HomeFragment : Fragment() {
     // 클릭 리스너 초기화
     private fun setClickListener() {
 
+        // 운동 전체보기 클릭 리스너
         binding.textViewViewAllExercise.setOnClickListener{
 
             binding.constraintLayoutHome.visibility = View.GONE
@@ -82,6 +91,25 @@ class HomeFragment : Fragment() {
 
         }
 
+
+        // 챌린지 랭킹 전체보기 클릭 리스너
+        binding.textViewViewAllChallenge.setOnClickListener {
+
+            binding.constraintLayoutHome.visibility = View.GONE
+            binding.constraintLayoutAllChallenge.visibility = View.VISIBLE
+
+        }
+
+
+        // 챌린지 랭킹 에서 뒤로가기 버튼 클릭 리스너
+        binding.imageButtonBackAllChallenge.setOnClickListener {
+
+            binding.constraintLayoutAllChallenge.visibility = View.GONE
+            binding.constraintLayoutHome.visibility = View.VISIBLE
+
+        }
+
+        // 모든 운동보기 에서 뒤로가기 버튼 클릭리스너
         binding.imageButtonBackToHome.setOnClickListener{
 
             binding.constraintLayoutHome.visibility = View.VISIBLE
@@ -89,6 +117,8 @@ class HomeFragment : Fragment() {
 
         }
 
+
+        // 구독하기 버튼 클릭 리스너
         binding.buttonSubscribe.setOnClickListener {
 
             it.findNavController().navigate(R.id.payFragment)
