@@ -28,18 +28,7 @@ class HomeModel() {
 
     } // setWeekStatus()
 
-
-    // 서버에 유저 아이디로 운동정보 요청하는 메서드
-    suspend fun selectUserExercise(): Response<ArrayList<PoseExercise>> {
-
-        val id = MyApplication.sharedPreferences.getUserId()
-        val mode = "selectUserExerciseFromId"
-
-        return retrofitInterface.selectUserExercise(id,mode)
-
-    } // selectUserExercise()
-
-
+    
     // 유저 운동 정보 리스트 리턴하는 메서드
     fun setWeekStatusList(): ArrayList<ExerciseDiary>{
 
