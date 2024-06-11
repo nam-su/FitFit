@@ -28,7 +28,7 @@ class ExerciseEditModel {
     // 내 운동리스트 읽어와서 세팅한다.
     fun setMyExerciseList(): ArrayList<PoseExercise> {
 
-        myExerciseList = MyApplication.sharedPreferences.getPoseExerciseList()
+        myExerciseList = MyApplication.sharedPreferences.getMyPoseExerciseList()
 
         return myExerciseList
 
