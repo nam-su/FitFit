@@ -41,7 +41,8 @@
             tools:listitem="@layout/item_view_exercise_choice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEditExerciseList" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditExerciseList"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

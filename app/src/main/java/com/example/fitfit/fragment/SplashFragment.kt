@@ -42,6 +42,7 @@ class SplashFragment : Fragment() {
 
         splashViewModel = SplashViewModel()
         (activity as MainActivity).goneBottomNavi()
+        splashViewModel.selectUserExercise()
 
     } // setVariable()
 

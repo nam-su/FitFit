@@ -182,7 +182,7 @@ class PoseDetectionModel(context: Context) {
         MyApplication.sharedPreferences.setPoseExercise(poseExercise)
 
         // 쉐어드 운동 리스트 갱신해준다.
-        MyApplication.sharedPreferences.updatePoseExerciseList(poseExercise)
+        MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
 
         return checkDate
 

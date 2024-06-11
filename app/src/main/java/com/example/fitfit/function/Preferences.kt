@@ -1,6 +1,7 @@
 package com.example.fitfit.function
 
 import android.content.Context
+import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import com.google.gson.Gson
@@ -9,10 +10,13 @@ import org.json.JSONObject
 
 class Preferences(context: Context) {
 
+    private val TAG = "쉐어드"
+
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
     private val allExerciseList = ArrayList<PoseExercise>()
 
+    // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
 
         allExerciseList.add(PoseExercise(0,"스쿼트","기본 스쿼트",0,0,0))
@@ -82,6 +86,57 @@ class Preferences(context: Context) {
     } // getUserNickname()
 
 
+    // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
+    fun setUserExerciseInfoList(exerciseList: ArrayList<PoseExercise>) {
+
+        for(i:Int in 0 until exerciseList.size) {
+
+            // 날짜가 오늘과 다른 경우에는 카운트를 0 으로 해줘야함 ,
+            // 같은 운동인데 날짜가 다른 경우에 대한 처리
+            if (exerciseList[i].checkList == 1) {
+
+                Log.d(TAG, "setUserExerciseInfoList: 리스트 있는 운동")
+                updateUserExerciseInfo(exerciseList[i])
+
+            }
+
+        }
+
+        val myExerciseList = ArrayList<PoseExercise>()
+
+        for (i: Int in 0 until allExerciseList.size) {
+
+            if(allExerciseList[i].checkList == 1) {
+
+                myExerciseList.add(allExerciseList[i])
+
+            }
+
+        }
+
+        setMyPoseExerciseList(myExerciseList)
+
+    } // setUserExerciseInfoList()
+
+
+    // 서버에서 불러온 운동 목록 중 최근 기록 업데이트 하기 위한 메서드
+    private fun updateUserExerciseInfo(poseExercise: PoseExercise) {
+
+        for (i: Int in 0 until allExerciseList.size) {
+
+            if(poseExercise.exerciseName == allExerciseList[i].exerciseName) {
+
+
+
+                allExerciseList[i] = poseExercise
+
+            }
+
+        }
+
+    } // updateUserExerciseInfo
+
+
     // 유저 정보 쉐어드에 저장 하는 메서드
     fun setUser(user: User) {
         editor.putString("id", user.id)
@@ -96,7 +151,7 @@ class Preferences(context: Context) {
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드
-    fun getPoseExerciseList(): ArrayList<PoseExercise> {
+    fun getMyPoseExerciseList(): ArrayList<PoseExercise> {
 
         val sharedPoseExerciseList = preferences.getString("poseExerciseList","")
 
@@ -134,7 +189,7 @@ class Preferences(context: Context) {
 
 
     // 스케쥴링한 운동 리스트 저장하는 메서드
-    fun setPoseExerciseList(poseExerciseList: ArrayList<PoseExercise>) {
+    fun setMyPoseExerciseList(poseExerciseList: ArrayList<PoseExercise>) {
 
         val jsonArray = Gson().toJson(poseExerciseList)
 
@@ -145,21 +200,22 @@ class Preferences(context: Context) {
 
 
     // 운동 후 리스트 갱신하는 메서드
-    fun updatePoseExerciseList(poseExercise: PoseExercise) {
+    fun updateMyPoseExerciseList(poseExercise: PoseExercise) {
 
-        val poseExerciseList = getPoseExerciseList()
+        val poseExerciseList = getMyPoseExerciseList()
 
         for (i in 0 until poseExerciseList.size) {
 
             when(poseExerciseList[i].exerciseName){
 
-                poseExercise.exerciseName -> poseExerciseList[i]= poseExercise
+                // 이름이 같은 운동이 있으면 갱신해 준다
+                poseExercise.exerciseName -> poseExerciseList[i] = poseExercise
 
             }
 
         }
 
-        setPoseExerciseList(poseExerciseList)
+        setMyPoseExerciseList(poseExerciseList)
 
     } // updatePoseExerciseList()
 
