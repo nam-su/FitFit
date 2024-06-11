@@ -24,9 +24,6 @@ class LoginViewModel: ViewModel() {
     val isSuccessLogin: LiveData<String>
         get() = _isSuccessLogin
 
-    private val _navigateToSignUp = MutableLiveData<Boolean>()
-    val navigateToSignUp: LiveData<Boolean>
-        get() = _navigateToSignUp
 
 
     // 로그인 메서드
@@ -61,16 +58,6 @@ class LoginViewModel: ViewModel() {
 
     } // login()
 
-
-    //회원가입 버튼 클릭 true
-    fun onSignUpClicked() {
-        _navigateToSignUp.value = true
-    }
-
-    //회원가입 버튼 클릭 false
-    fun onSignUpNonClicked(){
-        _navigateToSignUp.value = false
-    }
 
 
     // 로그인 성공했을때 Shared에 데이터 추가해준다.

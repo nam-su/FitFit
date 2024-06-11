@@ -136,7 +136,7 @@ class UserFragment : Fragment() {
 
         if(it){
             // 로그아웃 버튼 클릭 감지하면 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
-            this.findNavController().popBackStack()
+            this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
             userViewModel.setIsLogoutButtonClick(false)
             //바텀 네비게이션 GONE 처리
             (activity as MainActivity).goneBottomNavi()
@@ -176,7 +176,7 @@ class UserFragment : Fragment() {
         when(it){
             "success" -> {
                 // 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
-                this.findNavController().popBackStack()
+                this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
 
                 userViewModel.setIsWithdrawalButtonClick(false)
 
@@ -212,7 +212,7 @@ class UserFragment : Fragment() {
                 //비밀번호 변경 프래그먼트로 이동
                 Log.d(TAG, "setObserve: 비밀번호 변경 프래그먼트로 이동")
 
-               val bundle = bundleOf("mode" to "passwordChange")
+               val bundle = bundleOf("startingPoint" to "userFragment")
                this.findNavController().navigate(R.id.action_userFragment_to_findPasswordFragment,bundle)
                (activity as MainActivity).goneBottomNavi()
             }

@@ -226,7 +226,7 @@ class SignUpFragment : Fragment() {
             when(it){
                 true -> {
                     Toast.makeText(requireContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    this.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                    this.findNavController().popBackStack()
                 }
                 false -> Toast.makeText(requireContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -251,7 +251,7 @@ class SignUpFragment : Fragment() {
 
             0 -> {
 
-                this.findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                this.findNavController().popBackStack()
 
             }
 

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
@@ -49,7 +50,9 @@ class FindPasswordFragment : Fragment() {
         binding.lifecycleOwner = this
 
         findPasswordViewModel = FindPasswordViewModel()
+        Log.d(TAG, "setVariable: ${requireArguments().getString("startingPoint").toString()}")
         binding.findPasswordViewModel = findPasswordViewModel
+        findPasswordViewModel.setStartingPoint(requireArguments().getString("startingPoint").toString())
 
     } // setVariable
 
@@ -61,7 +64,7 @@ class FindPasswordFragment : Fragment() {
         //완료 버튼 클릭
         binding.buttonComplete.setOnClickListener {
 
-            this.findNavController().popBackStack()
+            this.findNavController().navigate(R.id.action_findPasswordFragment_to_splashFragment)
             Toast.makeText(requireContext(), "회원정보가 변경되었습니다. 다시 로그인 해 주세요.", Toast.LENGTH_SHORT).show()
 
         }
@@ -152,7 +155,12 @@ class FindPasswordFragment : Fragment() {
                 }
                 "close" -> {
                     this.findNavController().popBackStack()
-                    (activity as MainActivity).visibleBottomNavi()
+                    if(findPasswordViewModel.startingPoint.value == "loginFragment"){
+                        (activity as MainActivity).goneBottomNavi()
+                    }else if(findPasswordViewModel.startingPoint.value == "userFragment"){
+                        (activity as MainActivity).visibleBottomNavi()
+
+                    }
                 }
             }
         }

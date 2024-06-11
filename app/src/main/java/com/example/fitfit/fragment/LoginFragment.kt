@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -40,6 +41,7 @@ class LoginFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
+        setListener()
         setObserve()
 
     } // onViewCreated()
@@ -55,40 +57,45 @@ class LoginFragment() : Fragment() {
 
 
 
+    //리스너 설정
+    private fun setListener(){
+
+        // 회원가입 버튼 클릭 리스너
+        binding.textViewSignUp.setOnClickListener {
+            this.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+        }
+
+        //비밀번호 찾기 클릭 리스너
+        binding.textViewFindPassword.setOnClickListener {
+            val bundle = bundleOf("startingPoint" to "loginFragment")
+            this.findNavController().navigate(R.id.action_loginFragment_to_findPasswordFragment, bundle)
+        }
+    }
+
+
     // Observe 관련 메서드
     private fun setObserve() {
 
         // 로그인 버튼 클릭 했을때
         loginViewModel.isSuccessLogin.observe(viewLifecycleOwner) {
 
-            when(it) {
+            when (it) {
 
                 "success" -> {
-
                     this.findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     (activity as MainActivity).visibleBottomNavi()
 
                 }
 
-                "failure" -> Toast.makeText(activity,"아이디 혹은 비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
+                "failure" -> Toast.makeText(activity, "아이디 혹은 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT)
+                    .show()
 
-                "disconnect" -> Toast.makeText(activity,"인터넷 연결이 원활하지 않습니다.",Toast.LENGTH_SHORT).show()
-
-            }
-
-        }
-
-        //임시 추가
-        loginViewModel.navigateToSignUp.observe(viewLifecycleOwner) {
-
-            if (it == true) {
-
-                this.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+                "disconnect" -> Toast.makeText(activity, "인터넷 연결이 원활하지 않습니다.", Toast.LENGTH_SHORT)
+                    .show()
 
             }
 
         }
-
-    } // setObserve()
+    }
 
 }

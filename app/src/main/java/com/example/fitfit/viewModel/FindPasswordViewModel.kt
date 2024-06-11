@@ -55,6 +55,10 @@ class FindPasswordViewModel : ViewModel() {
     val isPasswordCorrect: LiveData<Boolean>
         get() = _isPasswordCorrect
 
+    private val _startingPoint = MutableLiveData<String>()
+    val startingPoint: LiveData<String>
+        get() = _startingPoint
+
     private lateinit var job: Job
 
 
@@ -231,6 +235,13 @@ class FindPasswordViewModel : ViewModel() {
     fun validationPassword(password: String){
         val pattern = Regex("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,15}$")
         _isPasswordValid.value = pattern.matches(password)
+    }
+
+
+
+    //스타팅 포인트 저장
+    fun setStartingPoint(startingPoint: String){
+        _startingPoint.value = startingPoint
     }
 
 
