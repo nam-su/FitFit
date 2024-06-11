@@ -12,12 +12,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
-import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentSignUpBinding
 import com.example.fitfit.viewModel.SignUpViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class SignUpFragment : Fragment() {

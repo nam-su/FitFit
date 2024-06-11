@@ -24,10 +24,10 @@ class FindPasswordModel {
     var timeLimit = 180
 
     // 로그인 통신으로 result 값 확인
-    suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User? {
+    suspend fun passwordResetProcess(id: String,password: String ,mode: String): User? {
 
-        val response = retrofitInterface.signUp(id,password,nickname,mode)
-        Log.d(TAG, "signUpProcess: ${response.isSuccessful}")
+        val response = retrofitInterface.passwordResetProcess(id,password,mode)
+        Log.d(TAG, "passwordResetProcess: ${response.body()?.result}")
         return response.body()
 
     } // login()
@@ -54,12 +54,12 @@ class FindPasswordModel {
     }
 
 
-    //쉐어드에서 유저정보 가져오기
-    fun getUserEmail(): String {
 
-        return MyApplication.sharedPreferences.getUserId()
+    // 쉐어드에 유저 정보 삭제
+    fun setSharedPreferencesRemoveUserInfo() {
 
-    }
+        MyApplication.sharedPreferences.removeAll()
 
+    } // setSharedPreferencesUserInfo()
 
 }
