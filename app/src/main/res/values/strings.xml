@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">FitFit</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--앱 이름-->
@@ -27,10 +26,11 @@
     <string name="next">다음</string>
     <string name="resend">재전송</string>
     <string name="passwordHint">영어, 숫자, 특수문자 조합으로 이루어진 8~15자의 문자</string>
+    <string name="nicknameHint">3~8자의 한글만 입력 가능합니다.</string>
+    <string name="nicknameInput">닉네임 입력</string>
     <string name="enterPassword">비밀번호 입력</string>
     <string name="reconfirmPassword">비밀번호 재확인</string>
     <string name="nickname">닉네임</string>
-    <string name="enterNickname">닉네임 입력</string>
     <string name="confirmUserInfo">회원정보 확인</string>
     <string name="complete">완료</string>
     <string name="validEmailFormat">올바른 이메일 형식 입니다.</string>
@@ -45,7 +45,8 @@
     <string name="userEmail">이메일 : %s</string>
     <string name="userNickname">닉네임 : %s</string>
     <string name="timer">00:00</string>
-
+    <string name="code_verification_successful">코드 인증에 성공 했습니다.</string>
+    <string name="code_verification_failure">유효하지 않은 인증코드 입니다.</string>
 
     <!--홈 프래그먼트-->
     <string name="weekExerciseCheck">이번 주 운동량 체크</string>
@@ -89,5 +90,11 @@
     <string name="confirm">확인</string>
     <string name="profileEditDialogContent">프로필 수정을 완료 하시겠습니까?</string>
 
+    
+    <string name="passwordReset">비밀번호 재설정</string>
+    <string name="inCorrectUserEmail">유효하지 않은 이메일 입니다.</string>
+    <string name="correctUserEmail">회원정보와 일치하는 이메일 입니다.</string>
+    <string name="myEmailInput">가입한 이메일을 입력해 주세요.</string>
+    <string name="passwordResetComplete">성공적으로 비밀번호를 변경하였습니다.</string>
 
 </resources>

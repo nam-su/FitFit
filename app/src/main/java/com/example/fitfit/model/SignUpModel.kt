@@ -5,6 +5,7 @@ import com.example.fitfit.function.GmailSender
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
+import okhttp3.Response
 
 class SignUpModel {
 
@@ -25,11 +26,11 @@ class SignUpModel {
     var timeLimit = 6
 
     // 로그인 통신으로 result 값 확인
-    suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User? {
+    suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User {
 
         val response = retrofitInterface.signUp(id,password,nickname,mode)
         Log.d(TAG, "signUpProcess: ${response.isSuccessful}")
-        return response.body()
+        return response.body()!!
 
     } // login()
 

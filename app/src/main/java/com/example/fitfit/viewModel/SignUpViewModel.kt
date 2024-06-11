@@ -291,6 +291,7 @@ class SignUpViewModel : ViewModel() {
     }
 
 
+
     //course value 변경
     fun changeCourseValue(value:String){
         _course.value = value

@@ -123,6 +123,17 @@ interface RetrofitInterface {
 
 
 
+    //내 이메일 인지 확인
+    @FormUrlEncoded
+    @POST("passwordResetProcess.php")
+    suspend fun passwordResetProcess(
+
+        @Field("id") id: String,
+        @Field("password") password: String,
+        @Field("mode") mode: String
+
+    ): Response<User>
+
 
 
 }
