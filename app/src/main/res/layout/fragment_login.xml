@@ -86,7 +86,6 @@
                         android:text="@string/signUp"
                         android:textColor="@color/black"
                         android:textSize="12sp"
-                        android:onClick="@{()->loginViewModel.onSignUpClicked()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.75"
                         app:layout_constraintStart_toStartOf="parent"

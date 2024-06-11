@@ -233,7 +233,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="@string/enterNickname" />
+                    android:text="@string/nicknameInput" />
 
                 <EditText
                     android:id="@+id/editTextNickname"
@@ -242,7 +242,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/grey"
-                    android:hint="@string/nickname"
+                    android:hint="@string/nicknameHint"
                     android:inputType="text"
                     style="@style/editTextStyle"/>
 

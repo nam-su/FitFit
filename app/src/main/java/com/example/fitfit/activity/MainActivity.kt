@@ -8,11 +8,13 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.fitfit.R
 import com.example.fitfit.databinding.ActivityMainBinding
+import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.d(TAG, "setView: 백스택 : " + navHostFragment.childFragmentManager.backStackEntryCount.toString())
         }
+
 
     } // setView()
 
@@ -116,6 +119,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     } // setBackPressed()
+
+
 
 
 }

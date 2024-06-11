@@ -16,12 +16,14 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true"
             />
 
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true"/>
 
     </fragment>
@@ -37,10 +39,14 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"/>
+        <action
+            android:id="@+id/action_loginFragment_to_findPasswordFragment"
+            app:destination="@id/findPasswordFragment" />
     </fragment>
 
 
@@ -131,6 +137,7 @@
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:popUpTo="@id/userFragment"
             app:popUpToInclusive="true"
             />
         <action
@@ -141,6 +148,9 @@
             android:id="@+id/action_userFragment_to_userEditFragment"
             app:destination="@id/userEditFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_userFragment_to_findPasswordFragment"
+            app:destination="@id/findPasswordFragment" />
 
     </fragment>
 
@@ -172,6 +182,21 @@
         <action
             android:id="@+id/action_userEditFragment_to_userFragment"
             app:destination="@id/userFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/findPasswordFragment"
+        android:name="com.example.fitfit.fragment.FindPasswordFragment"
+        android:label="fragment_find_password"
+        tools:layout="@layout/fragment_find_password"
+        >
+
+
+        <action
+            android:id="@+id/action_findPasswordFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
+            app:popUpTo="@id/findPasswordFragment"
             app:popUpToInclusive="true"/>
     </fragment>
 
