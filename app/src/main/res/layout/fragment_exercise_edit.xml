@@ -55,7 +55,7 @@
             android:id="@+id/textViewMyExerciseListSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{exerciseEditViewModel.myExerciseListSize}"
+            android:text="@{exerciseEditViewModel.myExerciseListSize + ` 개`}"
             style="@style/defaultBlackTextStyle"
             android:textSize="20sp"
             app:layout_constraintTop_toTopOf="@id/textViewMyExerciseList"

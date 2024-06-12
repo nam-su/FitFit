@@ -14,19 +14,17 @@ class ExerciseEditViewModel: ViewModel() {
     val checkMyExerciseListSizeMax: LiveData<Boolean>
         get() = _checkMyExerciseListSizeMax
 
-    private val _myExerciseListSize = MutableLiveData<String>()
-    val myExerciseListSize: LiveData<String>
+    private val _myExerciseListSize = MutableLiveData<Int>()
+    val myExerciseListSize: LiveData<Int>
         get() = _myExerciseListSize
 
 
     // 내 운동 리스트
-    fun setMyExerciseList(): ArrayList<PoseExercise> {
+    fun getSharedMyExerciseList(): ArrayList<PoseExercise> {
 
-        val myExerciseList =  exerciseEditModel.setMyExerciseList()
+        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
 
-        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size.toString() + " 개"
-
-        return myExerciseList
+        return exerciseEditModel.getSharedMyExerciseList()
 
     } // setMyExerciseList()
 
@@ -59,7 +57,7 @@ class ExerciseEditViewModel: ViewModel() {
     fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int) {
 
         exerciseEditModel.deleteExerciseItem(myExerciseList,position)
-        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size.toString() + " 개"
+        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
 
     } // deleteExerciseItem()
 
@@ -69,7 +67,7 @@ class ExerciseEditViewModel: ViewModel() {
 
         _checkMyExerciseListSizeMax.value = exerciseEditModel.addExerciseItem(poseExerciseList[position])
 
-        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size.toString() + " 개"
+        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
 
     } // addExerciseItem()
 

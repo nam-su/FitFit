@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
@@ -24,6 +26,8 @@ class ExerciseEditFragment : Fragment() {
 
     private lateinit var binding: FragmentExerciseEditBinding
     private lateinit var exerciseEditViewModel: ExerciseEditViewModel
+
+    private lateinit var callback: OnBackPressedCallback
 
     private lateinit var myPoseExerciseAdapter: PoseExerciseAdapter
     private lateinit var allSquatAdapter: PoseExerciseAdapter
@@ -46,6 +50,13 @@ class ExerciseEditFragment : Fragment() {
 
     } // onCreateView()
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -62,7 +73,7 @@ class ExerciseEditFragment : Fragment() {
 
         // 내 운동 리스트 리사이클러뷰
         myPoseExerciseAdapter =
-            PoseExerciseAdapter(exerciseEditViewModel.setMyExerciseList(),true,"true")
+            PoseExerciseAdapter(exerciseEditViewModel.getSharedMyExerciseList(),true,"true")
 
         binding.recyclerViewMyPoseExerciseList.adapter = myPoseExerciseAdapter
 
@@ -125,6 +136,9 @@ class ExerciseEditFragment : Fragment() {
 
                 exerciseEditViewModel.deleteExerciseItem(myPoseExerciseAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
+                allSquatAdapter.notifyDataSetChanged()
+                allPushUpAdapter.notifyDataSetChanged()
+                allLungeAdapter.notifyDataSetChanged()
 
             }
 
@@ -138,6 +152,7 @@ class ExerciseEditFragment : Fragment() {
 
                 exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
+                allSquatAdapter.notifyDataSetChanged()
 
             }
 
@@ -151,6 +166,7 @@ class ExerciseEditFragment : Fragment() {
 
                 exerciseEditViewModel.addExerciseItem(allPushUpAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
+                allPushUpAdapter.notifyDataSetChanged()
 
             }
 
@@ -164,6 +180,7 @@ class ExerciseEditFragment : Fragment() {
 
                 exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
+                allLungeAdapter.notifyDataSetChanged()
 
             }
 
@@ -186,5 +203,23 @@ class ExerciseEditFragment : Fragment() {
         }
 
     } // setClickListener()
+
+
+    // 뒤로가기 버튼 클릭 했을 때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                findNavController().popBackStack()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    }
 
 }
