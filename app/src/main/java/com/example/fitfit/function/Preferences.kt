@@ -7,6 +7,8 @@ import com.example.fitfit.data.User
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class Preferences(context: Context) {
 
@@ -89,52 +91,51 @@ class Preferences(context: Context) {
     // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
     fun setUserExerciseInfoList(exerciseList: ArrayList<PoseExercise>) {
 
-        for(i:Int in 0 until exerciseList.size) {
+        // 시간 복잡도를 O(n * m) 에서 O(n + m) 으로 줄이기 위한 맵 사용
+        // 각 운동의 이름을 key 값으로 해서 맵을 만들고 for문 사용
+        val exerciseMap = allExerciseList.associateBy { it.exerciseName }.toMutableMap()
 
-            // 날짜가 오늘과 다른 경우에는 카운트를 0 으로 해줘야함 ,
-            // 같은 운동인데 날짜가 다른 경우에 대한 처리
-            if (exerciseList[i].checkList == 1) {
+        for (exercise in exerciseList) {
 
-                Log.d(TAG, "setUserExerciseInfoList: 리스트 있는 운동")
-                updateUserExerciseInfo(exerciseList[i])
+            if (exercise.checkList == 1) {
 
-            }
-
-        }
-
-        val myExerciseList = ArrayList<PoseExercise>()
-
-        for (i: Int in 0 until allExerciseList.size) {
-
-            if(allExerciseList[i].checkList == 1) {
-
-                myExerciseList.add(allExerciseList[i])
+                exerciseMap[exercise.exerciseName] = exercise
 
             }
 
         }
 
-        setMyPoseExerciseList(myExerciseList)
+        val myExerciseList = exerciseMap.values.filter { it.checkList == 1 }
+
+        setMyPoseExerciseList(compareExerciseDate(ArrayList(myExerciseList)))
 
     } // setUserExerciseInfoList()
 
 
-    // 서버에서 불러온 운동 목록 중 최근 기록 업데이트 하기 위한 메서드
-    private fun updateUserExerciseInfo(poseExercise: PoseExercise) {
+    // 최근 운동한 날짜가 오늘과 다르다면 운동 카운트 초기화 하는 메서드
+    private fun compareExerciseDate(myExerciseList: ArrayList<PoseExercise>): ArrayList<PoseExercise> {
+        // 오늘 날짜
+        val todayDate = LocalDate.now()
 
-        for (i: Int in 0 until allExerciseList.size) {
+        // 내 운동리스트 순회
+        for (exercise in myExerciseList) {
 
-            if(poseExercise.exerciseName == allExerciseList[i].exerciseName) {
+            // 최근 운동의 운동한 날짜.
+            val exerciseDate = LocalDate.ofEpochDay(exercise.date / (24 * 60 * 60 * 1000))
 
+            // 오늘날짜와 마지막 운동 기록의 날짜가 일치하지 않을 때
+            if(todayDate != exerciseDate) {
 
-
-                allExerciseList[i] = poseExercise
+                exercise.date = System.currentTimeMillis()
+                exercise.exerciseCount = 0
 
             }
 
         }
 
-    } // updateUserExerciseInfo
+        return myExerciseList
+
+    } // compareExerciseDate()
 
 
     // 유저 정보 쉐어드에 저장 하는 메서드
