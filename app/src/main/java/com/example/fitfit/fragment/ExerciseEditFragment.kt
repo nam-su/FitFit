@@ -220,6 +220,6 @@ class ExerciseEditFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(this,callback)
 
-    }
+    } // setOnBackPressed()
 
 }
