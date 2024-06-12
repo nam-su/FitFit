@@ -9,6 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.adapter.ExerciseDetailViewAdapter
+import com.example.fitfit.adapter.PoseExerciseAdapter
+import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.databinding.FragmentExerciseBinding
 import com.example.fitfit.viewModel.ExerciseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,6 +49,10 @@ class ExerciseFragment : Fragment() {
         exerciseViewModel = ExerciseViewModel()
         binding.exerciseViewModel = exerciseViewModel
 
+        binding.recyclerViewTodayExercise.adapter = PoseExerciseAdapter(exerciseViewModel.getMyExerciseList(),false,"")
+
+        binding.recyclerViewMyExerciseInfo.adapter = ExerciseDetailViewAdapter(exerciseViewModel.getMyExerciseInfoList())
+
     } // setVariable()
 
 
@@ -63,6 +70,20 @@ class ExerciseFragment : Fragment() {
 
             it.findNavController().navigate(R.id.action_exerciseFragment_to_payFragment)
             (activity as MainActivity).goneBottomNavi()
+
+        }
+
+        binding.textViewDetailView.setOnClickListener {
+
+            binding.constraintLayoutDetailView.visibility = View.VISIBLE
+            binding.textViewDetailView.visibility = View.GONE
+
+        }
+
+        binding.textViewQuickView.setOnClickListener {
+
+            binding.constraintLayoutDetailView.visibility = View.GONE
+            binding.textViewDetailView.visibility = View.VISIBLE
 
         }
 
