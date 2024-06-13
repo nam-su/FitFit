@@ -90,8 +90,6 @@ class HomeFragment : Fragment() {
         // 랭킹 모두보기 어댑터
         binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewAllChallengeRank())
 
-        homeViewModel.selectUserExercise()
-
         // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
 
     } // setVariable()

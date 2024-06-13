@@ -24,34 +24,6 @@ class HomeViewModel(): ViewModel() {
         get() = _weekStatus
 
 
-
-    // 서버에 요청한 유저 운동정보 응답 받는 메서드
-    fun selectUserExercise() {
-
-        viewModelScope.launch {
-
-            val response = homeModel.selectUserExercise()
-
-            Log.d(TAG, "selectUserExercise: ${response.isSuccessful}")
-            Log.d(TAG, "selectUserExercise: ${response.body()}")
-            Log.d(TAG, "selectUserExercise: ${response.message()}")
-
-            if(response.isSuccessful && response.body() != null) {
-
-                Log.d(TAG, "selectUserExercise: 통신 성공")
-
-            } else {
-
-                Log.d(TAG, "selectUserExercise: 통신실패")
-
-            }
-
-
-        }
-
-    } // selectUserExercise()
-
-
     // 이번주 운동량에 따른 메시지 출력을 위한 메서드
     fun setWeekStatus(): LiveData<String> {
 
