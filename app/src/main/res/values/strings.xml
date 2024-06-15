@@ -91,10 +91,14 @@
     <string name="profileEditDialogContent">프로필 수정을 완료 하시겠습니까?</string>
 
     
+    <!--비밀번호 재설정 프래그먼트-->
     <string name="passwordReset">비밀번호 재설정</string>
     <string name="inCorrectUserEmail">유효하지 않은 이메일 입니다.</string>
     <string name="correctUserEmail">회원정보와 일치하는 이메일 입니다.</string>
     <string name="myEmailInput">가입한 이메일을 입력해 주세요.</string>
     <string name="passwordResetComplete">성공적으로 비밀번호를 변경하였습니다.</string>
+    
+    <!--다이어리 프래그먼트-->
+    <string name="wave">~</string>
 
 </resources>

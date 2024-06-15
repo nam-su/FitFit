@@ -40,7 +40,8 @@ class DiaryFragment : Fragment() {
 
 
     private fun setCalendarView() {
-        //캘린더뷰 셋팅
+
+        //캘린더 뷰 셋팅
         var dayDecorator = DayDecorator(requireContext())
         var todayDecorator = TodayDecorator(requireContext())
         var sundayDecorator = SundayDecorator()
@@ -78,11 +79,11 @@ class DiaryFragment : Fragment() {
         }
 
 
-        //제목눌렸을때!
+        //제목 눌렸을 때!
         binding.calendarView.setOnTitleClickListener { Log.d(TAG, "onClick: 제목 눌렸엉") }
 
 
-        //날짜 바꿨을때!
+        //날짜 바꿨을 때!
         binding.calendarView.setOnDateChangedListener { _, _, _ ->
 
         }
