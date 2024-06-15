@@ -2,7 +2,9 @@ package com.example.fitfit.fragment
 
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.TextureView
@@ -24,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class PoseDetectionFragment : Fragment() {
 
@@ -34,7 +37,12 @@ class PoseDetectionFragment : Fragment() {
     // ViewModel 객체
     private lateinit var poseDetectionViewModel: PoseDetectionViewModel
 
+    // bundle 로 받는 이용자가 고른 운동 이름
     private lateinit var exerciseName: String
+
+    // tts 객체
+    lateinit var tts: TextToSpeech
+
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,7 +63,8 @@ class PoseDetectionFragment : Fragment() {
         setObserve()
         setListener()
 
-    }
+    } // onViewCreated
+
 
     // 변수 초기화
     private fun setVariable() {
@@ -69,6 +78,8 @@ class PoseDetectionFragment : Fragment() {
 
         exerciseName = requireArguments().getString("exerciseName").toString()
 
+
+
     } // setVariable
 
 
@@ -79,11 +90,29 @@ class PoseDetectionFragment : Fragment() {
         binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
             // TextureView가 사용 가능해졌을 때 호출됩니다.
             override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+
+                Log.d(TAG, "onSurfaceTextureAvailable: 1번")
                 poseDetectionViewModel.openCamera(binding.textureView)
+
+                // tts 초기화 (비동기로 이루어짐.) 초기화 되자 마자 시작 문구 출력
+                tts = TextToSpeech(requireContext(),TextToSpeech.OnInitListener {
+
+                    Log.d(TAG, "onSurfaceTextureAvailable: 4번")
+
+                    tts.language = Locale.KOREA
+                    tts.speak("$exerciseName 시작합니다.",TextToSpeech.QUEUE_FLUSH,null,null)
+                    tts.speak("올바른 자세로 서주세요",TextToSpeech.QUEUE_ADD,null,null)
+
+                })
+
             }
 
             // TextureView의 크기가 변경되었을 때 호출됩니다.
-            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
+
+                Log.d(TAG, "onSurfaceTextureAvailable: 2번")
+
+            }
 
             // TextureView가 파괴될 때 호출됩니다.
             override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
@@ -93,13 +122,19 @@ class PoseDetectionFragment : Fragment() {
             // TextureView가 업데이트될 때 호출됩니다.
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
 
+                Log.d(TAG, "onSurfaceTextureAvailable: 3번")
                 poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!,exerciseName)
 
             }
         }
 
-    } // setListener()
+        binding.buttonTest.setOnClickListener {
 
+            startMediaPlayer(R.raw.exercise_signal)
+
+        }
+
+    } // setListener()
 
 
     //Observe 관련 메서드
@@ -118,6 +153,8 @@ class PoseDetectionFragment : Fragment() {
 
                 // 감지 리스너를 새로 초기화 해줘야 데이터가 중첩 안됨.
                 // 초기화 해주지 않으면 감지가 계속 호출될때 마다 변수 감지해서 중첩됨.
+                tts.speak("운동이 끝났습니다",TextToSpeech.QUEUE_FLUSH,null,null)
+
                 binding.textureView.surfaceTextureListener = null
 
                 finishExercise(exerciseName)
@@ -127,6 +164,21 @@ class PoseDetectionFragment : Fragment() {
         }
 
     } //setObserve()
+
+
+    // 운동 효과음 재생하는 메서드
+    private fun startMediaPlayer(music : Int) {
+
+        val mediaPlayer = MediaPlayer.create(requireContext(), music)
+        mediaPlayer.isLooping = false
+
+        mediaPlayer.setOnCompletionListener {
+            mediaPlayer.release()
+        }
+
+        mediaPlayer.start()
+
+    } // startMediaPlayer()
 
 
     // 운동 개수를 다 채웠을때 호출하는 메서드
@@ -152,7 +204,6 @@ class PoseDetectionFragment : Fragment() {
             requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
         }
     }
-
 
 
     // 권한 요청 결과를 처리

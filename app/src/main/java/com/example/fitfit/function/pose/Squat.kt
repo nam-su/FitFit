@@ -30,16 +30,20 @@ class Squat() {
         Log.d(TAG, "각도 : $angle")
         // 앉은 상태 감지
         if (angle in 70.0..110.0 && !sit) {
+
             Log.d(TAG, "상태: 앉은상태")
             sit = true
+
         }
 
         // 선 상태 감지 및 카운트 증가
         if (angle in 150.0..180.0 && sit) {
+
             Log.d(TAG, "상태: 앉았다가 선상태")
             sit = false
             stand = false
             return true
+
         }
 
         return false

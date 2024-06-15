@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.speech.tts.TextToSpeech
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
@@ -45,7 +46,9 @@ class PoseDetectionModel(context: Context) {
     private val lunge = Lunge()
     private val squat = Squat()
 
+    // 운동 카운트를 측정하기 위한 전역 변수
     var count = 0
+
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
     fun processImage(bitmap: Bitmap,exerciseName: String): Pair<Bitmap, Int> {

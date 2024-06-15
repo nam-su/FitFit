@@ -51,7 +51,7 @@ class PoseDetectionViewModel : ViewModel() {
 
     // 카메라 열기 메서드
     @SuppressLint("MissingPermission")
-    fun openCamera(textureView: TextureView) {
+    fun openCamera(textureView: TextureView): Boolean {
         viewModelScope.launch(Dispatchers.Main) {
             cameraManager.openCamera(
                 cameraManager.cameraIdList[0],
@@ -113,6 +113,8 @@ class PoseDetectionViewModel : ViewModel() {
             )
 
         } // cameraManager.openCamera 코루틴 끝
+
+        return true
 
     } //openCamera()
 
