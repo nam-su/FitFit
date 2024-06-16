@@ -52,7 +52,7 @@ class Squat() {
             } else {
 
                 Log.d(TAG, "허리 자세 불량")
-                checkBadPose = "허리"
+                checkBadPose = "허리를 곧게 펴세요"
 
             }
 

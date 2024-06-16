@@ -117,18 +117,28 @@ class PoseDetectionFragment : Fragment() {
 
     // tts 초기화 및 초기 tts
     private fun initTextToSpeech() {
+
         tts = TextToSpeech(requireContext()) { status ->
+
             if (status == TextToSpeech.SUCCESS) {
+
                 tts.language = Locale.KOREA
+
                 tts.speak("$exerciseName 시작합니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+
                 tts.speak("올바른 자세로 서주세요", TextToSpeech.QUEUE_ADD, null, null)
 
                 CoroutineScope(Dispatchers.Main).launch {
+
                     delay(4000)
                     isStartExercise = true
+
                 }
+
             }
+
         }
+
     } // initTextToSpeech()
 
 
@@ -175,21 +185,14 @@ class PoseDetectionFragment : Fragment() {
 
 
         // 잘못된 동작 감지
-        poseDetectionViewModel.checkBadPose.observe(viewLifecycleOwner) {
+        poseDetectionViewModel.checkBadPose.observe(viewLifecycleOwner) {message ->
 
-            if(it.isNotEmpty() && !isSpeakingCoolDown) {
+            if (message.isNotEmpty() && !isSpeakingCoolDown) {
 
-                when(it) {
+                message.speak()
 
-                    "허리" -> {
+                lastSpokenMessage = message
 
-                        tts.speak("허리를 곧게 펴세요",TextToSpeech.QUEUE_FLUSH,null,null)
-
-                    }
-
-                }
-
-                lastSpokenMessage = it
                 triggerCoolDown(::isSpeakingCoolDown)
 
             }
