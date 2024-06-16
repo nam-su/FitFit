@@ -11,15 +11,11 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
-import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
 import com.example.fitfit.viewModel.PoseDetectionViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
+import kotlin.reflect.KMutableProperty0
 
 class PoseDetectionFragment : Fragment() {
 
@@ -42,6 +39,14 @@ class PoseDetectionFragment : Fragment() {
 
     // tts 객체
     lateinit var tts: TextToSpeech
+
+    private var lastSpokenMessage: String? = null
+
+    private var isSpeakingCoolDown = false // 잘못된 자세시 TTS 호출 쿨다운 상태를 추적하는 변수
+
+    private var isAccuracySpeakingCoolDown = false // TTS 호출 쿨다운 상태를 추적하는 변수
+
+    private var isStartExercise = false
 
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
@@ -78,8 +83,6 @@ class PoseDetectionFragment : Fragment() {
 
         exerciseName = requireArguments().getString("exerciseName").toString()
 
-
-
     } // setVariable
 
 
@@ -88,44 +91,19 @@ class PoseDetectionFragment : Fragment() {
 
         // TextureView의 SurfaceTextureListener를 설정합니다.
         binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-            // TextureView가 사용 가능해졌을 때 호출됩니다.
+
             override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
-
-                Log.d(TAG, "onSurfaceTextureAvailable: 1번")
+                Log.d(TAG, "onSurfaceTextureAvailable")
                 poseDetectionViewModel.openCamera(binding.textureView)
-
-                // tts 초기화 (비동기로 이루어짐.) 초기화 되자 마자 시작 문구 출력
-                tts = TextToSpeech(requireContext(),TextToSpeech.OnInitListener {
-
-                    Log.d(TAG, "onSurfaceTextureAvailable: 4번")
-
-                    tts.language = Locale.KOREA
-                    tts.speak("$exerciseName 시작합니다.",TextToSpeech.QUEUE_FLUSH,null,null)
-                    tts.speak("올바른 자세로 서주세요",TextToSpeech.QUEUE_ADD,null,null)
-
-                })
-
+                initTextToSpeech()
             }
 
-            // TextureView의 크기가 변경되었을 때 호출됩니다.
-            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
-
-                Log.d(TAG, "onSurfaceTextureAvailable: 2번")
-
-            }
-
-            // TextureView가 파괴될 때 호출됩니다.
-            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
-                return false
-            }
-
-            // TextureView가 업데이트될 때 호출됩니다.
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = false
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-
-                Log.d(TAG, "onSurfaceTextureAvailable: 3번")
-                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!,exerciseName)
-
+                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!, exerciseName)
             }
+
         }
 
         binding.buttonTest.setOnClickListener {
@@ -137,6 +115,23 @@ class PoseDetectionFragment : Fragment() {
     } // setListener()
 
 
+    // tts 초기화 및 초기 tts
+    private fun initTextToSpeech() {
+        tts = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                tts.language = Locale.KOREA
+                tts.speak("$exerciseName 시작합니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                tts.speak("올바른 자세로 서주세요", TextToSpeech.QUEUE_ADD, null, null)
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(4000)
+                    isStartExercise = true
+                }
+            }
+        }
+    } // initTextToSpeech()
+
+
     //Observe 관련 메서드
     private fun setObserve(){
 
@@ -146,6 +141,21 @@ class PoseDetectionFragment : Fragment() {
         })
 
 
+        // 운동 시작 후 동작인식 정확도 측정감지
+        poseDetectionViewModel.checkAccuracy.observe(viewLifecycleOwner) { accuracy ->
+
+            if (isStartExercise) {
+
+                if (!accuracy && !isAccuracySpeakingCoolDown) {
+                    "동작을 감지할 수 없습니다".speak()
+                    triggerCoolDown(::isAccuracySpeakingCoolDown)
+                }
+
+            }
+
+        }
+
+
         // 운동 카운트 감지.
         poseDetectionViewModel.checkExerciseCount.observe(viewLifecycleOwner) {
 
@@ -153,7 +163,7 @@ class PoseDetectionFragment : Fragment() {
 
                 // 감지 리스너를 새로 초기화 해줘야 데이터가 중첩 안됨.
                 // 초기화 해주지 않으면 감지가 계속 호출될때 마다 변수 감지해서 중첩됨.
-                tts.speak("운동이 끝났습니다",TextToSpeech.QUEUE_FLUSH,null,null)
+                "운동이 끝났습니다".speak()
 
                 binding.textureView.surfaceTextureListener = null
 
@@ -163,7 +173,42 @@ class PoseDetectionFragment : Fragment() {
 
         }
 
+
+        // 잘못된 동작 감지
+        poseDetectionViewModel.checkBadPose.observe(viewLifecycleOwner) {
+
+            if(it.isNotEmpty() && !isSpeakingCoolDown) {
+
+                when(it) {
+
+                    "허리" -> {
+
+                        tts.speak("허리를 곧게 펴세요",TextToSpeech.QUEUE_FLUSH,null,null)
+
+                    }
+
+                }
+
+                lastSpokenMessage = it
+                triggerCoolDown(::isSpeakingCoolDown)
+
+            }
+
+        }
+
     } //setObserve()
+
+
+    // 쿨다운 시작 메서드
+    private fun triggerCoolDown(coolDownFlag: KMutableProperty0<Boolean>) {
+
+        coolDownFlag.set(true)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(3000)
+            coolDownFlag.set(false)
+        }
+
+    } // triggerCoolDown
 
 
     // 운동 효과음 재생하는 메서드
@@ -179,6 +224,13 @@ class PoseDetectionFragment : Fragment() {
         mediaPlayer.start()
 
     } // startMediaPlayer()
+
+
+
+    // tts speak 메서드
+    private fun String.speak() {
+        tts.speak(this, TextToSpeech.QUEUE_FLUSH, null, null)
+    } // speak
 
 
     // 운동 개수를 다 채웠을때 호출하는 메서드
@@ -215,4 +267,5 @@ class PoseDetectionFragment : Fragment() {
             checkPermissions()
         }
     }
+
 }

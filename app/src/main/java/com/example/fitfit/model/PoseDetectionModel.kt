@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
@@ -44,11 +45,13 @@ class PoseDetectionModel(context: Context) {
 
     private val pushUp = PushUp()
     private val lunge = Lunge()
-    private val squat = Squat()
+    val squat = Squat()
 
     // 운동 카운트를 측정하기 위한 전역 변수
     var count = 0
 
+    // 자세에서 필요한 정확도 검사 하는 변수
+    var checkAccuracy: Boolean = false
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
     fun processImage(bitmap: Bitmap,exerciseName: String): Pair<Bitmap, Int> {
@@ -74,23 +77,53 @@ class PoseDetectionModel(context: Context) {
 
         var x = 0
 
-        // 운동 종류에 따른 운동 판별하는 메서드
-        poseExercise(exerciseName,outputFeature0)
+        // 자세에서 필요한 정확도 검사 하는 변수
+        checkAccuracy = if (checkExerciseAccuracy(outputFeature0)) {
+
+            // 운동 종류에 따른 운동 판별하는 메서드
+            poseExercise(exerciseName,outputFeature0)
+            true
+
+        } else {
+
+            false
+
+        }
 
         // 추론된 점들을 그리기
         while (x <= 49) {
+
             // 신뢰도가 0.45 이상인 점들만 처리
             if (outputFeature0[x + 2] > 0.45) {
+
                 // 캔버스에 점 그리기
                 canvas.drawCircle(outputFeature0[x + 1] * w, outputFeature0[x] * h, 10f, paint)
-            }
-            x += 3
-        } // 점그리기 메서드 끝.
 
+            }
+
+            x += 3
+
+        } // 점그리기 메서드 끝.
 
         return Pair(mutableBitmap, count)
 
     } // processImage()
+
+
+    // 운동 할때 정확도 측정
+    private fun checkExerciseAccuracy(outputFeature0: FloatArray): Boolean {
+
+        val accuracyThreshold = 0.1
+
+        return listOf(
+
+            outputFeature0[17], outputFeature0[20], outputFeature0[23], outputFeature0[26],
+            outputFeature0[29], outputFeature0[32], outputFeature0[35], outputFeature0[38],
+            outputFeature0[41], outputFeature0[44], outputFeature0[47], outputFeature0[50]
+
+        ).all { it > accuracyThreshold }
+
+    }
 
 
     // 운동 종류에 따른 카운트 변화
@@ -117,10 +150,10 @@ class PoseDetectionModel(context: Context) {
         val id = MyApplication.sharedPreferences.getUserId()
 
         // 최근 운동 날짜와 방금 운동한 날짜가 같을 떄는 update()
-        if(isSameDate(poseExercise)) {
+        return if(isSameDate(poseExercise)) {
 
             // 서버로 update 요청.
-            return retrofitInterface.updatePoseExercise(
+            retrofitInterface.updatePoseExercise(
 
                 id,
                 poseExercise.category,
@@ -135,7 +168,7 @@ class PoseDetectionModel(context: Context) {
         } else {
 
             // 서버로 insert 요청.
-            return retrofitInterface.insertPoseExercise(
+            retrofitInterface.insertPoseExercise(
 
                 id,
                 poseExercise.category,
@@ -154,40 +187,29 @@ class PoseDetectionModel(context: Context) {
     // 날짜 비교해서 쉐어드 다르게 들어가야하는 메서드
     private fun isSameDate(poseExercise: PoseExercise): Boolean {
 
-        // 여기서 현재 날짜와 그전 데이터 날짜 값 시스템 시간에서 현재 날짜 형식으로 변환
-        val beforeDate: String = LocalDate.ofEpochDay(poseExercise.date / (24 * 60 * 60 * 1000))
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val previousDate = LocalDate.ofEpochDay(poseExercise.date / (24 * 60 * 60 * 1000)).format(formatter)
+        val currentDate = LocalDate.now().format(formatter)
 
-        val afterDate: String = LocalDate.now()
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        // 이전 날짜와 현재 날짜가 같은 경우. 카운트 + 해준다
+        return if (previousDate == currentDate) {
 
-        val checkDate: Boolean
-
-        // 날짜가 같은 경우
-        if(beforeDate == afterDate) {
-
-            // 운동 카운트,시스템 시간 초기화
             poseExercise.exerciseCount += count
             poseExercise.date = System.currentTimeMillis()
-            checkDate = true
+            MyApplication.sharedPreferences.setPoseExercise(poseExercise)
+            MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
+            true
 
-        // 날짜가 다른 경우
+            // 이전 날짜와 현재 날짜가 다른 경우 방금한 운동이 카운트로 초기화됨.
         } else {
 
-            // 운동 카운트 초기화 , 시스템 시간 초기화
             poseExercise.exerciseCount = count
             poseExercise.date = System.currentTimeMillis()
-            checkDate = false
+            MyApplication.sharedPreferences.setPoseExercise(poseExercise)
+            MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
+            false
 
         }
-
-        // 운동 객체 초기화 해줌.
-        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
-
-        // 쉐어드 운동 리스트 갱신해준다.
-        MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
-
-        return checkDate
 
     } // compareDate()
 
@@ -196,5 +218,6 @@ class PoseDetectionModel(context: Context) {
     fun close() {
         model.close()
     } // close()
+
 }
 
