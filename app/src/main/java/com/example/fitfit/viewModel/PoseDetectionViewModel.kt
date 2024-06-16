@@ -38,6 +38,13 @@ class PoseDetectionViewModel : ViewModel() {
     private val _checkExerciseCount = MutableLiveData<Boolean>()
     val checkExerciseCount: LiveData<Boolean> get() = _checkExerciseCount
 
+    private val _checkBadPose = MutableLiveData<String>()
+    val checkBadPose: LiveData<String> get() = _checkBadPose
+
+
+    private val _checkAccuracy = MutableLiveData<Boolean>()
+    val checkAccuracy: LiveData<Boolean> get() = _checkAccuracy
+
 
     // ViewModel 초기화 메서드
     fun initialize(context: Context) {
@@ -46,79 +53,47 @@ class PoseDetectionViewModel : ViewModel() {
         // 카메라 매니저 초기화
         cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
-    }
+    } // initialize()
 
 
     // 카메라 열기 메서드
     @SuppressLint("MissingPermission")
-    fun openCamera(textureView: TextureView) {
+    fun openCamera(textureView: TextureView): Boolean {
         viewModelScope.launch(Dispatchers.Main) {
-            cameraManager.openCamera(
-                cameraManager.cameraIdList[0],
-                object : CameraDevice.StateCallback() {
-
-                    override fun onOpened(cameraDevice: CameraDevice) {
-                        viewModelScope.launch(Dispatchers.Main) {
-
-                            val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-                            val surface = Surface(textureView.surfaceTexture)
-
-                            captureRequest.addTarget(surface)
-
-                            cameraDevice.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
-
-                                    override fun onConfigured(session: CameraCaptureSession) {
-
-                                        viewModelScope.launch(Dispatchers.Main) {
-
-                                            session.setRepeatingRequest(
-                                                captureRequest.build(),
-                                                null,
-                                                null
-                                            )  // 반복 요청 설정
-
-                                        } // session.setRepeatingRequest 쪽 코루틴 끝
-
-                                    }
-
-                                    override fun onConfigureFailed(session: CameraCaptureSession) {
-                                        // 설정 실패 처리
-                                    }
-
-                                },
-
-                                null
-                            )
-
-                        } // 열려있을 때 코루틴 마지막 단
-
+            cameraManager.openCamera(cameraManager.cameraIdList[0], object : CameraDevice.StateCallback() {
+                override fun onOpened(cameraDevice: CameraDevice) {
+                    val surface = Surface(textureView.surfaceTexture)
+                    val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
+                        addTarget(surface)
                     }
 
-                    override fun onDisconnected(camera: CameraDevice) {
+                    cameraDevice.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
+                        override fun onConfigured(session: CameraCaptureSession) {
+                            session.setRepeatingRequest(captureRequest.build(), null, null)
+                        }
 
-                        // 카메라 연결 끊김 처리
-                        Log.d(TAG, "onDisconnected: ")
+                        override fun onConfigureFailed(session: CameraCaptureSession) {
+                           // "Camera configuration failed"
+                        }
+                    }, null)
+                }
 
-                    }
+                override fun onDisconnected(camera: CameraDevice) {
+                    // "Camera disconnected"
+                }
 
-                    override fun onError(camera: CameraDevice, error: Int) {
-
-                        // 카메라 에러 처리
-                        Log.d(TAG, "onError: $error")
-
-                    }
-
-                },
-                null
-            )
-
-        } // cameraManager.openCamera 코루틴 끝
+                override fun onError(camera: CameraDevice, error: Int) {
+                    Log.e(TAG, "Camera error: $error")
+                }
+            }, null)
+        }
+        return true
 
     } //openCamera()
 
 
     // 이미지 처리 메서드
-    fun processImage(bitmap: Bitmap, exerciseName: String) {
+    private fun processImage(bitmap: Bitmap, exerciseName: String) {
 
         // 이미지 처리
         val (processedBitmap, detectedCount) = poseDetectionModel.processImage(bitmap, exerciseName)
@@ -128,6 +103,10 @@ class PoseDetectionViewModel : ViewModel() {
 
         // 감지된 카운트 업데이트
         _count.postValue(detectedCount)
+
+        _checkBadPose.value = poseDetectionModel.squat.checkBadPose
+
+        _checkAccuracy.value = poseDetectionModel.checkAccuracy
 
     } // processImage()
 
@@ -156,18 +135,13 @@ class PoseDetectionViewModel : ViewModel() {
 
             val response = poseDetectionModel.updatePoseExercise(exerciseName)
 
-            Log.d(TAG, "updatePoseExercise: ${response.isSuccessful}")
-            Log.d(TAG, "updatePoseExercise: ${response.body()}")
+            if (response.isSuccessful && response.body() != null) {
 
-            if(response.isSuccessful && response.body() != null) {
-
-                Log.d(TAG, "updatePoseExercise: 서버에 성공적으로 저장?")
-                Log.d(TAG, "updatePoseExercise: ${response.body()!!.result}")
+                Log.d(TAG, "Exercise data successfully updated on server")
 
             } else {
 
-                Log.d(TAG, "updatePoseExercise: onFail")
-                Log.d(TAG, "updatePoseExercise: ${response.message()}")
+                Log.e(TAG, "Failed to update exercise data: ${response.message()}")
 
             }
 
