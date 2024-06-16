@@ -100,5 +100,9 @@
     
     <!--다이어리 프래그먼트-->
     <string name="wave">~</string>
+    <string name="selectDate">날짜 선택</string>
+    <string name="graph">운동 그래프</string>
+    <string name="challengeContribution">챌린지 기여도</string>
+    <string name="challenge">챌린지 : </string>
 
 </resources>

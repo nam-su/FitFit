@@ -81,4 +81,7 @@ dependencies {
     //캘린더뷰 커스텀용
     def calendarView_version = "1.4.3"
     implementation("com.github.prolificinteractive:material-calendarview:$calendarView_version")
+
+    //MP_chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
