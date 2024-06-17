@@ -15,6 +15,7 @@ import com.example.fitfit.Decorator.SundayDecorator
 import com.example.fitfit.Decorator.TodayDecorator
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentBottomSheetDiaryBinding
+import com.example.fitfit.viewModel.DiaryViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -23,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
+class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private val mode: Int) : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetDiaryBinding
     private val TAG = "바텀시트 다이어리 프래그먼트"
@@ -119,25 +120,24 @@ class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
 
         //날짜 변경 리스너
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
+
             Log.d(TAG, "setListener: ${date.date}")
 
-            // 원하는 출력 형식
-            val targetFormat = SimpleDateFormat("yyyy년 MM월 dd일 E요일", Locale.KOREAN)
+            binding.buttonSelect.text = viewModel.changeYMDWFormat(date.date)
+            binding.buttonSelect.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+            binding.buttonSelect.isEnabled = true
 
-            try {
-                // Date 객체를 원하는 형식으로 변환
-                val formattedDate = targetFormat.format(date.date)
-                binding.buttonSelect.text = "$formattedDate 선택"
-                binding.buttonSelect.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
-                binding.buttonSelect.isEnabled = true
-
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
         }
 
         //선택 버튼 리스너
         binding.buttonSelect.setOnClickListener {
+
+            if(mode == 0){
+                viewModel.setStartDate(binding.calendarView.selectedDate.date)
+            }else if(mode == 1){
+                viewModel.setEndDate(binding.calendarView.selectedDate.date)
+            }
+
             dialog?.dismiss()
         }
     } // setListener()

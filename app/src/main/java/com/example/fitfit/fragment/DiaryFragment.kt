@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentDiaryBinding
+import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
@@ -28,6 +29,8 @@ class DiaryFragment : Fragment() {
     lateinit var binding: FragmentDiaryBinding
     lateinit var labelMap: HashMap<Float,String>
 
+    lateinit var diaryViewModel: DiaryViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
@@ -38,11 +41,25 @@ class DiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setVariable()
         setListener()
+        setObserve()
 
         setBarChart(binding.barChart)
 
     }
+
+
+
+    //초기값 설정
+    private fun setVariable(){
+
+        binding.lifecycleOwner = this
+
+        diaryViewModel = DiaryViewModel()
+        binding.diaryViewModel = diaryViewModel
+
+    } // setVariable()
 
 
 
@@ -51,17 +68,34 @@ class DiaryFragment : Fragment() {
 
         //시작날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
-            val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,0)
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
         }
 
         //마지막날짜 선택 리스너
         binding.buttonEndDate.setOnClickListener {
-            val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,1)
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
         }
 
     } //setListener()
+
+
+
+    //observe 설정
+    private fun setObserve(){
+
+        //첫번째 선택 날짜 관찰
+        diaryViewModel.startDate.observe(viewLifecycleOwner){
+            binding.buttonStartDate.text = diaryViewModel.changeYMDFormat(it)
+        }
+
+        //두번째 선택 날짜 관찰
+        diaryViewModel.endDate.observe(viewLifecycleOwner){
+            binding.buttonEndDate.text = diaryViewModel.changeYMDFormat(it)
+
+        }
+    }
 
 
 
