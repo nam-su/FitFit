@@ -69,7 +69,7 @@ dependencies {
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
 
-    //drawerLayout
+    //drawerLayout, bottomSheetDialogFragment
     implementation 'com.google.android.material:material:1.6.0'
 
     // CircleImageView
@@ -84,4 +84,5 @@ dependencies {
 
     //MP_chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }

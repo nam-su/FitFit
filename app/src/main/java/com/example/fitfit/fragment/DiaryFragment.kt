@@ -40,68 +40,27 @@ class DiaryFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
 
-        setCalendarView()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setListener()
+
         setBarChart(binding.barChart)
 
     }
 
 
-    private fun setCalendarView() {
 
-        //캘린더 뷰 셋팅
-        var dayDecorator = DayDecorator(requireContext())
-        var todayDecorator = TodayDecorator(requireContext())
-        var sundayDecorator = SundayDecorator()
-        var saturdayDecorator = SaturdayDecorator()
-        var selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
-        var eventDecorator = EventDecorator(arrayListOf())
-
-        binding.calendarView.addDecorators(
-            dayDecorator,
-            todayDecorator,
-            sundayDecorator,
-            saturdayDecorator,
-            selectedMonthDecorator,
-            eventDecorator
-        )
-        binding.calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
-        binding.calendarView.setTitleFormatter { day ->
-            val year = day.year
-            val month = day.month + 1
-            year.toString() + "년 " + month + "월"
+    //리스너 설정
+    private fun setListener(){
+        binding.buttonStartDate.setOnClickListener {
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
+            bottomSheetDiaryFragment.show(parentFragmentManager,"")
         }
-        binding.calendarView.setOnMonthChangedListener { _, date ->
-            binding.calendarView.removeDecorators()
-            binding. calendarView.invalidateDecorators()
-            selectedMonthDecorator = SelectedMonthDecorator(requireContext(), date.month)
-            Log.d(TAG, "onMonthChanged: " + date.month)
-            binding.calendarView.addDecorators(
-                dayDecorator,
-                todayDecorator,
-                sundayDecorator,
-                saturdayDecorator,
-                selectedMonthDecorator,
-                eventDecorator
-            )
-        }
-
-
-        //제목 눌렸을 때!
-        binding.calendarView.setOnTitleClickListener { Log.d(TAG, "onClick: 제목 눌렸엉") }
-
-
-        //날짜 바꿨을 때!
-        binding.calendarView.setOnDateChangedListener { _, _, _ ->
-
-        }
-    }
+    } //setListener()
 
 
 
