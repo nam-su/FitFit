@@ -48,6 +48,7 @@ class PoseDetectionViewModel : ViewModel() {
 
     // ViewModel 초기화 메서드
     fun initialize(context: Context) {
+
         // 포즈 감지 모델 초기화
         poseDetectionModel = PoseDetectionModel(context)
         // 카메라 매니저 초기화
@@ -104,7 +105,7 @@ class PoseDetectionViewModel : ViewModel() {
         // 감지된 카운트 업데이트
         _count.postValue(detectedCount)
 
-        _checkBadPose.value = poseDetectionModel.squat.checkBadPose
+        _checkBadPose.value = poseDetectionModel.checkBadPose
 
         _checkAccuracy.value = poseDetectionModel.checkAccuracy
 
@@ -128,7 +129,7 @@ class PoseDetectionViewModel : ViewModel() {
     } // checkExerciseCount()
 
 
-    // 운동 끝난 후 운동 후 데이터 쉐어드에 갱신
+    // 운동 끝난 후 운동 후 데이터 쉐어드에 갱신 및 통신 응답
     fun updatePoseExercise(exerciseName: String) {
 
         viewModelScope.launch {

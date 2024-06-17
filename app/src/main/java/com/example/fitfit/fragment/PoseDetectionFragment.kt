@@ -124,9 +124,7 @@ class PoseDetectionFragment : Fragment() {
 
                 tts.language = Locale.KOREA
 
-                tts.speak("$exerciseName 시작합니다.", TextToSpeech.QUEUE_FLUSH, null, null)
-
-                tts.speak("올바른 자세로 서주세요", TextToSpeech.QUEUE_ADD, null, null)
+                "$exerciseName 시작합니다.   올바른 자세로 서주세요".speak()
 
                 CoroutineScope(Dispatchers.Main).launch {
 
@@ -185,7 +183,7 @@ class PoseDetectionFragment : Fragment() {
 
 
         // 잘못된 동작 감지
-        poseDetectionViewModel.checkBadPose.observe(viewLifecycleOwner) {message ->
+        poseDetectionViewModel.checkBadPose.observe(viewLifecycleOwner) { message ->
 
             if (message.isNotEmpty() && !isSpeakingCoolDown) {
 
@@ -232,7 +230,9 @@ class PoseDetectionFragment : Fragment() {
 
     // tts speak 메서드
     private fun String.speak() {
+
         tts.speak(this, TextToSpeech.QUEUE_FLUSH, null, null)
+
     } // speak
 
 

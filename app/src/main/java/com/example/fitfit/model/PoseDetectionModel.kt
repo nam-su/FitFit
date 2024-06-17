@@ -53,6 +53,9 @@ class PoseDetectionModel(context: Context) {
     // 자세에서 필요한 정확도 검사 하는 변수
     var checkAccuracy: Boolean = false
 
+    // 자세불량을 판별하는 변수
+    var checkBadPose = ""
+
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
     fun processImage(bitmap: Bitmap,exerciseName: String): Pair<Bitmap, Int> {
 
@@ -131,9 +134,9 @@ class PoseDetectionModel(context: Context) {
 
         when(exerciseName) {
 
-            "기본 스쿼트" -> if(squat.poseSquat(floatArray)){count ++}
-            "기본 푸시업" -> if(pushUp.posePushUp(floatArray)){count ++}
-            "기본 런지" -> if(lunge.poseLunge(floatArray)){count ++}
+            "기본 스쿼트" -> if(squat.poseSquat(floatArray)){count ++} else { checkBadPose = squat.checkBadPose }
+            "기본 푸시업" -> if(pushUp.posePushUp(floatArray)){count ++} else { checkBadPose = pushUp.checkBadPose}
+            "기본 런지" -> if(lunge.poseLunge(floatArray)){count ++} else { checkBadPose = lunge.checkBadPose }
 
         }
 
