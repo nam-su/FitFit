@@ -73,10 +73,9 @@ class DiaryFragment : Fragment() {
 
 
 
-    //리스너 세팅
-
-    //barchart 셋팅
+    //barchart 데이터 셋팅
     private fun setBarChart(barChart: BarChart) {
+
         initBarChart(barChart)
 
         barChart.setScaleEnabled(false) //Zoom In/Out
@@ -121,9 +120,14 @@ class DiaryFragment : Fragment() {
         data.setValueTypeface(Typeface.DEFAULT_BOLD)
         barChart.data = data
         barChart.invalidate()
-    }
 
+    } // setBarChart()
+
+
+
+    //BarChart 초기 설정
     private fun initBarChart(barChart: BarChart) {
+        
         //hiding the grey background of the chart, default false if not set
         barChart.setDrawGridBackground(false)
         //remove the bar shadow, default false if not set
@@ -141,7 +145,7 @@ class DiaryFragment : Fragment() {
         barChart.animateX(1000)
 
 
-        //바텀 좌표 값
+        //바텀 좌표 값 설정
         barChart.xAxis.apply {
 
             //hiding the x-axis line, default true if not set
@@ -158,7 +162,7 @@ class DiaryFragment : Fragment() {
 
             typeface = Typeface.DEFAULT_BOLD
 
-
+            //x축 값에 문자열 넣는 부분 (원래 Float 형태만 출력됐음)
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
                     return labelMap[value] // x 값에 해당하는 문자열 반환
@@ -168,7 +172,7 @@ class DiaryFragment : Fragment() {
         }
 
 
-        //좌측 값 hiding the left y-axis line, default true if not set
+        //barChart의 좌측 좌표값 설정
        barChart.axisLeft.apply {
            setDrawGridLines(false)
            setDrawAxisLine(false)
@@ -177,7 +181,7 @@ class DiaryFragment : Fragment() {
        }
 
 
-        //우측 값 hiding the right y-axis line, default true if not set
+        //barChart의 우측값 설정
         barChart.axisRight.apply {
             setDrawGridLines(false)
             setDrawAxisLine(false)
@@ -202,6 +206,6 @@ class DiaryFragment : Fragment() {
             setDrawInside(false)
         }
 
-    }
+    } //initBarChart()
 
 }

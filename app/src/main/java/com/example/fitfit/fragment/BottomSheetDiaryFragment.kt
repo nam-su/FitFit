@@ -106,9 +106,12 @@ class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
         }
     }
 
+
+
+    //리스너 설정
     private fun setListener(){
         binding.buttonSelect.setOnClickListener {
             dialog?.dismiss()
         }
-    }
+    } // setListener()
 }
