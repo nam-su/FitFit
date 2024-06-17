@@ -1,60 +1,72 @@
 package com.example.fitfit.fragment
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.example.fitfit.R
+import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
+import com.example.fitfit.databinding.FragmentExerciseItemInfoBinding
+import com.example.fitfit.viewModel.ExerciseItemInfoViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ExerciseItemInfoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ExerciseItemInfoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentExerciseItemInfoBinding
+    lateinit var exerciseItemInfoViewModel: ExerciseItemInfoViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_item_info, container, false)
-    }
+    lateinit var dialog: AlertDialog
+    lateinit var customDialogBinding: CustomDialogTwoButtonBinding
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ExerciseItemInfoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ExerciseItemInfoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_item_info,container,false)
+        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
+
+        return binding.root
+
+    } // onCreateView()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setVariable()
+
+    } // onViewCreated
+
+
+    private fun setVariable() {
+
+        exerciseItemInfoViewModel = ExerciseItemInfoViewModel()
+        binding.exerciseItemInfoViewModel = exerciseItemInfoViewModel
+
+    } // setVariable()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setCustomDialog(buttonOkText: String, content:String){
+
+        //다이얼로그 생성
+        dialog = AlertDialog.Builder(requireContext())
+            .setView(customDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customDialogBinding.textViewContent.text = content
+        customDialogBinding.textViewButtonOk.text = buttonOkText
+        customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
+
+        dialog.show()
+
+    } // setCustomDialog()
+
 }

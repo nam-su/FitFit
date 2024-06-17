@@ -1,4 +1,10 @@
 package com.example.fitfit.viewModel
 
-class ExerciseItemInfoViewModel {
+import androidx.lifecycle.ViewModel
+import com.example.fitfit.model.ExerciseItemInfoModel
+
+class ExerciseItemInfoViewModel: ViewModel() {
+
+    val exerciseItemInfoModel = ExerciseItemInfoModel()
+
 }
