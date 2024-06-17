@@ -51,6 +51,7 @@ class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
         })
 
         setCalendarView()
+        setListener()
 
         }
 
@@ -102,6 +103,12 @@ class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
         //날짜 바꿨을 때!
         binding.calendarView.setOnDateChangedListener { _, _, _ ->
 
+        }
+    }
+
+    private fun setListener(){
+        binding.buttonSelect.setOnClickListener {
+            dialog?.dismiss()
         }
     }
 }

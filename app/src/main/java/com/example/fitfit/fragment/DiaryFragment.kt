@@ -56,10 +56,19 @@ class DiaryFragment : Fragment() {
 
     //리스너 설정
     private fun setListener(){
+
+        //시작날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
             val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
         }
+
+        //마지막날짜 선택 리스너
+        binding.buttonEndDate.setOnClickListener {
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
+            bottomSheetDiaryFragment.show(parentFragmentManager,"")
+        }
+
     } //setListener()
 
 

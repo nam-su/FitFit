@@ -25,11 +25,13 @@
         tools:layout_editor_absoluteY="158dp" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSelect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/login_button"
         android:layout_margin="10dp"
-        text="@string/selectedDateFormat"
+        android:text="@string/selectedDateFormat"
+        style="@style/diaryFragmentButtonStyle"
         />
 </LinearLayout>
 </layout>
