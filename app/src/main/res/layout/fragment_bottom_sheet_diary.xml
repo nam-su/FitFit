@@ -30,7 +30,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/login_button"
         android:layout_margin="10dp"
-        android:text="@string/selectedDateFormat"
+        android:text="@string/selectDate"
+        android:enabled="false"
+        android:backgroundTint="@color/grey"
         style="@style/diaryFragmentButtonStyle"
         />
 </LinearLayout>

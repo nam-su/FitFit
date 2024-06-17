@@ -104,7 +104,6 @@
     <string name="graph">운동 그래프</string>
     <string name="challengeContribution">챌린지 기여도</string>
     <string name="challenge">챌린지 : </string>
-    <string name="selectedDateFormat">%s 선택하기</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.fitfit.Decorator.DayDecorator
 import com.example.fitfit.Decorator.EventDecorator
@@ -17,12 +18,22 @@ import com.example.fitfit.databinding.FragmentBottomSheetDiaryBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetDiaryBinding
     private val TAG = "바텀시트 다이어리 프래그먼트"
+
+    lateinit var dayDecorator: DayDecorator
+    lateinit var todayDecorator: TodayDecorator
+    lateinit var sundayDecorator: SundayDecorator
+    lateinit var saturdayDecorator: SaturdayDecorator
+    lateinit var selectedMonthDecorator: SelectedMonthDecorator
+    lateinit var eventDecorator: EventDecorator
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -49,69 +60,96 @@ class BottomSheetDiaryFragment : BottomSheetDialogFragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
-
+        
+        setVariable()
+        setDecorator()
         setCalendarView()
         setListener()
 
         }
-
-
+    
+    
+    
+    //초기화
+    private fun setVariable(){
+        
+        //캘린더 뷰 초기화
+        dayDecorator = DayDecorator(requireContext())
+        todayDecorator = TodayDecorator(requireContext())
+        sundayDecorator = SundayDecorator()
+        saturdayDecorator = SaturdayDecorator()
+        selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
+        eventDecorator = EventDecorator(arrayListOf())
+        
+    } // setVariable()
+    
+    
+    
+    //캘린더 뷰 설정
     private fun setCalendarView() {
-
-        //캘린더 뷰 셋팅
-        var dayDecorator = DayDecorator(requireContext())
-        var todayDecorator = TodayDecorator(requireContext())
-        var sundayDecorator = SundayDecorator()
-        var saturdayDecorator = SaturdayDecorator()
-        var selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
-        var eventDecorator = EventDecorator(arrayListOf())
-
-        binding.calendarView.addDecorators(
-            dayDecorator,
-            todayDecorator,
-            sundayDecorator,
-            saturdayDecorator,
-            selectedMonthDecorator,
-            eventDecorator
-        )
+        
+        setDecorator()
+        
         binding.calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
+
         binding.calendarView.setTitleFormatter { day ->
             val year = day.year
             val month = day.month + 1
             year.toString() + "년 " + month + "월"
         }
-        binding.calendarView.setOnMonthChangedListener { _, date ->
-            binding.calendarView.removeDecorators()
-            binding. calendarView.invalidateDecorators()
-            selectedMonthDecorator = SelectedMonthDecorator(requireContext(), date.month)
-            Log.d(TAG, "onMonthChanged: " + date.month)
-            binding.calendarView.addDecorators(
-                dayDecorator,
-                todayDecorator,
-                sundayDecorator,
-                saturdayDecorator,
-                selectedMonthDecorator,
-                eventDecorator
-            )
-        }
 
-
-        //제목 눌렸을 때!
-        binding.calendarView.setOnTitleClickListener { Log.d(TAG, "onClick: 제목 눌렸엉") }
-
-
-        //날짜 바꿨을 때!
-        binding.calendarView.setOnDateChangedListener { _, _, _ ->
-
-        }
+        
     }
 
 
 
     //리스너 설정
     private fun setListener(){
+
+        //월 바꼈을때 리스너
+        binding.calendarView.setOnMonthChangedListener { _, date ->
+            binding.calendarView.removeDecorators()
+            binding. calendarView.invalidateDecorators()
+            selectedMonthDecorator = SelectedMonthDecorator(requireContext(), date.month)
+            Log.d(TAG, "onMonthChanged: " + date.month)
+
+            setDecorator()
+            
+        }
+
+        //날짜 변경 리스너
+        binding.calendarView.setOnDateChangedListener { _, date, _ ->
+            Log.d(TAG, "setListener: ${date.date}")
+
+            // 원하는 출력 형식
+            val targetFormat = SimpleDateFormat("yyyy년 MM월 dd일 E요일", Locale.KOREAN)
+
+            try {
+                // Date 객체를 원하는 형식으로 변환
+                val formattedDate = targetFormat.format(date.date)
+                binding.buttonSelect.text = "$formattedDate 선택"
+                binding.buttonSelect.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.personal)
+                binding.buttonSelect.isEnabled = true
+
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+        }
+
+        //선택 버튼 리스너
         binding.buttonSelect.setOnClickListener {
             dialog?.dismiss()
         }
     } // setListener()
+
+
+
+    //Decorator 추가
+    private fun setDecorator(){
+
+        //decorator 추가
+        binding.calendarView.addDecorators(dayDecorator, todayDecorator, sundayDecorator,
+            saturdayDecorator, selectedMonthDecorator, eventDecorator)
+
+    }
 }

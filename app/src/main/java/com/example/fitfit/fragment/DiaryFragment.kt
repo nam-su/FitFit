@@ -3,19 +3,12 @@ package com.example.fitfit.fragment
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.fitfit.Decorator.DayDecorator
-import com.example.fitfit.Decorator.EventDecorator
-import com.example.fitfit.Decorator.SaturdayDecorator
-import com.example.fitfit.Decorator.SelectedMonthDecorator
-import com.example.fitfit.Decorator.SundayDecorator
-import com.example.fitfit.Decorator.TodayDecorator
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentDiaryBinding
 import com.github.mikephil.charting.charts.BarChart
@@ -26,7 +19,6 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.prolificinteractive.materialcalendarview.CalendarDay
 
 
 class DiaryFragment : Fragment() {
@@ -127,7 +119,7 @@ class DiaryFragment : Fragment() {
 
     //BarChart 초기 설정
     private fun initBarChart(barChart: BarChart) {
-        
+
         //hiding the grey background of the chart, default false if not set
         barChart.setDrawGridBackground(false)
         //remove the bar shadow, default false if not set
@@ -173,23 +165,22 @@ class DiaryFragment : Fragment() {
 
 
         //barChart의 좌측 좌표값 설정
-       barChart.axisLeft.apply {
+         barChart.axisLeft.apply {
            setDrawGridLines(false)
            setDrawAxisLine(false)
            isEnabled = false
            setDrawLabels(false)
-       }
-
+         }
 
         //barChart의 우측값 설정
-        barChart.axisRight.apply {
+         barChart.axisRight.apply {
             setDrawGridLines(false)
             setDrawAxisLine(false)
             isEnabled = false
             setDrawLabels(false)
-        }
+            }
 
-        //바차트의 타이틀
+        //바차트의 타이틀 설정
         barChart.legend.apply {
             //setting the shape of the legend form to line, default square shape
             form = Legend.LegendForm.LINE
@@ -207,5 +198,4 @@ class DiaryFragment : Fragment() {
         }
 
     } //initBarChart()
-
 }
