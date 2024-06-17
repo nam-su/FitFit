@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!-- 선택된 경우-->
+    <item
+    android:state_checked="true"
+    android:color="@color/white"
+        />
+
+<!--    // Range 내부인 경우-->
+    <item
+        android:state_pressed="true"
+    android:color="@color/white" />
+
+<!--    // 선택되지 않은 경우-->
+    <item
+        android:state_checked="false"
+    android:color="@color/black" />
+
+<!--    // Range 내부가 아닌 경우-->
+    <item
+        android:state_pressed="false"
+    android:color="@color/black" />
+</selector>
