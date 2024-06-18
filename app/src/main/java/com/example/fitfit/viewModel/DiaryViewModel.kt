@@ -2,6 +2,7 @@ package com.example.fitfit.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.DiaryModel
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -64,4 +65,10 @@ class DiaryViewModel {
         return ""
     }
 
+
+
+    //운동 리스트 불러오기
+    fun getMyPoseExerciseList(): ArrayList<PoseExercise> {
+        return diaryModel.getMyPoseExerciseList()
+    }
 }

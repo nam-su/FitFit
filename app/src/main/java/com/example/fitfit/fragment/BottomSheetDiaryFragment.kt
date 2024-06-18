@@ -80,7 +80,7 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         sundayDecorator = SundayDecorator()
         saturdayDecorator = SaturdayDecorator()
         selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
-        eventDecorator = EventDecorator(arrayListOf())
+        eventDecorator = EventDecorator(viewModel.getMyPoseExerciseList())
         
     } // setVariable()
     
