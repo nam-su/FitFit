@@ -2,6 +2,7 @@ package com.example.fitfit.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.DiaryModel
 import java.text.ParseException
@@ -9,17 +10,17 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DiaryViewModel {
+class DiaryViewModel: ViewModel() {
 
     private val TAG = "다이어리 뷰모델"
 
     private val diaryModel = DiaryModel()
 
-    private var _startDate = MutableLiveData<Date>()
+    private var _startDate = MutableLiveData<Date>(Date())
     val startDate: LiveData<Date>
         get() = _startDate
 
-    private var _endDate = MutableLiveData<Date>()
+    private var _endDate = MutableLiveData<Date>(Date())
     val endDate: LiveData<Date>
         get() = _endDate
 

@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.fitfit.Decorator.DayDecorator
+import com.example.fitfit.Decorator.EndDayDecorator
 import com.example.fitfit.Decorator.EventDecorator
 import com.example.fitfit.Decorator.SaturdayDecorator
 import com.example.fitfit.Decorator.SelectedMonthDecorator
+import com.example.fitfit.Decorator.StartDayDecorator
 import com.example.fitfit.Decorator.SundayDecorator
 import com.example.fitfit.Decorator.TodayDecorator
 import com.example.fitfit.R
@@ -21,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 
@@ -35,6 +38,8 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
     lateinit var saturdayDecorator: SaturdayDecorator
     lateinit var selectedMonthDecorator: SelectedMonthDecorator
     lateinit var eventDecorator: EventDecorator
+    var startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
+    var endDayDecorator = EndDayDecorator(viewModel.endDate.value!!)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -81,6 +86,16 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         saturdayDecorator = SaturdayDecorator()
         selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
         eventDecorator = EventDecorator(viewModel.getMyPoseExerciseList())
+
+        when(mode){
+            0->{
+
+            }
+            1->{
+                startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
+            }
+        }
+
         
     } // setVariable()
     
@@ -99,7 +114,6 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
             year.toString() + "년 " + month + "월"
         }
 
-        
     }
 
 
@@ -150,6 +164,11 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         //decorator 추가
         binding.calendarView.addDecorators(dayDecorator, todayDecorator, sundayDecorator,
             saturdayDecorator, selectedMonthDecorator, eventDecorator)
+
+        when(mode){
+            0 -> {binding.calendarView.addDecorator(endDayDecorator)}
+            1 -> {binding.calendarView.addDecorator(startDayDecorator)}
+        }
 
     }
 }

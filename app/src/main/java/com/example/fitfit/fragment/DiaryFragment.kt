@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import java.util.Date
 
 
 class DiaryFragment : Fragment() {
@@ -104,21 +105,13 @@ class DiaryFragment : Fragment() {
 
         initBarChart(barChart)
 
-        barChart.setScaleEnabled(false) //Zoom In/Out
-
-        val valueList = ArrayList<Double>()
         val entries: ArrayList<BarEntry> = ArrayList()
-        labelMap = HashMap<Float,String>()
+        labelMap = HashMap()
         val title = "내 운동"
 
-        //input data
-        for (i in 1..5) {
-            valueList.add(i * 100.1)
-        }
 
         //fit the data into a bar
         // BarEntry 추가 및 labelMap에 문자열 추가
-
         entries.add(BarEntry(1f, 10f))
         labelMap[1f] = "스쿼트"
         entries.add(BarEntry(2f, 20f))
@@ -160,6 +153,10 @@ class DiaryFragment : Fragment() {
         barChart.setDrawBarShadow(false)
         //remove border of the chart, default false if not set
         barChart.setDrawBorders(false)
+
+        barChart.setTouchEnabled(false)   // 터치 이벤트 비활성화
+        barChart.setPinchZoom(false)     // 핀치 줌 비활성화
+        barChart.setScaleEnabled(false)  // 스케일링 비활성화
 
         //remove the description label text located at the lower right corner
         val description = Description()
