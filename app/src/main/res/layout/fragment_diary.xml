@@ -146,7 +146,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="@string/selectDate"
+                    android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.startDate)}"
                     android:gravity="center"
                     style="@style/diaryFragmentTextStyle"
                     />
@@ -162,7 +162,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="@string/selectDate"
+                    android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.endDate)}"
                     android:gravity="center"
                     style="@style/diaryFragmentTextStyle"
                     />

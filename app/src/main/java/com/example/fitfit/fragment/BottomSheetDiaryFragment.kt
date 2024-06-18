@@ -87,16 +87,6 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
         eventDecorator = EventDecorator(viewModel.getMyPoseExerciseList())
 
-        when(mode){
-            0->{
-
-            }
-            1->{
-                startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
-            }
-        }
-
-        
     } // setVariable()
     
     
@@ -165,9 +155,17 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         binding.calendarView.addDecorators(dayDecorator, todayDecorator, sundayDecorator,
             saturdayDecorator, selectedMonthDecorator, eventDecorator)
 
+        // 선택날짜에 따른 decorator 추가
         when(mode){
-            0 -> {binding.calendarView.addDecorator(endDayDecorator)}
-            1 -> {binding.calendarView.addDecorator(startDayDecorator)}
+            0 -> { // mode = 0 => 시작날짜 선택
+                    // 시작날짜는 마지막날짜보다 이후 날짜를 선택할 수 없음.
+                binding.calendarView.addDecorator(endDayDecorator)
+            }
+            1 -> {
+                // mode = 1 => 마지막날짜 선택
+                // 마지막 날짜는 시작 날짜보다 이전 날짜를 선택할 수 없음.
+                binding.calendarView.addDecorator(startDayDecorator)
+            }
         }
 
     }

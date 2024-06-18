@@ -3,6 +3,7 @@ package com.example.fitfit.fragment
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,19 +107,32 @@ class DiaryFragment : Fragment() {
         initBarChart(barChart)
 
         val entries: ArrayList<BarEntry> = ArrayList()
+
+        entries.add(BarEntry(1f,0f))
+        entries.add(BarEntry(2f,0f))
+        entries.add(BarEntry(3f,0f))
+
+
         labelMap = HashMap()
         val title = "내 운동"
-
-
-        //fit the data into a bar
-        // BarEntry 추가 및 labelMap에 문자열 추가
-        entries.add(BarEntry(1f, 10f))
         labelMap[1f] = "스쿼트"
-        entries.add(BarEntry(2f, 20f))
         labelMap[2f] = "푸시업"
-        entries.add(BarEntry(3f, 30f))
         labelMap[3f] = "런지"
 
+        Log.d(TAG, "setBarChart: ${diaryViewModel.getMyPoseExerciseList().size}")
+        diaryViewModel.getMyPoseExerciseList().forEach{ poseExercise ->
+            Log.d(TAG, "setBarChart: ${poseExercise.exerciseCount}")
+            when(poseExercise.category){
+
+                "스쿼트" -> { entries[0] = (BarEntry(1f,poseExercise.exerciseCount.toFloat()))}
+                "런지" -> { entries[1] = (BarEntry(2f,poseExercise.exerciseCount.toFloat()))}
+                "푸시업" -> { entries[2] =(BarEntry(3f,poseExercise.exerciseCount.toFloat()))}
+
+            }
+
+        }
+
+       
         val barDataSet = BarDataSet(entries, title)
 
         barDataSet.apply {
@@ -130,6 +144,7 @@ class DiaryFragment : Fragment() {
             colors = colorList
             //Setting the size of the form in the legend
             formSize = 15f
+            //막대 너비 설정
             //showing the value of the bar, default true if not set
             setDrawValues(false)
             //setting the text size of the value of the bar
@@ -211,22 +226,8 @@ class DiaryFragment : Fragment() {
             setDrawLabels(false)
             }
 
-        //바차트의 타이틀 설정
-        barChart.legend.apply {
-            //setting the shape of the legend form to line, default square shape
-            form = Legend.LegendForm.LINE
-            //setting the text size of the legend
-            textSize = 11f
-            textColor = Color.BLACK
-            typeface = Typeface.DEFAULT_BOLD
-            //setting the alignment of legend toward the chart
-            verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            //setting the stacking direction of legend
-            orientation = Legend.LegendOrientation.HORIZONTAL
-            //setting the location of legend outside the chart, default false if not set
-            setDrawInside(false)
-        }
+        //바차트의 타이틀(범례) 설정
+        barChart.legend.isEnabled = false
 
     } //initBarChart()
 }
