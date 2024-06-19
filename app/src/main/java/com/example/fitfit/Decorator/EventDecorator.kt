@@ -12,9 +12,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class EventDecorator(private val poseExerciseArrayList: ArrayList<PoseExercise>) : DayViewDecorator {
-    
-    private val TAG = "다이어리 이벤트 데코레이터"
-    
+
     override fun shouldDecorate(day: CalendarDay): Boolean {
         return getCalendarDayArrayList().contains(day)
     }
@@ -43,7 +41,6 @@ class EventDecorator(private val poseExerciseArrayList: ArrayList<PoseExercise>)
 
         // 타임스탬프를 Instant로 변환
         val instant = Instant.ofEpochMilli(date)
-        Log.d(TAG, "dateToCalendarDay: $date")
 
         // Instant를 LocalDate로 변환
         val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()

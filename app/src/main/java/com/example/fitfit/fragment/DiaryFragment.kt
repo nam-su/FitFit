@@ -32,6 +32,8 @@ class DiaryFragment : Fragment() {
 
     lateinit var diaryViewModel: DiaryViewModel
 
+    lateinit var barDataSet: BarDataSet
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
@@ -88,14 +90,18 @@ class DiaryFragment : Fragment() {
 
         //첫번째 선택 날짜 관찰
         diaryViewModel.startDate.observe(viewLifecycleOwner){
+
             binding.buttonStartDate.text = diaryViewModel.changeYMDFormat(it)
             setBarChart(binding.barChart)
+
         }
 
         //두번째 선택 날짜 관찰
         diaryViewModel.endDate.observe(viewLifecycleOwner){
+
             binding.buttonEndDate.text = diaryViewModel.changeYMDFormat(it)
             setBarChart(binding.barChart)
+
         }
     }
 
@@ -106,7 +112,7 @@ class DiaryFragment : Fragment() {
 
         initBarChart(barChart)
 
-        val barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(),"")
+        barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(),"")
 
         barDataSet.apply {
             val colorList = listOf(
@@ -123,6 +129,7 @@ class DiaryFragment : Fragment() {
             //setting the text size of the value of the bar
             valueTextSize = 12f
         }
+
         val data = BarData(barDataSet)
         data.setValueTypeface(Typeface.DEFAULT_BOLD)
         barChart.data = data
