@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.example.fitfit.Decorator.AfterTodayDecorator
 import com.example.fitfit.Decorator.DayDecorator
 import com.example.fitfit.Decorator.EndDayDecorator
 import com.example.fitfit.Decorator.EventDecorator
@@ -38,6 +39,7 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
     lateinit var saturdayDecorator: SaturdayDecorator
     lateinit var selectedMonthDecorator: SelectedMonthDecorator
     lateinit var eventDecorator: EventDecorator
+    lateinit var afterTodayDecorator: AfterTodayDecorator
     var startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
     var endDayDecorator = EndDayDecorator(viewModel.endDate.value!!)
 
@@ -86,6 +88,7 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         saturdayDecorator = SaturdayDecorator()
         selectedMonthDecorator = SelectedMonthDecorator(requireContext(), CalendarDay.today().month)
         eventDecorator = EventDecorator(viewModel.getMyPoseExerciseList())
+        afterTodayDecorator = AfterTodayDecorator()
 
     } // setVariable()
     
@@ -167,6 +170,9 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
                 binding.calendarView.addDecorator(startDayDecorator)
             }
         }
+
+        // 마지막에 오늘날짜 이후날짜들 화이트 처리
+        binding.calendarView.addDecorator(afterTodayDecorator)
 
     }
 }

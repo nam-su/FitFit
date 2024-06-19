@@ -29,7 +29,6 @@ class DiaryFragment : Fragment() {
     private val TAG = "다이어리 프래그먼트"
 
     lateinit var binding: FragmentDiaryBinding
-    lateinit var labelMap: HashMap<Float,String>
 
     lateinit var diaryViewModel: DiaryViewModel
 
@@ -90,12 +89,13 @@ class DiaryFragment : Fragment() {
         //첫번째 선택 날짜 관찰
         diaryViewModel.startDate.observe(viewLifecycleOwner){
             binding.buttonStartDate.text = diaryViewModel.changeYMDFormat(it)
+            setBarChart(binding.barChart)
         }
 
         //두번째 선택 날짜 관찰
         diaryViewModel.endDate.observe(viewLifecycleOwner){
             binding.buttonEndDate.text = diaryViewModel.changeYMDFormat(it)
-
+            setBarChart(binding.barChart)
         }
     }
 
@@ -106,34 +106,7 @@ class DiaryFragment : Fragment() {
 
         initBarChart(barChart)
 
-        val entries: ArrayList<BarEntry> = ArrayList()
-
-        entries.add(BarEntry(1f,0f))
-        entries.add(BarEntry(2f,0f))
-        entries.add(BarEntry(3f,0f))
-
-
-        labelMap = HashMap()
-        val title = "내 운동"
-        labelMap[1f] = "스쿼트"
-        labelMap[2f] = "푸시업"
-        labelMap[3f] = "런지"
-
-        Log.d(TAG, "setBarChart: ${diaryViewModel.getMyPoseExerciseList().size}")
-        diaryViewModel.getMyPoseExerciseList().forEach{ poseExercise ->
-            Log.d(TAG, "setBarChart: ${poseExercise.exerciseCount}")
-            when(poseExercise.category){
-
-                "스쿼트" -> { entries[0] = (BarEntry(1f,poseExercise.exerciseCount.toFloat()))}
-                "런지" -> { entries[1] = (BarEntry(2f,poseExercise.exerciseCount.toFloat()))}
-                "푸시업" -> { entries[2] =(BarEntry(3f,poseExercise.exerciseCount.toFloat()))}
-
-            }
-
-        }
-
-       
-        val barDataSet = BarDataSet(entries, title)
+        val barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(),"")
 
         barDataSet.apply {
             val colorList = listOf(
@@ -146,7 +119,7 @@ class DiaryFragment : Fragment() {
             formSize = 15f
             //막대 너비 설정
             //showing the value of the bar, default true if not set
-            setDrawValues(false)
+            setDrawValues(true)
             //setting the text size of the value of the bar
             valueTextSize = 12f
         }
@@ -200,10 +173,11 @@ class DiaryFragment : Fragment() {
 
             typeface = Typeface.DEFAULT_BOLD
 
+
             //x축 값에 문자열 넣는 부분 (원래 Float 형태만 출력됐음)
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
-                    return labelMap[value] // x 값에 해당하는 문자열 반환
+                    return diaryViewModel.getLabelMap()[value] // x 값에 해당하는 문자열 반환
                 }
             }
 

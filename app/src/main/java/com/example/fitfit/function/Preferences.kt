@@ -17,6 +17,7 @@ class Preferences(context: Context) {
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
     private val allExerciseList = ArrayList<PoseExercise>()
+    var myExerciseList = ArrayList<PoseExercise>()
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
@@ -90,6 +91,8 @@ class Preferences(context: Context) {
 
     // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
     fun setUserExerciseInfoList(exerciseList: ArrayList<PoseExercise>) {
+
+        myExerciseList = exerciseList
 
         // 시간 복잡도를 O(n * m) 에서 O(n + m) 으로 줄이기 위한 맵 사용
         // 각 운동의 이름을 key 값으로 해서 맵을 만들고 for문 사용

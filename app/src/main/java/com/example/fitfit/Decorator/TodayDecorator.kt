@@ -10,12 +10,8 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.Date
 
 class TodayDecorator(private val context: Context) : DayViewDecorator {
-    private var date: CalendarDay
 
-    init {
-        date = CalendarDay.today()
-        Log.d("오늘날짜", "TodayDecorator: $date")
-    }
+    private var date: CalendarDay = CalendarDay.today()
 
     override fun shouldDecorate(day: CalendarDay): Boolean {
         return day == date
@@ -25,7 +21,4 @@ class TodayDecorator(private val context: Context) : DayViewDecorator {
         view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_circle)!!)
     }
 
-    fun setDate(date: Date?) {
-        this.date = CalendarDay.from(date)
-    }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.DiaryModel
+import com.github.mikephil.charting.data.BarEntry
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -69,7 +70,15 @@ class DiaryViewModel: ViewModel() {
 
 
     //운동 리스트 불러오기
-    fun getMyPoseExerciseList(): ArrayList<PoseExercise> {
-        return diaryModel.getMyPoseExerciseList()
-    }
+    fun getMyPoseExerciseList(): ArrayList<PoseExercise> { return diaryModel.getMyPoseExerciseList() }
+
+
+
+    //모델에서 EntryList 불러오기
+    fun getEntryArrayList(): ArrayList<BarEntry> { return diaryModel.getEntryArrayList(startDate.value, endDate.value) }
+
+
+
+    //labelMap 불러오기
+    fun getLabelMap(): HashMap<Float,String> { return diaryModel.getLabelMap() }
 }
