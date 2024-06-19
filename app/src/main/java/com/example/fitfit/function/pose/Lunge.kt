@@ -11,7 +11,7 @@ class Lunge(): Pose() {
 
 
     // 런지 감지하는 메서드.
-    fun poseLunge(outputFeature0: FloatArray): Boolean {
+    override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
 
         Log.d(TAG, "poseLunge: 호출됨")
 

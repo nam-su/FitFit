@@ -6,17 +6,18 @@ class WidePushUp: Pose() {
 
     private val TAG = "와이드 푸시업"
 
-    fun poseWidePushUp(outputFeature0 : FloatArray) : Boolean {
+    override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean {
 
         checkBadPose = ""
 
-        Log.d(TAG, "posePushUp: 호출됌")
         var rightElbowBend = 0.0
         var rightKneeAngle = 0.0
+        var rightArmsAngle = 0.0
 
         //(x,y,신뢰도) 좌표
         //오른쪽 골반 (36,37,38), 오른쪽 무릎 (42,43,44), 오른쪽 발목 (48,49,50)
         // 오른쪽 어깨 (18,19,20), 오른쪽 팔꿈치 (24,25,26), 오른쪽 손목 (30,31,32)
+        // 오른쪽 팔꿈치 24 오른쪽 어깨 18 왼쪽 어깨 15
 
         /** 오른쪽 팔꿈치 각도 계산 **/
         if (outputFeature0[20] > 0.2 && outputFeature0[26] > 0.2 && outputFeature0[32] > 0.2) {
@@ -40,11 +41,26 @@ class WidePushUp: Pose() {
 
         }
 
+        /** 오른쪽 팔 과 어깨의 각도 계산 **/
+        // 오른쪽 팔꿈치 24 오른쪽 어깨 18 왼쪽 어깨 15
+        if (outputFeature0[26] > 0.2 && outputFeature0[20] > 0.2 && outputFeature0[17] > 0.2) {
+
+            rightArmsAngle = calculateAngle(
+                outputFeature0[25],outputFeature0[24],
+                outputFeature0[19],outputFeature0[18],
+                outputFeature0[16],outputFeature0[15])
+
+        }
+
+
         /**
          * 오른쪽 무릎각도가 160도에서 180도 사이일때 : isKneeBend = false
          * 오른쪽 무릎각도가 160도에서 180도 사이가 아닐때 : isKneeBend = true
          */
         val isKneeBend = rightKneeAngle !in 150.0..180.0
+
+        /** 오른쪽 어깨와 팔의 각도가 둔각이여야 진행? **/
+        val isArmsExtend = rightArmsAngle in 120.0 .. 160.0
 
         /**
          * 오른쪽 팔꿈치 각도가 30도에서 80도 사이일때 : isElbowBend = true
@@ -56,15 +72,14 @@ class WidePushUp: Pose() {
          **/
         val isElbowExtend = rightElbowBend in 150.0..180.0
 
+        Log.d(TAG, "posePoseExercise: $rightArmsAngle")
 
-        Log.d(TAG, "isElbowBend : $isElbowBend ")
-        Log.d(TAG, "isKneeBend : $isKneeBend")
         /**
          * 다리를 구부리지않고 팔꿈치가 40~60도로 들어왔다가 다시 ready 자세가 되면 true
          */
 
 
-        if(!isKneeBend) { //무릎은 구부려 지면 안댐
+        if(!isKneeBend && isArmsExtend) { //무릎은 구부려 지면 안댐 , 팔이 벌어져 있어야함.
 
             // down
             if(!sit && !stand && isElbowBend ){
@@ -92,7 +107,6 @@ class WidePushUp: Pose() {
 
             if (rightKneeAngle != 0.0) {
 
-                Log.d(TAG, "posePushUp: $rightKneeAngle")
                 checkBadPose = "무릎을 일자로 펴주세요"
 
             }

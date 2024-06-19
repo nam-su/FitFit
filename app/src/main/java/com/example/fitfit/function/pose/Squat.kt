@@ -12,7 +12,7 @@ class Squat(): Pose() {
 
 
     // 스쿼트 동작인식 메서드
-    fun poseSquat(outputFeature0 : FloatArray) : Boolean{
+    override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean{
 
         Log.d(TAG, "poseSquat: 호출됌")
 

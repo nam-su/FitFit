@@ -5,13 +5,15 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.speech.tts.TextToSpeech
-import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
+import com.example.fitfit.function.pose.NarrowPushUp
+import com.example.fitfit.function.pose.NarrowSquat
+import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.function.pose.PushUp
-import com.example.fitfit.function.pose.SideLunge
+import com.example.fitfit.function.pose.SideLungeLeft
+import com.example.fitfit.function.pose.SideLungeRight
 import com.example.fitfit.function.pose.Squat
 import com.example.fitfit.function.pose.WidePushUp
 import com.example.fitfit.function.pose.WideSquat
@@ -27,7 +29,7 @@ import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class PoseDetectionModel(context: Context) {
+class PoseDetectionModel(context: Context,exerciseName: String) {
 
     private val TAG = "포즈 추정 모델"
 
@@ -46,12 +48,7 @@ class PoseDetectionModel(context: Context) {
     // 그리기 위한 Paint 객체 초기화
     private val paint = Paint().apply { color = Color.YELLOW }
 
-    private val pushUp = PushUp()
-    private val lunge = Lunge()
-    private val squat = Squat()
-    private val wideSquat = WideSquat()
-    private val widePushUp = WidePushUp()
-    private val sideLunge = SideLunge()
+    private lateinit var pose: Pose
 
     // 운동 카운트를 측정하기 위한 전역 변수
     var count = 0
@@ -61,6 +58,25 @@ class PoseDetectionModel(context: Context) {
 
     // 자세불량을 판별하는 변수
     var checkBadPose = ""
+
+    init {
+
+        // 운동 이름에 따른 객체 초기화 진행
+        when(exerciseName) {
+
+            "기본 스쿼트" -> pose = Squat()
+            "기본 푸시업" -> pose = PushUp()
+            "기본 런지" -> pose = Lunge()
+            "와이드 스쿼트" -> pose = WideSquat()
+            "와이드 푸시업" -> pose = WidePushUp()
+            "왼쪽 런지" -> pose = SideLungeLeft()
+            "오른쪽 런지" -> pose = SideLungeRight()
+            "내로우 스쿼트" -> pose = NarrowSquat()
+            "내로우 푸시업" -> pose = NarrowPushUp()
+
+        }
+
+    }
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
     fun processImage(bitmap: Bitmap,exerciseName: String): Pair<Bitmap, Int> {
@@ -90,7 +106,7 @@ class PoseDetectionModel(context: Context) {
         checkAccuracy = if (checkExerciseAccuracy(outputFeature0)) {
 
             // 운동 종류에 따른 운동 판별하는 메서드
-            poseExercise(exerciseName,outputFeature0)
+            poseExercise(outputFeature0)
             true
 
         } else {
@@ -136,18 +152,9 @@ class PoseDetectionModel(context: Context) {
 
 
     // 운동 종류에 따른 카운트 변화
-    private fun poseExercise(exerciseName: String,floatArray: FloatArray) {
+    private fun poseExercise(floatArray: FloatArray) {
 
-        when(exerciseName) {
-
-            "기본 스쿼트" -> if(squat.poseSquat(floatArray)){count ++} else { checkBadPose = squat.checkBadPose }
-            "기본 푸시업" -> if(pushUp.posePushUp(floatArray)){count ++} else { checkBadPose = pushUp.checkBadPose}
-            "기본 런지" -> if(lunge.poseLunge(floatArray)){count ++} else { checkBadPose = lunge.checkBadPose }
-            "와이드 스쿼트" -> if(wideSquat.poseWideSquat(floatArray)){count ++} else { checkBadPose = wideSquat.checkBadPose }
-            "와이드 푸시업" -> if(widePushUp.poseWidePushUp(floatArray)){count ++} else { checkBadPose = widePushUp.checkBadPose }
-            "사이드 런지" -> if(sideLunge.poseSideLunge(floatArray)){count ++} else { checkBadPose = sideLunge.checkBadPose }
-
-        }
+        if(pose.posePoseExercise(floatArray)) {count ++} else { checkBadPose = pose.checkBadPose}
 
     } // poseExercise()
 

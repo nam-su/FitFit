@@ -27,21 +27,11 @@ class Preferences(context: Context) {
 
         allExerciseList.add(PoseExercise(0,"스쿼트","와이드 스쿼트",0,0,0))
         allExerciseList.add(PoseExercise(0,"푸시업","와이드 푸시업",0,0,0))
-        allExerciseList.add(PoseExercise(0,"런지","사이드 런지",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","왼쪽 런지",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","2번 스쿼트",0,0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","2번 푸시업",0,0,0))
-        allExerciseList.add(PoseExercise(0,"런지","2번 런지",0,0,0))
-
-        allExerciseList.add(PoseExercise(0,"스쿼트","3번 스쿼트",0,0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","3번 푸시업",0,0,0))
-        allExerciseList.add(PoseExercise(0,"런지","3번 런지",0,0,0))
-
-        allExerciseList.add(PoseExercise(0,"스쿼트","4번 스쿼트",0,0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","4번 푸시업",0,0,0))
-        allExerciseList.add(PoseExercise(0,"런지","4번 런지",0,0,0))
-
-        allExerciseList.add(PoseExercise(0,"스쿼트","5번 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","내로우 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","내로우 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","오른쪽 런지",0,0,0))
 
         for (i:Int in 3 until allExerciseList.size) {
 

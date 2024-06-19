@@ -12,6 +12,13 @@ open class Pose {
     // 자세 불량 내용을 담는 변수
     var checkBadPose = ""
 
+
+    // 운동 메서드 각각 상속받은 운동클래스에서 override 해준다.
+    open fun posePoseExercise(outputFeature0: FloatArray): Boolean {
+        TODO("Not yet implemented")
+    } // posePoseExercise()
+
+
     // 세 점의 좌표를 받아서 각도를 계산하는 메서드
     fun calculateAngle(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float): Double {
 
@@ -38,5 +45,12 @@ open class Pose {
         return Math.toDegrees(angleRad.toDouble())
 
     } // calculateAngel()
+
+    // 두 점 사이에 거리를 구하는 메서드
+    fun calculateEuclideanDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+
+        return sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2))
+
+    } // calculateEuclideanDistance()
 
 }

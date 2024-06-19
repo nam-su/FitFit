@@ -92,13 +92,14 @@ class PoseDetectionFragment : Fragment() {
     private fun setVariable() {
 
         binding.lifecycleOwner = this
+
+        exerciseName = requireArguments().getString("exerciseName").toString()
+
         poseDetectionViewModel = PoseDetectionViewModel()
         binding.poseDetectionViewModel = poseDetectionViewModel
 
         // ViewModel을 초기화합니다.
-        poseDetectionViewModel.initialize(requireContext().applicationContext)
-
-        exerciseName = requireArguments().getString("exerciseName").toString()
+        poseDetectionViewModel.initialize(requireContext().applicationContext,exerciseName)
 
     } // setVariable
 

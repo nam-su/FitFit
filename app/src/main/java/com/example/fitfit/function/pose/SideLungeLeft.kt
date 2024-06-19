@@ -2,11 +2,11 @@ package com.example.fitfit.function.pose
 
 import android.util.Log
 
-class SideLunge: Pose() {
+class SideLungeLeft: Pose() {
 
-    private val TAG = "사이드 런지"
+    private val TAG = "왼쪽 런지"
 
-    fun poseSideLunge(outputFeature0: FloatArray): Boolean {
+    override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
 
         Log.d(TAG, "poseLunge: 호출됨")
 

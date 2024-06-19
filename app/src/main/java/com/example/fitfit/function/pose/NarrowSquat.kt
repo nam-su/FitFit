@@ -2,13 +2,11 @@ package com.example.fitfit.function.pose
 
 import android.util.Log
 
-class WideSquat: Pose(){
+class NarrowSquat: Pose() {
 
-    private val TAG = "와이드스쿼트"
+    private val TAG = "내로우 스쿼트"
 
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
-
-//        Log.d(TAG, "poseWideSquat: 와이드 스쿼트 호출됨")
 
         checkBadPose = ""
 
@@ -18,6 +16,10 @@ class WideSquat: Pose(){
         val leftReliability = outputFeature0[41] > 0.2 && outputFeature0[35] > 0.2 && outputFeature0[38] > 0.2
         val rightReliability = outputFeature0[44] > 0.2 && outputFeature0[38] > 0.2 && outputFeature0[35] > 0.2
 
+        val kneeDistance = calculateEuclideanDistance(outputFeature0[40],outputFeature0[39],outputFeature0[43],outputFeature0[42])
+
+        Log.d(TAG, "posePoseExercise: $kneeDistance")
+        
         // 신뢰도가 0.2 이상일 때 각도 계산
         if (leftReliability && rightReliability) {
 
@@ -35,13 +37,9 @@ class WideSquat: Pose(){
 
         }
 
-        Log.d(TAG, "poseWideSquat: 왼쪽 각도 : $leftAngle")
-        Log.d(TAG, "poseWideSquat: 오른쪽 각도 : $rightAngle")
-        
         // 앉은 상태 감지 150 ~ 180 사이로 나옴
         if(rightAngle in 140.0..180.0 && leftAngle in 140.0..180.0 && !sit) {
 
-            Log.d(TAG, "poseWideSquat: 앉은 상태")
             sit = true
 
         }
@@ -50,7 +48,6 @@ class WideSquat: Pose(){
 //        // 1번 서있을 때 다리를 벌려야 한다 이 각도는 계속 가져가야함
         if(leftAngle in 80.0..120.0 && rightAngle in 80.0..120.0 && sit) {
 
-            Log.d(TAG, "poseWideSquat: 앉았다가 선상태")
             sit = false
             stand = false
             return true
@@ -60,8 +57,8 @@ class WideSquat: Pose(){
         return false
 
     }
-
-
+    
+    
     // 잘못된 동작 감지 여부 메서드
     private fun checkBadPose(outputFeature0: FloatArray): Boolean {
 

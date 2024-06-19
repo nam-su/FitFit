@@ -17,7 +17,7 @@ import com.example.fitfit.model.PoseDetectionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PoseDetectionViewModel : ViewModel() {
+class PoseDetectionViewModel() : ViewModel() {
 
     private val TAG = "포즈 추정 뷰 모델"
 
@@ -47,10 +47,10 @@ class PoseDetectionViewModel : ViewModel() {
 
 
     // ViewModel 초기화 메서드
-    fun initialize(context: Context) {
+    fun initialize(context: Context,exerciseName: String) {
 
         // 포즈 감지 모델 초기화
-        poseDetectionModel = PoseDetectionModel(context)
+        poseDetectionModel = PoseDetectionModel(context,exerciseName)
         // 카메라 매니저 초기화
         cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
