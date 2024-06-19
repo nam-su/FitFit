@@ -11,7 +11,10 @@ import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Lunge
 import com.example.fitfit.function.pose.PushUp
+import com.example.fitfit.function.pose.SideLunge
 import com.example.fitfit.function.pose.Squat
+import com.example.fitfit.function.pose.WidePushUp
+import com.example.fitfit.function.pose.WideSquat
 import com.example.fitfit.ml.AutoModel4
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
@@ -45,7 +48,10 @@ class PoseDetectionModel(context: Context) {
 
     private val pushUp = PushUp()
     private val lunge = Lunge()
-    val squat = Squat()
+    private val squat = Squat()
+    private val wideSquat = WideSquat()
+    private val widePushUp = WidePushUp()
+    private val sideLunge = SideLunge()
 
     // 운동 카운트를 측정하기 위한 전역 변수
     var count = 0
@@ -126,7 +132,7 @@ class PoseDetectionModel(context: Context) {
 
         ).all { it > accuracyThreshold }
 
-    }
+    } // checkExerciseAccuracy()
 
 
     // 운동 종류에 따른 카운트 변화
@@ -137,6 +143,9 @@ class PoseDetectionModel(context: Context) {
             "기본 스쿼트" -> if(squat.poseSquat(floatArray)){count ++} else { checkBadPose = squat.checkBadPose }
             "기본 푸시업" -> if(pushUp.posePushUp(floatArray)){count ++} else { checkBadPose = pushUp.checkBadPose}
             "기본 런지" -> if(lunge.poseLunge(floatArray)){count ++} else { checkBadPose = lunge.checkBadPose }
+            "와이드 스쿼트" -> if(wideSquat.poseWideSquat(floatArray)){count ++} else { checkBadPose = wideSquat.checkBadPose }
+            "와이드 푸시업" -> if(widePushUp.poseWidePushUp(floatArray)){count ++} else { checkBadPose = widePushUp.checkBadPose }
+            "사이드 런지" -> if(sideLunge.poseSideLunge(floatArray)){count ++} else { checkBadPose = sideLunge.checkBadPose }
 
         }
 

@@ -25,9 +25,9 @@ class Preferences(context: Context) {
         allExerciseList.add(PoseExercise(0,"푸시업","기본 푸시업",0,0,0))
         allExerciseList.add(PoseExercise(0,"런지","기본 런지",0,0,0))
 
-        allExerciseList.add(PoseExercise(0,"스쿼트","1번 스쿼트",0,0,0))
-        allExerciseList.add(PoseExercise(0,"푸시업","1번 푸시업",0,0,0))
-        allExerciseList.add(PoseExercise(0,"런지","1번 런지",0,0,0))
+        allExerciseList.add(PoseExercise(0,"스쿼트","와이드 스쿼트",0,0,0))
+        allExerciseList.add(PoseExercise(0,"푸시업","와이드 푸시업",0,0,0))
+        allExerciseList.add(PoseExercise(0,"런지","사이드 런지",0,0,0))
 
         allExerciseList.add(PoseExercise(0,"스쿼트","2번 스쿼트",0,0,0))
         allExerciseList.add(PoseExercise(0,"푸시업","2번 푸시업",0,0,0))
