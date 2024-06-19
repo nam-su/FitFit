@@ -1,6 +1,5 @@
 package com.example.fitfit.fragment
 
-import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
 import android.media.MediaPlayer

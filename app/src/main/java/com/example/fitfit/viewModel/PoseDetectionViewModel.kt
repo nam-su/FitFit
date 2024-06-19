@@ -97,7 +97,7 @@ class PoseDetectionViewModel() : ViewModel() {
     private fun processImage(bitmap: Bitmap, exerciseName: String) {
 
         // 이미지 처리
-        val (processedBitmap, detectedCount) = poseDetectionModel.processImage(bitmap, exerciseName)
+        val (processedBitmap, detectedCount) = poseDetectionModel.processImage(bitmap)
 
         // 처리된 비트맵 업데이트
         _bitmap.postValue(processedBitmap)

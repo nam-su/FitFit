@@ -79,7 +79,7 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
     }
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
-    fun processImage(bitmap: Bitmap,exerciseName: String): Pair<Bitmap, Int> {
+    fun processImage(bitmap: Bitmap): Pair<Bitmap, Int> {
 
         // 비트맵을 TensorImage 객체에 로드
         var tensorImage = TensorImage(DataType.UINT8)
