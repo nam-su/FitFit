@@ -1,9 +1,11 @@
 package com.example.fitfit.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.DiaryModel
 import com.github.mikephil.charting.data.BarEntry
 import java.text.ParseException
@@ -24,6 +26,7 @@ class DiaryViewModel: ViewModel() {
     private var _endDate = MutableLiveData<Date>(Date())
     val endDate: LiveData<Date>
         get() = _endDate
+
 
 
     fun setStartDate(date: Date){ _startDate.value = date }
@@ -65,7 +68,7 @@ class DiaryViewModel: ViewModel() {
         }
 
         return ""
-    }
+    } //changeYMDFormat()
 
 
 
@@ -76,6 +79,24 @@ class DiaryViewModel: ViewModel() {
 
     //모델에서 EntryList 불러오기
     fun getEntryArrayList(): ArrayList<BarEntry> { return diaryModel.getEntryArrayList(startDate.value, endDate.value) }
+
+
+
+    // 제일 큰 값 계산
+    fun calculateMaxY(): Float{
+
+            var maxYValue = Float.MIN_VALUE
+
+            for (entry in diaryModel.getEntryArrayList(startDate.value, endDate.value)) {
+                Log.d(TAG, "calculateMaxY: ${entry.y}")
+                if (entry.y > maxYValue) {
+                    maxYValue = entry.y
+                }
+            }
+
+            return maxYValue
+
+    } //calculateMaxY()
 
 
 

@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentDiaryBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
@@ -21,6 +22,9 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Date
 
 
@@ -112,28 +116,31 @@ class DiaryFragment : Fragment() {
 
         initBarChart(barChart)
 
-        barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(),"")
+        barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(), "")
 
-        barDataSet.apply {
-            val colorList = listOf(
-                ContextCompat.getColor(requireContext(), R.color.squat),
-                ContextCompat.getColor(requireContext(), R.color.pushUp),
-                ContextCompat.getColor(requireContext(), R.color.lunge)
-            )
-            colors = colorList
-            //Setting the size of the form in the legend
-            formSize = 15f
-            //막대 너비 설정
-            //showing the value of the bar, default true if not set
-            setDrawValues(true)
-            //setting the text size of the value of the bar
-            valueTextSize = 12f
-        }
 
-        val data = BarData(barDataSet)
-        data.setValueTypeface(Typeface.DEFAULT_BOLD)
-        barChart.data = data
-        barChart.invalidate()
+
+            barDataSet.apply {
+                val colorList = listOf(
+                    ContextCompat.getColor(requireContext(), R.color.squat),
+                    ContextCompat.getColor(requireContext(), R.color.pushUp),
+                    ContextCompat.getColor(requireContext(), R.color.lunge)
+                )
+                colors = colorList
+                //Setting the size of the form in the legend
+                formSize = 15f
+                //막대 너비 설정
+                //showing the value of the bar, default true if not set
+                setDrawValues(false)
+                //setting the text size of the value of the bar
+                valueTextSize = 12f
+            }
+
+            val data = BarData(barDataSet)
+            data.setValueTypeface(Typeface.DEFAULT_BOLD)
+            barChart.data = data
+            barChart.invalidate()
+
 
     } // setBarChart()
 
@@ -193,10 +200,12 @@ class DiaryFragment : Fragment() {
 
         //barChart의 좌측 좌표값 설정
          barChart.axisLeft.apply {
-           setDrawGridLines(false)
-           setDrawAxisLine(false)
-           isEnabled = false
-           setDrawLabels(false)
+             axisMinimum = 0f  // 최소 값 설정
+             axisMaximum = diaryViewModel.calculateMaxY()
+             setDrawGridLines(false)
+           setDrawAxisLine(true)
+           isEnabled = true
+           setDrawLabels(true)
          }
 
         //barChart의 우측값 설정
@@ -204,7 +213,7 @@ class DiaryFragment : Fragment() {
             setDrawGridLines(false)
             setDrawAxisLine(false)
             isEnabled = false
-            setDrawLabels(false)
+            setDrawLabels(true)
             }
 
         //바차트의 타이틀(범례) 설정

@@ -15,15 +15,16 @@ import java.util.Date
 class DiaryModel {
 
     private val TAG = "다이어리 모델"
-    private var myPoseExerciseList = MyApplication.sharedPreferences.getMyExerciseList()
+    private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
     private var labelMap = HashMap<Float,String>()
     private var allExerciseMap = HashMap<String,MutableList<Float>>()
 
     init {
-        MyApplication.sharedPreferences.getMyExerciseList().forEach {
-            Log.d(TAG, "${it.exerciseName}: ${it.exerciseCount}")
-            Log.d(TAG, "${it.date}: ${it.goalExerciseCount}, ${it.category} ")
+        Log.d(TAG, "${MyApplication.sharedPreferences} ")
+
+        myPoseExerciseList.forEach {
+            Log.d(TAG, "[${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
         }
 
         setLabelMap()
@@ -111,30 +112,30 @@ class DiaryModel {
 
         setAllExerciseMap()
 
-//        myPoseExerciseList.forEach{ poseExercise ->
-//
-//            // 타임스탬프를 Instant로 변환
-//            val instant = Instant.ofEpochMilli(poseExercise.date)
-//            // Instant를 Date로 변환
-//            val date = Date.from(instant)
-//            Log.d(TAG, "setEntryArrayList: ${poseExercise.exerciseName}")
-//            Log.d(TAG, "date: $date")
-//            Log.d(TAG, "startDate: ${setToMidnight(startDate!!)}")
-//            Log.d(TAG, "endDate: ${setToEndOfDay(endDate!!)}")
-//            Log.d(TAG, "dateAfter: ${date.after(setToMidnight(startDate!!))}")
-//            Log.d(TAG, "dateBefore: ${date.before(setToEndOfDay(endDate!!))}")
+        myPoseExerciseList.forEach{ poseExercise ->
 
-//            if(date.after(setToMidnight(startDate!!)) && date.before(setToEndOfDay(endDate!!))) {
-//
-//                //날짜에 맞게 데이터 allExerciseMap에 넣기
-//                allExerciseMap[poseExercise.exerciseName]?.add(poseExercise.exerciseCount.toFloat())
-//                Log.d(TAG, "exerciseName: ${poseExercise.exerciseName}")
-//                Log.d(TAG, "exerciseCount: ${poseExercise.exerciseCount}")
-//                Log.d(TAG, "array: ${allExerciseMap[poseExercise.exerciseName]}")
-//
-//            }
-//
-//        }
+            // 타임스탬프를 Instant로 변환
+            val instant = Instant.ofEpochMilli(poseExercise.date)
+            // Instant를 Date로 변환
+            val date = Date.from(instant)
+            Log.d(TAG, "setEntryArrayList: ${poseExercise.exerciseName}")
+            Log.d(TAG, "date: $date")
+            Log.d(TAG, "startDate: ${setToMidnight(startDate!!)}")
+            Log.d(TAG, "endDate: ${setToEndOfDay(endDate!!)}")
+            Log.d(TAG, "dateAfter: ${date.after(setToMidnight(startDate!!))}")
+            Log.d(TAG, "dateBefore: ${date.before(setToEndOfDay(endDate!!))}")
+
+            if(date.after(setToMidnight(startDate!!)) && date.before(setToEndOfDay(endDate!!))) {
+
+                //날짜에 맞게 데이터 allExerciseMap에 넣기
+                allExerciseMap[poseExercise.exerciseName]?.add(poseExercise.exerciseCount.toFloat())
+                Log.d(TAG, "exerciseName: ${poseExercise.exerciseName}")
+                Log.d(TAG, "exerciseCount: ${poseExercise.exerciseCount}")
+                Log.d(TAG, "array: ${allExerciseMap[poseExercise.exerciseName]}")
+
+            }
+
+        }
 
         resetEntryArrayList()
 
