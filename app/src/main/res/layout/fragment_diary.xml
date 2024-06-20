@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="diaryViewModel"
+            type="com.example.fitfit.viewModel.DiaryViewModel" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +39,7 @@
             android:background="@drawable/login_button"
             android:drawableEnd="@drawable/blue_calender"
             android:paddingHorizontal="10dp"
-            android:text="@string/selectDate"
+            android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.startDate)}"
             style="@style/buttonTextStyle"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintEnd_toStartOf="@+id/textView"
@@ -59,7 +67,7 @@
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/button_stroke_personal"
-            android:text="@string/selectDate"
+            android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.endDate)}"
             style="@style/buttonTextStyle"
             android:textColor="@color/personal"
             android:drawableEnd="@drawable/blue_calender"
@@ -138,7 +146,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="@string/selectDate"
+                    android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.startDate)}"
                     android:gravity="center"
                     style="@style/diaryFragmentTextStyle"
                     />
@@ -154,7 +162,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="@string/selectDate"
+                    android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.endDate)}"
                     android:gravity="center"
                     style="@style/diaryFragmentTextStyle"
                     />
@@ -193,7 +201,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="기여도 10%"
+                android:text="기여도 50%"
                 android:gravity="center"
                 style="@style/diaryFragmentTextStyle"/>
 

@@ -5,6 +5,10 @@ import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalDate
@@ -17,6 +21,8 @@ class Preferences(context: Context) {
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
     private val allExerciseList = ArrayList<PoseExercise>()
+    private val myAllExerciseList = ArrayList<PoseExercise>()
+    var name = "하이"
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
@@ -78,8 +84,40 @@ class Preferences(context: Context) {
     } // getUserNickname()
 
 
+
+    // myExerciseList 불러오기
+    fun getMyAllExerciseList(): ArrayList<PoseExercise> {
+
+        myAllExerciseList.forEach {
+            Log.d(TAG, "get : [${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
+        }
+
+        return myAllExerciseList
+
+    }
+
+
+    // myExerciseList 저장
+    private fun setMyAllExerciseList(exerciseList: ArrayList<PoseExercise>) {
+            Log.d(TAG, "setMyExerciseList 호출")
+
+        myAllExerciseList.clear()
+        myAllExerciseList.addAll(exerciseList)
+
+        myAllExerciseList.forEach {
+            Log.d(TAG, "[set : ${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
+            }
+
+    }
+
+
+
     // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
     fun setUserExerciseInfoList(exerciseList: ArrayList<PoseExercise>) {
+
+        setMyAllExerciseList(exerciseList)
+
+        CoroutineScope(Dispatchers.Main).launch{
 
         // 시간 복잡도를 O(n * m) 에서 O(n + m) 으로 줄이기 위한 맵 사용
         // 각 운동의 이름을 key 값으로 해서 맵을 만들고 for문 사용
@@ -93,11 +131,15 @@ class Preferences(context: Context) {
 
             }
 
+            val myExerciseList = exerciseMap.values.filter { it.checkList == 1 }
+
+//            setMyPoseExerciseList(compareExerciseDate(ArrayList(myExerciseList)))
+
         }
 
-        val myExerciseList = exerciseMap.values.filter { it.checkList == 1 }
+       }
 
-        setMyPoseExerciseList(compareExerciseDate(ArrayList(myExerciseList)))
+
 
     } // setUserExerciseInfoList()
 
