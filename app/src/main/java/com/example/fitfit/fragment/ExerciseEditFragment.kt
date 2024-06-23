@@ -198,9 +198,14 @@ class ExerciseEditFragment : Fragment() {
 
                 // 여기에 서버와 통신해서 리스트 갱신해주는 메서드 필요.
 
+                //리스트 불러오기
+                Log.d(TAG, "setClickListener: ${exerciseEditViewModel.getExerciseList().size}")
+
             }
 
         }
+
+
 
     } // setClickListener()
 
