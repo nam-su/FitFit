@@ -2,7 +2,7 @@ package com.example.fitfit.data
 
 import com.google.gson.annotations.SerializedName
 
-class PoseExercise(
+data class PoseExercise(
     @SerializedName("date") var date: Long,
     @SerializedName("category") val category: String,
     @SerializedName("exerciseName") val exerciseName: String,
@@ -12,5 +12,7 @@ class PoseExercise(
 
     @SerializedName("result") var result: String? = null
     @SerializedName("primium") var isPrimium: Int = 0
+
+
 
 }

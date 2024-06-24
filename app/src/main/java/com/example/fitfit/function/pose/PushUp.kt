@@ -11,7 +11,7 @@ class PushUp: Pose() {
     private val TAG = "PushUp"
 
 
-    fun posePushUp(outputFeature0 : FloatArray) : Boolean{
+    override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean{
 
         checkBadPose = ""
 

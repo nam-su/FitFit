@@ -3,6 +3,7 @@ package com.example.fitfit.fragment
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentDiaryBinding
+import com.example.fitfit.function.MyApplication
+import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
@@ -19,6 +22,10 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Date
 
 
 class DiaryFragment : Fragment() {
@@ -26,7 +33,10 @@ class DiaryFragment : Fragment() {
     private val TAG = "다이어리 프래그먼트"
 
     lateinit var binding: FragmentDiaryBinding
-    lateinit var labelMap: HashMap<Float,String>
+
+    lateinit var diaryViewModel: DiaryViewModel
+
+    lateinit var barDataSet: BarDataSet
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -38,11 +48,25 @@ class DiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setVariable()
         setListener()
+        setObserve()
 
         setBarChart(binding.barChart)
 
     }
+
+
+
+    //초기값 설정
+    private fun setVariable(){
+
+        binding.lifecycleOwner = this
+
+        diaryViewModel = DiaryViewModel()
+        binding.diaryViewModel = diaryViewModel
+
+    } // setVariable()
 
 
 
@@ -51,17 +75,39 @@ class DiaryFragment : Fragment() {
 
         //시작날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
-            val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,0)
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
         }
 
         //마지막날짜 선택 리스너
         binding.buttonEndDate.setOnClickListener {
-            val bottomSheetDiaryFragment = BottomSheetDiaryFragment()
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,1)
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
         }
 
     } //setListener()
+
+
+
+    //observe 설정
+    private fun setObserve(){
+
+        //첫번째 선택 날짜 관찰
+        diaryViewModel.startDate.observe(viewLifecycleOwner){
+
+            binding.buttonStartDate.text = diaryViewModel.changeYMDFormat(it)
+            setBarChart(binding.barChart)
+
+        }
+
+        //두번째 선택 날짜 관찰
+        diaryViewModel.endDate.observe(viewLifecycleOwner){
+
+            binding.buttonEndDate.text = diaryViewModel.changeYMDFormat(it)
+            setBarChart(binding.barChart)
+
+        }
+    }
 
 
 
@@ -70,48 +116,31 @@ class DiaryFragment : Fragment() {
 
         initBarChart(barChart)
 
-        barChart.setScaleEnabled(false) //Zoom In/Out
+        barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(), "")
 
-        val valueList = ArrayList<Double>()
-        val entries: ArrayList<BarEntry> = ArrayList()
-        labelMap = HashMap<Float,String>()
-        val title = "내 운동"
 
-        //input data
-        for (i in 1..5) {
-            valueList.add(i * 100.1)
-        }
 
-        //fit the data into a bar
-        // BarEntry 추가 및 labelMap에 문자열 추가
+            barDataSet.apply {
+                val colorList = listOf(
+                    ContextCompat.getColor(requireContext(), R.color.squat),
+                    ContextCompat.getColor(requireContext(), R.color.pushUp),
+                    ContextCompat.getColor(requireContext(), R.color.lunge)
+                )
+                colors = colorList
+                //Setting the size of the form in the legend
+                formSize = 15f
+                //막대 너비 설정
+                //showing the value of the bar, default true if not set
+                setDrawValues(false)
+                //setting the text size of the value of the bar
+                valueTextSize = 12f
+            }
 
-        entries.add(BarEntry(1f, 10f))
-        labelMap[1f] = "스쿼트"
-        entries.add(BarEntry(2f, 20f))
-        labelMap[2f] = "푸시업"
-        entries.add(BarEntry(3f, 30f))
-        labelMap[3f] = "런지"
+            val data = BarData(barDataSet)
+            data.setValueTypeface(Typeface.DEFAULT_BOLD)
+            barChart.data = data
+            barChart.invalidate()
 
-        val barDataSet = BarDataSet(entries, title)
-
-        barDataSet.apply {
-            val colorList = listOf(
-                ContextCompat.getColor(requireContext(), R.color.squat),
-                ContextCompat.getColor(requireContext(), R.color.pushUp),
-                ContextCompat.getColor(requireContext(), R.color.lunge)
-            )
-            colors = colorList
-            //Setting the size of the form in the legend
-            formSize = 15f
-            //showing the value of the bar, default true if not set
-            setDrawValues(false)
-            //setting the text size of the value of the bar
-            valueTextSize = 12f
-        }
-        val data = BarData(barDataSet)
-        data.setValueTypeface(Typeface.DEFAULT_BOLD)
-        barChart.data = data
-        barChart.invalidate()
 
     } // setBarChart()
 
@@ -126,6 +155,10 @@ class DiaryFragment : Fragment() {
         barChart.setDrawBarShadow(false)
         //remove border of the chart, default false if not set
         barChart.setDrawBorders(false)
+
+        barChart.setTouchEnabled(false)   // 터치 이벤트 비활성화
+        barChart.setPinchZoom(false)     // 핀치 줌 비활성화
+        barChart.setScaleEnabled(false)  // 스케일링 비활성화
 
         //remove the description label text located at the lower right corner
         val description = Description()
@@ -154,10 +187,11 @@ class DiaryFragment : Fragment() {
 
             typeface = Typeface.DEFAULT_BOLD
 
+
             //x축 값에 문자열 넣는 부분 (원래 Float 형태만 출력됐음)
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
-                    return labelMap[value] // x 값에 해당하는 문자열 반환
+                    return diaryViewModel.getLabelMap()[value] // x 값에 해당하는 문자열 반환
                 }
             }
 
@@ -166,10 +200,12 @@ class DiaryFragment : Fragment() {
 
         //barChart의 좌측 좌표값 설정
          barChart.axisLeft.apply {
-           setDrawGridLines(false)
-           setDrawAxisLine(false)
-           isEnabled = false
-           setDrawLabels(false)
+             axisMinimum = 0f  // 최소 값 설정
+             axisMaximum = diaryViewModel.calculateMaxY()
+             setDrawGridLines(false)
+           setDrawAxisLine(true)
+           isEnabled = true
+           setDrawLabels(true)
          }
 
         //barChart의 우측값 설정
@@ -177,25 +213,11 @@ class DiaryFragment : Fragment() {
             setDrawGridLines(false)
             setDrawAxisLine(false)
             isEnabled = false
-            setDrawLabels(false)
+            setDrawLabels(true)
             }
 
-        //바차트의 타이틀 설정
-        barChart.legend.apply {
-            //setting the shape of the legend form to line, default square shape
-            form = Legend.LegendForm.LINE
-            //setting the text size of the legend
-            textSize = 11f
-            textColor = Color.BLACK
-            typeface = Typeface.DEFAULT_BOLD
-            //setting the alignment of legend toward the chart
-            verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            //setting the stacking direction of legend
-            orientation = Legend.LegendOrientation.HORIZONTAL
-            //setting the location of legend outside the chart, default false if not set
-            setDrawInside(false)
-        }
+        //바차트의 타이틀(범례) 설정
+        barChart.legend.isEnabled = false
 
     } //initBarChart()
 }

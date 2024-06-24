@@ -38,7 +38,7 @@ class PoseDetectionFragment : Fragment() {
     private lateinit var exerciseName: String
 
     // tts 객체
-    lateinit var tts: TextToSpeech
+    private var tts: TextToSpeech? = null
 
     private var lastSpokenMessage: String? = null
 
@@ -51,6 +51,9 @@ class PoseDetectionFragment : Fragment() {
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        Log.d(TAG, "onCreateView: ")
+
         // 데이터 바인딩 설정
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_detection, container, false)
 
@@ -60,6 +63,8 @@ class PoseDetectionFragment : Fragment() {
     // onViewCreated 메서드는 뷰가 생성된 후 호출됩니다.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d(TAG, "onViewCreated: ")
 
         // 필요한 권한을 체크합니다.
         checkPermissions()
@@ -71,17 +76,29 @@ class PoseDetectionFragment : Fragment() {
     } // onViewCreated
 
 
+    // 메모리 소모 줄이기 + tts 끊기
+    override fun onDestroy() {
+        super.onDestroy()
+
+        tts?.shutdown()
+        tts?.stop()
+        tts = null
+
+    } // onDestroy()
+
+
     // 변수 초기화
     private fun setVariable() {
 
         binding.lifecycleOwner = this
+
+        exerciseName = requireArguments().getString("exerciseName").toString()
+
         poseDetectionViewModel = PoseDetectionViewModel()
         binding.poseDetectionViewModel = poseDetectionViewModel
 
         // ViewModel을 초기화합니다.
-        poseDetectionViewModel.initialize(requireContext().applicationContext)
-
-        exerciseName = requireArguments().getString("exerciseName").toString()
+        poseDetectionViewModel.initialize(requireContext().applicationContext,exerciseName)
 
     } // setVariable
 
@@ -122,7 +139,7 @@ class PoseDetectionFragment : Fragment() {
 
             if (status == TextToSpeech.SUCCESS) {
 
-                tts.language = Locale.KOREA
+                tts?.language = Locale.KOREA
 
                 "$exerciseName 시작합니다.   올바른 자세로 서주세요".speak()
 
@@ -231,7 +248,7 @@ class PoseDetectionFragment : Fragment() {
     // tts speak 메서드
     private fun String.speak() {
 
-        tts.speak(this, TextToSpeech.QUEUE_FLUSH, null, null)
+        tts?.speak(this, TextToSpeech.QUEUE_FLUSH, null, null)
 
     } // speak
 

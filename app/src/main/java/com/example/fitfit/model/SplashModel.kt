@@ -1,12 +1,15 @@
 package com.example.fitfit.model
 
+import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import retrofit2.Response
 
-class SplashModel() {
+class SplashModel {
+
+    private val TAG = "스플래시 모델"
 
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
@@ -39,7 +42,8 @@ class SplashModel() {
     fun saveUserExerciseInfo(poseExerciseList: ArrayList<PoseExercise>) {
 
         MyApplication.sharedPreferences.setUserExerciseInfoList(poseExerciseList)
-
+        Log.d(TAG, "${MyApplication.sharedPreferences} ")
+        Log.d(TAG, "saveUserExerciseInfo: ${MyApplication.sharedPreferences.getMyAllExerciseList()}")
     }
 
 }

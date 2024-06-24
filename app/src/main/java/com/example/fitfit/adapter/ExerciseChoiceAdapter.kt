@@ -67,16 +67,9 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
 
     class ExerciseChoiceViewHolder(val binding: ItemViewExerciseChoiceBinding): RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
         fun onBind(poseExercise: PoseExercise) {
 
             binding.poseExercise = poseExercise
-
-            val exerciseCount= poseExercise.exerciseCount.toString()
-            val goalExerciseCount= poseExercise.goalExerciseCount.toString()
-
-            // 목표 운동 개수와 현재 진행한 운동 개수 표시
-            binding.textViewExerciseCount.text = "$exerciseCount / $goalExerciseCount"
 
             // 운동 객체가 갖고있는 카테고리에 따라 배경색 지정.
             binding.constraintLayoutStartExercise.backgroundTintList = when(poseExercise.category) {
@@ -87,9 +80,6 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
                 else -> {ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.personal))}
 
             }
-
-            binding.textViewExerciseCategory.text = poseExercise.category
-            binding.textViewExerciseName.text = poseExercise.exerciseName
 
         } // onBind()
 
