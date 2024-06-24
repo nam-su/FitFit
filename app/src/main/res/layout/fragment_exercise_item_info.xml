@@ -14,6 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".fragment.ExerciseItemInfoFragment">
 
@@ -23,6 +24,7 @@
             android:layout_margin="20dp"
             android:layout_width="13dp"
             android:layout_height="20dp"
+            android:onClick="@{()->exerciseItemInfoViewModel.backExerciseItemInfoIndex()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -31,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="기본 스쿼트"
+            android:text="@{exerciseItemInfoViewModel.exerciseName}"
             android:textSize="24sp"
             style="@style/defaultBlackTextStyle"
             app:layout_constraintTop_toTopOf="@id/imageButtonBackExerciseInfo"
@@ -46,11 +48,12 @@
             android:layout_margin="20dp"
             android:layout_width="13dp"
             android:layout_height="20dp"
+            android:onClick="@{() -> exerciseItemInfoViewModel.forwardExerciseItemInfoIndex()}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <!--뷰페이저 들어가고-->
-        <View
+        <ImageView
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -66,7 +69,7 @@
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="STEP 1"
+            android:text='@{"STEP " + (exerciseItemInfoViewModel.exerciseItemIndex + 1)}'
             style="@style/defaultBlackTextStyle"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,8 +84,8 @@
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="팔을 어깨너비보다 약간 넓게 벌린 상태로 엎드린다."
             style="@style/defaultBlackTextStyle"
+            android:text="@{exerciseItemInfoViewModel.exerciseItemInfoContent}"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

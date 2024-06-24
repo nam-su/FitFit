@@ -2,17 +2,17 @@ package com.example.fitfit.function
 
 import android.content.Context
 import android.util.Log
+import com.example.fitfit.R
+import com.example.fitfit.data.ExerciseInfo
+import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class Preferences(context: Context) {
 
@@ -22,10 +22,19 @@ class Preferences(context: Context) {
     private val editor = preferences.edit()
     private val allExerciseList = ArrayList<PoseExercise>()
     private val myAllExerciseList = ArrayList<PoseExercise>()
-    var name = "하이"
+
+    private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
+
+        setAllExerciseList()
+        setAllExerciseItemInfoList()
+
+    }
+
+    // 전체 운동 리스트 초기화 하는 메서드
+    private fun setAllExerciseList() {
 
         allExerciseList.add(PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 0, 0))
         allExerciseList.add(PoseExercise(0, "푸시업", "기본 푸시업", 0, 0, 0))
@@ -45,8 +54,40 @@ class Preferences(context: Context) {
 
         }
 
-    }
+    } // setAllExerciseList()
 
+
+    // 전체 운동 정보 리스트 초기화 하는 메서드
+    private fun setAllExerciseItemInfoList() {
+
+        allExerciseItemInfoList.add(ExerciseItemInfo(
+            "기본 푸시업",
+            R.drawable.push_up_index_0,
+            R.drawable.push_up_index_1,
+            "팔을 어깨너비보다 약간 넓게 벌린 상태로 엎드린다.",
+            "가슴이 바닥에 거의 닿을 때까지 구부리면서 몸을 내린다."))
+
+    } // setAllExerciseItemInfoList()
+
+
+    // 운동 이름으로 운동 정보 객체 가져오는 메서드
+    fun getExerciseItemInfo(exerciseName: String): ExerciseItemInfo? {
+
+        var getExerciseItemInfo: ExerciseItemInfo? = null
+
+        for (exerciseItemInfo in allExerciseItemInfoList) {
+
+            if(exerciseItemInfo.exerciseName == exerciseName) {
+
+                getExerciseItemInfo = exerciseItemInfo
+
+            }
+
+        }
+
+        return getExerciseItemInfo
+
+    } // getExerciseItemInfo()
 
     // 유저 정보 불러오는 메서드
     fun getUser(): User {
