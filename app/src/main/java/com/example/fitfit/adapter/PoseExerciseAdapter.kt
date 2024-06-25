@@ -196,6 +196,20 @@ class PoseExerciseAdapter(
 
                 }
 
+                "레그레이즈" -> {
+
+                    binding.imageViewExerciseCategory.backgroundTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.legRaises
+                            )
+                        )
+
+                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+
+                }
+
             }
 
         } // setPoseExerciseView()
