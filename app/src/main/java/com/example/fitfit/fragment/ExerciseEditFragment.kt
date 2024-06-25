@@ -16,6 +16,7 @@ import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.databinding.FragmentExerciseEditBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.ExerciseEditModel
 import com.example.fitfit.viewModel.ExerciseEditViewModel
 
@@ -126,6 +127,7 @@ class ExerciseEditFragment : Fragment() {
             when(it){
                 true -> {
                     Toast.makeText(requireContext(), "내 운동 리스트가 변경 되었습니다.", Toast.LENGTH_SHORT).show()
+                    exerciseEditViewModel.setUserCheckList()
                     findNavController().popBackStack()
                 }
                     else -> Toast.makeText(requireContext(), "네트워크 연결이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
@@ -230,6 +232,7 @@ class ExerciseEditFragment : Fragment() {
 
                 //리스트 불러오기
                 exerciseEditViewModel.setMyPoseExercise()
+                MyApplication.sharedPreferences.getMyPoseExerciseList()
 
             }
 

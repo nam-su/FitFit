@@ -179,4 +179,13 @@ class ExerciseEditModel {
         return retrofitInterface.setMyPoseExerciseList(exerciseRequest)
     }
 
+
+
+
+    //hashMap 변경
+    fun setUserCheckList(){
+        MyApplication.sharedPreferences.setUserCheckListHashMap(myExerciseList)
+    }
+
+
 }

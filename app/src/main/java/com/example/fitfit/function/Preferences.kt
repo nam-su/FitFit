@@ -7,6 +7,7 @@ import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
+import com.example.fitfit.function.pose.Pose
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class Preferences(context: Context) {
 
     //내 전체 운동기록 리스트
     private val userRecordExerciseList = ArrayList<PoseExercise>()
+    private val userCheckListHashMap = HashMap<String,Int>()
 
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
@@ -37,18 +39,21 @@ class Preferences(context: Context) {
     }
 
     // 전체 운동 리스트 초기화 하는 메서드
-    fun setAllExerciseList(userCheckListHashMap: HashMap<String,Int>) {
+    fun setAllExerciseList(hashMap: HashMap<String,Int>) {
 
-        userCheckListHashMap.forEach { (s, i) ->
+        allExerciseList.clear()
 
+        hashMap.forEach { (s, i) ->
+            
             var newValue = s.replace("_"," ")
-            Log.d(TAG, "setAllExerciseList: $s, $i")
+            userCheckListHashMap[s.replace("_"," ")] = i
             when {
                 newValue.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",newValue,0,0,i))
                 newValue.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",newValue,0,0,i))
                 newValue.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",newValue,0,0,i))
                 newValue.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",newValue,0,0,i))
             }
+            Log.d(TAG, "setAllExerciseList: ${allExerciseList.size}")
         }
 
         for (i: Int in 3 until allExerciseList.size) {
@@ -56,6 +61,7 @@ class Preferences(context: Context) {
             allExerciseList[i].isPrimium = 1
 
         }
+
 
     } // setAllExerciseList()
 
@@ -235,6 +241,17 @@ class Preferences(context: Context) {
 
         }
 
+        // 체크리스트 확인하고 조건에 맞는 인덱스를 삭제
+        poseExerciseList.removeIf {
+            if (userCheckListHashMap[it.exerciseName] == 0) {
+                Log.d(TAG, "getMyPoseExerciseList: ${it.exerciseName},${it.checkList}")
+                true // 조건에 맞는 항목을 삭제
+            } else {
+                false
+            }
+        }
+       
+
         return poseExerciseList
 
     } // getExerciseSchedule()
@@ -316,9 +333,25 @@ class Preferences(context: Context) {
 
     // 제공되는 운동 리스트 리턴
     fun getAllExerciseList(): ArrayList<PoseExercise> {
-
         return allExerciseList
+    }
 
+
+
+    //체크리스트 해시맵 수정
+    fun setUserCheckListHashMap(poseExerciseList: ArrayList<PoseExercise>){
+
+        //해시맵 초기화
+        userCheckListHashMap.forEach { (key, _) ->
+            userCheckListHashMap[key] = 0
+        }
+
+        //리스트 값에 따른 해시맵 변경
+        poseExerciseList.forEach {
+               userCheckListHashMap[it.exerciseName] = 1
+        }
+
+        Log.d(TAG, "setUserCheckListHashMap: $userCheckListHashMap")
     }
 
 }

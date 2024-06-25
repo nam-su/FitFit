@@ -96,12 +96,7 @@ class ExerciseEditViewModel: ViewModel() {
     } // checkMyExerciseListSizeMin()
 
 
-
-    // 모델에서 exerciseList 요청
-    fun getExerciseList(): ArrayList<PoseExercise>{ return exerciseEditModel.myExerciseList }
-
-
-
+    
     //서버에 어레이리스트 넣기
     fun setMyPoseExercise(){
         viewModelScope.launch {
@@ -110,7 +105,10 @@ class ExerciseEditViewModel: ViewModel() {
             if (response.isSuccessful && response.body() != null) {
 
                 when(response.body()!!.result){
-                    "success" ->  _isSuccessfulEdit.value = true
+                    "success" -> {
+                        _isSuccessfulEdit.value = true
+                        exerciseEditModel.setMyPoseExerciseList()
+                    }
                     else -> _isSuccessfulEdit.value = false
                 }
                 
@@ -119,4 +117,11 @@ class ExerciseEditViewModel: ViewModel() {
             }
         }
         }
+
+
+
+    //model에 해시맵 변경 요청
+    fun setUserCheckList(){
+        exerciseEditModel.setUserCheckList()
+    }
 }
