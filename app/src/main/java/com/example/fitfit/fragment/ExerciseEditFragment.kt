@@ -30,9 +30,11 @@ class ExerciseEditFragment : Fragment() {
     private lateinit var callback: OnBackPressedCallback
 
     private lateinit var myPoseExerciseAdapter: PoseExerciseAdapter
+
     private lateinit var allSquatAdapter: PoseExerciseAdapter
     private lateinit var allPushUpAdapter: PoseExerciseAdapter
     private lateinit var allLungeAdapter: PoseExerciseAdapter
+    private lateinit var allLegRaisesAdapter: PoseExerciseAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -84,19 +86,23 @@ class ExerciseEditFragment : Fragment() {
 
         binding.recyclerViewAllSquat.adapter = allSquatAdapter
 
-        // 모든 스쿼트 리스트 리사이클러뷰
+        // 모든 푸시업 리스트 리사이클러뷰
         allPushUpAdapter =
             PoseExerciseAdapter(exerciseEditViewModel.setAllPushUpList(),true,"false")
 
         binding.recyclerViewAllPushUp.adapter = allPushUpAdapter
 
-
-        // 모든 스쿼트 리스트 리사이클러뷰
+        // 모든 런지 리스트 리사이클러뷰
         allLungeAdapter =
             PoseExerciseAdapter(exerciseEditViewModel.setAllLungeList(),true,"false")
 
         binding.recyclerViewAllLunge.adapter = allLungeAdapter
 
+        // 모든 레그레이즈 리스트 리사이클러뷰
+        allLegRaisesAdapter =
+            PoseExerciseAdapter(exerciseEditViewModel.setAllLegRaisesList(),true,"false")
+
+        binding.recyclerViewAllLegRaises.adapter = allLegRaisesAdapter
 
     } // setVariable()
 
@@ -139,6 +145,7 @@ class ExerciseEditFragment : Fragment() {
                 allSquatAdapter.notifyDataSetChanged()
                 allPushUpAdapter.notifyDataSetChanged()
                 allLungeAdapter.notifyDataSetChanged()
+                allLegRaisesAdapter.notifyDataSetChanged()
 
             }
 
@@ -181,6 +188,18 @@ class ExerciseEditFragment : Fragment() {
                 exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allLungeAdapter.notifyDataSetChanged()
+
+            }
+
+        }
+
+        // 레그레이즈 리스트에서 추가버튼 눌렀을 때
+        allLegRaisesAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
+
+            override fun onAddButtonClick(view: View, position: Int) {
+                exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)
+                myPoseExerciseAdapter.notifyDataSetChanged()
+                allLegRaisesAdapter.notifyDataSetChanged()
 
             }
 

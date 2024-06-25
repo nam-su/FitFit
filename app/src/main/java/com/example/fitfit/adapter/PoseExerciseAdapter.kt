@@ -139,7 +139,13 @@ class PoseExerciseAdapter(
             when (checkVisibleExerciseName) {
 
                 // 운동 아이콘 + 운동 이름 보이게
-                true -> binding.textViewExerciseName.visibility = View.VISIBLE
+                true -> {
+
+                    val splitExerciseName = poseExercise.exerciseName.split(" ")
+                    binding.textViewExerciseName.text = splitExerciseName[0]
+                    binding.textViewExerciseName.visibility = View.VISIBLE
+
+                }
 
                 // 운동 아이콘만 보이게
                 else -> binding.textViewExerciseName.visibility = View.GONE
@@ -189,6 +195,20 @@ class PoseExerciseAdapter(
                             ContextCompat.getColor(
                                 binding.root.context,
                                 R.color.lunge
+                            )
+                        )
+
+                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+
+                }
+
+                "레그레이즈" -> {
+
+                    binding.imageViewExerciseCategory.backgroundTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.legRaises
                             )
                         )
 

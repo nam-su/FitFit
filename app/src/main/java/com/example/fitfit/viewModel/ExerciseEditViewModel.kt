@@ -57,6 +57,14 @@ class ExerciseEditViewModel: ViewModel() {
     } // setAllLungeList()
 
 
+    // 모든 레그레이즈 리스트
+    fun setAllLegRaisesList(): ArrayList<PoseExercise> {
+
+        return exerciseEditModel.getAllLegRaisesList()
+
+    }
+
+
     // 리스트에서 아이템 삭제
     fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int) {
 

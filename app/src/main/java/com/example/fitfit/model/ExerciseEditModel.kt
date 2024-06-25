@@ -16,6 +16,7 @@ class ExerciseEditModel {
     private val allSquatList = ArrayList<PoseExercise>()
     private val allPushUpList = ArrayList<PoseExercise>()
     private val allLungeList = ArrayList<PoseExercise>()
+    private val allLegRaisesList = ArrayList<PoseExercise>()
 
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
@@ -50,6 +51,8 @@ class ExerciseEditModel {
 
                 "런지" ->  allLungeList.add(exercise)
 
+                "레그레이즈" -> allLegRaisesList.add(exercise)
+
             }
 
         }
@@ -57,6 +60,7 @@ class ExerciseEditModel {
         allSquatList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
         allPushUpList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
         allLungeList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
+        allLegRaisesList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
 
     } // setAllCategoryList()
 
@@ -85,6 +89,14 @@ class ExerciseEditModel {
     } // getAllLungeList()
 
 
+    // 모든 레그레이즈 리스트 리턴하는 메서드
+    fun getAllLegRaisesList(): ArrayList<PoseExercise> {
+
+        return allLegRaisesList
+
+    } // getAllLegRaisesList()
+
+
     // 내 운동 리스트에서 아이템 삭제하는 메서드
     fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int){
 
@@ -93,6 +105,7 @@ class ExerciseEditModel {
             "스쿼트" -> allSquatList.add(myExerciseList[position])
             "푸시업" -> allPushUpList.add(myExerciseList[position])
             "런지" -> allLungeList.add(myExerciseList[position])
+            "레그레이즈" -> allLegRaisesList.add(myExerciseList[position])
 
         }
 
@@ -127,6 +140,7 @@ class ExerciseEditModel {
             "스쿼트" -> allSquatList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
             "푸시업" -> allPushUpList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
             "런지" ->  allLungeList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
+            "레그레이즈" -> allLegRaisesList.removeAll{ poseExercise -> myExerciseList.any{it.exerciseName == poseExercise.exerciseName} }
 
         }
 

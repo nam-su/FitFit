@@ -77,6 +77,7 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
                 "스쿼트" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.squat))
                 "푸시업" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.pushUp))
                 "런지" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.lunge))
+                "레그레이즈" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.legRaises))
                 else -> {ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.personal))}
 
             }
