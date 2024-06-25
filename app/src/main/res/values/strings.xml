@@ -70,6 +70,7 @@
     <string name="squat">스쿼트</string>
     <string name="pushUp">푸시업</string>
     <string name="lunge">런지</string>
+    <string name="legRaises">레그레이즈</string>
 
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>
