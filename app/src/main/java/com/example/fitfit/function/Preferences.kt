@@ -36,11 +36,13 @@ class Preferences(context: Context) {
     private fun setAllExerciseList(userCheckListHashMap: HashMap<String,Int>) {
 
         userCheckListHashMap.forEach { (s, i) ->
+
+            var newValue = s.replace("_"," ")
             when {
-                s.contains("Squat") -> allExerciseList.add(PoseExercise(0,"Squat",s,0,0,i))
-                s.contains("Lunge") -> allExerciseList.add(PoseExercise(0,"Lunge",s,0,0,i))
-                s.contains("PushUp") -> allExerciseList.add(PoseExercise(0,"PushUp",s,0,0,i))
-                s.contains("Raises") -> allExerciseList.add(PoseExercise(0,"Raises",s,0,0,i))
+                newValue.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",newValue,0,0,i))
+                newValue.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",newValue,0,0,i))
+                newValue.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",newValue,0,0,i))
+                newValue.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",newValue,0,0,i))
             }
         }
 
