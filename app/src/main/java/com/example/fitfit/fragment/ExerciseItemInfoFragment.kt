@@ -16,6 +16,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentExerciseItemInfoBinding
 import com.example.fitfit.viewModel.ExerciseItemInfoViewModel
@@ -66,6 +67,8 @@ class ExerciseItemInfoFragment : Fragment() {
         binding.exerciseItemInfoViewModel = exerciseItemInfoViewModel
         binding.lifecycleOwner = this
 
+
+
     } // setVariable()
 
 
@@ -76,7 +79,12 @@ class ExerciseItemInfoFragment : Fragment() {
 
             when(it < 0) {
 
-                true -> findNavController().popBackStack()
+                true -> {
+
+                    findNavController().popBackStack()
+                    (activity as MainActivity).visibleBottomNavi()
+
+                }
                 else -> binding.view.setImageResource(exerciseItemInfoViewModel.setExerciseItemInfoImage())
 
             }
