@@ -1,22 +1,26 @@
 package com.example.fitfit.model
 
-import android.util.Log
+import com.example.fitfit.data.ExerciseRequest
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.network.RetrofitBuilder
+import com.example.fitfit.network.RetrofitInterface
+import retrofit2.Response
 
 class ExerciseEditModel {
 
     val TAG = "유저 운동 편집 모델"
 
     val myExerciseList: ArrayList<PoseExercise> = MyApplication.sharedPreferences.getMyPoseExerciseList() ?: ArrayList()
-
     private val allExerciseList = MyApplication.sharedPreferences.getAllExerciseList()
-
     private val allSquatList = ArrayList<PoseExercise>()
-
     private val allPushUpList = ArrayList<PoseExercise>()
-
     private val allLungeList = ArrayList<PoseExercise>()
+
+    private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
+        RetrofitInterface::class.java)
+
 
     init {
 
@@ -127,5 +131,16 @@ class ExerciseEditModel {
         }
 
     } // removeExerciseListItem
+
+
+
+    //서버에 arrayList 전송
+    suspend fun setMyPoseExerciseList(): Response<String> {
+
+        val id = MyApplication.sharedPreferences.getUserId()
+        val exerciseRequest = ExerciseRequest(id, myExerciseList, "updateList")
+
+        return retrofitInterface.setMyPoseExerciseList(exerciseRequest)
+    }
 
 }

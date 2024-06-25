@@ -1,10 +1,12 @@
 package com.example.fitfit.network
 
+import com.example.fitfit.data.ExerciseRequest
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Multipart
@@ -24,6 +26,7 @@ interface RetrofitInterface {
         @Field("mode") mode: String
 
     ): Response<User>
+
 
 
     // 회원가입
@@ -134,6 +137,16 @@ interface RetrofitInterface {
 
     ): Response<User>
 
+
+
+
+    //어레이리스트 전송
+    @POST("exerciseProcess.php")
+    suspend fun setMyPoseExerciseList(
+
+        @Body exerciseRequest: ExerciseRequest
+
+    ): Response<String>
 
 
 }

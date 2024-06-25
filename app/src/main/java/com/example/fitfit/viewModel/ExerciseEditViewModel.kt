@@ -1,13 +1,17 @@
 package com.example.fitfit.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.ExerciseEditModel
+import kotlinx.coroutines.launch
 
 class ExerciseEditViewModel: ViewModel() {
 
+    private val TAG = "운동 편집 뷰모델"
     private val exerciseEditModel = ExerciseEditModel()
 
     private val _checkMyExerciseListSizeMax = MutableLiveData<Boolean>()
@@ -84,4 +88,19 @@ class ExerciseEditViewModel: ViewModel() {
     // 모델에서 exerciseList 요청
     fun getExerciseList(): ArrayList<PoseExercise>{ return exerciseEditModel.myExerciseList }
 
+
+
+    //서버에 어레이리스트 넣기
+    fun setMyPoseExercise(){
+        viewModelScope.launch {
+            val response = exerciseEditModel.setMyPoseExerciseList()
+
+            if (response.isSuccessful) {
+                println(response.message())
+                println(response.body())
+            } else {
+                println("Failed to send data. Error code: ${response.code()}")
+            }
+        }
+        }
 }

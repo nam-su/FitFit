@@ -1,6 +1,7 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
@@ -29,5 +30,11 @@ class LoginModel() {
         MyApplication.sharedPreferences.setUser(user)
 
     } // setSharedPreferencesUserInfo()
+
+
+    // 로그인 성공시 shared 객체에 내 운동리스트 불러오기
+    fun getMyAllExerciseList(){
+        MyApplication.sharedPreferences.getAllExerciseList()
+    }
 
 }

@@ -28,25 +28,21 @@ class Preferences(context: Context) {
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
 
-        setAllExerciseList()
         setAllExerciseItemInfoList()
 
     }
 
     // 전체 운동 리스트 초기화 하는 메서드
-    private fun setAllExerciseList() {
+    private fun setAllExerciseList(userCheckListHashMap: HashMap<String,Int>) {
 
-        allExerciseList.add(PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "푸시업", "기본 푸시업", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "런지", "기본 런지", 0, 0, 0))
-
-        allExerciseList.add(PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "푸시업", "와이드 푸시업", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "런지", "왼쪽 런지", 0, 0, 0))
-
-        allExerciseList.add(PoseExercise(0, "스쿼트", "내로우 스쿼트", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "푸시업", "내로우 푸시업", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "런지", "오른쪽 런지", 0, 0, 0))
+        userCheckListHashMap.forEach { (s, i) ->
+            when {
+                s.contains("Squat") -> allExerciseList.add(PoseExercise(0,"Squat",s,0,0,i))
+                s.contains("Lunge") -> allExerciseList.add(PoseExercise(0,"Lunge",s,0,0,i))
+                s.contains("PushUp") -> allExerciseList.add(PoseExercise(0,"PushUp",s,0,0,i))
+                s.contains("Raises") -> allExerciseList.add(PoseExercise(0,"Raises",s,0,0,i))
+            }
+        }
 
         for (i: Int in 3 until allExerciseList.size) {
 
@@ -192,6 +188,9 @@ class Preferences(context: Context) {
         editor.putString("profileImagePath", user.profileImagePath)
         editor.putString("subscription", user.subscription)
         editor.apply()
+
+        //서버의 체크리스트 저장
+        setAllExerciseList(user.checkList!!)
 
     } // setUser()
 
