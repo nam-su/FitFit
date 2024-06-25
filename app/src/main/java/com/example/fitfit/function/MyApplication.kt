@@ -13,8 +13,8 @@ class MyApplication: Application() { // 쉐어드 싱글톤을 구현하기 위�
 
         super.onCreate()
         sharedPreferences = Preferences(applicationContext)
-        
     }
-    
+
+
 
 }

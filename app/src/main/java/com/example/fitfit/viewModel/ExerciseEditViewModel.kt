@@ -22,6 +22,10 @@ class ExerciseEditViewModel: ViewModel() {
     val myExerciseListSize: LiveData<Int>
         get() = _myExerciseListSize
 
+    private val _isSuccessfulEdit = MutableLiveData<Boolean>()
+    val isSuccessfulEdit: LiveData<Boolean>
+        get() = _isSuccessfulEdit
+
 
     // 내 운동 리스트
     fun getSharedMyExerciseList(): ArrayList<PoseExercise> {
@@ -103,9 +107,13 @@ class ExerciseEditViewModel: ViewModel() {
         viewModelScope.launch {
             val response = exerciseEditModel.setMyPoseExerciseList()
 
-            if (response.isSuccessful) {
-                println(response.message())
-                println(response.body())
+            if (response.isSuccessful && response.body() != null) {
+
+                when(response.body()!!.result){
+                    "success" ->  _isSuccessfulEdit.value = true
+                    else -> _isSuccessfulEdit.value = false
+                }
+                
             } else {
                 println("Failed to send data. Error code: ${response.code()}")
             }

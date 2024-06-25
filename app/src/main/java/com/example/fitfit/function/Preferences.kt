@@ -20,8 +20,12 @@ class Preferences(context: Context) {
 
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
+
+    //운동 편집 프래그먼트에서 쓰는 리스트
     private val allExerciseList = ArrayList<PoseExercise>()
-    private val myAllExerciseList = ArrayList<PoseExercise>()
+
+    //내 전체 운동기록 리스트
+    private val userRecordExerciseList = ArrayList<PoseExercise>()
 
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
@@ -33,11 +37,12 @@ class Preferences(context: Context) {
     }
 
     // 전체 운동 리스트 초기화 하는 메서드
-    private fun setAllExerciseList(userCheckListHashMap: HashMap<String,Int>) {
+    fun setAllExerciseList(userCheckListHashMap: HashMap<String,Int>) {
 
         userCheckListHashMap.forEach { (s, i) ->
 
             var newValue = s.replace("_"," ")
+            Log.d(TAG, "setAllExerciseList: $s, $i")
             when {
                 newValue.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",newValue,0,0,i))
                 newValue.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",newValue,0,0,i))
@@ -126,23 +131,23 @@ class Preferences(context: Context) {
     // myExerciseList 불러오기
     fun getMyAllExerciseList(): ArrayList<PoseExercise> {
 
-        myAllExerciseList.forEach {
+        userRecordExerciseList.forEach {
             Log.d(TAG, "get : [${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
         }
 
-        return myAllExerciseList
+        return userRecordExerciseList
 
     }
 
 
     // myExerciseList 저장
-    private fun setMyAllExerciseList(exerciseList: ArrayList<PoseExercise>) {
+    private fun setUserAllExerciseList(exerciseList: ArrayList<PoseExercise>) {
         Log.d(TAG, "setMyExerciseList 호출")
 
-        myAllExerciseList.clear()
-        myAllExerciseList.addAll(exerciseList)
+        userRecordExerciseList.clear()
+        userRecordExerciseList.addAll(exerciseList)
 
-        myAllExerciseList.forEach {
+        userRecordExerciseList.forEach {
             Log.d(
                 TAG,
                 "[set : ${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: "
@@ -153,9 +158,9 @@ class Preferences(context: Context) {
 
 
     // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
-    fun setUserExerciseInfoList(exerciseList: ArrayList<PoseExercise>) {
+    fun setUserExerciseInfoList(userAllExerciseList: ArrayList<PoseExercise>) {
 
-        setMyAllExerciseList(exerciseList)
+        setUserAllExerciseList(userAllExerciseList)
 
         CoroutineScope(Dispatchers.Main).launch {
 
@@ -163,7 +168,7 @@ class Preferences(context: Context) {
             // 각 운동의 이름을 key 값으로 해서 맵을 만들고 for문 사용
             val exerciseMap = allExerciseList.associateBy { it.exerciseName }.toMutableMap()
 
-            for (exercise in exerciseList) {
+            for (exercise in userAllExerciseList) {
 
                 if (exercise.checkList == 1) {
 
@@ -301,6 +306,9 @@ class Preferences(context: Context) {
 
     //로그아웃 또는 회원탈퇴 시 쉐어드 모든 데이터 삭제
     fun removeAll() {
+
+        allExerciseList.clear()
+        userRecordExerciseList.clear()
         editor.clear()
         editor.apply()
     }

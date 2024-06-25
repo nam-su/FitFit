@@ -1,5 +1,6 @@
 package com.example.fitfit.data
 
+import com.example.fitfit.function.pose.Pose
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -12,4 +13,5 @@ data class User(
       {
           @SerializedName("result") var result: String? = null
           @SerializedName("checkList") var checkList: HashMap<String,Int>? = null
+          @SerializedName("userAllExerciseList") var userAllExerciseList: ArrayList<PoseExercise>? = null
 }

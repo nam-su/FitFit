@@ -32,9 +32,5 @@ class LoginModel() {
     } // setSharedPreferencesUserInfo()
 
 
-    // 로그인 성공시 shared 객체에 내 운동리스트 불러오기
-    fun getMyAllExerciseList(){
-        MyApplication.sharedPreferences.getAllExerciseList()
-    }
 
 }

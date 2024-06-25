@@ -2,6 +2,7 @@ package com.example.fitfit.network
 
 import com.example.fitfit.data.ExerciseRequest
 import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.data.User
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -62,7 +63,7 @@ interface RetrofitInterface {
         @Field("id") id: String,
         @Field("mode") mode: String
 
-    ): Response<ArrayList<PoseExercise>>
+    ): Response<SplashResponse>
 
 
     // 운동 정보를 insert 해주는 메서드
@@ -146,7 +147,7 @@ interface RetrofitInterface {
 
         @Body exerciseRequest: ExerciseRequest
 
-    ): Response<String>
+    ): Response<SplashResponse>
 
 
 }

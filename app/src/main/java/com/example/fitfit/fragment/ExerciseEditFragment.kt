@@ -121,6 +121,17 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
+        // 편집에 대한 통신 성공했을때
+        exerciseEditViewModel.isSuccessfulEdit.observe(viewLifecycleOwner){
+            when(it){
+                true -> {
+                    Toast.makeText(requireContext(), "내 운동 리스트가 변경 되었습니다.", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }
+                    else -> Toast.makeText(requireContext(), "네트워크 연결이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     } // setObserve
 
 
