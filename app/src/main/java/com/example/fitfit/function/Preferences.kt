@@ -41,12 +41,13 @@ class Preferences(context: Context) {
         allExerciseList.add(PoseExercise(0, "런지", "기본 런지", 0, 0, 0))
 
         allExerciseList.add(PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "푸시업", "와이드 푸시업", 0, 0, 0))
+        allExerciseList.add(PoseExercise(0, "레그레이즈", "기본 레그레이즈", 0, 0, 0))
         allExerciseList.add(PoseExercise(0, "런지", "왼쪽 런지", 0, 0, 0))
 
-        allExerciseList.add(PoseExercise(0, "스쿼트", "내로우 스쿼트", 0, 0, 0))
-        allExerciseList.add(PoseExercise(0, "푸시업", "내로우 푸시업", 0, 0, 0))
+        allExerciseList.add(PoseExercise(0, "레그레이즈", "왼쪽 레그레이즈", 0, 0, 0))
         allExerciseList.add(PoseExercise(0, "런지", "오른쪽 런지", 0, 0, 0))
+        allExerciseList.add(PoseExercise(0, "레그레이즈", "오른쪽 레그레이즈", 0, 0, 0))
+
 
         for (i: Int in 3 until allExerciseList.size) {
 
