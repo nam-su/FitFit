@@ -72,6 +72,13 @@
         tools:layout="@layout/fragment_home"
         />
 
+    <!--운동 정보 프래그먼트-->
+    <fragment
+        android:id="@+id/exerciseItemInfoFragment"
+        android:name="com.example.fitfit.fragment.ExerciseItemInfoFragment"
+        android:label="fragment_exerciseItemInfo"
+        tools:layout="@layout/fragment_exercise_item_info"
+        />
 
     <!--운동 프래그먼트-->
     <fragment

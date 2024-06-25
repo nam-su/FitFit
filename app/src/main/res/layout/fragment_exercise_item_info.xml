@@ -1,14 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.ExerciseItemInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<layout>
+
+    <data>
+
+        <variable
+            name="exerciseItemInfoViewModel"
+            type="com.example.fitfit.viewModel.ExerciseItemInfoViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/white"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".fragment.ExerciseItemInfoFragment">
 
-</FrameLayout>
+        <ImageButton
+            android:id="@+id/imageButtonBackExerciseInfo"
+            android:background="@drawable/back_black"
+            android:layout_margin="20dp"
+            android:layout_width="13dp"
+            android:layout_height="20dp"
+            android:onClick="@{()->exerciseItemInfoViewModel.backExerciseItemInfoIndex()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewExerciseInfoName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{exerciseItemInfoViewModel.exerciseName}"
+            android:textSize="24sp"
+            style="@style/defaultBlackTextStyle"
+            app:layout_constraintTop_toTopOf="@id/imageButtonBackExerciseInfo"
+            app:layout_constraintStart_toEndOf="@id/imageButtonBackExerciseInfo"
+            app:layout_constraintEnd_toStartOf="@id/imageButtonForwardExerciseInfo"
+            app:layout_constraintBottom_toTopOf="@id/view"/>
+
+
+        <ImageButton
+            android:id="@+id/imageButtonForwardExerciseInfo"
+            android:background="@drawable/button_forward"
+            android:layout_margin="20dp"
+            android:layout_width="13dp"
+            android:layout_height="20dp"
+            android:onClick="@{() -> exerciseItemInfoViewModel.forwardExerciseItemInfoIndex()}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!--뷰페이저 들어가고-->
+        <ImageView
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewExerciseInfoName"
+            app:layout_constraintBottom_toTopOf="@id/textViewExerciseIndex"/>
+
+
+        <TextView
+            android:id="@+id/textViewExerciseIndex"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text='@{"STEP " + (exerciseItemInfoViewModel.exerciseItemIndex + 1)}'
+            style="@style/defaultBlackTextStyle"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view"
+            app:layout_constraintBottom_toTopOf="@id/textViewExerciseInfoContent"
+            />
+
+
+        <TextView
+            android:id="@+id/textViewExerciseInfoContent"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/defaultBlackTextStyle"
+            android:text="@{exerciseItemInfoViewModel.exerciseItemInfoContent}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonStartExercise"
+            app:layout_constraintTop_toBottomOf="@id/textViewExerciseIndex"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonStartExercise"
+            android:background="@drawable/login_button"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="운동 시작하기"
+            style="@style/buttonTextStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewExerciseInfoContent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+
+

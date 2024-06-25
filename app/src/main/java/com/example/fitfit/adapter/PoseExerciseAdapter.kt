@@ -25,6 +25,7 @@ class PoseExerciseAdapter(
 
     var exerciseEditItemAddButtonClick: ExerciseEditItemAddButtonClick? = null
     var exerciseEditItemDeleteButtonClick: ExerciseEditItemDeleteButtonClick? = null
+    var exerciseItemClick: ExerciseItemClick? = null
     interface ExerciseEditItemAddButtonClick {
 
         fun onAddButtonClick(view: View,position: Int)
@@ -34,6 +35,12 @@ class PoseExerciseAdapter(
     interface ExerciseEditItemDeleteButtonClick {
 
         fun onDeleteButtonClick(view: View,position: Int)
+
+    }
+
+    interface ExerciseItemClick {
+
+        fun onExerciseItemClick(view: View,position: Int)
 
     }
 
@@ -63,6 +70,8 @@ class PoseExerciseAdapter(
         holder.setEditButton(isCheckMyExerciseList)
 
         // 아이템 클릭 리스너가 널이 아닐때 클릭 리스너 연동한다.
+
+        // 운동 리스트 편집에서 아이템 추가 하는 리스너
         if (exerciseEditItemAddButtonClick != null) {
 
             holder.binding.imageButtonAddExerciseItem.setOnClickListener {
@@ -73,11 +82,23 @@ class PoseExerciseAdapter(
 
         }
 
+        // 운동 리스트 편집에서 아이템 삭제 하는 리스너
         if(exerciseEditItemDeleteButtonClick != null) {
 
             holder.binding.imageButtonDeleteExerciseItem.setOnClickListener {
 
                 exerciseEditItemDeleteButtonClick!!.onDeleteButtonClick(it,position)
+
+            }
+
+        }
+
+        // 운동 아이템 클릭 이벤트 -> 운동 정보 보는 리스너
+        if(exerciseItemClick != null) {
+
+            holder.binding.imageViewExerciseCategory.setOnClickListener {
+
+                exerciseItemClick!!.onExerciseItemClick(it,position)
 
             }
 

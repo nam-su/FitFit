@@ -7,15 +7,15 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.pose.LeftLegRaises
+import com.example.fitfit.function.pose.LegRaises
 import com.example.fitfit.function.pose.Lunge
-import com.example.fitfit.function.pose.NarrowPushUp
-import com.example.fitfit.function.pose.NarrowSquat
 import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.function.pose.PushUp
+import com.example.fitfit.function.pose.RightLegRaises
 import com.example.fitfit.function.pose.SideLungeLeft
 import com.example.fitfit.function.pose.SideLungeRight
 import com.example.fitfit.function.pose.Squat
-import com.example.fitfit.function.pose.WidePushUp
 import com.example.fitfit.function.pose.WideSquat
 import com.example.fitfit.ml.AutoModel4
 import com.example.fitfit.network.RetrofitBuilder
@@ -68,11 +68,19 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
             "기본 푸시업" -> pose = PushUp()
             "기본 런지" -> pose = Lunge()
             "와이드 스쿼트" -> pose = WideSquat()
-            "와이드 푸시업" -> pose = WidePushUp()
+
+            // 없어질 운동
+            "와이드 푸시업" -> pose = RightLegRaises()
+
+            // 없어질 운동
+            "사이드 런지" -> pose = SideLungeRight()
+
             "왼쪽 런지" -> pose = SideLungeLeft()
             "오른쪽 런지" -> pose = SideLungeRight()
-            "내로우 스쿼트" -> pose = NarrowSquat()
-            "내로우 푸시업" -> pose = NarrowPushUp()
+
+            "레그레이즈" -> pose = LegRaises()
+            "왼쪽 레그레이즈" -> pose = LeftLegRaises()
+            "오른쪽 레그레이즈" -> pose = RightLegRaises()
 
         }
 

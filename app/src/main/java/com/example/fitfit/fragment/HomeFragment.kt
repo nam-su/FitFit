@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.GridLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -138,6 +139,22 @@ class HomeFragment : Fragment() {
 
             it.findNavController().navigate(R.id.payFragment)
             (activity as MainActivity).goneBottomNavi()
+
+        }
+
+        // 운동 아이템 클릭 리스너
+        (binding.recyclerViewPagedAllExercise.adapter as PoseExerciseAdapter).exerciseItemClick = object: PoseExerciseAdapter.ExerciseItemClick {
+
+            override fun onExerciseItemClick(view: View, position: Int) {
+
+                // 운동이름을 번들로 넘긴다.
+                val exerciseName = (binding.recyclerViewPagedAllExercise.adapter as PoseExerciseAdapter).poseExerciseList[position].exerciseName
+                val bundle = bundleOf("exerciseName" to exerciseName)
+
+                findNavController().navigate(R.id.exerciseItemInfoFragment,bundle)
+                (activity as MainActivity).goneBottomNavi()
+
+            }
 
         }
 
