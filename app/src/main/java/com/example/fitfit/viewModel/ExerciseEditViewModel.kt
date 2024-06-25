@@ -87,4 +87,9 @@ class ExerciseEditViewModel: ViewModel() {
 
     } // checkMyExerciseListSizeMin()
 
+
+
+    // 모델에서 exerciseList 요청
+    fun getExerciseList(): ArrayList<PoseExercise>{ return exerciseEditModel.myExerciseList }
+
 }
