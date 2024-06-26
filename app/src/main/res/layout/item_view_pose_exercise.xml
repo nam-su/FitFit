@@ -19,7 +19,7 @@
             android:background="@drawable/layout_border"
             android:backgroundTint="@color/squat"
             android:layout_margin="5dp"
-            android:padding="10dp"
+
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:layout_constraintStart_toStartOf="parent"

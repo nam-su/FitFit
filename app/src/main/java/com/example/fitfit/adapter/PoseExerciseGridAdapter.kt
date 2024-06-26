@@ -1,6 +1,7 @@
 package com.example.fitfit.adapter
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,21 +56,29 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
         private fun setPoseExerciseView(poseExercise: PoseExercise){
 
-            when(poseExercise.category) {
+            when (poseExercise.category) {
 
                 "스쿼트" -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
-                        ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.squat))
-
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.squat
+                            )
+                        )
 
                 }
 
                 "푸시업" -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
-                        ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.pushUp))
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.pushUp
+                            )
+                        )
 
                     binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
 
@@ -78,9 +87,12 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
                 "런지" -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
-                        ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.lunge))
-
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.lunge
+                            )
+                        )
 
                 }
 
@@ -94,13 +106,32 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
                             )
                         )
 
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
-
                 }
 
             }
 
+            setExerciseImageResource(poseExercise.exerciseName)
+            binding.imageViewExerciseCategory.setColorFilter(Color.WHITE)
+
         } // setPoseExerciseView()
+
+        private fun setExerciseImageResource(exerciseName: String) {
+
+            when(exerciseName) {
+
+                "기본 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
+                "와이드 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.wide_squat)
+                "기본 푸시업" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
+                "기본 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+                "왼쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_lunge)
+                "오른쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_lunge)
+                "기본 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
+                "왼쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
+                "오른쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
+
+            }
+
+        } // setExerciseImageResource()
 
     }
 

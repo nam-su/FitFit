@@ -78,23 +78,7 @@ class Preferences(context: Context) {
     // 운동 이름으로 운동 정보 객체 가져오는 메서드
     fun getExerciseItemInfo(exerciseName: String): ExerciseItemInfo? {
 
-<<<<<<< HEAD
         return allExerciseItemInfoList.firstOrNull { it.exerciseName == exerciseName }
-=======
-        var getExerciseItemInfo: ExerciseItemInfo? = null
-
-        for (exerciseItemInfo in allExerciseItemInfoList) {
-
-            if(exerciseItemInfo.exerciseName == exerciseName) {
-
-                getExerciseItemInfo = exerciseItemInfo
-
-            }
-
-        } //for문 종료
-
-        return getExerciseItemInfo
->>>>>>> 418989b3b7a37607223472376a88fb3d983d1f55
 
     } // getExerciseItemInfo()
 

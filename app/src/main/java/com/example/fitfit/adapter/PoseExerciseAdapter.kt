@@ -2,6 +2,7 @@ package com.example.fitfit.adapter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -107,15 +108,6 @@ class PoseExerciseAdapter(
     } // onBindViewHolder()
 
 
-    fun setData(arrayList: ArrayList<PoseExercise>){
-
-        Log.d(TAG, "setData: " + arrayList.size)
-
-        poseExerciseList = arrayList
-        notifyDataSetChanged()
-
-    }
-
     class PoseExerciseViewHolder(val binding: ItemViewPoseExerciseBinding) : RecyclerView.ViewHolder(binding.root) {
 
         val TAG = "운동객체 뷰홀더"
@@ -170,8 +162,6 @@ class PoseExerciseAdapter(
                             )
                         )
 
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
-
                 }
 
                 "푸시업" -> {
@@ -183,8 +173,6 @@ class PoseExerciseAdapter(
                                 R.color.pushUp
                             )
                         )
-
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
 
                 }
 
@@ -198,8 +186,6 @@ class PoseExerciseAdapter(
                             )
                         )
 
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
-
                 }
 
                 "레그레이즈" -> {
@@ -212,13 +198,33 @@ class PoseExerciseAdapter(
                             )
                         )
 
-                    binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
-
                 }
 
             }
 
+            setExerciseImageResource(poseExercise.exerciseName)
+            binding.imageViewExerciseCategory.setColorFilter(Color.WHITE)
+
         } // setPoseExerciseView()
+
+
+        private fun setExerciseImageResource(exerciseName: String) {
+
+            when(exerciseName) {
+
+                "기본 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
+                "와이드 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.wide_squat)
+                "기본 푸시업" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
+                "기본 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+                "왼쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_lunge)
+                "오른쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_lunge)
+                "기본 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
+                "왼쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
+                "오른쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
+
+            }
+
+        } // setExerciseImageResource()
 
 
         // 편집 프래그먼트에 진입했을때 버튼 초기화 하는 메서드
