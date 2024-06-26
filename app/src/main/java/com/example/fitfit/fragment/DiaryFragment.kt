@@ -38,6 +38,7 @@ class DiaryFragment : Fragment() {
 
     lateinit var barDataSet: BarDataSet
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
@@ -45,11 +46,15 @@ class DiaryFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
+
         setListener()
+
         setObserve()
 
         setBarChart(binding.barChart)
@@ -64,6 +69,7 @@ class DiaryFragment : Fragment() {
         binding.lifecycleOwner = this
 
         diaryViewModel = DiaryViewModel()
+
         binding.diaryViewModel = diaryViewModel
 
     } // setVariable()
@@ -75,14 +81,18 @@ class DiaryFragment : Fragment() {
 
         //시작날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
+
             val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,0)
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
+
         }
 
         //마지막날짜 선택 리스너
         binding.buttonEndDate.setOnClickListener {
+
             val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,1)
             bottomSheetDiaryFragment.show(parentFragmentManager,"")
+
         }
 
     } //setListener()
@@ -121,11 +131,13 @@ class DiaryFragment : Fragment() {
 
 
             barDataSet.apply {
+
                 val colorList = listOf(
                     ContextCompat.getColor(requireContext(), R.color.squat),
                     ContextCompat.getColor(requireContext(), R.color.pushUp),
                     ContextCompat.getColor(requireContext(), R.color.lunge)
                 )
+
                 colors = colorList
                 //Setting the size of the form in the legend
                 formSize = 15f
@@ -134,13 +146,13 @@ class DiaryFragment : Fragment() {
                 setDrawValues(false)
                 //setting the text size of the value of the bar
                 valueTextSize = 12f
+
             }
 
             val data = BarData(barDataSet)
             data.setValueTypeface(Typeface.DEFAULT_BOLD)
             barChart.data = data
             barChart.invalidate()
-
 
     } // setBarChart()
 
@@ -200,24 +212,29 @@ class DiaryFragment : Fragment() {
 
         //barChart의 좌측 좌표값 설정
          barChart.axisLeft.apply {
-             axisMinimum = 0f  // 최소 값 설정
-             axisMaximum = diaryViewModel.calculateMaxY()
-             setDrawGridLines(false)
-           setDrawAxisLine(true)
-           isEnabled = true
-           setDrawLabels(true)
+
+            axisMinimum = 0f  // 최소 값 설정
+            axisMaximum = diaryViewModel.calculateMaxY()
+            setDrawGridLines(false)
+            setDrawAxisLine(true)
+            isEnabled = true
+            setDrawLabels(true)
+
          }
 
         //barChart의 우측값 설정
          barChart.axisRight.apply {
+
             setDrawGridLines(false)
             setDrawAxisLine(false)
             isEnabled = false
             setDrawLabels(true)
+
             }
 
         //바차트의 타이틀(범례) 설정
         barChart.legend.isEnabled = false
 
     } //initBarChart()
+
 }
