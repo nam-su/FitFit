@@ -41,20 +41,13 @@ class SplashModel {
 
 
     // 서버에서 불러온 유저 운동정보 쉐어드에 저장하는 메서드
-    fun saveUserExerciseInfo(userAllExerciseList: ArrayList<PoseExercise>) {
-
+    fun saveUserExerciseInfo(userAllExerciseList: ArrayList<PoseExercise>) =
         MyApplication.sharedPreferences.setUserExerciseInfoList(userAllExerciseList)
-        Log.d(TAG, "${MyApplication.sharedPreferences} ")
-        Log.d(TAG, "saveUserExerciseInfo: ${MyApplication.sharedPreferences.getMyAllExerciseList()}")
-
-    } // saveUserExerciseInfo()
+    // saveUserExerciseInfo()
 
 
     //서버에서 불러온 유저 체크리스트로 운동편집리스트 갱신메서드
-    fun saveUserCheckList(userCheckListHashMap: HashMap<String,Int>){
-
-        MyApplication.sharedPreferences.setAllExerciseList(userCheckListHashMap)
-
-    } // saveUserCheckList()
+    fun saveUserCheckList(userCheckListHashMap: HashMap<String,Int>) =
+        MyApplication.sharedPreferences.setAllExerciseList(userCheckListHashMap) // saveUserCheckList()
 
 }

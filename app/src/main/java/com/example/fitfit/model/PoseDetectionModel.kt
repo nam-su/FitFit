@@ -232,9 +232,7 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
 
 
     // 모델을 닫는 메서드
-    fun close() {
-        model.close()
-    } // close()
+    fun close() = model.close() // close()
 
 }
 

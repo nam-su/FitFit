@@ -3,17 +3,13 @@ package com.example.fitfit.function
 import android.content.Context
 import android.util.Log
 import com.example.fitfit.R
-import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
-import com.example.fitfit.function.pose.Pose
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
+
 
 class Preferences(context: Context) {
 
@@ -34,7 +30,7 @@ class Preferences(context: Context) {
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
     /** 내가 짠 운동 리스트**/
-    private var myExerciseList = ArrayList<PoseExercise>()
+    private lateinit var myExerciseList: ArrayList<PoseExercise>
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
@@ -53,7 +49,7 @@ class Preferences(context: Context) {
         hashMap.forEach { (s, i) ->
 
             // 서버테이블 컬럼에는 띄어쓰기가 안되서 클라이언트에서 변환
-            var newValue = s.replace("_"," ")
+            val newValue = s.replace("_"," ")
             userCheckListHashMap[s.replace("_"," ")] = i
 
             //알맞은 값 어레이리스트에 add
@@ -88,7 +84,7 @@ class Preferences(context: Context) {
             "가슴이 바닥에 거의 닿을 때까지 구부리면서 몸을 내린다."))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "기본 스쿼트",
+            "기본_스쿼트",
             R.drawable.squat_index_0,
             R.drawable.squat_index_1,
             "양발의 간격은 어깨넓이로 벌리고 발을 11자로 만들어 선다.",
@@ -277,14 +273,12 @@ class Preferences(context: Context) {
 
         val poseExerciseList = getMyPoseExerciseList()
 
-        for (i in 0 until poseExerciseList.size) {
+        val index = poseExerciseList.indexOfFirst { it.exerciseName == poseExercise.exerciseName }
 
-            when (poseExerciseList[i].exerciseName) {
+        // 이름이 같은 운동이 있으면 갱신해 준다
+        if (index != -1) {
 
-                // 이름이 같은 운동이 있으면 갱신해 준다
-                poseExercise.exerciseName -> poseExerciseList[i] = poseExercise
-
-            }
+            poseExerciseList[index] = poseExercise
 
         }
 

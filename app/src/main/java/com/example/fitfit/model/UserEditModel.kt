@@ -21,52 +21,38 @@ class UserEditModel {
         RetrofitInterface::class.java)
 
 
-    fun getUser(): User {
-        return MyApplication.sharedPreferences.getUser()
-    }
+    fun getUser(): User = MyApplication.sharedPreferences.getUser()
 
 
     //
     fun getGalleryIntent(): Intent {
-        val intent = Intent(Intent.ACTION_PICK).apply {
+
+        return Intent(Intent.ACTION_PICK).apply {
+
             action = Intent.ACTION_OPEN_DOCUMENT
             setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
         }
-        return intent
-    }
+
+    } // getGalleryIntent()
 
 
     // 프로필 수정한 값 서버에 저장
-    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody, mode: RequestBody): Response<User> {
-
-        return retrofitInterface.profileEdit(image,id,nickname, mode)
-
-    } // withdrawalProcess()
+    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody, mode: RequestBody): Response<User> =
+        retrofitInterface.profileEdit(image,id,nickname, mode) // withdrawalProcess()
 
 
     // 프로필 수정한 값 서버에 저장
-    suspend fun profileEditWithoutImage(id: String, nickname: String, mode: String): Response<User> {
-
-        return retrofitInterface.profileEditWithoutImage(id,nickname,mode)
-
-    } // withdrawalProcess()
-
+    suspend fun profileEditWithoutImage(id: String, nickname: String, mode: String): Response<User>
+    = retrofitInterface.profileEditWithoutImage(id,nickname,mode) // withdrawalProcess()
 
 
     // 쉐어드에 유저정보 저장.
-    fun setSharedPreferencesUserInfo(user: User) {
-
-        MyApplication.sharedPreferences.setUser(user)
-
-    } // setSharedPreferencesUserInfo()
-
+    fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUser(user)
 
 
     // 레트로핏에서 baseurl 경로 받아오기
-    fun getBaseUrl(): String{
-        return retrofitBuilder.baseUrl.toString()
-    }
-
+    fun getBaseUrl(): String = retrofitBuilder.baseUrl.toString()
 
 }
