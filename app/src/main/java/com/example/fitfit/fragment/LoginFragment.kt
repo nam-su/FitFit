@@ -1,7 +1,6 @@
 package com.example.fitfit.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,22 +8,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentLoginBinding
 import com.example.fitfit.viewModel.LoginViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class LoginFragment() : Fragment() {
+class LoginFragment: Fragment() {
 
     val TAG = "로그인 프래그먼트"
-
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
+
 
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

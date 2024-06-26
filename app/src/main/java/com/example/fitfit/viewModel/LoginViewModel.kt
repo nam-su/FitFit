@@ -40,7 +40,9 @@ class LoginViewModel: ViewModel() {
                 when(user.result){
 
                         "failure" -> _isSuccessLogin.value = "failure"
-                        else -> setSharedPreferencesUserinfo(user)
+                        else -> {
+                            setSharedPreferencesUserinfo(user)
+                        }
 
                     }
 

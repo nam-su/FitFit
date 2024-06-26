@@ -11,7 +11,9 @@ data class User(
        @SerializedName("subscription") val subscription: String
         )
       {
+
           @SerializedName("result") var result: String? = null
-          @SerializedName("checkList") var checkList: HashMap<String,Int>? = null
+          @SerializedName("checkList") var checkList: LinkedHashMap<String,Int>? = null
           @SerializedName("userAllExerciseList") var userAllExerciseList: ArrayList<PoseExercise>? = null
+
 }

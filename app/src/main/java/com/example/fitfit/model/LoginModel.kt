@@ -18,18 +18,14 @@ class LoginModel() {
 
 
     // 로그인 통신으로 result 값 확인
-    suspend fun login(id: String, password: String, nickname: String,mode: String): Response<User> {
-
-        return retrofitInterface.selectUserData(id, password,nickname ,mode)
-
-    } // login()
+    suspend fun login(id: String, password: String, nickname: String,mode: String): Response<User> =
+        retrofitInterface.selectUserData(id, password,nickname ,mode)
+     // login()
 
 
     // 로그인 성공시 쉐어드에 유저정보 저장.
-    fun setSharedPreferencesUserInfo(user: User) {
-        MyApplication.sharedPreferences.setUser(user)
-
-    } // setSharedPreferencesUserInfo()
+    fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUser(user)
+    // setSharedPreferencesUserInfo()
 
 
 
