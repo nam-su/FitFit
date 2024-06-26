@@ -67,12 +67,13 @@
             android:id="@+id/recyclerViewMyPoseExerciseList"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/textViewMyExerciseList"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textViewSquat"
             tools:listitem="@layout/item_view_pose_exercise"/>
 
         <TextView
@@ -86,6 +87,7 @@
             app:layout_constraintStart_toStartOf="@id/recyclerViewMyPoseExerciseList"
             app:layout_constraintTop_toBottomOf="@id/recyclerViewMyPoseExerciseList"
             app:layout_constraintEnd_toStartOf="@+id/textViewPushUp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllSquat"
             />
 
         <TextView
@@ -98,7 +100,8 @@
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@id/textViewSquat"
             app:layout_constraintTop_toTopOf="@id/textViewSquat"
-            app:layout_constraintEnd_toStartOf="@+id/textViewLunge"/>
+            app:layout_constraintEnd_toStartOf="@+id/textViewLunge"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllPushUp"/>
 
         <TextView
             android:id="@+id/textViewLunge"
@@ -110,7 +113,8 @@
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@id/textViewPushUp"
             app:layout_constraintTop_toTopOf="@id/textViewPushUp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewLegRaises"/>
+            app:layout_constraintEnd_toStartOf="@+id/textViewLegRaises"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllLunge"/>
 
         <TextView
             android:id="@+id/textViewLegRaises"
@@ -122,7 +126,8 @@
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/textViewLunge"
             app:layout_constraintTop_toTopOf="@+id/textViewLunge"
-            app:layout_constraintEnd_toEndOf="@id/recyclerViewMyPoseExerciseList"/>
+            app:layout_constraintEnd_toEndOf="@id/recyclerViewMyPoseExerciseList"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllLegRaises"/>
 
         <!-- 모든 스쿼트 리스트 -->
         <androidx.recyclerview.widget.RecyclerView
