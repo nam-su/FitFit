@@ -97,7 +97,7 @@ class ExerciseEditViewModel: ViewModel() {
 
 
     
-    //서버에 어레이리스트 넣기
+    //서버에 체크리스트를 담은 객체를 보내고 응답을 받는 메서드
     fun setMyPoseExercise(){
 
         viewModelScope.launch {
@@ -108,7 +108,6 @@ class ExerciseEditViewModel: ViewModel() {
                 when(response.body()!!.result){
                     "success" -> {
                         _isSuccessfulEdit.value = true
-                        exerciseEditModel.setMyPoseExerciseList()
                     }
                     else -> _isSuccessfulEdit.value = false
                 }

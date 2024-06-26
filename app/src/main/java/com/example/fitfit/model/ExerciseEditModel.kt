@@ -32,6 +32,7 @@ class ExerciseEditModel {
     }
 
 
+
     // 내 운동리스트 리턴하는 메서드
     fun getSharedMyExerciseList(): ArrayList<PoseExercise> {
 
