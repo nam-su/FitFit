@@ -22,11 +22,13 @@ class Preferences(context: Context) {
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
 
-    //운동 편집 프래그먼트에서 쓰는 리스트
+    /** 운동 편집 프래그먼트에서 사용**/
     private val allExerciseList = ArrayList<PoseExercise>()
 
-    //내 전체 운동기록 리스트
+    /** 다이어리 프래그먼트에서 사용**/
     private val userRecordExerciseList = ArrayList<PoseExercise>()
+
+    /**서버에서 받아온 checkList 저장용**/
     private val userCheckListHashMap = HashMap<String,Int>()
 
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
@@ -38,15 +40,20 @@ class Preferences(context: Context) {
 
     }
 
-    // 전체 운동 리스트 초기화 하는 메서드
+    /**서버에서 받아온 유저의 checkList를 사용해서 allExerciseList를 초기화 하는 메서드**/
     fun setAllExerciseList(hashMap: HashMap<String,Int>) {
 
+        //한번 비우고
         allExerciseList.clear()
 
+        //해시맵 돌려서
         hashMap.forEach { (s, i) ->
-            
+
+            // 서버테이블 컬럼에는 띄어쓰기가 안되서 클라이언트에서 변환
             var newValue = s.replace("_"," ")
             userCheckListHashMap[s.replace("_"," ")] = i
+
+            //알맞은 값 어레이리스트에 add
             when {
                 newValue.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",newValue,0,0,i))
                 newValue.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",newValue,0,0,i))
@@ -56,6 +63,7 @@ class Preferences(context: Context) {
             Log.d(TAG, "setAllExerciseList: ${allExerciseList.size}")
         }
 
+        //프리미엄 딱지 추가
         for (i: Int in 3 until allExerciseList.size) {
 
             allExerciseList[i].isPrimium = 1
@@ -112,6 +120,8 @@ class Preferences(context: Context) {
 
     } // getExerciseItemInfo()
 
+
+
     // 유저 정보 불러오는 메서드
     fun getUser(): User {
 
@@ -132,12 +142,14 @@ class Preferences(context: Context) {
     } // getUser()
 
 
+
     // 유저 아이디만 조회하는 메서드
     fun getUserId(): String {
 
         return preferences.getString("id", "").toString()
 
     } // getUserId()
+
 
 
     // 유저 닉네임만 조회하는 메서드
@@ -148,7 +160,8 @@ class Preferences(context: Context) {
     } // getUserNickname()
 
 
-    // myExerciseList 불러오기
+
+    /**다이어리 프래먼트에서 사용하기 위해 운동전체 리스트 리턴 하는 메서드**/
     fun getMyAllExerciseList(): ArrayList<PoseExercise> {
 
         userRecordExerciseList.forEach {
@@ -160,7 +173,9 @@ class Preferences(context: Context) {
     }
 
 
-    // myExerciseList 저장
+    /**
+     * 이것도 다이어리 프래그먼트에서 사용
+     * 전체운동 리스트를 서버에서 받아와서 userRecordExerciseList에 추가**/
     private fun setUserAllExerciseList(exerciseList: ArrayList<PoseExercise>) {
         Log.d(TAG, "setMyExerciseList 호출")
 
@@ -207,6 +222,7 @@ class Preferences(context: Context) {
     } // setUserExerciseInfoList()
 
 
+
     // 유저 정보 쉐어드에 저장 하는 메서드
     fun setUser(user: User) {
         editor.putString("id", user.id)
@@ -220,6 +236,7 @@ class Preferences(context: Context) {
         setAllExerciseList(user.checkList!!)
 
     } // setUser()
+
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드
@@ -255,7 +272,8 @@ class Preferences(context: Context) {
 
         }
 
-        // 체크리스트 확인하고 조건에 맞는 인덱스를 삭제
+
+        /**유저의 체크리스트를 통해 현재 운동리스트 편집**/
         poseExerciseList.removeIf {
             if (userCheckListHashMap[it.exerciseName] == 0) {
                 Log.d(TAG, "getMyPoseExerciseList: ${it.exerciseName},${it.checkList}")
@@ -282,6 +300,7 @@ class Preferences(context: Context) {
     } // setExerciseSchedule()
 
 
+
     // 운동 후 리스트 갱신하는 메서드
     fun updateMyPoseExerciseList(poseExercise: PoseExercise) {
 
@@ -303,6 +322,7 @@ class Preferences(context: Context) {
     } // updatePoseExerciseList()
 
 
+
     // 기존 쉐어드에 운동 정보가 없는 경우 운동 정보 저장.
     fun setPoseExercise(poseExercise: PoseExercise) {
 
@@ -312,6 +332,7 @@ class Preferences(context: Context) {
         editor.apply()
 
     } // savePoseExercise()
+
 
 
     // 운동 정보 불러오는 메서드
@@ -335,14 +356,17 @@ class Preferences(context: Context) {
     } // loadPoseExercise
 
 
-    //로그아웃 또는 회원탈퇴 시 쉐어드 모든 데이터 삭제
+
+    /**로그아웃 또는 회원탈퇴시 쉐어드 갱신과 리스트, 해시맵 비우기**/
     fun removeAll() {
 
         allExerciseList.clear()
         userRecordExerciseList.clear()
+        userCheckListHashMap.clear()
         editor.clear()
         editor.apply()
-    }
+    } //removeAll()
+
 
 
     // 제공되는 운동 리스트 리턴
@@ -352,7 +376,10 @@ class Preferences(context: Context) {
 
 
 
-    //체크리스트 해시맵 수정
+    /**
+     * 해시맵 전체리스트를 추가하고 0으로 설정한 뒤
+     * 내 편집리스트의 exerciseName과 일치하는 key의 value를 1(true) 로 설정
+     * **/
     fun setUserCheckListHashMap(poseExerciseList: ArrayList<PoseExercise>){
 
         //해시맵 초기화
