@@ -1,13 +1,17 @@
 package com.example.fitfit.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.ExerciseEditModel
+import kotlinx.coroutines.launch
 
 class ExerciseEditViewModel: ViewModel() {
 
+    private val TAG = "운동 편집 뷰모델"
     private val exerciseEditModel = ExerciseEditModel()
 
     private val _checkMyExerciseListSizeMax = MutableLiveData<Boolean>()
@@ -17,6 +21,10 @@ class ExerciseEditViewModel: ViewModel() {
     private val _myExerciseListSize = MutableLiveData<Int>()
     val myExerciseListSize: LiveData<Int>
         get() = _myExerciseListSize
+
+    private val _isSuccessfulEdit = MutableLiveData<Boolean>()
+    val isSuccessfulEdit: LiveData<Boolean>
+        get() = _isSuccessfulEdit
 
 
     // 내 운동 리스트
@@ -88,8 +96,32 @@ class ExerciseEditViewModel: ViewModel() {
     } // checkMyExerciseListSizeMin()
 
 
+    
+    //서버에 어레이리스트 넣기
+    fun setMyPoseExercise(){
+        viewModelScope.launch {
+            val response = exerciseEditModel.setMyPoseExerciseList()
 
-    // 모델에서 exerciseList 요청
-    fun getExerciseList(): ArrayList<PoseExercise>{ return exerciseEditModel.myExerciseList }
+            if (response.isSuccessful && response.body() != null) {
 
+                when(response.body()!!.result){
+                    "success" -> {
+                        _isSuccessfulEdit.value = true
+                        exerciseEditModel.setMyPoseExerciseList()
+                    }
+                    else -> _isSuccessfulEdit.value = false
+                }
+                
+            } else {
+                println("Failed to send data. Error code: ${response.code()}")
+            }
+        }
+        }
+
+
+
+    //model에 해시맵 변경 요청
+    fun setUserCheckList(){
+        exerciseEditModel.setUserCheckList()
+    }
 }

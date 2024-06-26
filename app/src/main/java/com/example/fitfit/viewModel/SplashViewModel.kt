@@ -63,7 +63,8 @@ class SplashViewModel(): ViewModel() {
 
             if(response.isSuccessful && response.body() != null) {
 
-                splashModel.saveUserExerciseInfo(response.body()!!)
+                splashModel.saveUserExerciseInfo(response.body()!!.userAllExerciseList!!)
+                splashModel.saveUserCheckList(response.body()!!.checkList!!)
 
             } else {
 

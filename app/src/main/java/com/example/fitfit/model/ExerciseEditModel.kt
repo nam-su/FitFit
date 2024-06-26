@@ -1,25 +1,29 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.ExerciseRequest
 import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.function.MyApplication
-import com.example.fitfit.function.pose.Pose
+import com.example.fitfit.network.RetrofitBuilder
+import com.example.fitfit.network.RetrofitInterface
+import retrofit2.Response
 
 class ExerciseEditModel {
 
     val TAG = "유저 운동 편집 모델"
 
     val myExerciseList: ArrayList<PoseExercise> = MyApplication.sharedPreferences.getMyPoseExerciseList() ?: ArrayList()
-
     private val allExerciseList = MyApplication.sharedPreferences.getAllExerciseList()
-
     private val allSquatList = ArrayList<PoseExercise>()
-
     private val allPushUpList = ArrayList<PoseExercise>()
-
     private val allLungeList = ArrayList<PoseExercise>()
-
     private val allLegRaisesList = ArrayList<PoseExercise>()
+
+    private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
+        RetrofitInterface::class.java)
+
 
     init {
 
@@ -109,6 +113,7 @@ class ExerciseEditModel {
 
         myExerciseList.removeAt(position)
 
+
     } // deleteExerciseItem()
 
 
@@ -119,6 +124,7 @@ class ExerciseEditModel {
 
             myExerciseList.add(poseExercise)
             removeExerciseListItem(poseExercise)
+
             true
 
         } else {
@@ -143,5 +149,43 @@ class ExerciseEditModel {
         }
 
     } // removeExerciseListItem
+
+
+
+    //서버에 arrayList 전송
+    suspend fun setMyPoseExerciseList(): Response<SplashResponse> {
+
+        val id = MyApplication.sharedPreferences.getUserId()
+        val userCheckListHashMap = HashMap<String,Int>()
+
+        // 해시맵에 전체 리스트 담기
+        /**
+         * ex) 서버에는 기본 스쿼트 (x) -> 기본_스쿼트(o) : 컬럼이기때문
+         * **/
+        allExerciseList.forEach {
+            userCheckListHashMap[it.exerciseName.replace(" ","_")] = 0
+        }
+
+        //내 리스트는 1로 변경
+        myExerciseList.forEach {
+            userCheckListHashMap[it.exerciseName.replace(" ","_")] = 1
+        }
+
+
+        Log.d(TAG, "setMyPoseExerciseList: $userCheckListHashMap")
+
+        val exerciseRequest = ExerciseRequest(id, userCheckListHashMap, "updateList")
+
+        return retrofitInterface.setMyPoseExerciseList(exerciseRequest)
+    }
+
+
+
+
+    //hashMap 변경
+    fun setUserCheckList(){
+        MyApplication.sharedPreferences.setUserCheckListHashMap(myExerciseList)
+    }
+
 
 }

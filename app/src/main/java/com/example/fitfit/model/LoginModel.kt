@@ -1,6 +1,7 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
@@ -29,5 +30,7 @@ class LoginModel() {
         MyApplication.sharedPreferences.setUser(user)
 
     } // setSharedPreferencesUserInfo()
+
+
 
 }

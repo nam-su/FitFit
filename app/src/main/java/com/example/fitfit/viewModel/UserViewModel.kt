@@ -1,11 +1,16 @@
 package com.example.fitfit.viewModel
 
+import android.app.Application
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.Preferences
 import com.example.fitfit.model.UserModel
 import kotlinx.coroutines.launch
 
@@ -89,8 +94,11 @@ class UserViewModel : ViewModel() {
             "로그아웃" -> {
                 userModel.setSharedPreferencesRemoveUserInfo()
                 setIsLogoutButtonClick(true)
+                MyApplication.sharedPreferences.getAllExerciseList()
             }
-            "회원탈퇴" -> { setIsWithdrawalButtonClick(true) }
+            "회원탈퇴" -> {
+                setIsWithdrawalButtonClick(true)
+            }
 
             "진행" -> {
                 setIsProgressButtonClick(true)
