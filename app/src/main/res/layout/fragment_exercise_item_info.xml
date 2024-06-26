@@ -52,9 +52,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!--뷰페이저 들어가고-->
         <ImageView
             android:id="@+id/view"
+            android:layout_marginVertical="20dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintVertical_weight="1"
@@ -62,7 +62,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewExerciseInfoName"
             app:layout_constraintBottom_toTopOf="@id/textViewExerciseIndex"/>
-
 
         <TextView
             android:id="@+id/textViewExerciseIndex"

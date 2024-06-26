@@ -76,6 +76,20 @@ class Preferences(context: Context) {
             "팔을 어깨너비보다 약간 넓게 벌린 상태로 엎드린다.",
             "가슴이 바닥에 거의 닿을 때까지 구부리면서 몸을 내린다."))
 
+        allExerciseItemInfoList.add(ExerciseItemInfo(
+            "기본 스쿼트",
+            R.drawable.squat_index_0,
+            R.drawable.squat_index_1,
+            "양발의 간격은 어깨넓이로 벌리고 발을 11자로 만들어 선다.",
+            "뒤에 의자가 있다고 생각하고 엉덩이를 뒤로 빼면서 앉는다. 이때 무릎이 발가락보다 너무 많이 앞으로 나가면 안된다."))
+
+        allExerciseItemInfoList.add(ExerciseItemInfo(
+            "기본 런지",
+            R.drawable.lunge_index_0,
+            R.drawable.lunge_index_1,
+            "두 발을 골반너비로 벌린 자세로 바로 선다.",
+            "등과 허리를 바로 편 상태에서 양 무릎을 90도 굽힌다 이때 뒤쪽 무릎이 바닥에 닿는 느낌으로 몸을 내린다."))
+
     } // setAllExerciseItemInfoList()
 
 

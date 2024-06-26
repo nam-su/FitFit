@@ -68,16 +68,8 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
             "기본 푸시업" -> pose = PushUp()
             "기본 런지" -> pose = Lunge()
             "와이드 스쿼트" -> pose = WideSquat()
-
-            // 없어질 운동
-            "와이드 푸시업" -> pose = RightLegRaises()
-
-            // 없어질 운동
-            "사이드 런지" -> pose = SideLungeRight()
-
             "왼쪽 런지" -> pose = SideLungeLeft()
             "오른쪽 런지" -> pose = SideLungeRight()
-
             "레그레이즈" -> pose = LegRaises()
             "왼쪽 레그레이즈" -> pose = LeftLegRaises()
             "오른쪽 레그레이즈" -> pose = RightLegRaises()
