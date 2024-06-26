@@ -42,7 +42,7 @@ class SplashFragment : Fragment() {
 
         splashViewModel = SplashViewModel()
         (activity as MainActivity).goneBottomNavi()
-        splashViewModel.selectUserExercise()
+
 
     } // setVariable()
 
@@ -57,6 +57,7 @@ class SplashFragment : Fragment() {
 
                 true -> {
 
+                    splashViewModel.selectUserExercise()
                     this.findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
                     (activity as MainActivity).visibleBottomNavi()
 

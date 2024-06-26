@@ -46,13 +46,15 @@ class SplashModel {
         MyApplication.sharedPreferences.setUserExerciseInfoList(userAllExerciseList)
         Log.d(TAG, "${MyApplication.sharedPreferences} ")
         Log.d(TAG, "saveUserExerciseInfo: ${MyApplication.sharedPreferences.getMyAllExerciseList()}")
-    }
 
+    } // saveUserExerciseInfo()
 
 
     //서버에서 불러온 유저 체크리스트로 운동편집리스트 갱신메서드
     fun saveUserCheckList(userCheckListHashMap: HashMap<String,Int>){
+
         MyApplication.sharedPreferences.setAllExerciseList(userCheckListHashMap)
-    }
+
+    } // saveUserCheckList()
 
 }

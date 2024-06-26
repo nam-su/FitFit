@@ -215,7 +215,6 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
 
             poseExercise.exerciseCount += count
             poseExercise.date = System.currentTimeMillis()
-            MyApplication.sharedPreferences.setPoseExercise(poseExercise)
             MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
             true
 
@@ -224,7 +223,6 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
 
             poseExercise.exerciseCount = count
             poseExercise.date = System.currentTimeMillis()
-            MyApplication.sharedPreferences.setPoseExercise(poseExercise)
             MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
             false
 

@@ -60,7 +60,7 @@ class ExerciseChoiceFragment : Fragment() {
             override fun onClick(view: View, position: Int) {
 
                 // 뷰모델을 통해서 쉐어드에 저장하는 메서드 호출 , 이름값 리턴 후 동작인식 프래그먼트로 전송
-                val exerciseName = exerciseChoiceViewModel.setPoseExercise(exerciseChoiceAdapter.exerciseChoiceList[position])
+                val exerciseName = exerciseChoiceAdapter.exerciseChoiceList[position].exerciseName
 
                 val bundle = bundleOf("exerciseName" to exerciseName)
 

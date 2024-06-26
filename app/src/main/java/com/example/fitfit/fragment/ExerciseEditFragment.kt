@@ -206,6 +206,7 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
+
         // 레그레이즈 리스트에서 추가버튼 눌렀을 때
         allLegRaisesAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
@@ -237,8 +238,6 @@ class ExerciseEditFragment : Fragment() {
             }
 
         }
-
-
 
     } // setClickListener()
 

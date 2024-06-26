@@ -61,12 +61,4 @@ class ExerciseChoiceModel {
 
     } // compareExerciseDate()
 
-
-    // 쉐어드에 운동정보 객체 저장
-    fun setPoseExercise(poseExercise: PoseExercise) {
-
-        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
-
-    } // savePoseExercse()
-
 }

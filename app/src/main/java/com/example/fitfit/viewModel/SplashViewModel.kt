@@ -39,6 +39,7 @@ class SplashViewModel(): ViewModel() {
                 _isCheckLogin.value = true
 
             }
+
             // 쉐어드에 정보가 없는 경우
             false -> CoroutineScope(Dispatchers.Main).launch { delay(3000)
             _isCheckLogin.value = false

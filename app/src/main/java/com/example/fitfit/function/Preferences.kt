@@ -33,6 +33,9 @@ class Preferences(context: Context) {
 
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
+    /** 내가 짠 운동 리스트**/
+    private var myExerciseList = ArrayList<PoseExercise>()
+
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
 
@@ -121,7 +124,6 @@ class Preferences(context: Context) {
     } // getExerciseItemInfo()
 
 
-
     // 유저 정보 불러오는 메서드
     fun getUser(): User {
 
@@ -142,7 +144,6 @@ class Preferences(context: Context) {
     } // getUser()
 
 
-
     // 유저 아이디만 조회하는 메서드
     fun getUserId(): String {
 
@@ -151,14 +152,12 @@ class Preferences(context: Context) {
     } // getUserId()
 
 
-
     // 유저 닉네임만 조회하는 메서드
     fun getUserNickname(): String {
 
         return preferences.getString("nickname", "").toString()
 
     } // getUserNickname()
-
 
 
     /**다이어리 프래먼트에서 사용하기 위해 운동전체 리스트 리턴 하는 메서드**/
@@ -170,7 +169,7 @@ class Preferences(context: Context) {
 
         return userRecordExerciseList
 
-    }
+    } // getMyAllExerciseList()
 
 
     /**
@@ -189,10 +188,11 @@ class Preferences(context: Context) {
             )
         }
 
-    }
+    } // setUserAllExerciseList()
 
 
     // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
+    /** 내 운동 리스트를 여기서 초기화 함 **/
     fun setUserExerciseInfoList(userAllExerciseList: ArrayList<PoseExercise>) {
 
         setUserAllExerciseList(userAllExerciseList)
@@ -211,20 +211,18 @@ class Preferences(context: Context) {
 
                 }
 
-                val myExerciseList = exerciseMap.values.filter { it.checkList == 1 }
-
-                setMyPoseExerciseList(ArrayList(myExerciseList))
-
             }
+
+            myExerciseList = ArrayList(exerciseMap.values.filter { it.checkList == 1 })
 
         }
 
     } // setUserExerciseInfoList()
 
 
-
     // 유저 정보 쉐어드에 저장 하는 메서드
     fun setUser(user: User) {
+
         editor.putString("id", user.id)
         editor.putString("nickname", user.nickname)
         editor.putString("loginType", user.loginType)
@@ -238,51 +236,28 @@ class Preferences(context: Context) {
     } // setUser()
 
 
-
     // 스케쥴링한 운동 리스트 불러오는 메서드
     fun getMyPoseExerciseList(): ArrayList<PoseExercise> {
 
-        val sharedPoseExerciseList = preferences.getString("poseExerciseList", "")
-
         val poseExerciseList = ArrayList<PoseExercise>()
 
-        if (!sharedPoseExerciseList.equals("")) {
-
-            val jsonArray = JSONArray(sharedPoseExerciseList)
-
-            for (i in 0 until jsonArray.length()) {
-
-                val jsonObject: JSONObject = jsonArray.get(i) as JSONObject
-                poseExerciseList.add(
-
-                    PoseExercise(
-
-                        jsonObject.get("date").toString().toLong(),
-                        jsonObject.get("category").toString(),
-                        jsonObject.get("exerciseName").toString(),
-                        jsonObject.get("exerciseCount").toString().toInt(),
-                        jsonObject.get("goalExerciseCount").toString().toInt(),
-                        jsonObject.get("checkList").toString().toInt()
-
-                    )
-
-                )
-
-            }
-
-        }
-
+        poseExerciseList.addAll(myExerciseList)
 
         /**유저의 체크리스트를 통해 현재 운동리스트 편집**/
         poseExerciseList.removeIf {
+
             if (userCheckListHashMap[it.exerciseName] == 0) {
+
                 Log.d(TAG, "getMyPoseExerciseList: ${it.exerciseName},${it.checkList}")
                 true // 조건에 맞는 항목을 삭제
+
             } else {
+
                 false
+
             }
+
         }
-       
 
         return poseExerciseList
 
@@ -292,13 +267,9 @@ class Preferences(context: Context) {
     // 스케쥴링한 운동 리스트 저장하는 메서드
     fun setMyPoseExerciseList(poseExerciseList: ArrayList<PoseExercise>) {
 
-        val jsonArray = Gson().toJson(poseExerciseList)
-
-        editor.putString("poseExerciseList", jsonArray)
-        editor.apply()
+        myExerciseList = poseExerciseList
 
     } // setExerciseSchedule()
-
 
 
     // 운동 후 리스트 갱신하는 메서드
@@ -322,39 +293,14 @@ class Preferences(context: Context) {
     } // updatePoseExerciseList()
 
 
-
-    // 기존 쉐어드에 운동 정보가 없는 경우 운동 정보 저장.
-    fun setPoseExercise(poseExercise: PoseExercise) {
-
-        val jsonObject = Gson().toJson(poseExercise)
-
-        editor.putString(poseExercise.exerciseName, jsonObject)
-        editor.apply()
-
-    } // savePoseExercise()
-
-
-
     // 운동 정보 불러오는 메서드
     fun getPoseExercise(exerciseName: String?): PoseExercise {
 
-        val sharedExerciseName = preferences.getString(exerciseName, "")
+        val exerciseMap = myExerciseList.associateBy { it.exerciseName }
 
-        val jsonObject = JSONObject(sharedExerciseName!!)
-
-        return PoseExercise(
-
-            jsonObject.get("date").toString().toLong(),
-            jsonObject.get("category").toString(),
-            jsonObject.get("exerciseName").toString(),
-            jsonObject.get("exerciseCount").toString().toInt(),
-            jsonObject.get("goalExerciseCount").toString().toInt(),
-            jsonObject.get("checkList").toString().toInt()
-
-        )
+        return exerciseMap[exerciseName]!!
 
     } // loadPoseExercise
-
 
 
     /**로그아웃 또는 회원탈퇴시 쉐어드 갱신과 리스트, 해시맵 비우기**/
@@ -365,15 +311,16 @@ class Preferences(context: Context) {
         userCheckListHashMap.clear()
         editor.clear()
         editor.apply()
-    } //removeAll()
 
+    } //removeAll()
 
 
     // 제공되는 운동 리스트 리턴
     fun getAllExerciseList(): ArrayList<PoseExercise> {
-        return allExerciseList
-    }
 
+        return allExerciseList
+
+    } // getAllExerciseList()
 
 
     /**
@@ -393,6 +340,7 @@ class Preferences(context: Context) {
         }
 
         Log.d(TAG, "setUserCheckListHashMap: $userCheckListHashMap")
-    }
+
+    } // setUserCheckListHashMap()
 
 }

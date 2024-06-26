@@ -99,6 +99,7 @@ class ExerciseEditViewModel: ViewModel() {
     
     //서버에 어레이리스트 넣기
     fun setMyPoseExercise(){
+
         viewModelScope.launch {
             val response = exerciseEditModel.setMyPoseExerciseList()
 
@@ -116,7 +117,8 @@ class ExerciseEditViewModel: ViewModel() {
                 println("Failed to send data. Error code: ${response.code()}")
             }
         }
-        }
+
+    }
 
 
 
