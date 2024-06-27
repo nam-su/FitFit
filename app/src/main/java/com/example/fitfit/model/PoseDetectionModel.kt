@@ -70,7 +70,7 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
             "와이드 스쿼트" -> pose = WideSquat()
             "왼쪽 런지" -> pose = SideLungeLeft()
             "오른쪽 런지" -> pose = SideLungeRight()
-            "레그레이즈" -> pose = LegRaises()
+            "기본 레그레이즈" -> pose = LegRaises()
             "왼쪽 레그레이즈" -> pose = LeftLegRaises()
             "오른쪽 레그레이즈" -> pose = RightLegRaises()
 
