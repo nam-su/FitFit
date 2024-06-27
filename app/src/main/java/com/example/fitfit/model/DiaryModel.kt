@@ -75,12 +75,12 @@ class DiaryModel {
     private fun setAllExerciseMap(){
         //allExerciseMap 초기값 설정
         //mutableFloatList는 날짜마다 따로 값을 배열에 받기 위해서 사용
-        allExerciseMap["기본 스쿼트"] = mutableListOf()
-        allExerciseMap["기본 푸시업"] = mutableListOf()
-        allExerciseMap["기본 런지"] = mutableListOf()
-        allExerciseMap["와이드 스쿼트"] = mutableListOf()
-        allExerciseMap["와이드 푸시업"] = mutableListOf()
-        allExerciseMap["와이드 런지"] = mutableListOf()
+
+        MyApplication.sharedPreferences.userCheckListHashMap.forEach {
+            Log.d(TAG, "setAllExerciseMap: ${it.key}")
+            allExerciseMap[it.key] = mutableListOf()
+        }
+
     }
 
 
@@ -91,12 +91,24 @@ class DiaryModel {
         for(i in 0 until allExerciseMap.size) {
             entryArrayList.add(BarEntry(i.toFloat(), allExerciseMap[labelMap[i.toFloat()]]?.toFloatArray()))
         }
+
+//        allExerciseMap.keys.forEachIndexed { index, s ->
+//            Log.d(TAG, "initEntryArrayList: $index")
+//            Log.d(TAG, "resetEntryArrayList: ${allExerciseMap[s]!!.sum()}")git ch
+//            entryArrayList.add(BarEntry(index.toFloat(), allExerciseMap[s]!!.sum()))
+//        }
+
     }
 
 
 
     //entryArrayList 셋팅
     private fun resetEntryArrayList(){
+
+//        allExerciseMap.keys.forEachIndexed { index, s ->
+//            Log.d(TAG, "resetEntryArrayList: ${allExerciseMap[s]!!.sum()}")
+//            entryArrayList[index] = BarEntry(index.toFloat(), allExerciseMap[s]!!.sum())
+//        }
 
         //entry 값 재설정 넣기
         for(i in 0 until entryArrayList.size){
@@ -109,8 +121,6 @@ class DiaryModel {
 
     //entryArrayList 셋팅
     private fun setEntryArrayList(startDate: Date?, endDate: Date?){
-
-        setAllExerciseMap()
 
         myPoseExerciseList.forEach{ poseExercise ->
 

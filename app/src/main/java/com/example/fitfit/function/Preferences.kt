@@ -25,7 +25,7 @@ class Preferences(context: Context) {
     private var userRecordExerciseList = ArrayList<PoseExercise>()
 
     /**서버에서 받아온 checkList 저장용**/
-    private val userCheckListHashMap = LinkedHashMap<String,Int>()
+    val userCheckListHashMap = LinkedHashMap<String,Int>()
 
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
