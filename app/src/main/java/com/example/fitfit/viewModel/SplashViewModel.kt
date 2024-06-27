@@ -64,8 +64,12 @@ class SplashViewModel(): ViewModel() {
 
             if(response.isSuccessful && response.body() != null) {
 
+                //스플래시 성공으로인해 데이터 받으면
+                //1. 데이터를 일단 싱글 톤에 저장 해야함(1. 운동 전체 리스트 저장, 2. 체크리스트 저장)
+                //유저운동정보를 저장하는 메서드 호출
                 splashModel.saveUserExerciseInfo(response.body()!!.userAllExerciseList!!)
                 splashModel.saveUserCheckList(response.body()!!.checkList!!)
+
 
             } else {
 

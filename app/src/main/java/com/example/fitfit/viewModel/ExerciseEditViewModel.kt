@@ -106,10 +106,10 @@ class ExerciseEditViewModel: ViewModel() {
             if (response.isSuccessful && response.body() != null) {
 
                 when(response.body()!!.result){
-                    "success" -> {
-                        _isSuccessfulEdit.value = true
-                    }
+
+                    "success" -> _isSuccessfulEdit.value = true
                     else -> _isSuccessfulEdit.value = false
+
                 }
                 
             } else {

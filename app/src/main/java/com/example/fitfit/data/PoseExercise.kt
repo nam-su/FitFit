@@ -13,6 +13,4 @@ data class PoseExercise(
     @SerializedName("result") var result: String? = null
     @SerializedName("primium") var isPrimium: Int = 0
 
-
-
 }
