@@ -6,6 +6,7 @@ import com.example.fitfit.R
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
+import com.example.fitfit.function.pose.Pose
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -204,6 +205,7 @@ class Preferences(context: Context) {
 
     } // setUser()
 
+
     // 스케쥴링한 운동 리스트 불러오는 메서드
     fun getMyPoseExerciseList(): ArrayList<PoseExercise> {
 
@@ -371,6 +373,11 @@ class Preferences(context: Context) {
 
     } // setAllExerciseItemInfoList()
 
-    
-   
+
+    //myExerciseList 셋
+    fun setMyExerciseList(exerciseList: ArrayList<PoseExercise>){
+        myExerciseList.clear()
+        myExerciseList.addAll(exerciseList)
+    }
+
 }

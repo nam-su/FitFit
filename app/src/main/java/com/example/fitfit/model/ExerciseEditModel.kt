@@ -102,7 +102,6 @@ class ExerciseEditModel {
 
         myExerciseList.removeAt(position)
 
-
     } // deleteExerciseItem()
 
 
@@ -140,7 +139,6 @@ class ExerciseEditModel {
     } // removeExerciseListItem
 
 
-
     //서버에 arrayList 전송
     suspend fun setMyPoseExerciseList(): Response<SplashResponse> {
 
@@ -166,19 +164,15 @@ class ExerciseEditModel {
         //0값들 맨뒤로 보내기
         moveZeroValuesToEnd(userCheckListHashMap)
 
-        Log.d(TAG, "setMyPoseExerciseList: $userCheckListHashMap")
-
         //제이슨문자열 형태로 바꾸기
         val hashMapToJsonString = hashMapToJsonString(userCheckListHashMap)
 
         // 쉐어드의 리스트 바꾸기
         MyApplication.sharedPreferences.setAllExerciseList(hashMapToJsonString)
 
-        Log.d(TAG, "setMyPoseExerciseList: $hashMapToJsonString")
-
         return retrofitInterface.setMyCheckList(id, hashMapToJsonString,"updateList")
 
-    }
+    } //setMyPoseExerciseList()
 
 
     //해시맵 제이슨문자열로 바꾸기
@@ -230,6 +224,12 @@ class ExerciseEditModel {
         }
 
     } //moveZeroValuesToEnd()
+
+
+    //싱글톤에 내 리스트 저장
+    fun setMyExerciseList(){
+        MyApplication.sharedPreferences.setMyExerciseList(myExerciseList)
+    }
 
 
 }
