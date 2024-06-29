@@ -1,12 +1,12 @@
 package com.example.fitfit.model
 
 import android.util.Log
-import com.example.fitfit.data.ExerciseRequest
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
+import com.google.gson.Gson
 import retrofit2.Response
 
 class ExerciseEditModel {
@@ -69,35 +69,23 @@ class ExerciseEditModel {
 
 
     // 모든 스쿼트 리스트 리턴
-    fun getAllSquatList(): ArrayList<PoseExercise> {
-
-        return allSquatList
-
-    } // getAllSquatList()
+    fun getAllSquatList(): ArrayList<PoseExercise> = allSquatList
+     // getAllSquatList()
 
 
     // 모든 푸시업 리스트 리턴하는 메서드
-    fun getAllPushUpList(): ArrayList<PoseExercise> {
-
-        return allPushUpList
-
-    } // getAllPushUpList()
+    fun getAllPushUpList(): ArrayList<PoseExercise> = allPushUpList
+     // getAllPushUpList()
 
 
     // 모든 런지 리스트 리턴하는 메서드
-    fun getAllLungeList(): ArrayList<PoseExercise> {
-
-        return allLungeList
-
-    } // getAllLungeList()
+    fun getAllLungeList(): ArrayList<PoseExercise> = allLungeList
+    // getAllLungeList()
 
 
     // 모든 레그레이즈 리스트 리턴하는 메서드
-    fun getAllLegRaisesList(): ArrayList<PoseExercise> {
-
-        return allLegRaisesList
-
-    } // getAllLegRaisesList()
+    fun getAllLegRaisesList(): ArrayList<PoseExercise> =allLegRaisesList
+    // getAllLegRaisesList()
 
 
     // 내 운동 리스트에서 아이템 삭제하는 메서드
@@ -113,7 +101,6 @@ class ExerciseEditModel {
         }
 
         myExerciseList.removeAt(position)
-
 
     } // deleteExerciseItem()
 
@@ -152,40 +139,96 @@ class ExerciseEditModel {
     } // removeExerciseListItem
 
 
-
     //서버에 arrayList 전송
     suspend fun setMyPoseExerciseList(): Response<SplashResponse> {
 
         val id = MyApplication.sharedPreferences.getUserId()
-        val userCheckListHashMap = HashMap<String,Int>()
+        var userCheckListHashMap = LinkedHashMap<String,Int>()
 
         // 해시맵에 전체 리스트 담기
-        /**
-         * ex) 서버에는 기본 스쿼트 (x) -> 기본_스쿼트(o) : 컬럼이기때문
-         * **/
         allExerciseList.forEach {
-            userCheckListHashMap[it.exerciseName.replace(" ","_")] = 0
+
+            userCheckListHashMap[it.exerciseName] = 0
+
         }
 
         //내 리스트는 1로 변경
         myExerciseList.forEach {
-            userCheckListHashMap[it.exerciseName.replace(" ","_")] = 1
+
+            //해시맵에서 제거 후 맨뒤로 저장
+            userCheckListHashMap.remove(it.exerciseName)
+            userCheckListHashMap[it.exerciseName] = 1
+
         }
 
+        //0값들 맨뒤로 보내기
+        moveZeroValuesToEnd(userCheckListHashMap)
 
-        Log.d(TAG, "setMyPoseExerciseList: $userCheckListHashMap")
+        //제이슨문자열 형태로 바꾸기
+        val hashMapToJsonString = hashMapToJsonString(userCheckListHashMap)
 
-        val exerciseRequest = ExerciseRequest(id, userCheckListHashMap, "updateList")
+        // 쉐어드의 리스트 바꾸기
+        MyApplication.sharedPreferences.setAllExerciseList(hashMapToJsonString)
 
-        return retrofitInterface.setMyPoseExerciseList(exerciseRequest)
-    }
+        return retrofitInterface.setMyCheckList(id, hashMapToJsonString,"updateList")
+
+    } //setMyPoseExerciseList()
+
+
+    //해시맵 제이슨문자열로 바꾸기
+    private fun hashMapToJsonString(hashMap: LinkedHashMap<String,Int>): String{
+
+        //gson 객체 생성
+        val gson = Gson()
+
+        //해시맵을 JSON 문자열로 변환
+        return gson.toJson(hashMap)
+
+    } //hashMapToJson()
 
 
 
 
     //hashMap 변경
-    fun setUserCheckList(){
-        MyApplication.sharedPreferences.setUserCheckListHashMap(myExerciseList)
+    fun setUserCheckList() = MyApplication.sharedPreferences.setUserCheckListHashMap(myExerciseList)
+
+
+
+    //hashmap value가 0값이 있으면 맨뒤로 보내는 메서드
+    private fun moveZeroValuesToEnd(userCheckListHashMap: LinkedHashMap<String, Int>) {
+
+        val zeroKeys = mutableListOf<String>()
+
+        // 값이 0인 키들을 수집
+        for ((key, value) in userCheckListHashMap) {
+
+            if (value == 0) {
+
+                zeroKeys.add(key)
+
+            }
+
+        }
+
+        // 값이 0인 요소들을 삭제 후 다시 추가
+        for (key in zeroKeys) {
+
+            val value = userCheckListHashMap.remove(key)
+
+            if (value != null) {
+
+                userCheckListHashMap[key] = value
+
+            }
+
+        }
+
+    } //moveZeroValuesToEnd()
+
+
+    //싱글톤에 내 리스트 저장
+    fun setMyExerciseList(){
+        MyApplication.sharedPreferences.setMyExerciseList(myExerciseList)
     }
 
 

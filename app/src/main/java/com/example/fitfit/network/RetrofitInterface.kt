@@ -1,6 +1,5 @@
 package com.example.fitfit.network
 
-import com.example.fitfit.data.ExerciseRequest
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.data.User
@@ -142,10 +141,13 @@ interface RetrofitInterface {
 
 
     //어레이리스트 전송
+    @FormUrlEncoded
     @POST("exerciseProcess.php")
-    suspend fun setMyPoseExerciseList(
+    suspend fun setMyCheckList(
 
-        @Body exerciseRequest: ExerciseRequest
+        @Field("id") id: String,
+        @Field("checkList") checkList: String,
+        @Field("mode") mode: String
 
     ): Response<SplashResponse>
 

@@ -126,9 +126,12 @@ class ExerciseEditFragment : Fragment() {
         exerciseEditViewModel.isSuccessfulEdit.observe(viewLifecycleOwner){
             when(it){
                 true -> {
+
                     Toast.makeText(requireContext(), "내 운동 리스트가 변경 되었습니다.", Toast.LENGTH_SHORT).show()
                     exerciseEditViewModel.setUserCheckList()
+                    exerciseEditViewModel.setMyPoseExerciseList()
                     findNavController().popBackStack()
+
                 }
                     else -> Toast.makeText(requireContext(), "네트워크 연결이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -160,6 +163,11 @@ class ExerciseEditFragment : Fragment() {
                 allLungeAdapter.notifyDataSetChanged()
                 allLegRaisesAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
+
             }
 
         }
@@ -173,6 +181,11 @@ class ExerciseEditFragment : Fragment() {
                 exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allSquatAdapter.notifyDataSetChanged()
+
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
 
             }
 
@@ -188,6 +201,11 @@ class ExerciseEditFragment : Fragment() {
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allPushUpAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
+
             }
 
         }
@@ -202,6 +220,10 @@ class ExerciseEditFragment : Fragment() {
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allLungeAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
             }
 
         }
@@ -230,10 +252,8 @@ class ExerciseEditFragment : Fragment() {
             } else {
 
                 // 여기에 서버와 통신해서 리스트 갱신해주는 메서드 필요.
-
-                //리스트 불러오기
                 exerciseEditViewModel.setMyPoseExercise()
-                MyApplication.sharedPreferences.getMyPoseExerciseList()
+
 
             }
 
@@ -258,5 +278,12 @@ class ExerciseEditFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this,callback)
 
     } // setOnBackPressed()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        exerciseEditViewModel.getSharedMyExerciseList().forEach {
+            Log.d(TAG, "편집 프래그먼트 종료될때 : ${it.exerciseName}")
+        }
+    }
 
 }

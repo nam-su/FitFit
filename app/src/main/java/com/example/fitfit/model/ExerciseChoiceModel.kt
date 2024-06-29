@@ -1,37 +1,47 @@
 package com.example.fitfit.model
 
+import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import java.time.LocalDate
 
 class ExerciseChoiceModel {
 
+    private val TAG = "운동 선택 모델"
+
     // 리사이클러뷰에 들어가는 어레이리스트 초기화 메서드
     fun setExerciseChoiceList(): ArrayList<PoseExercise> {
 
-        val exerciseChoiceList = MyApplication.sharedPreferences.getMyPoseExerciseList()
-
-        when(exerciseChoiceList.size) {
-
-            0 ->{
-
-                exerciseChoiceList.add(PoseExercise(0,"스쿼트","기본 스쿼트",0,10,1))
-                exerciseChoiceList.add(PoseExercise(0,"푸시업","기본 푸시업",0,10,1))
-                exerciseChoiceList.add(PoseExercise(0,"런지","기본 런지",0,10,1))
-
-                MyApplication.sharedPreferences.setMyPoseExerciseList(exerciseChoiceList)
-
-            }
-
-            else -> {
-
-                compareExerciseDate(exerciseChoiceList)
-
-            }
-
+//        val exerciseChoiceList = MyApplication.sharedPreferences.getMyPoseExerciseList()
+//
+//        when(exerciseChoiceList.size) {
+//
+//            0 ->{
+//
+//                exerciseChoiceList.add(PoseExercise(0,"스쿼트","기본 스쿼트",0,10,1))
+//                exerciseChoiceList.add(PoseExercise(0,"푸시업","기본 푸시업",0,10,1))
+//                exerciseChoiceList.add(PoseExercise(0,"런지","기본 런지",0,10,1))
+//
+//                MyApplication.sharedPreferences.setMyPoseExerciseList(exerciseChoiceList)
+//
+//            }
+//
+//            else -> {
+//
+//                compareExerciseDate(exerciseChoiceList)
+//
+//            }
+//
+//
+//
+//        }
+        MyApplication.sharedPreferences.getMyPoseExerciseList().forEach {
+            Log.d(TAG, "setExerciseChoiceList: ${it.exerciseName}")
         }
 
-        return exerciseChoiceList
+        return compareExerciseDate(MyApplication.sharedPreferences.getMyPoseExerciseList())
+
+//        return exerciseChoiceList
 
     } // setExerciseChoiceList()
 

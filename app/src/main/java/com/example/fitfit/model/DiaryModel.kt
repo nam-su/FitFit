@@ -91,12 +91,24 @@ class DiaryModel {
         for(i in 0 until allExerciseMap.size) {
             entryArrayList.add(BarEntry(i.toFloat(), allExerciseMap[labelMap[i.toFloat()]]?.toFloatArray()))
         }
+
+//        allExerciseMap.keys.forEachIndexed { index, s ->
+//            Log.d(TAG, "initEntryArrayList: $index")
+//            Log.d(TAG, "resetEntryArrayList: ${allExerciseMap[s]!!.sum()}")git ch
+//            entryArrayList.add(BarEntry(index.toFloat(), allExerciseMap[s]!!.sum()))
+//        }
+
     }
 
 
 
     //entryArrayList 셋팅
     private fun resetEntryArrayList(){
+
+//        allExerciseMap.keys.forEachIndexed { index, s ->
+//            Log.d(TAG, "resetEntryArrayList: ${allExerciseMap[s]!!.sum()}")
+//            entryArrayList[index] = BarEntry(index.toFloat(), allExerciseMap[s]!!.sum())
+//        }
 
         //entry 값 재설정 넣기
         for(i in 0 until entryArrayList.size){

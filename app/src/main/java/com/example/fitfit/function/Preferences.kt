@@ -6,6 +6,9 @@ import com.example.fitfit.R
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
+import com.example.fitfit.function.pose.Pose
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +28,7 @@ class Preferences(context: Context) {
     private var userRecordExerciseList = ArrayList<PoseExercise>()
 
     /**서버에서 받아온 checkList 저장용**/
-    private val userCheckListHashMap = LinkedHashMap<String,Int>()
+    private var userCheckListHashMap = LinkedHashMap<String,Int>()
 
     private val allExerciseItemInfoList = ArrayList<ExerciseItemInfo>()
 
@@ -34,45 +37,81 @@ class Preferences(context: Context) {
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
-
         setAllExerciseItemInfoList()
-
     } // init()
 
+    
     /**서버에서 받아온 유저의 checkList를 사용해서 allExerciseList를 초기화 하는 메서드**/
-    fun setAllExerciseList(hashMap: LinkedHashMap<String,Int>) {
+    fun setAllExerciseList(checkList: String) {
 
-        //한번 비우고
+        //json string 을 링크드 해시맵에 집어넣는 과정
+        val gson = Gson()
+        val mapType = object : TypeToken<LinkedHashMap<String, Int>>() {}.type
+        userCheckListHashMap = gson.fromJson(checkList, mapType)
+
+        moveZeroValuesToEnd(userCheckListHashMap)
+
         allExerciseList.clear()
 
-        //해시맵 돌려서
-        hashMap.forEach { (s, i) ->
-            Log.d(TAG, "setAllExerciseList: $s, $i")
-            // 서버테이블 컬럼에는 띄어쓰기가 안되서 클라이언트에서 변환
-            var newValue = s.replace("_"," ")
+        userCheckListHashMap.forEach { (s,i) ->
 
-            userCheckListHashMap[s.replace("_"," ")] = i
-            
             //알맞은 값 어레이리스트에 add
             when {
 
-                newValue.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",newValue,0,0,i))
-                newValue.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",newValue,0,0,i))
-                newValue.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",newValue,0,0,i))
-                newValue.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",newValue,0,0,i))
+                s.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",s,0,0,i))
+                s.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",s,0,0,i))
+                s.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",s,0,0,i))
+                s.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",s,0,0,i))
 
             }
 
         }
 
-        //프리미엄 딱지 추가
-        for (i: Int in 3 until allExerciseList.size) {
+        //프리미엄
+        allExerciseList.forEach {
 
-            allExerciseList[i].isPrimium = 1
-            
-        } // 프리미엄 딱지 붙이는 for문 종료
+            if(it.exerciseName == "기본 스쿼트" || it.exerciseName == "기본 푸시업" || it.exerciseName == "기본 런지") {
+                it.isPrimium = 0
+            }else{
+                it.isPrimium = 1
+            }
+
+        }
+
 
     } // setAllExerciseList()
+
+
+    //hashmap value가 0값이 있으면 맨뒤로 보내는 메서드
+    private fun moveZeroValuesToEnd(userCheckListHashMap: LinkedHashMap<String, Int>) {
+
+        val zeroKeys = mutableListOf<String>()
+
+        // 값이 0인 키들을 수집
+        for ((key, value) in userCheckListHashMap) {
+
+            if (value == 0) {
+
+                zeroKeys.add(key)
+
+            }
+
+        }
+
+        // 값이 0인 요소들을 삭제 후 다시 추가
+        for (key in zeroKeys) {
+
+            val value = userCheckListHashMap.remove(key)
+
+            if (value != null) {
+
+                userCheckListHashMap[key] = value
+
+            }
+
+        }
+
+    } //moveZeroValuesToEnd()
 
 
     // 운동 이름으로 운동 정보 객체 가져오는 메서드
@@ -84,23 +123,14 @@ class Preferences(context: Context) {
 
 
     // 유저 정보 불러오는 메서드
-    fun getUser(): User {
-
-        preferences.getString("id", "")
-        preferences.getString("nickname", "")
-        preferences.getString("loginType", "")
-        preferences.getString("profileImagePath", "")
-        preferences.getString("subscription", "")
-
-        return User(
+    fun getUser(): User = User(
             preferences.getString("id", "").toString(),
             preferences.getString("loginType", "").toString(),
             preferences.getString("nickname", "").toString(),
             preferences.getString("profileImagePath", "").toString(),
             preferences.getString("subscription", "").toString()
         )
-
-    } // getUser()
+     // getUser()
 
 
     // 유저 아이디만 조회하는 메서드
@@ -167,13 +197,14 @@ class Preferences(context: Context) {
         editor.putString("subscription", user.subscription)
         editor.apply()
 
-        //서버의 체크리스트 저장
+        //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
         setAllExerciseList(user.checkList!!)
 
         //불러온 전체 운동리스트 저장
         setUserRecordExerciseList(user.userAllExerciseList!!)
 
     } // setUser()
+
 
     // 스케쥴링한 운동 리스트 불러오는 메서드
     fun getMyPoseExerciseList(): ArrayList<PoseExercise> {
@@ -266,7 +297,7 @@ class Preferences(context: Context) {
     } //setUserCheckListHashMap()
 
 
-    //서버의 전체운동리스트 저장
+    //서버의 전체운동리스트 클라이언트에 저장
     private fun setUserRecordExerciseList(userRecordList: ArrayList<PoseExercise>) {
 
         userRecordExerciseList = userRecordList
@@ -341,5 +372,12 @@ class Preferences(context: Context) {
             "왼쪽 다리는 그대로 두고 오른쪽 다리를 위로 뻗는다 이때 무릅을 굽히지 않고 통채로 뻗어주면 된다."))
 
     } // setAllExerciseItemInfoList()
+
+
+    //myExerciseList 셋
+    fun setMyExerciseList(exerciseList: ArrayList<PoseExercise>){
+        myExerciseList.clear()
+        myExerciseList.addAll(exerciseList)
+    }
 
 }

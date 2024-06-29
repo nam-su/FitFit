@@ -46,8 +46,8 @@ class SplashModel {
     // saveUserExerciseInfo()
 
 
-    //서버에서 불러온 유저 체크리스트로 운동편집리스트 갱신메서드
-    fun saveUserCheckList(userCheckListHashMap: LinkedHashMap<String,Int>) =
-        MyApplication.sharedPreferences.setAllExerciseList(userCheckListHashMap) // saveUserCheckList()
+    //서버에서 불러온 유저 체크리스트 정보를 토대로 싱글톤 전체 리스트를 만드는 메서드 호출
+    fun saveUserCheckList(checkList: String) = MyApplication.sharedPreferences.setAllExerciseList(checkList)
+     // saveUserCheckList()
 
 }

@@ -106,10 +106,10 @@ class ExerciseEditViewModel: ViewModel() {
             if (response.isSuccessful && response.body() != null) {
 
                 when(response.body()!!.result){
-                    "success" -> {
-                        _isSuccessfulEdit.value = true
-                    }
+
+                    "success" -> _isSuccessfulEdit.value = true
                     else -> _isSuccessfulEdit.value = false
+
                 }
                 
             } else {
@@ -117,12 +117,19 @@ class ExerciseEditViewModel: ViewModel() {
             }
         }
 
-    }
-
+    } //setMyPoseExercise()
 
 
     //model에 해시맵 변경 요청
     fun setUserCheckList(){
         exerciseEditModel.setUserCheckList()
     }
+
+
+    // 갱신한 리스트를 싱글톤에 저장
+    fun setMyPoseExerciseList(){
+        exerciseEditModel.setMyExerciseList()
+    }
+
+
 }
