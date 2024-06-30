@@ -46,7 +46,7 @@ class CheckWeekExerciseAdapter(private val checkWeekExerciseList: ArrayList<Exer
             binding.textViewDay.text = exerciseDiary.day
             binding.viewCheckExercise.backgroundTintList = when(exerciseDiary.check){
 
-                "true" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.personal))
+                true -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.personal))
                 else -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.grey))
 
             }

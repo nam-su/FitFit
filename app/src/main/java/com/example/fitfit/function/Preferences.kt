@@ -82,6 +82,14 @@ class Preferences(context: Context) {
     } // setAllExerciseList()
 
 
+    // 유저 운동기록 리스트 리턴하는 메서드
+    fun getUserRecordExerciseList(): ArrayList<PoseExercise> {
+
+        return userRecordExerciseList
+
+    } // getUserRecordExerciseList()
+
+
     //hashmap value가 0값이 있으면 맨뒤로 보내는 메서드
     private fun moveZeroValuesToEnd(userCheckListHashMap: LinkedHashMap<String, Int>) {
 
@@ -222,7 +230,7 @@ class Preferences(context: Context) {
 
 
     // 스케쥴링한 운동 리스트 저장하는 메서드
-    fun setMyPoseExerciseList(poseExerciseList: ArrayList<PoseExercise>) {
+    private fun setMyPoseExerciseList(poseExerciseList: ArrayList<PoseExercise>) {
 
         myExerciseList = poseExerciseList
 

@@ -1,9 +1,11 @@
 package com.example.fitfit.model
 
+import android.util.Log
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
+import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import retrofit2.Response
@@ -14,8 +16,12 @@ import java.util.Locale
 
 class HomeModel() {
 
+    val TAG = "홈 모델"
+
     // 오늘 날짜 기준 일주일 날짜 리스트
-    private val weekDateList = ArrayList<String>()
+    var userRecordExerciseList: ArrayList<PoseExercise>? = null
+
+    private val exerciseDiaryList = ArrayList<ExerciseDiary>()
 
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
@@ -23,7 +29,8 @@ class HomeModel() {
     // 홈에서 이번주 운동 상태 관련 메시지 정보
     fun setWeekStatus(): String {
 
-        setWeek()
+//        setWeek()
+
         return MyApplication.sharedPreferences.getUserNickname()
 
     } // setWeekStatus()
@@ -32,15 +39,7 @@ class HomeModel() {
     // 유저 운동 정보 리스트 리턴하는 메서드
     fun setWeekStatusList(): ArrayList<ExerciseDiary>{
 
-        val exerciseDiaryList = ArrayList<ExerciseDiary>()
-
-        exerciseDiaryList.add(ExerciseDiary("일","true"))
-        exerciseDiaryList.add(ExerciseDiary("월","true"))
-        exerciseDiaryList.add(ExerciseDiary("화","true"))
-        exerciseDiaryList.add(ExerciseDiary("수","false"))
-        exerciseDiaryList.add(ExerciseDiary("목","false"))
-        exerciseDiaryList.add(ExerciseDiary("금","false"))
-        exerciseDiaryList.add(ExerciseDiary("토","false"))
+        setWeek()
 
         return exerciseDiaryList
 
@@ -93,57 +92,33 @@ class HomeModel() {
     // 오늘 날짜로 부터 일주일 날짜 구하는 메서드 (일요일 부터 토요일 까지)
     private fun setWeek() {
 
+        userRecordExerciseList = MyApplication.sharedPreferences.getUserRecordExerciseList()
+
+        // 날짜 형식 지정
         val datePattern = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
 
-        // format(시스템시간) 입력하면 그 날에 주차를 정의한다.
+        // 현재 날짜를 기준으로 주차 정의
         val day: String = datePattern.format(Date())
-
         val dateArray = day.split("-").toTypedArray()
-
         val cal = Calendar.getInstance()
         cal[dateArray[0].toInt(), dateArray[1].toInt() - 1] = dateArray[2].toInt()
-
         cal.firstDayOfWeek = Calendar.SUNDAY
 
-        // 시작일과 특정날짜의 차이를 구한다
-        val dayOfWeek = cal[Calendar.DAY_OF_WEEK] - cal.firstDayOfWeek
+        // 이번 주 날짜 리스트 초기화
+        val weekDateList = ArrayList<String>()
+        val weekDays = listOf("일", "월", "화", "수", "목", "금", "토")
 
-        // 해당 주차의 첫째날을 지정한다
-        cal.add(Calendar.DAY_OF_MONTH, -dayOfWeek)
+        for (i in 0 until 7) {
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(cal.time)
+            weekDateList.add(date)
 
-        // 해당 주차의 첫째 날짜 (일요일)
-        val sunday = datePattern.format(cal.time)
-        weekDateList.add(sunday)
+            // 기록 여부 확인
+            val hasRecord = userRecordExerciseList!!.any { SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date }
+            Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
+            exerciseDiaryList.add(ExerciseDiary(weekDays[i], hasRecord))
 
-        // 해당 주차의 둘째 날짜 (월요일)
-        cal.add(Calendar.DATE, 1)
-        val monday = datePattern.format(cal.time)
-        weekDateList.add(monday)
-
-        // 해당 주차의 셋째 날짜 (화요일)
-        cal.add(Calendar.DATE, 1)
-        val tuesday = datePattern.format(cal.time)
-        weekDateList.add(tuesday)
-
-        // 해당 주차의 넷째 날짜 (수요일)
-        cal.add(Calendar.DATE, 1)
-        val wednesday = datePattern.format(cal.time)
-        weekDateList.add(wednesday)
-
-        // 해당 주차의 다섯째 날짜 (목요일)
-        cal.add(Calendar.DATE, 1)
-        val thursday = datePattern.format(cal.time)
-        weekDateList.add(thursday)
-
-        // 해당 주차의 여섯째 날짜 (금요일)
-        cal.add(Calendar.DATE, 1)
-        val friday = datePattern.format(cal.time)
-        weekDateList.add(friday)
-
-        // 해당 주차의 일곱째 날짜 (토요일)
-        cal.add(Calendar.DATE, 1)
-        val saturday = datePattern.format(cal.time)
-        weekDateList.add(saturday)
+            cal.add(Calendar.DATE, 1)
+        }
 
     } // setWeek()
 
