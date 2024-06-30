@@ -16,8 +16,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.adapter.ExerciseItemInfoAdapter
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentExerciseItemInfoBinding
 import com.example.fitfit.viewModel.ExerciseItemInfoViewModel
@@ -58,6 +60,7 @@ class ExerciseItemInfoFragment : Fragment() {
 
         setVariable()
         setObserve()
+        setPageChangeListener()
 
     } // onViewCreated()
 
@@ -70,6 +73,11 @@ class ExerciseItemInfoFragment : Fragment() {
         exerciseItemInfoViewModel = ExerciseItemInfoViewModel(exerciseName)
         binding.exerciseItemInfoViewModel = exerciseItemInfoViewModel
         binding.lifecycleOwner = this
+
+
+        binding.viewPager.adapter = ExerciseItemInfoAdapter(exerciseItemInfoViewModel.getExerciseItemInfo())
+
+        binding.dotsIndicator.setViewPager2(binding.viewPager)
 
     } // setVariable()
 
@@ -87,13 +95,47 @@ class ExerciseItemInfoFragment : Fragment() {
                     (activity as MainActivity).visibleBottomNavi()
 
                 }
-                else -> binding.view.setImageResource(exerciseItemInfoViewModel.setExerciseItemInfoImage())
+
+                else -> {
+
+                    // 여기에 it에 맞게 어댑터 포지션을 지정해 주고 싶어
+                    // it에 맞게 어댑터 포지션을 지정
+                    (binding.viewPager.adapter as? ExerciseItemInfoAdapter)?.let { adapter ->
+                        if (binding.viewPager.currentItem != it) {
+                            binding.viewPager.currentItem = it
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        exerciseItemInfoViewModel.isExerciseItemInfoPrimium.observe(viewLifecycleOwner) {
+            
+            if(it) {
+
+                binding.imageViewPrimiumBadge.visibility = View.VISIBLE
 
             }
 
         }
 
     } // setObserve()
+
+
+    private fun setPageChangeListener() {
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                exerciseItemInfoViewModel.setExerciseItemIndex(position)
+            }
+
+        })
+
+    } // setPageChangedListener()
 
 
     //커스텀 다이얼로그 띄우기

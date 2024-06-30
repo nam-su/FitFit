@@ -85,4 +85,10 @@ dependencies {
     //MP_chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    // 뷰페이저
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // 닷 인디케이터
+    implementation 'com.tbuonomo:dotsindicator:4.2'
+
 }

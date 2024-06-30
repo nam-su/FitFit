@@ -6,6 +6,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.model.ExerciseItemInfoModel
 
 
@@ -30,24 +31,32 @@ class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
     init {
 
         exerciseItemInfoModel.setExerciseItemInfo(exerciseName)
+
+        _isExerciseItemInfoPrimium.value = exerciseItemInfoModel.exerciseItemInfo.isPrimium
+
         _exerciseItemIndex.value = exerciseItemInfoModel.exerciseIndex
+
         _exerciseItemInfoContent.value = exerciseItemInfoModel.exerciseItemInfo.exerciseContent0
-        setExerciseItemInfoImage()
+
+        updateExerciseItemInfo()
 
     }
 
 
-    // 인덱스에 따른 이미지 바꿔주는 메서드
-    fun setExerciseItemInfoImage(): Int {
-
-        return when(exerciseItemInfoModel.exerciseIndex) {
-
-            0 -> exerciseItemInfoModel.exerciseItemInfo.indexImage0
-            else -> exerciseItemInfoModel.exerciseItemInfo.indexImage1
-
+    // 인덱스에 따른 내용 바꿔주는 메서드
+    private fun updateExerciseItemInfo() {
+        val index = exerciseItemInfoModel.exerciseIndex
+        _exerciseItemInfoContent.value = when (index) {
+            0 -> exerciseItemInfoModel.exerciseItemInfo.exerciseContent0
+            else -> exerciseItemInfoModel.exerciseItemInfo.exerciseContent1
         }
+    }
 
-    } // setExerciseItemInfoImage()
+    fun getExerciseItemInfo(): ExerciseItemInfo {
+
+        return exerciseItemInfoModel.exerciseItemInfo
+
+    } // getExerciseItemInfo()
 
 
     // index + 1
@@ -56,7 +65,7 @@ class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
         exerciseItemInfoModel.exerciseIndex = 1
 
         _exerciseItemIndex.value = exerciseItemInfoModel.exerciseIndex
-        _exerciseItemInfoContent.value = exerciseItemInfoModel.exerciseItemInfo.exerciseContent1
+        updateExerciseItemInfo()
 
     } // addExerciseItemInfoIndex()
 
@@ -65,10 +74,19 @@ class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
     fun backExerciseItemInfoIndex() {
 
         exerciseItemInfoModel.exerciseIndex -= 1
-
         _exerciseItemIndex.value = exerciseItemInfoModel.exerciseIndex
-        _exerciseItemInfoContent.value = exerciseItemInfoModel.exerciseItemInfo.exerciseContent0
+        updateExerciseItemInfo()
 
     } // backExerciseItemInfoIndex()
+
+    fun setExerciseItemIndex(index: Int) {
+
+        if (_exerciseItemIndex.value != index) {
+            exerciseItemInfoModel.exerciseIndex = index
+            _exerciseItemIndex.value = index
+            updateExerciseItemInfo()
+        }
+
+    } // setExerciseItemIndex()
 
 }

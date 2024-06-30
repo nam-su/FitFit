@@ -28,10 +28,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/imageViewPrimiumBadge"
+            android:src="@drawable/primium_badge"
+            android:visibility="invisible"
+            android:layout_marginEnd="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toStartOf="@id/textViewExerciseInfoName"
+            app:layout_constraintTop_toTopOf="@id/textViewExerciseInfoName"
+            app:layout_constraintBottom_toBottomOf="@id/textViewExerciseInfoName"/>
+        
+        
         <TextView
             android:id="@+id/textViewExerciseInfoName"
             style="@style/defaultBlackTextStyle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{exerciseItemInfoViewModel.exerciseName}"
@@ -40,6 +52,18 @@
             app:layout_constraintEnd_toStartOf="@id/imageButtonForwardExerciseInfo"
             app:layout_constraintStart_toEndOf="@id/imageButtonBackExerciseInfo"
             app:layout_constraintTop_toTopOf="@+id/imageButtonBackExerciseInfo" />
+
+        <TextView
+            android:id="@+id/textViewExerciseItemIndex"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`(` + (exerciseItemInfoViewModel.exerciseItemIndex+1) + `/2)`}"
+            style="@style/defaultBlackTextStyle"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@id/textViewExerciseInfoName"
+            app:layout_constraintBottom_toBottomOf="@id/textViewExerciseInfoName"/>
 
 
         <ImageButton
@@ -52,16 +76,31 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <ImageView
-            android:id="@+id/view"
-            android:layout_marginVertical="20dp"
-            android:layout_width="match_parent"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toBottomOf="@id/textViewExerciseInfoName"
-            app:layout_constraintBottom_toTopOf="@id/textViewExerciseIndex"/>
+            app:layout_constraintBottom_toTopOf="@id/textViewExerciseIndex"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dotsIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dotsSize="10dp"
+            app:dotsSpacing="8dp"
+            app:dotsColor="@color/grey"
+            app:selectedDotColor="@color/personal"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/viewPager"
+            app:layout_constraintStart_toStartOf="@id/viewPager"
+            app:layout_constraintEnd_toEndOf="@id/viewPager"/>
+
 
         <TextView
             android:id="@+id/textViewExerciseIndex"
@@ -73,7 +112,7 @@
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view"
+            app:layout_constraintTop_toBottomOf="@id/viewPager"
             app:layout_constraintBottom_toTopOf="@id/textViewExerciseInfoContent"
             />
 
@@ -85,7 +124,7 @@
             android:layout_height="wrap_content"
             style="@style/defaultBlackTextStyle"
             android:text="@{exerciseItemInfoViewModel.exerciseItemInfoContent}"
-            android:textSize="20sp"
+            android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/buttonStartExercise"
