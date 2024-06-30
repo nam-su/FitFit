@@ -91,4 +91,7 @@ dependencies {
     // 닷 인디케이터
     implementation 'com.tbuonomo:dotsindicator:4.2'
 
+    // 카카오 로그인
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
+
 }
