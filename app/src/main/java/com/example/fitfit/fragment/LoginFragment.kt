@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,10 +17,12 @@ import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentLoginBinding
 import com.example.fitfit.viewModel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
+import com.google.android.gms.tasks.Task
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -40,34 +43,9 @@ class LoginFragment: Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
 
+    lateinit var gso: GoogleSignInOptions
+    lateinit var gsc: GoogleSignInClient
 
-    private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-
-        try {
-
-            val account = task.getResult(ApiException::class.java)
-
-            Log.d(TAG, "로그인 성공: ${account.email}")
-
-        } catch (e: ApiException) {
-
-            Log.e(TAG, "로그인 실패: ${e.statusCode}", e)
-
-        }
-    }
-    private fun getGoogleClient(): GoogleSignInClient {
-
-        val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
-            .requestServerAuthCode("498484511918-82vlj4qtdaodleajvf99dljn8eilq6f4.apps.googleusercontent.com") // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
-            .requestEmail() // 이메일도 요청할 수 있다.
-            .build()
-
-        return GoogleSignIn.getClient(requireActivity(), googleSignInOption)
-
-    }
 
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -75,7 +53,12 @@ class LoginFragment: Fragment() {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
 
         KakaoSdk.init(requireContext(),"d997bc71e6bb7cad42042752aa3d4f9f")
+
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
+
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        gsc = GoogleSignIn.getClient(requireContext(),gso)
+
         return binding.root
 
     } // onCreateView()
@@ -118,14 +101,14 @@ class LoginFragment: Fragment() {
         // 카카오 로그인 버튼 클릭 리스너
         binding.imageButtonKakaoLogin.setOnClickListener {
 
-            setKaKaoLogin()
+            requestKaKaoLogin()
 
         }
 
         // 네이버 로그인 버튼 클릭 리스너
         binding.imageButtonNaverLogin.setOnClickListener {
 
-            setNaverLogin()
+            requestNaverLogin()
 
         }
 
@@ -136,17 +119,37 @@ class LoginFragment: Fragment() {
 
         }
         
-    }
+    } // setListener()
 
+
+    // 구글 로그인 런처
+    private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+        try {
+
+            val account = task.getResult(ApiException::class.java)
+            Log.d(TAG, "로그인 성공: ${account.email}")
+
+        } catch (e: ApiException) {
+
+            Log.e(TAG, "로그인 실패: ${e.statusCode}", e)
+
+        }
+
+    } // googleAuthLauncher
+
+
+    // 구글 로그인 요청 메서드
     private fun requestGoogleLogin() {
 
-        val googleSignInClient = getGoogleClient()
-
-        googleSignInClient.signOut()
-        val signInIntent = googleSignInClient.signInIntent
+        gsc.signOut()
+        val signInIntent = gsc.signInIntent
         googleAuthLauncher.launch(signInIntent)
 
-    }
+    } // requestGoogleLogin()
+
 
     // Observe 관련 메서드
     private fun setObserve() {
@@ -175,7 +178,7 @@ class LoginFragment: Fragment() {
 
 
     // 카카오 로그인
-    private fun setKaKaoLogin() {
+    private fun requestKaKaoLogin() {
 
         // 카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
@@ -236,7 +239,7 @@ class LoginFragment: Fragment() {
 
 
     // 네이버 로그인
-    private fun setNaverLogin() {
+    private fun requestNaverLogin() {
 
         var naverToken :String? = ""
 
