@@ -1,10 +1,15 @@
 package com.example.fitfit.fragment
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,10 +18,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ChallengeAdapter
+import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.adapter.ExerciseDetailViewAdapter
 import com.example.fitfit.adapter.ExerciseItemInfoAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseInfo
+import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentExerciseBinding
 import com.example.fitfit.viewModel.ExerciseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +35,13 @@ import kotlinx.coroutines.withContext
 
 class ExerciseFragment : Fragment() {
 
+    private val TAG = "운동 프래그먼트"
+
     lateinit var binding: FragmentExerciseBinding
+    lateinit var challengeAdapter: ChallengeAdapter
+    lateinit var customDialogBinding: CustomDialogTwoButtonBinding
+    lateinit var dialog: AlertDialog
+
     private val exerciseViewModel: ExerciseViewModel by viewModels()
     var currentPage  = 0
 
@@ -35,6 +49,7 @@ class ExerciseFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise,container,false)
+        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
 
         return binding.root
 
@@ -64,7 +79,8 @@ class ExerciseFragment : Fragment() {
         binding.recyclerViewMyExerciseInfo.adapter = ExerciseDetailViewAdapter(exerciseViewModel.getMyExerciseInfoList())
 
         //뷰페이저 어댑터
-        binding.viewPager.adapter = ChallengeAdapter(exerciseViewModel.getChallengeList(), requireContext(), exerciseViewModel)
+        challengeAdapter = ChallengeAdapter(exerciseViewModel.getChallengeList(), requireContext(), exerciseViewModel)
+        binding.viewPager.adapter = challengeAdapter
 
         //인디케이터
         binding.dotsIndicator.setViewPager2(binding.viewPager)
@@ -104,7 +120,41 @@ class ExerciseFragment : Fragment() {
 
         }
 
+
+        //다이얼로그 취소 버튼 클릭
+        customDialogBinding.textViewCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        //다이얼로그 참여 버튼 클릭
+        customDialogBinding.textViewButtonOk.setOnClickListener {
+            /**서버와 통신**/
+        }
+
+
+
+        
+        challengeAdapter.challengeItemClick  = object :ChallengeAdapter.ChallengeItemClick{
+            override fun onClick(view: View, challenge: Challenge) {
+                showCustomDialog(challenge)
+            }
+
+        } 
+        
+        
+        
+
     } // setClickListener()
+
+
+    // 뷰모델 관찰
+    fun setObserve(){
+        exerciseViewModel.challenge.observe(viewLifecycleOwner){
+
+            Log.d(TAG, "setObserve: ${it.detail}")
+
+        }
+    }
 
 
     // 자동 스크롤
@@ -133,6 +183,33 @@ class ExerciseFragment : Fragment() {
                 }
 
         }
+    } // startAutoScroll()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun showCustomDialog(challenge: Challenge){
+
+        //기존의 바인딩 객체가 이미 부모뷰에 속해있는지 확인하고 제거하기
+        //제거하지 않으면 부모뷰의 충돌문제로 오류가 뜸.
+        customDialogBinding.root.parent?.let { parent ->
+            (parent as ViewGroup).removeView(customDialogBinding.root)
+        }
+
+        dialog = AlertDialog.Builder(context)
+            .setView(customDialogBinding.root)
+            .setCancelable(false)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customDialogBinding.textViewContent.text = challenge.detail
+        customDialogBinding.textViewTitle.text = challenge.challengeName
+        customDialogBinding.textViewButtonOk.text = "참여"
+        customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
+
+        dialog.show()
+
     }
 
 

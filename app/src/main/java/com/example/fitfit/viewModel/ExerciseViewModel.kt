@@ -13,9 +13,9 @@ class ExerciseViewModel: ViewModel() {
 
     private val exerciseModel = ExerciseModel()
 
-    private var _currentPage = MutableLiveData<Int>(0)
-    val currentPage: LiveData<Int>
-        get() = _currentPage
+    private var _challenge = MutableLiveData<Challenge>()
+    val challenge: LiveData<Challenge>
+        get() = _challenge
 
     // 내 운동 리스트 받아오는 메서드
     fun getMyExerciseList(): ArrayList<PoseExercise> {
@@ -35,10 +35,13 @@ class ExerciseViewModel: ViewModel() {
 
     // fitfit 챌린지 리스트 모델에서 호출
     fun getChallengeList(): ArrayList<Challenge> = exerciseModel.getChallengeList()
-
+    // getChallengeList()
 
     //baseURL 받아오기
     fun getBaseUrl(): String = exerciseModel.getBaseUrl()
+    // getBaseUrl()
+
+
 
 
 }
