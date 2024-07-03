@@ -1,10 +1,15 @@
 package com.example.fitfit.model
 
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.network.RetrofitBuilder
 
 class ExerciseModel {
+
+    private val retrofitBuilder = RetrofitBuilder()
+
 
     // 쉐어드에 있는 내 운동리스트 가져오는 메서드
     fun getMyExerciseList(): ArrayList<PoseExercise> {
@@ -26,6 +31,17 @@ class ExerciseModel {
         return exerciseDetailViewList
 
     }
+
+
+    // 싱글톤의 챌린지 리스트 호출
+    fun getChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
+    //getChallengeList()
+
+
+    // 레트로핏에서 baseurl 경로 받아오기
+    fun getBaseUrl(): String = retrofitBuilder.baseUrl.toString()
+    //getBaseUrl()
+
 
 
 }

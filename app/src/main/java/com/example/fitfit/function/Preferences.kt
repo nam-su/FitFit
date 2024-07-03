@@ -3,6 +3,7 @@ package com.example.fitfit.function
 import android.content.Context
 import android.util.Log
 import com.example.fitfit.R
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
@@ -34,6 +35,9 @@ class Preferences(context: Context) {
 
     /** 내가 짠 운동 리스트**/
     private lateinit var myExerciseList: ArrayList<PoseExercise>
+
+    /** fitfit 챌린지 리스트**/
+    var challengeList = ArrayList<Challenge>()
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
@@ -396,5 +400,6 @@ class Preferences(context: Context) {
         myExerciseList.clear()
         myExerciseList.addAll(exerciseList)
     }
+
 
 }

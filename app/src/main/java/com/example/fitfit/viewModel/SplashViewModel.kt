@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.SplashModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,6 +71,8 @@ class SplashViewModel(): ViewModel() {
                 splashModel.saveUserExerciseInfo(response.body()!!.userAllExerciseList!!)
                 splashModel.saveUserCheckList(response.body()!!.checkList!!)
 
+                 /** 스플래시 모델에서 싱글톤에 저장하는 메서드 호출**/
+                splashModel.saveChallengeList(response.body()!!.challengeList!!)
 
             } else {
 

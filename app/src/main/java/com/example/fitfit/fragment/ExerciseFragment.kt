@@ -6,22 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.adapter.ChallengeAdapter
 import com.example.fitfit.adapter.ExerciseDetailViewAdapter
+import com.example.fitfit.adapter.ExerciseItemInfoAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.databinding.FragmentExerciseBinding
 import com.example.fitfit.viewModel.ExerciseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExerciseFragment : Fragment() {
 
     lateinit var binding: FragmentExerciseBinding
-    lateinit var exerciseViewModel: ExerciseViewModel
+    private val exerciseViewModel: ExerciseViewModel by viewModels()
+    var currentPage  = 0
 
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +47,7 @@ class ExerciseFragment : Fragment() {
 
         setVariable()
         setClickListener()
+        startAutoScroll()
 
     } // onViewCreated()
 
@@ -46,12 +55,20 @@ class ExerciseFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        exerciseViewModel = ExerciseViewModel()
         binding.exerciseViewModel = exerciseViewModel
 
+        //내 운동리스트
         binding.recyclerViewTodayExercise.adapter = PoseExerciseAdapter(exerciseViewModel.getMyExerciseList(),false,"")
 
+        //자세히보기
         binding.recyclerViewMyExerciseInfo.adapter = ExerciseDetailViewAdapter(exerciseViewModel.getMyExerciseInfoList())
+
+        //뷰페이저 어댑터
+        binding.viewPager.adapter = ChallengeAdapter(exerciseViewModel.getChallengeList(), requireContext(), exerciseViewModel)
+
+        //인디케이터
+        binding.dotsIndicator.setViewPager2(binding.viewPager)
+
 
     } // setVariable()
 
@@ -88,5 +105,35 @@ class ExerciseFragment : Fragment() {
         }
 
     } // setClickListener()
+
+
+    // 자동 스크롤
+    private fun startAutoScroll() {
+
+        lifecycleScope.launch {
+
+            while (true) {
+
+                delay(5000) // 3초 대기
+
+                    if (currentPage == binding.viewPager.adapter?.itemCount ?: 0 - 1) { // 마지막 페이지 확인
+
+                        currentPage = 0
+
+                        binding.viewPager.setCurrentItem(currentPage, true)
+
+                    } else {
+
+                        currentPage++
+
+                        binding.viewPager.setCurrentItem(currentPage, true)
+
+                    }
+
+                }
+
+        }
+    }
+
 
 }
