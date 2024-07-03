@@ -77,14 +77,14 @@ class PoseDetectionFragment : Fragment() {
 
 
     // 메모리 소모 줄이기 + tts 끊기
-    override fun onDestroy() {
-        super.onDestroy()
-
-        tts?.shutdown()
-        tts?.stop()
-        tts = null
-
-    } // onDestroy()
+//    override fun onDestroy() {
+//        super.onDestroy()
+//
+//        tts?.shutdown()
+//        tts?.stop()
+//        tts = null
+//
+//    } // onDestroy()
 
 
     // 변수 초기화

@@ -32,7 +32,7 @@ class Squat(): Pose() {
         }
 
         // 앉은 상태 감지
-        if (angle in 55.0..110.0 && !sit) {
+        if (angle in 50.0..110.0 && !sit) {
 
             Log.d(TAG, "상태: 앉은 상태")
 
