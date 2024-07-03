@@ -130,11 +130,11 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/naver_logo"
             app:layout_constraintEnd_toStartOf="@+id/imageButtonGoogleLogin"
-            app:layout_constraintStart_toEndOf="@+id/ImageButtonKakaoLogin"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonKakaoLogin"
             app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
         <ImageButton
-            android:id="@+id/ImageButtonKakaoLogin"
+            android:id="@+id/imageButtonKakaoLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/kakao_logo"

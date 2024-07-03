@@ -13,6 +13,7 @@ import com.example.fitfit.data.User
 import com.example.fitfit.model.UserEditModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.Response
@@ -105,7 +106,7 @@ class UserEditViewModel :ViewModel() {
 
             val image = if(selectedImageUri.value != null){
                 val imageFile = File(getRealPathFromUri(activity, selectedImageUri.value))
-                val requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
+                val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
                 MultipartBody.Part.createFormData("image", imageFile.name, requestBody)
             } else{ null }
 
@@ -114,9 +115,9 @@ class UserEditViewModel :ViewModel() {
             Log.d(TAG, "profileEdit: $image")
             Log.d(TAG, "profileEdit: $mode")
 
-            val requestBodyId: RequestBody = RequestBody.create(MediaType.parse("text/plain"), userEditModel.getUser().id)
-            val requestBodyNickname: RequestBody = RequestBody.create(MediaType.parse("text/plain"), nickname)
-            val requestBodyMode: RequestBody = RequestBody.create(MediaType.parse("text/plain"), mode)
+            val requestBodyId: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), userEditModel.getUser().id)
+            val requestBodyNickname: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), nickname)
+            val requestBodyMode: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), mode)
 
             val response = if(selectedImageUri.value != null){
                 userEditModel.profileEdit(image!!,requestBodyId,requestBodyNickname, requestBodyMode)

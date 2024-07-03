@@ -91,4 +91,13 @@ dependencies {
     // 닷 인디케이터
     implementation 'com.tbuonomo:dotsindicator:4.2'
 
+    // 카카오 로그인
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
+
+    // 네이버 로그인
+    implementation 'com.navercorp.nid:oauth-jdk8:5.1.0' // jdk 8
+
+    // 구글 로그인
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
+
 }

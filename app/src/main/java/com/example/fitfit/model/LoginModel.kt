@@ -27,6 +27,4 @@ class LoginModel() {
     fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUser(user)
     // setSharedPreferencesUserInfo()
 
-
-
 }
