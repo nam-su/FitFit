@@ -110,7 +110,17 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="10dp"
+             android:visibility="visible"
             />
+
+            <TextView
+                android:id="@+id/textViewEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:text="@string/exerciseRecordEmpty"
+                android:gravity="center"
+                style="@style/diaryFragmentTextStyle"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

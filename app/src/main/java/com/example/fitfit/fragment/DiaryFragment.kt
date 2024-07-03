@@ -98,7 +98,6 @@ class DiaryFragment : Fragment() {
     } //setListener()
 
 
-
     //observe 설정
     private fun setObserve(){
 
