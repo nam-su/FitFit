@@ -28,7 +28,6 @@ interface RetrofitInterface {
     ): Response<User>
 
 
-
     // 회원가입
     @FormUrlEncoded
     @POST("userProcess.php")
@@ -40,7 +39,6 @@ interface RetrofitInterface {
         @Field("mode") mode: String
 
     ): Response<User>
-
 
 
     // 회원 탈퇴

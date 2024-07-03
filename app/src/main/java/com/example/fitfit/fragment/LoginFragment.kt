@@ -1,6 +1,5 @@
 package com.example.fitfit.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,25 +16,14 @@ import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentLoginBinding
 import com.example.fitfit.viewModel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Scope
-import com.google.android.gms.tasks.Task
-import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.model.KakaoSdkError
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
-import com.navercorp.nid.profile.NidProfileCallback
-import com.navercorp.nid.profile.data.NidProfileResponse
 
 class LoginFragment: Fragment() {
 
@@ -46,16 +34,31 @@ class LoginFragment: Fragment() {
     lateinit var gso: GoogleSignInOptions
     lateinit var gsc: GoogleSignInClient
 
+    // 구글 로그인 런처
+    private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+        loginViewModel.handleGoogleLoginResult(task)
+
+    } // googleAuthLauncher
+
 
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
 
+        // 카카오 로그인 SDK 초기화
         KakaoSdk.init(requireContext(),"d997bc71e6bb7cad42042752aa3d4f9f")
 
+        // 네이버 로그인 SDK 초기화
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
 
+        // 기존 네이버 토큰 삭제
+        startNaverDeleteToken()
+
+        // 구글 로그인 관련 초기화
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
         gsc = GoogleSignIn.getClient(requireContext(),gso)
 
@@ -89,13 +92,18 @@ class LoginFragment: Fragment() {
 
         // 회원가입 버튼 클릭 리스너
         binding.textViewSignUp.setOnClickListener {
+
             this.findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+
         }
 
         //비밀번호 찾기 클릭 리스너
         binding.textViewFindPassword.setOnClickListener {
+
             val bundle = bundleOf("startingPoint" to "loginFragment")
+
             this.findNavController().navigate(R.id.action_loginFragment_to_findPasswordFragment, bundle)
+
         }
 
         // 카카오 로그인 버튼 클릭 리스너
@@ -115,40 +123,11 @@ class LoginFragment: Fragment() {
         // 구글 로그인 버튼 클릭 리스너
         binding.imageButtonGoogleLogin.setOnClickListener {
 
-            requestGoogleLogin()
+            loginViewModel.requestGoogleLogin(gsc,googleAuthLauncher)
 
         }
         
     } // setListener()
-
-
-    // 구글 로그인 런처
-    private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-
-        try {
-
-            val account = task.getResult(ApiException::class.java)
-            Log.d(TAG, "로그인 성공: ${account.email}")
-
-        } catch (e: ApiException) {
-
-            Log.e(TAG, "로그인 실패: ${e.statusCode}", e)
-
-        }
-
-    } // googleAuthLauncher
-
-
-    // 구글 로그인 요청 메서드
-    private fun requestGoogleLogin() {
-
-        gsc.signOut()
-        val signInIntent = gsc.signInIntent
-        googleAuthLauncher.launch(signInIntent)
-
-    } // requestGoogleLogin()
 
 
     // Observe 관련 메서드
@@ -174,6 +153,21 @@ class LoginFragment: Fragment() {
             }
 
         }
+
+        // 구글 로그인 감지
+        loginViewModel.googleLoginResult.observe(viewLifecycleOwner) {
+
+            when(it) {
+
+                "success" -> {}
+                "failure" -> {}
+
+            }
+
+        }
+
+        // 네이버 로그인 감지
+
     }
 
 
@@ -185,131 +179,75 @@ class LoginFragment: Fragment() {
 
             // 카카오톡 로그인
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-                // 로그인 실패 부분
-                if (error != null) {
 
-                    Log.e(TAG, "로그인 실패 $error")
+                when(loginViewModel.requestKakaoApplicationLogin(token, error!!)) {
 
-                    // 사용자가 취소
-                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
+                    "errorUserCancel" -> return@loginWithKakaoTalk
 
-                        return@loginWithKakaoTalk
+                    // 다른 에러가 있는경우 카카오 계정 로그인으로 콜백
+                    "elseError" -> UserApiClient.instance.loginWithKakaoAccount(requireContext(),
+                        callback = loginViewModel.emailLoginCallback)
 
-                    }
-                    // 다른 오류
-
-                    else {
-
-                        UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = emailLoginCallback) // 카카오 이메일 로그인
-
-                    }
-                }
-
-                // 로그인 성공 부분
-                else if (token != null) {
-
-                    Log.e(TAG, "로그인 성공 ${token.accessToken}")
+                    "successLogin" ->  Log.e(TAG, "로그인 성공 ${token?.accessToken}")
 
                 }
 
             }
+
         }
 
+        // 카카오톡 설치 안된 경우 이메일 콜백 실행
         else {
 
-            UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = emailLoginCallback) // 카카오 이메일 로그인
+            UserApiClient.instance.loginWithKakaoAccount(requireContext(),
+                callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
 
         }
 
     } // setKaKaoLogin()
 
 
-    // 카카오 이메일 로그인 콜백
-    private val emailLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-
-        Log.d(TAG, "이메일 로그인 콜백: ")
-        
-        if (error != null) {
-            Log.e(TAG, "로그인 실패 $error")
-        } else if (token != null) {
-            Log.e(TAG, "로그인 성공 ${token.accessToken}")
-        }
-
-    } // emailLoginCallback
-
-
     // 네이버 로그인
     private fun requestNaverLogin() {
 
-        var naverToken :String? = ""
+        NaverIdLoginSDK.logout()
 
-        val profileCallback = object : NidProfileCallback<NidProfileResponse> {
-
-            override fun onSuccess(response: NidProfileResponse) {
-
-                val userId = response.profile?.id
-
-                Log.d(TAG, "onSuccess:id: ${userId} \\ntoken: ${naverToken}")
-
-                Toast.makeText(requireContext(), "네이버 아이디 로그인 성공!", Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onFailure(httpStatus: Int, message: String) {
-
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-
-                Toast.makeText(requireContext(), "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onError(errorCode: Int, message: String) {
-
-                onFailure(errorCode, message)
-
-            }
-
-        }
-
-        /** OAuthLoginCallback을 authenticate() 메서드 호출 시 파라미터로 전달하거나 NidOAuthLoginButton 객체에 등록하면 인증이 종료되는 것을 확인할 수 있습니다. */
-        val oauthLoginCallback = object : OAuthLoginCallback {
-            override fun onSuccess() {
-                // 네이버 로그인 인증이 성공했을 때 수행할 코드 추가
-                naverToken = NaverIdLoginSDK.getAccessToken()
-//                var naverRefreshToken = NaverIdLoginSDK.getRefreshToken()
-//                var naverExpiresAt = NaverIdLoginSDK.getExpiresAt().toString()
-//                var naverTokenType = NaverIdLoginSDK.getTokenType()
-//                var naverState = NaverIdLoginSDK.getState().toString()
-
-                //로그인 유저 정보 가져오기
-                NidOAuthLogin().callProfileApi(profileCallback)
-
-            }
-
-            override fun onFailure(httpStatus: Int, message: String) {
-
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-
-                Toast.makeText(requireContext(), "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onError(errorCode: Int, message: String) {
-
-                onFailure(errorCode, message)
-
-            }
-
-        }
-
-        NaverIdLoginSDK.authenticate(activity as MainActivity, oauthLoginCallback)
+        NaverIdLoginSDK.authenticate(activity as MainActivity,loginViewModel.requestNaverLogin())
 
     } // startNaverLogin()
+
+
+    /** 네이버 아이디 토큰 삭제 정식 구현시 없어져야 함 **/
+    private fun startNaverDeleteToken(){
+
+        NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
+
+            override fun onSuccess() {
+
+                //서버에서 토큰 삭제에 성공한 상태입니다.
+                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                Log.d("naver", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
+                Log.d("naver", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                onFailure(errorCode, message)
+
+            }
+
+        })
+
+    } // deleteToken()
 
 }
