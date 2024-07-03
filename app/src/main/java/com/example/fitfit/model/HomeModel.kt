@@ -101,8 +101,11 @@ class HomeModel() {
         val day: String = datePattern.format(Date())
         val dateArray = day.split("-").toTypedArray()
         val cal = Calendar.getInstance()
-        cal[dateArray[0].toInt(), dateArray[1].toInt() - 1] = dateArray[2].toInt()
+        cal.set(dateArray[0].toInt(), dateArray[1].toInt() - 1, dateArray[2].toInt())
         cal.firstDayOfWeek = Calendar.SUNDAY
+
+        // 이번 주의 첫 번째 일요일로 이동
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
         // 이번 주 날짜 리스트 초기화
         val weekDateList = ArrayList<String>()
@@ -113,7 +116,9 @@ class HomeModel() {
             weekDateList.add(date)
 
             // 기록 여부 확인
-            val hasRecord = userRecordExerciseList!!.any { SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date }
+            val hasRecord = userRecordExerciseList!!.any {
+                SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date
+            }
             Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
             exerciseDiaryList.add(ExerciseDiary(weekDays[i], hasRecord))
 
