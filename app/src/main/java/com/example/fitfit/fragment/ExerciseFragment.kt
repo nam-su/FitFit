@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -63,6 +64,7 @@ class ExerciseFragment : Fragment() {
         setVariable()
         setClickListener()
         startAutoScroll()
+        setObserve()
 
     } // onViewCreated()
 
@@ -120,19 +122,6 @@ class ExerciseFragment : Fragment() {
 
         }
 
-
-        //다이얼로그 취소 버튼 클릭
-        customDialogBinding.textViewCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        //다이얼로그 참여 버튼 클릭
-        customDialogBinding.textViewButtonOk.setOnClickListener {
-            /**서버와 통신**/
-        }
-
-
-
         
         challengeAdapter.challengeItemClick  = object :ChallengeAdapter.ChallengeItemClick{
             override fun onClick(view: View, challenge: Challenge) {
@@ -148,12 +137,21 @@ class ExerciseFragment : Fragment() {
 
 
     // 뷰모델 관찰
-    fun setObserve(){
-        exerciseViewModel.challenge.observe(viewLifecycleOwner){
+    private fun setObserve(){
 
-            Log.d(TAG, "setObserve: ${it.detail}")
+        exerciseViewModel.joinResult.observe(viewLifecycleOwner) {
+
+            when(it){
+                "already" -> Toast.makeText(requireContext(), "이미 해당 챌린지에 참여 중입니다.", Toast.LENGTH_SHORT).show()
+                "success" -> {
+                    Toast.makeText(requireContext(), "해당 챌린지에 참여를 시작합니다.", Toast.LENGTH_SHORT).show()
+                    binding.viewPager.adapter!!.notifyDataSetChanged()
+                }
+                else -> Toast.makeText(requireContext(), "네트워크 연결 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
 
         }
+
     }
 
 
@@ -209,6 +207,21 @@ class ExerciseFragment : Fragment() {
         customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
 
         dialog.show()
+
+        //다이얼로그 취소 버튼 클릭
+        customDialogBinding.textViewCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        //다이얼로그 참여 버튼 클릭
+        customDialogBinding.textViewButtonOk.setOnClickListener {
+
+            /**서버와 통신**/
+            exerciseViewModel.challengeJoin(challenge)
+
+            dialog.dismiss()
+            
+        }
 
     }
 

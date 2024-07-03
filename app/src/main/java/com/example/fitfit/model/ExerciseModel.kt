@@ -1,14 +1,20 @@
 package com.example.fitfit.model
 
 import com.example.fitfit.data.Challenge
+import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
+import com.example.fitfit.network.RetrofitInterface
+import retrofit2.Response
 
 class ExerciseModel {
 
     private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
+        RetrofitInterface::class.java)
+
 
 
     // 쉐어드에 있는 내 운동리스트 가져오는 메서드
@@ -42,6 +48,20 @@ class ExerciseModel {
     fun getBaseUrl(): String = retrofitBuilder.baseUrl.toString()
     //getBaseUrl()
 
+
+    //챌린지 참여 서버 등록
+    suspend fun challengeJoin(challenge: Challenge): Response<ChallengeResponse>
+    = retrofitInterface.challengeJoin(MyApplication.sharedPreferences.getUserId(),challenge.challengeName,"challengeJoin")
+    // challengeJoin
+
+
+    //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
+    fun saveChallengeList(challengeList: ArrayList<Challenge>) {
+
+        MyApplication.sharedPreferences.challengeList.clear()
+        MyApplication.sharedPreferences.challengeList.addAll(challengeList)
+
+    }
 
 
 }
