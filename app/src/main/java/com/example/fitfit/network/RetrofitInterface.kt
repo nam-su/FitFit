@@ -147,9 +147,9 @@ interface RetrofitInterface {
     @POST("exerciseProcess.php")
     suspend fun setMyCheckList(
 
-        @Field("id") id: String,
-        @Field("checkList") checkList: String,
-        @Field("mode") mode: String
+        @Field("id") id: String?,
+        @Field("checkList") checkList: String?,
+        @Field("mode") mode: String?
 
     ): Response<SplashResponse>
 
@@ -159,11 +159,11 @@ interface RetrofitInterface {
     @POST("challengeProcess.php")
     suspend fun challengeJoin(
 
-        @Field("id") id: String,
-        @Field("challengeName") challengeName: String,
-        @Field("mode") mode: String
+        @Field("id") id: String?,
+        @Field("challengeName") challengeName: String?,
+        @Field("mode") mode: String?
 
-    ): Response<ChallengeResponse>
+    ): Response<ChallengeResponse>?
 
 
 

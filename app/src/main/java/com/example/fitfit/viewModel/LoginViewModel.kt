@@ -33,6 +33,13 @@ class LoginViewModel: ViewModel() {
 
             val response = loginModel.login(id,password,"","login")
 
+            Log.d(TAG, "login: ${response.message()}")
+            Log.d(TAG, "login: ${response.isSuccessful}")
+            Log.d(TAG, "login: ${response.body()}")
+            Log.d(TAG, "login: ${response.body()?.myChallengeList}")
+
+
+
             if(response.isSuccessful && response.body() != null) {
 
                 val user = response.body()!!

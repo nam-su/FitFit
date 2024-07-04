@@ -10,10 +10,7 @@
             type="com.example.fitfit.viewModel.DiaryViewModel" />
 
     </data>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -137,128 +134,21 @@
              style="@style/diaryFragmentTextStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutChart" />
 
-        <LinearLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/textViewChallenge"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewChallenge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="10dp"
-            >
-
-        <TextView
-            android:id="@+id/textViewNonChallenge"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/nonChallenge"
-            android:gravity="center"
-            style="@style/diaryFragmentTextStyle"
-            android:layout_marginVertical="10dp"
-            android:background="@drawable/background_stroke_grey"
             />
 
 
-        <LinearLayout
-            android:id="@+id/linearLayoutChallenge1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginVertical="10dp"
-            android:background="@drawable/background_stroke_grey"
-            android:visibility="visible"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/challenge"
-                    android:gravity="center"
-                    style="@style/diaryFragmentTextStyle"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="찍먹 챌린지"
-                    style="@style/diaryFragmentTextStyle"
-                    />
-
-            </LinearLayout>
-
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/progressBar1"
-                style="@style/CustomProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="100"
-                android:progress="50"
-                android:layout_marginVertical="10dp"
-                android:indeterminate="false"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0/30"
-                android:gravity="right"
-                style="@style/diaryFragmentTextStyle"/>
-
-        </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutChallenge2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/background_stroke_grey"
-                android:visibility="visible"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/challenge"
-                        android:gravity="center"
-                        style="@style/diaryFragmentTextStyle"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="한놈만 패! 챌린지"
-                        style="@style/diaryFragmentTextStyle"
-                        />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="총 0회"
-                    android:gravity="right"
-                    style="@style/diaryFragmentTextStyle"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </layout>

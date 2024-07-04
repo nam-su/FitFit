@@ -50,8 +50,8 @@ class ExerciseModel {
 
 
     //챌린지 참여 서버 등록
-    suspend fun challengeJoin(challenge: Challenge): Response<ChallengeResponse>
-    = retrofitInterface.challengeJoin(MyApplication.sharedPreferences.getUserId(),challenge.challengeName,"challengeJoin")
+    suspend fun challengeJoin(challenge: Challenge?): Response<ChallengeResponse>?
+    = retrofitInterface.challengeJoin(MyApplication.sharedPreferences.getUserId(),challenge?.challengeName,"challengeJoin")
     // challengeJoin
 
 

@@ -37,10 +37,10 @@ class Preferences(context: Context) {
     private lateinit var myExerciseList: ArrayList<PoseExercise>
 
     /** fitfit 챌린지 리스트**/
-    var challengeList = ArrayList<Challenge>()
+    val challengeList = ArrayList<Challenge>()
 
     /** 사용자 챌린지 리스트**/
-    var myChallengeList = ArrayList<Challenge>()
+    val myChallengeList = ArrayList<Challenge>()
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
@@ -219,8 +219,13 @@ class Preferences(context: Context) {
         setUserRecordExerciseList(user.userAllExerciseList!!)
 
         //불러온 챌린지 리스트 저장
-        challengeList = user.challengeList!!
-        myChallengeList = user.myChallengeList!!
+        challengeList.clear()
+        challengeList.addAll(user.challengeList!!)
+
+        //내 챌린지 리스트 저장
+        myChallengeList.clear()
+        myChallengeList.addAll(user.myChallengeList!!)
+
 
     } // setUser()
 

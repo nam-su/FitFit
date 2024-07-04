@@ -116,10 +116,7 @@ class DiaryViewModel: ViewModel() {
     fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
 
 
-    //모델에서 받아오기
-//    fun getMyChallenge1(): String = MyApplication.sharedPreferences.myChallengeList[0].challengeName
-//
-//    fun getMyChallenge2(): String = MyApplication.sharedPreferences.myChallengeList[1].challengeName
+
 
 
 }
