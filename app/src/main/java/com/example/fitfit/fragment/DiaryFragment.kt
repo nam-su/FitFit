@@ -42,14 +42,9 @@ class DiaryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
-
         setListener()
-
         setObserve()
-
         setBarChart(binding.barChart)
-
-//        setView()
 
     }
 
@@ -67,26 +62,7 @@ class DiaryFragment : Fragment() {
 
 
     // 뷰 설정
-    private fun setView() {
 
-        if(diaryViewModel.getMyChallengeList().size < 1){
-
-            binding.textViewNonChallenge.visibility = View.VISIBLE
-            binding.linearLayoutChallenge1.visibility = View.GONE
-            binding.linearLayoutChallenge2.visibility = View.GONE
-
-        }
-
-        if(diaryViewModel.challenge1.value != ""){
-            binding.textViewNonChallenge.visibility = View.GONE
-            binding.linearLayoutChallenge1.visibility = View.VISIBLE
-        }
-
-        if(diaryViewModel.challenge2.value != ""){
-            binding.textViewNonChallenge.visibility = View.GONE
-            binding.linearLayoutChallenge2.visibility = View.VISIBLE
-        }
-    }
 
     //리스너 설정
     private fun setListener(){

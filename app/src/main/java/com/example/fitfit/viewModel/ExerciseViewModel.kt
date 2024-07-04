@@ -54,8 +54,8 @@ class ExerciseViewModel: ViewModel() {
         viewModelScope.launch {
             val response = exerciseModel.challengeJoin(challenge)
 
-            Log.d(TAG, "challengeJoin: ${response.isSuccessful}")
-            Log.d(TAG, "challengeJoin: ${response.body()!!.result}")
+            Log.d(TAG, "challengeJoin: ${response?.isSuccessful}")
+            Log.d(TAG, "challengeJoin: ${response?.body()!!.result}")
 
             if(response.isSuccessful && response.body() != null){
 

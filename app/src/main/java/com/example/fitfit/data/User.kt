@@ -17,6 +17,6 @@ data class User(
           @SerializedName("checkList") var checkList: String? = null
           @SerializedName("userAllExerciseList") var userAllExerciseList: ArrayList<PoseExercise>? = null
           @SerializedName("challengeList") var challengeList: ArrayList<Challenge>? = null
-          @SerializedName("myChallenge") var myChallengeList: ArrayList<Challenge>? = null
+          @SerializedName("myChallengeList") var myChallengeList: ArrayList<Challenge>? = null
 
       }

@@ -212,7 +212,7 @@ class DiaryModel {
 
 
     // 싱글톤에서 내 도전리스트 받아오기
-    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
+    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
      // getMyChallengeList()
 
 
