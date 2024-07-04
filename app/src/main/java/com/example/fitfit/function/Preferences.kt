@@ -39,6 +39,9 @@ class Preferences(context: Context) {
     /** fitfit 챌린지 리스트**/
     var challengeList = ArrayList<Challenge>()
 
+    /** 사용자 챌린지 리스트**/
+    var myChallengeList = ArrayList<Challenge>()
+
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
         setAllExerciseItemInfoList()
@@ -217,6 +220,7 @@ class Preferences(context: Context) {
 
         //불러온 챌린지 리스트 저장
         challengeList = user.challengeList!!
+        myChallengeList = user.myChallengeList!!
 
     } // setUser()
 
@@ -402,7 +406,8 @@ class Preferences(context: Context) {
     fun setMyExerciseList(exerciseList: ArrayList<PoseExercise>){
         myExerciseList.clear()
         myExerciseList.addAll(exerciseList)
-    }
+    } // setMyExerciseList()
+
 
 
 }

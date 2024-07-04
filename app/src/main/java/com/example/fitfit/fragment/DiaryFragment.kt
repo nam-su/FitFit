@@ -1,7 +1,5 @@
 package com.example.fitfit.fragment
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -13,20 +11,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentDiaryBinding
-import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.Date
 
 
 class DiaryFragment : Fragment() {
@@ -58,8 +49,9 @@ class DiaryFragment : Fragment() {
 
         setBarChart(binding.barChart)
 
-    }
+//        setView()
 
+    }
 
 
     //초기값 설정
@@ -74,6 +66,27 @@ class DiaryFragment : Fragment() {
     } // setVariable()
 
 
+    // 뷰 설정
+    private fun setView() {
+
+        if(diaryViewModel.getMyChallengeList().size < 1){
+
+            binding.textViewNonChallenge.visibility = View.VISIBLE
+            binding.linearLayoutChallenge1.visibility = View.GONE
+            binding.linearLayoutChallenge2.visibility = View.GONE
+
+        }
+
+        if(diaryViewModel.challenge1.value != ""){
+            binding.textViewNonChallenge.visibility = View.GONE
+            binding.linearLayoutChallenge1.visibility = View.VISIBLE
+        }
+
+        if(diaryViewModel.challenge2.value != ""){
+            binding.textViewNonChallenge.visibility = View.GONE
+            binding.linearLayoutChallenge2.visibility = View.VISIBLE
+        }
+    }
 
     //리스너 설정
     private fun setListener(){
@@ -115,6 +128,7 @@ class DiaryFragment : Fragment() {
             setBarChart(binding.barChart)
 
         }
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.github.mikephil.charting.data.BarEntry
@@ -208,6 +209,11 @@ class DiaryModel {
         }
 
     } //reOrderAllExerciseMap()
+
+
+    // 싱글톤에서 내 도전리스트 받아오기
+    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
+     // getMyChallengeList()
 
 
 }

@@ -10,7 +10,10 @@
             type="com.example.fitfit.viewModel.DiaryViewModel" />
 
     </data>
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -144,45 +147,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="10dp"
+            >
+
+        <TextView
+            android:id="@+id/textViewNonChallenge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/nonChallenge"
+            android:gravity="center"
+            style="@style/diaryFragmentTextStyle"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/background_stroke_grey"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutChallenge1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/background_stroke_grey"
+            android:visibility="visible"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.startDate)}"
-                    android:gravity="center"
-                    style="@style/diaryFragmentTextStyle"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/wave"
-                    android:gravity="center"
-                    style="@style/diaryFragmentTextStyle"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.endDate)}"
-                    android:gravity="center"
-                    style="@style/diaryFragmentTextStyle"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginVertical="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,16 +184,18 @@
                     android:gravity="center"
                     style="@style/diaryFragmentTextStyle"
                     />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10일 이상 운동하기"
+                    android:text="찍먹 챌린지"
                     style="@style/diaryFragmentTextStyle"
                     />
+
             </LinearLayout>
 
             <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/progressBar1"
                 style="@style/CustomProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -211,12 +207,58 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="기여도 50%"
-                android:gravity="center"
+                android:text="0/30"
+                android:gravity="right"
                 style="@style/diaryFragmentTextStyle"/>
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/linearLayoutChallenge2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/background_stroke_grey"
+                android:visibility="visible"
+                >
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/challenge"
+                        android:gravity="center"
+                        style="@style/diaryFragmentTextStyle"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="한놈만 패! 챌린지"
+                        style="@style/diaryFragmentTextStyle"
+                        />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="총 0회"
+                    android:gravity="right"
+                    style="@style/diaryFragmentTextStyle"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

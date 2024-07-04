@@ -90,8 +90,8 @@
     <!--프로그레스 커스텀-->
     <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/custom_progress</item>
-        <item name="android:minHeight">20dp</item>
-        <item name="android:maxHeight">20dp</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:maxHeight">10dp</item>
     </style>
 
     <!--다이어리 프래그먼트 텍스트 스타일-->
