@@ -78,7 +78,8 @@ class DiaryViewModel: ViewModel() {
 
 
     //모델에서 EntryList 불러오기
-    fun getEntryArrayList(): ArrayList<BarEntry> { return diaryModel.getEntryArrayList(startDate.value, endDate.value) }
+    fun getEntryArrayList(): ArrayList<BarEntry> = diaryModel.getEntryArrayList(startDate.value, endDate.value)
+
 
 
 
@@ -101,5 +102,5 @@ class DiaryViewModel: ViewModel() {
 
 
     //labelMap 불러오기
-    fun getLabelMap(): HashMap<Float,String> { return diaryModel.getLabelMap() }
+    fun getAllExerciseMap(): LinkedHashMap<String,MutableList<Float>> { return diaryModel.getAllExerciseMap() }
 }
