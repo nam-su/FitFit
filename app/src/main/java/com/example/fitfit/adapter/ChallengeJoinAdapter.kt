@@ -15,6 +15,7 @@ import com.example.fitfit.R
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.databinding.ItemViewChallengeBinding
+import com.example.fitfit.databinding.ItemViewChallengeJoinBinding
 import com.example.fitfit.databinding.ItemViewExerciseItemInfoImageBinding
 import com.example.fitfit.viewModel.ExerciseViewModel
 
@@ -22,7 +23,7 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
 
     private val TAG = "챌린지 참여리스트 어댑터"
 
-    lateinit var binding: ItemViewChallengeBinding
+    lateinit var binding: ItemViewChallengeJoinBinding
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeViewHolder {
@@ -46,10 +47,11 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
     } // onBindViewHolder()
 
 
-    class ChallengeViewHolder(val binding: ItemViewChallengeBinding) : RecyclerView.ViewHolder(binding.root){
+    class ChallengeViewHolder(val binding: ItemViewChallengeJoinBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun onBind(challenge: Challenge) {
 
+            binding.textViewChallengeName.text = challenge.challengeName
 
         } // onBind()
 

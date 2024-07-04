@@ -61,6 +61,15 @@ class ExerciseModel {
         MyApplication.sharedPreferences.challengeList.clear()
         MyApplication.sharedPreferences.challengeList.addAll(challengeList)
 
+    } //saveChallengeList()
+
+
+    // 서버에서 받아온 내 챌린지 리스트를 싱글톤에 저장하는 메서드
+    fun saveMyChallengeList(myChallengeList: ArrayList<Challenge>) {
+
+        MyApplication.sharedPreferences.myChallengeList.clear()
+        MyApplication.sharedPreferences.myChallengeList.addAll(myChallengeList)
+
     }
 
 

@@ -134,21 +134,45 @@
              style="@style/diaryFragmentTextStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayoutMyChallenge"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutChart" />
 
+        <LinearLayout
+            android:id="@+id/linearLayoutMyChallenge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewChallenge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewChallenge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
             />
 
+            <TextView
+                android:id="@+id/textViewNonChallenge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/nonChallenge"
+                android:visibility="gone"
+                style="@style/diaryFragmentTextStyle"
+                android:background="@drawable/background_stroke_grey"
+                />
 
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

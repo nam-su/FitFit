@@ -62,9 +62,14 @@ class ExerciseViewModel: ViewModel() {
                _joinResult.value = response.body()!!.result.toString()
 
                 /** 운동 모델에서 싱글톤에 저장하는 메서드 호출**/
-                if(response.body()!!.challengeList != null) {
-                    exerciseModel.saveChallengeList(response.body()!!.challengeList!!)
+                if(response.body()?.challengeList != null) {
+                    exerciseModel.saveChallengeList(response.body()?.challengeList!!)
                 }
+
+                if(response.body()?.myChallengeList != null) {
+                    exerciseModel.saveMyChallengeList(response.body()?.myChallengeList!!)
+                }
+
 
             }
         }

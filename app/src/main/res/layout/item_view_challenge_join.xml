@@ -4,28 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--참여중인 챌린지가 없을때-->
     <LinearLayout
-        android:id="@+id/linearLayout0"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:id="@+id/textViewNonChallenge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nonChallenge"
-            android:gravity="center"
-            style="@style/diaryFragmentTextStyle"
-            android:layout_marginVertical="10dp"
-            android:background="@drawable/background_stroke_grey"
-            />
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -38,7 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginVertical="10dp">
+        android:layout_marginVertical="10dp"
+        android:paddingHorizontal="10dp"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,18 +46,17 @@
             android:layout_height="wrap_content"
             android:max="100"
             android:progress="50"
+            android:paddingHorizontal="10dp"
             android:layout_marginVertical="10dp"
             android:indeterminate="false"/>
 
         <TextView
             android:id="@+id/textViewCount"
+            style="@style/diaryFragmentTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            style="@style/diaryFragmentTextStyle"/>
-
-    </LinearLayout>
-
+            android:paddingHorizontal="10dp"/>
 
     </LinearLayout>
 
