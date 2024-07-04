@@ -1,9 +1,11 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -18,7 +20,7 @@ class DiaryModel {
     private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
     private var labelMap = HashMap<Float,String>()
-    private var allExerciseMap = HashMap<String,MutableList<Float>>()
+    private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
 
     init {
         Log.d(TAG, "${MyApplication.sharedPreferences} ")
@@ -27,7 +29,7 @@ class DiaryModel {
             Log.d(TAG, "[${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
         }
 
-        setLabelMap()
+//        setLabelMap()
         setAllExerciseMap()
         initEntryArrayList()
         setEntryArrayList(Date(),Date())
@@ -46,6 +48,7 @@ class DiaryModel {
     fun getEntryArrayList(startDate: Date?, endDate:Date?): ArrayList<BarEntry> {
 
         setEntryArrayList(startDate, endDate)
+
         return entryArrayList
 
     } //getEntryArrayList()
@@ -53,50 +56,54 @@ class DiaryModel {
 
 
     //그래프에 사용할 해시맵 불러오기
-    fun getLabelMap(): HashMap<Float,String>{ return labelMap }
+    fun getAllExerciseMap(): LinkedHashMap<String,MutableList<Float>>{ return allExerciseMap }
 
 
-
-    //hashMap 셋팅
-    private fun setLabelMap(){
-
-        labelMap[0f] = "기본 스쿼트"
-        labelMap[1f] = "기본 푸시업"
-        labelMap[2f] = "기본 런지"
-        labelMap[3f] = "와이드 스쿼트"
-        labelMap[4f] = "와이드 푸시업"
-        labelMap[5f] = "와이드 런지"
-
-    } //setLabelMap()
+//
+//    //hashMap 셋팅
+//    private fun setLabelMap(){
+//
+//        labelMap[0f] = "기본 스쿼트"
+//        labelMap[1f] = "와이드 스쿼트"
+//        labelMap[2f] = "기본 푸시업"
+//        labelMap[3f] = "기본 런지"
+//        labelMap[4f] = "오른쪽 런지"
+//        labelMap[5f] = "왼쪽 런지"
+//        labelMap[6f] = "기본 레그레이즈"
+//        labelMap[7f] = "오른쪽 레그레이즈"
+//        labelMap[8f] = "왼쪽 레그레이즈"
+//
+//    } //setLabelMap()
 
 
 
     //allExerciseMap 초기화
     private fun setAllExerciseMap(){
+
         //allExerciseMap 초기값 설정
         //mutableFloatList는 날짜마다 따로 값을 배열에 받기 위해서 사용
         allExerciseMap["기본 스쿼트"] = mutableListOf()
         allExerciseMap["기본 푸시업"] = mutableListOf()
         allExerciseMap["기본 런지"] = mutableListOf()
+        allExerciseMap["기본 레그레이즈"] = mutableListOf()
         allExerciseMap["와이드 스쿼트"] = mutableListOf()
-        allExerciseMap["와이드 푸시업"] = mutableListOf()
-        allExerciseMap["와이드 런지"] = mutableListOf()
+        allExerciseMap["오른쪽 런지"] = mutableListOf()
+        allExerciseMap["왼쪽 런지"] = mutableListOf()
+        allExerciseMap["오른쪽 레그레이즈"] = mutableListOf()
+        allExerciseMap["왼쪽 레그레이즈"] = mutableListOf()
+
     }
 
 
 
     //entryArrayList 셋팅
     private fun initEntryArrayList(){
-        //entryArrayList 초기값 설정
-        for(i in 0 until allExerciseMap.size) {
-            entryArrayList.add(BarEntry(i.toFloat(), allExerciseMap[labelMap[i.toFloat()]]?.toFloatArray()))
-        }
 
-//        allExerciseMap.keys.forEachIndexed { index, s ->
-//            Log.d(TAG, "initEntryArrayList: $index")
-//            Log.d(TAG, "resetEntryArrayList: ${allExerciseMap[s]!!.sum()}")git ch
-//            entryArrayList.add(BarEntry(index.toFloat(), allExerciseMap[s]!!.sum()))
-//        }
+        //entryArrayList 초기값 설정
+        allExerciseMap.values.forEachIndexed { index, floats ->
+            entryArrayList.add(BarEntry(index.toFloat(),floats.toFloatArray()))
+
+        }
 
     }
 
@@ -105,14 +112,10 @@ class DiaryModel {
     //entryArrayList 셋팅
     private fun resetEntryArrayList(){
 
-//        allExerciseMap.keys.forEachIndexed { index, s ->
-//            Log.d(TAG, "resetEntryArrayList: ${allExerciseMap[s]!!.sum()}")
-//            entryArrayList[index] = BarEntry(index.toFloat(), allExerciseMap[s]!!.sum())
-//        }
+        reOrderAllExerciseMap()
 
-        //entry 값 재설정 넣기
-        for(i in 0 until entryArrayList.size){
-            entryArrayList[i] = BarEntry(i.toFloat(), allExerciseMap[labelMap[i.toFloat()]]!!.sum())
+        allExerciseMap.values.forEachIndexed { index, floats ->
+            entryArrayList[index] = BarEntry(index.toFloat(), floats.sum())
         }
 
     }
@@ -130,20 +133,12 @@ class DiaryModel {
             val instant = Instant.ofEpochMilli(poseExercise.date)
             // Instant를 Date로 변환
             val date = Date.from(instant)
-            Log.d(TAG, "setEntryArrayList: ${poseExercise.exerciseName}")
-            Log.d(TAG, "date: $date")
-            Log.d(TAG, "startDate: ${setToMidnight(startDate!!)}")
-            Log.d(TAG, "endDate: ${setToEndOfDay(endDate!!)}")
-            Log.d(TAG, "dateAfter: ${date.after(setToMidnight(startDate!!))}")
-            Log.d(TAG, "dateBefore: ${date.before(setToEndOfDay(endDate!!))}")
 
+            //날짜 안에 있는 데이터만 추가
             if(date.after(setToMidnight(startDate!!)) && date.before(setToEndOfDay(endDate!!))) {
 
                 //날짜에 맞게 데이터 allExerciseMap에 넣기
                 allExerciseMap[poseExercise.exerciseName]?.add(poseExercise.exerciseCount.toFloat())
-                Log.d(TAG, "exerciseName: ${poseExercise.exerciseName}")
-                Log.d(TAG, "exerciseCount: ${poseExercise.exerciseCount}")
-                Log.d(TAG, "array: ${allExerciseMap[poseExercise.exerciseName]}")
 
             }
 
@@ -191,7 +186,34 @@ class DiaryModel {
     } //setToEndOfDay()
 
 
+    // allExerciseMap에서 float 배열의 합이 0인 항목들을 맨 뒤로 보내는 메서드
+    private fun reOrderAllExerciseMap() {
 
+        val entriesToRemove = mutableListOf<String>()
+
+        // 0인 항목들을 찾아서 entriesToRemove에 추가
+        allExerciseMap.forEach { (key, values) ->
+            if (values.sum() == 0f) {
+                entriesToRemove.add(key)
+            }
+        }
+
+        // entriesToRemove에 있는 항목들을 순서대로 맨 뒤로 이동
+        entriesToRemove.forEach { key ->
+            if (allExerciseMap.containsKey(key)) {
+                val values = allExerciseMap.remove(key)
+                if (values != null) {
+                    allExerciseMap[key] = values
+                }
+            }
+        }
+
+    } //reOrderAllExerciseMap()
+
+
+    // 싱글톤에서 내 도전리스트 받아오기
+    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
+     // getMyChallengeList()
 
 
 }

@@ -1,5 +1,7 @@
 package com.example.fitfit.network
 
+import com.example.fitfit.data.Challenge
+import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.data.User
@@ -148,6 +150,22 @@ interface RetrofitInterface {
         @Field("mode") mode: String
 
     ): Response<SplashResponse>
+
+
+    //어레이리스트 전송
+    @FormUrlEncoded
+    @POST("challengeProcess.php")
+    suspend fun challengeJoin(
+
+        @Field("id") id: String,
+        @Field("challengeName") challengeName: String,
+        @Field("mode") mode: String
+
+    ): Response<ChallengeResponse>
+
+
+
+
 
 
 }

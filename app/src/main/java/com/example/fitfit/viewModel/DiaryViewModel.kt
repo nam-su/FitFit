@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.DiaryModel
@@ -26,6 +27,16 @@ class DiaryViewModel: ViewModel() {
     private var _endDate = MutableLiveData<Date>(Date())
     val endDate: LiveData<Date>
         get() = _endDate
+
+    private var _challenge1 = MutableLiveData<String>()
+    val challenge1: LiveData<String>
+        get() = _challenge1
+
+
+    private var _challenge2 = MutableLiveData<String>()
+    val challenge2: LiveData<String>
+        get() = _challenge2
+
 
 
 
@@ -76,10 +87,8 @@ class DiaryViewModel: ViewModel() {
     fun getMyPoseExerciseList(): ArrayList<PoseExercise> { return diaryModel.getMyPoseExerciseList() }
 
 
-
     //모델에서 EntryList 불러오기
-    fun getEntryArrayList(): ArrayList<BarEntry> { return diaryModel.getEntryArrayList(startDate.value, endDate.value) }
-
+    fun getEntryArrayList(): ArrayList<BarEntry> = diaryModel.getEntryArrayList(startDate.value, endDate.value)
 
 
     // 제일 큰 값 계산
@@ -99,7 +108,18 @@ class DiaryViewModel: ViewModel() {
     } //calculateMaxY()
 
 
-
     //labelMap 불러오기
-    fun getLabelMap(): HashMap<Float,String> { return diaryModel.getLabelMap() }
+    fun getAllExerciseMap(): LinkedHashMap<String,MutableList<Float>> { return diaryModel.getAllExerciseMap() }
+
+
+    // 모델에서 내 도전리스트 호출
+    fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
+
+
+    //모델에서 받아오기
+//    fun getMyChallenge1(): String = MyApplication.sharedPreferences.myChallengeList[0].challengeName
+//
+//    fun getMyChallenge2(): String = MyApplication.sharedPreferences.myChallengeList[1].challengeName
+
+
 }

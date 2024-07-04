@@ -105,5 +105,7 @@
     <string name="graph">운동 그래프</string>
     <string name="challengeContribution">챌린지 기여도</string>
     <string name="challenge">챌린지 : </string>
+    <string name="exerciseRecordEmpty">운동 기록이 존재하지 않습니다.</string>
+    <string name="nonChallenge">참여 중인 챌린지가 없습니다.</string>
 
 </resources>
