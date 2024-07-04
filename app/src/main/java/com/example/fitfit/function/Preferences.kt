@@ -215,6 +215,9 @@ class Preferences(context: Context) {
         //불러온 전체 운동리스트 저장
         setUserRecordExerciseList(user.userAllExerciseList!!)
 
+        //불러온 챌린지 리스트 저장
+        challengeList = user.challengeList!!
+
     } // setUser()
 
 
