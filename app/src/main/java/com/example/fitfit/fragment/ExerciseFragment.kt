@@ -36,9 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ExerciseFragment : Fragment() {
-
-    private val TAG = "운동 프래그먼트"
-
+    
     lateinit var binding: FragmentExerciseBinding
     lateinit var challengeAdapter: ChallengeAdapter
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
@@ -166,7 +164,7 @@ class ExerciseFragment : Fragment() {
 
                 delay(5000) // 3초 대기
 
-                    if (currentPage == binding.viewPager.adapter?.itemCount ?: 0 - 1) { // 마지막 페이지 확인
+                    if (currentPage == (binding.viewPager.adapter?.itemCount ?: (0 - 1))) { // 마지막 페이지 확인
 
                         currentPage = 0
 
