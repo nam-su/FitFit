@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.pose.Pose
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import java.time.Instant
@@ -19,7 +20,6 @@ class DiaryModel {
     private val TAG = "다이어리 모델"
     private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
-    private var labelMap = HashMap<Float,String>()
     private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
 
     init {
@@ -214,6 +214,61 @@ class DiaryModel {
     // 싱글톤에서 내 도전리스트 받아오기
     fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
      // getMyChallengeList()
+
+
+
+    // 이번달 내에 운동리스트로 필터링
+    fun getFilteredMyExerciseList(): ArrayList<PoseExercise>{
+
+        val filteredList = myPoseExerciseList.filter {
+            it.date > getStartOfMonth() && it.date < getEndOfMonth()
+        }
+
+        return ArrayList(filteredList)
+
+    } //getFilteredMyExerciseList()
+
+
+   
+
+
+    // 기본부터 챌린지 리스트로 만들기
+    fun setSecondChallengeList(){
+
+        getFilteredMyExerciseList().forEach {
+
+        }
+
+    } // setChallengeList()
+
+
+    //이번달의 1일 0시 00분 0초 구하기
+    fun getStartOfMonth(): Long {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+
+    } //getStartOfMonth()
+
+
+    //이번달의 마지막날 23시 59분 59초 구하기
+    fun getEndOfMonth(): Long {
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, 1)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.add(Calendar.DATE, -1)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        return calendar.timeInMillis
+
+    } // getEndOfMonth()
 
 
 }

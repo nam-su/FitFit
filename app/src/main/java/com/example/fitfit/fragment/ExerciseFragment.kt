@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ExerciseFragment : Fragment() {
-    
+
     lateinit var binding: FragmentExerciseBinding
     lateinit var challengeAdapter: ChallengeAdapter
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding

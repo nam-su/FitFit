@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginHorizontal="20dp"
-            android:text="@string/challengeContribution"
+            android:text="@string/MyChallengeProgress"
              style="@style/diaryFragmentTextStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

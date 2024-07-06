@@ -50,6 +50,10 @@ class DiaryFragment : Fragment() {
         setBarChart(binding.barChart)
         setView()
 
+        diaryViewModel.getFilteredMyExerciseList().forEach {
+            Log.d(TAG, "onViewCreated: ${it.exerciseName}, ${it.exerciseCount}, ${it.date}")
+        }
+
     }
 
 

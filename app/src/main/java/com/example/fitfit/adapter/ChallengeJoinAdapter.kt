@@ -52,6 +52,7 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
         fun onBind(challenge: Challenge) {
 
             binding.textViewChallengeName.text = challenge.challengeName
+            binding.textViewCount.text = challenge.participantCount.toString()
 
         } // onBind()
 

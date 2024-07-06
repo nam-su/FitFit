@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.model.DiaryModel
 import com.github.mikephil.charting.data.BarEntry
 import java.text.ParseException
@@ -114,6 +115,10 @@ class DiaryViewModel: ViewModel() {
 
     // 모델에서 내 도전리스트 호출
     fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
+
+
+    // 모델에 있는 필터링된 이번달 내 리스트 호출
+    fun getFilteredMyExerciseList(): ArrayList<PoseExercise> = diaryModel.getFilteredMyExerciseList()
 
 
 
