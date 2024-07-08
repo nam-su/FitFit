@@ -66,9 +66,9 @@ class ExerciseViewModel: ViewModel() {
                     exerciseModel.saveChallengeList(response.body()?.challengeList!!)
                 }
 
-                if(response.body()?.myChallengeList != null) {
-                    exerciseModel.saveMyChallengeList(response.body()?.myChallengeList!!)
-                }
+//                if(response.body()?.myChallengeList != null) {
+//                    exerciseModel.saveMyChallengeList(response.body()?.myChallengeList!!)
+//                }
 
 
             }

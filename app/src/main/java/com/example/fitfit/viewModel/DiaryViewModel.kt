@@ -11,8 +11,10 @@ import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.model.DiaryModel
 import com.github.mikephil.charting.data.BarEntry
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -32,22 +34,9 @@ class DiaryViewModel: ViewModel() {
     val endDate: LiveData<Date>
         get() = _endDate
 
-    private var _challenge1 = MutableLiveData<String>()
-    val challenge1: LiveData<String>
-        get() = _challenge1
-
-
-    private var _challenge2 = MutableLiveData<String>()
-    val challenge2: LiveData<String>
-        get() = _challenge2
-
-
-
-
     fun setStartDate(date: Date){ _startDate.value = date }
 
     fun setEndDate(date: Date){ _endDate.value = date }
-
 
     //date를 년월일요일 형태로 바꿔주는 메서드
     fun changeYMDWFormat(date: Date): String{
@@ -116,24 +105,25 @@ class DiaryViewModel: ViewModel() {
     fun getAllExerciseMap(): LinkedHashMap<String,MutableList<Float>> { return diaryModel.getAllExerciseMap() }
 
 
-    // 모델에서 내 도전리스트 호출
-    fun getMyChallengeList() {
-
-        viewModelScope.launch {
-
-            val response = diaryModel.getMyChallengeList()
+    // 서버에서 내 도전리스트 호출
+    suspend fun getMyChallengeListToServer(): ArrayList<Challenge>? {
+        return withContext(Dispatchers.IO) {
+            val response = diaryModel.getMyChallengeListToServer()
 
             Log.d(TAG, "getMyChallengeList: ${response.isSuccessful}")
+            Log.d(TAG, "getMyChallengeList: ${response.body()?.size}")
 
-            if(response.isSuccessful && response.body() != null) {
-
+            if (response.isSuccessful && response.body() != null) {
+                response.body()
+            } else {
+                null
             }
-
         }
+    } // getMyChallengeListToServer()
 
 
-
-    }
+    //모델에 내 챌린지 리스트 호출
+    fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
 
 
 

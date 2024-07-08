@@ -39,9 +39,6 @@ class Preferences(context: Context) {
     /** fitfit 챌린지 리스트**/
     val challengeList = ArrayList<Challenge>()
 
-    /** 사용자 챌린지 리스트**/
-    val myChallengeList = ArrayList<Challenge>()
-
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
         setAllExerciseItemInfoList()
@@ -221,11 +218,6 @@ class Preferences(context: Context) {
         //불러온 챌린지 리스트 저장
         challengeList.clear()
         challengeList.addAll(user.challengeList!!)
-
-        //내 챌린지 리스트 저장
-        myChallengeList.clear()
-        myChallengeList.addAll(user.myChallengeList!!)
-
 
     } // setUser()
 

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.R
 import com.example.fitfit.adapter.ChallengeJoinAdapter
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
@@ -21,6 +23,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.coroutines.launch
 
 
 class DiaryFragment : Fragment() {
@@ -29,13 +32,15 @@ class DiaryFragment : Fragment() {
 
     lateinit var binding: FragmentDiaryBinding
     lateinit var diaryViewModel: DiaryViewModel
-    lateinit var challengeJoinAdapter: ChallengeJoinAdapter
+    private var challengeJoinAdapter: ChallengeJoinAdapter? = null
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
+
+        setVariable()
 
         return binding.root
     }
@@ -45,11 +50,13 @@ class DiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setVariable()
+        Log.d(TAG, "onViewCreated: ")
+
         setListener()
         setObserve()
         setBarChart(binding.barChart)
-        setView()
+
+        setAdapter()
 
     }
 
@@ -63,31 +70,35 @@ class DiaryFragment : Fragment() {
 
         binding.diaryViewModel = diaryViewModel
 
-        challengeJoinAdapter = ChallengeJoinAdapter(ArrayList<Challenge>())
-
-        binding.recyclerView.adapter = challengeJoinAdapter
-
-        diaryViewModel.getMyChallengeList()
-
     } // setVariable()
 
 
-    // 뷰 설정
-    private fun setView() {
+    // 리사이클러뷰와 어댑터 설정
+    private fun setAdapter() {
 
-        if(challengeJoinAdapter.itemCount < 1){
+        // 네트워크 요청을 수행하고 어댑터를 설정
+        lifecycleScope.launch {
+            val challengeList = diaryViewModel.getMyChallengeListToServer()
+            challengeList?.let {
+                challengeJoinAdapter = ChallengeJoinAdapter(it)
+                // RecyclerView 설정
+                binding.recyclerView.adapter = challengeJoinAdapter
 
-            binding.textViewNonChallenge.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
+                if(challengeJoinAdapter?.itemCount!! < 1){
 
-        }else{
+                    binding.textViewNonChallenge.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
 
-            binding.textViewNonChallenge.visibility = View.GONE
-            binding.recyclerView.visibility = View.VISIBLE
+                }else{
 
+                    binding.textViewNonChallenge.visibility = View.GONE
+                    binding.recyclerView.visibility = View.VISIBLE
+
+                }
+            }
         }
 
-    } //setView()
+    } //setAdapter()
 
     //리스너 설정
     private fun setListener(){
@@ -297,13 +308,5 @@ class DiaryFragment : Fragment() {
         }
 
     } //initBarChart()
-
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume: ")
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        setView()
-    }
 
 }

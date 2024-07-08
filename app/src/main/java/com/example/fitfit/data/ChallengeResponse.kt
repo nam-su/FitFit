@@ -3,6 +3,5 @@ package com.example.fitfit.data
 
 data class ChallengeResponse(
    var result: String?,
-   var challengeList: ArrayList<Challenge>?,
-   var myChallengeList: ArrayList<Challenge>?
+   var challengeList: ArrayList<Challenge>?
 )

@@ -48,7 +48,7 @@ class LoginViewModel: ViewModel() {
             Log.d(TAG, "login: ${response.message()}")
             Log.d(TAG, "login: ${response.isSuccessful}")
             Log.d(TAG, "login: ${response.body()}")
-            Log.d(TAG, "login: ${response.body()?.myChallengeList}")
+//            Log.d(TAG, "login: ${response.body()?.myChallengeList}")
 
 
 

@@ -73,7 +73,7 @@ class SplashViewModel(): ViewModel() {
 
                  /** 스플래시 모델에서 싱글톤에 저장하는 메서드 호출**/
                 splashModel.saveChallengeList(response.body()!!.challengeList!!)
-                splashModel.saveMyChallengeList(response.body()!!.myChallengeList!!)
+//                splashModel.saveMyChallengeList(response.body()!!.myChallengeList!!)
 
 
             } else {
