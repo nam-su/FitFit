@@ -49,10 +49,32 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
 
     class ChallengeViewHolder(val binding: ItemViewChallengeJoinBinding) : RecyclerView.ViewHolder(binding.root){
 
+        val TAG = "온바인드"
         fun onBind(challenge: Challenge) {
 
             binding.textViewChallengeName.text = challenge.challengeName
-            binding.textViewCount.text = challenge.participantCount.toString()
+
+            Log.d(TAG, "onBind: ${challenge.standard}")
+
+            when(challenge.challengeName){
+
+                "기본부터 챌린지" -> {
+
+                    binding.progressBar1.apply {
+                        visibility = View.VISIBLE
+                        max = challenge.standard.toInt()
+                        progress = challenge.rankingPoint
+                    }
+
+                    binding.textViewCount.text = "${challenge.rankingPoint} / ${challenge.standard}"
+
+                }
+                "한놈만 패! 챌린지" -> {
+                    binding.textViewCount.text = "${challenge.standard} 총 ${challenge.rankingPoint} 회"
+                }
+            }
+
+            binding.textViewRanking.text = "${challenge.ranking} 위"
 
         } // onBind()
 

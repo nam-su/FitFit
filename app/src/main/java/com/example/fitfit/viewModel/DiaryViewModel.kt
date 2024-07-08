@@ -117,10 +117,6 @@ class DiaryViewModel: ViewModel() {
     fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
 
 
-    // 모델에 있는 필터링된 이번달 내 리스트 호출
-    fun getFilteredMyExerciseList(): ArrayList<PoseExercise> = diaryModel.getFilteredMyExerciseList()
-
-
 
 
 
