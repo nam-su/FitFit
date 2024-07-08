@@ -152,7 +152,6 @@ interface RetrofitInterface {
     ): Response<SplashResponse>
 
 
-    //어레이리스트 전송
     @FormUrlEncoded
     @POST("challengeProcess.php")
     suspend fun challengeJoin(
@@ -162,6 +161,17 @@ interface RetrofitInterface {
         @Field("mode") mode: String?
 
     ): Response<ChallengeResponse>?
+
+
+
+    @FormUrlEncoded
+    @POST("challengeProcess.php")
+    suspend fun getMyChallengeList(
+
+        @Field("id") id: String?,
+        @Field("mode") mode: String?
+
+    ): Response<ArrayList<Challenge>>
 
 
 

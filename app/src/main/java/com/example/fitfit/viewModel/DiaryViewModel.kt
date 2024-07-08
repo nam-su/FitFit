@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.model.DiaryModel
 import com.github.mikephil.charting.data.BarEntry
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -114,7 +117,23 @@ class DiaryViewModel: ViewModel() {
 
 
     // 모델에서 내 도전리스트 호출
-    fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
+    fun getMyChallengeList() {
+
+        viewModelScope.launch {
+
+            val response = diaryModel.getMyChallengeList()
+
+            Log.d(TAG, "getMyChallengeList: ${response.isSuccessful}")
+
+            if(response.isSuccessful && response.body() != null) {
+
+            }
+
+        }
+
+
+
+    }
 
 
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.fitfit.R
 import com.example.fitfit.adapter.ChallengeJoinAdapter
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.databinding.FragmentDiaryBinding
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
@@ -62,9 +63,11 @@ class DiaryFragment : Fragment() {
 
         binding.diaryViewModel = diaryViewModel
 
-        challengeJoinAdapter = ChallengeJoinAdapter(diaryViewModel.getMyChallengeList())
+        challengeJoinAdapter = ChallengeJoinAdapter(ArrayList<Challenge>())
 
         binding.recyclerView.adapter = challengeJoinAdapter
+
+        diaryViewModel.getMyChallengeList()
 
     } // setVariable()
 

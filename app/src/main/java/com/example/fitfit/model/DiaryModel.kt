@@ -2,11 +2,15 @@ package com.example.fitfit.model
 
 import android.util.Log
 import com.example.fitfit.data.Challenge
+import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.Pose
+import com.example.fitfit.network.RetrofitBuilder
+import com.example.fitfit.network.RetrofitInterface
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
+import retrofit2.Response
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -21,6 +25,10 @@ class DiaryModel {
     private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
     private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
+
+    private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
+        RetrofitInterface::class.java)
 
     init {
         Log.d(TAG, "${MyApplication.sharedPreferences} ")
@@ -212,8 +220,13 @@ class DiaryModel {
 
 
     // 싱글톤에서 내 도전리스트 받아오기
-    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
+//    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
      // getMyChallengeList()
+
+
+    //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
+    suspend fun getMyChallengeList(): Response<ArrayList<Challenge>> = retrofitInterface.getMyChallengeList(MyApplication.sharedPreferences.getUserId(),"getMyChallengeList")
+    // saveMyChallengeList()
 
 
 }
