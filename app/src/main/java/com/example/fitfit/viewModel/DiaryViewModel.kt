@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.model.DiaryModel
 import com.github.mikephil.charting.data.BarEntry
 import java.text.ParseException

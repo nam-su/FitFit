@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.fitfit.R
+import com.example.fitfit.adapter.ChallengeJoinAdapter
+import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.databinding.FragmentDiaryBinding
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
@@ -25,8 +27,9 @@ class DiaryFragment : Fragment() {
     private val TAG = "다이어리 프래그먼트"
 
     lateinit var binding: FragmentDiaryBinding
-
     lateinit var diaryViewModel: DiaryViewModel
+    lateinit var challengeJoinAdapter: ChallengeJoinAdapter
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -45,6 +48,7 @@ class DiaryFragment : Fragment() {
         setListener()
         setObserve()
         setBarChart(binding.barChart)
+        setView()
 
     }
 
@@ -58,11 +62,29 @@ class DiaryFragment : Fragment() {
 
         binding.diaryViewModel = diaryViewModel
 
+        challengeJoinAdapter = ChallengeJoinAdapter(diaryViewModel.getMyChallengeList())
+
+        binding.recyclerView.adapter = challengeJoinAdapter
+
     } // setVariable()
 
 
     // 뷰 설정
+    private fun setView() {
 
+        if(challengeJoinAdapter.itemCount < 1){
+
+            binding.textViewNonChallenge.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+
+        }else{
+
+            binding.textViewNonChallenge.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+
+        }
+
+    } //setView()
 
     //리스너 설정
     private fun setListener(){
@@ -272,5 +294,13 @@ class DiaryFragment : Fragment() {
         }
 
     } //initBarChart()
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: ")
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        setView()
+    }
 
 }

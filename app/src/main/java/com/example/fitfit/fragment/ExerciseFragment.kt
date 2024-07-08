@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
@@ -35,8 +36,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ExerciseFragment : Fragment() {
-
-    private val TAG = "운동 프래그먼트"
 
     lateinit var binding: FragmentExerciseBinding
     lateinit var challengeAdapter: ChallengeAdapter
@@ -146,6 +145,7 @@ class ExerciseFragment : Fragment() {
                 "success" -> {
                     Toast.makeText(requireContext(), "해당 챌린지에 참여를 시작합니다.", Toast.LENGTH_SHORT).show()
                     binding.viewPager.adapter!!.notifyDataSetChanged()
+                    this.findNavController().navigate(R.id.action_exerciseFragment_to_DiaryFragment)
                 }
                 else -> Toast.makeText(requireContext(), "네트워크 연결 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -164,7 +164,7 @@ class ExerciseFragment : Fragment() {
 
                 delay(5000) // 3초 대기
 
-                    if (currentPage == binding.viewPager.adapter?.itemCount ?: 0 - 1) { // 마지막 페이지 확인
+                    if (currentPage == (binding.viewPager.adapter?.itemCount ?: (0 - 1))) { // 마지막 페이지 확인
 
                         currentPage = 0
 
@@ -224,6 +224,7 @@ class ExerciseFragment : Fragment() {
         }
 
     }
+
 
 
 }

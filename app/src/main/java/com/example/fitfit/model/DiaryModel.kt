@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.pose.Pose
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import java.time.Instant
@@ -19,7 +20,6 @@ class DiaryModel {
     private val TAG = "다이어리 모델"
     private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
-    private var labelMap = HashMap<Float,String>()
     private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
 
     init {
@@ -212,7 +212,7 @@ class DiaryModel {
 
 
     // 싱글톤에서 내 도전리스트 받아오기
-    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
+    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
      // getMyChallengeList()
 
 

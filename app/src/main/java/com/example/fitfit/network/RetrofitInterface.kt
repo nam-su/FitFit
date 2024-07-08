@@ -67,7 +67,7 @@ interface RetrofitInterface {
 
     // 운동 정보를 insert 해주는 메서드
     @FormUrlEncoded
-    @POST("userProcess.php")
+    @POST("exerciseProcess.php")
     suspend fun insertPoseExercise(
 
         @Field("id") id: String,
@@ -84,7 +84,7 @@ interface RetrofitInterface {
 
     // 운동 정보 update 해주는 메서드
     @FormUrlEncoded
-    @POST("userProcess.php")
+    @POST("exerciseProcess.php")
     suspend fun updatePoseExercise(
 
         @Field("id") id: String,
