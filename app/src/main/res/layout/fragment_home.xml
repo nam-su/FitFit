@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{homeViewModel.challengeName}"
-                    android:textColor="@color/personal_bold"
+                    android:textColor="@color/personal"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 

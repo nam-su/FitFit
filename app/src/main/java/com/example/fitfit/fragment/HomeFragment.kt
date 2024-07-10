@@ -14,19 +14,23 @@ import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.adapter.ChallengeJoinAdapter
 import com.example.fitfit.adapter.ChallengeRankAdapter
 import com.example.fitfit.adapter.CheckWeekExerciseAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.adapter.PoseExerciseGridAdapter
+import com.example.fitfit.data.Rank
 import com.example.fitfit.databinding.FragmentHomeBinding
 import com.example.fitfit.function.GridSpacingItemDecoration
 import com.example.fitfit.viewModel.HomeViewModel
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -59,7 +63,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
+        setRankingRecyclerViewAndAdapter()
         setClickListener()
+        setObserve()
 
     } // onViewCreated()
 
@@ -69,13 +75,12 @@ class HomeFragment : Fragment() {
 
         homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
+        binding.lifecycleOwner = this
 
         // 일주일 동안 운동양 체크하는 리사이클러뷰 어댑터
         binding.recyclerViewCheckWeekExercise.layoutManager = GridLayoutManager(activity?.applicationContext,7)
         binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
 
-        // 홈 프래그먼트에서 보이는 랭킹 어댑터
-        binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewPagedChallengeRank())
 
         // 홈 프래그먼트에서 보이는 운동리스트 어댑터
         binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.setRecyclerViewAllExercise(),false,"")
@@ -88,12 +93,29 @@ class HomeFragment : Fragment() {
         // 운동 전체보기 어댑터
         binding.recyclerViewAllExercise.adapter = PoseExerciseGridAdapter(homeViewModel.setRecyclerViewAllExercise())
 
-        // 랭킹 모두보기 어댑터
-        binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(homeViewModel.setRecyclerViewAllChallengeRank())
 
-        // 시작할때 통신을해서 viewModel에 어레이리스트 생성 후 observe해서 어뎁터 리스트에 꽂아준다?
 
     } // setVariable()
+
+
+    // 리사이클러뷰 세팅
+    private fun setRankingRecyclerViewAndAdapter(){
+        // 홈 프래그먼트에서 보이는 랭킹 어댑터
+        lifecycleScope.launch {
+            val rankingList = homeViewModel.getRankingListToServer()
+            val homeRankingList = rankingList.partition { rank -> rank.ranking < 4 }.first as ArrayList
+            rankingList?.let {
+                //홈에서 보이는 랭킹 어댑터
+                binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeRankingList)
+            }
+
+            // 홈 프래그먼트에서 보이는 랭킹 어댑터
+            rankingList?.let {
+                // 랭킹 모두보기 어댑터
+                binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(it)
+            }
+        }
+    }
 
 
     // 클릭 리스너 초기화
@@ -168,6 +190,16 @@ class HomeFragment : Fragment() {
 
 
     } // setOnClickListener()
+
+
+    //observe 설정
+    private fun setObserve() {
+
+        homeViewModel.challengeName.observe(viewLifecycleOwner){
+            setRankingRecyclerViewAndAdapter()
+        }
+
+    }
 
 
     // 뒤로가기 클릭 리스너

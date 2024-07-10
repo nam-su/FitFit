@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.fitfit.Decorator.AfterTodayDecorator
 import com.example.fitfit.Decorator.DayDecorator
 import com.example.fitfit.Decorator.EndDayDecorator
@@ -19,6 +21,7 @@ import com.example.fitfit.Decorator.TodayDecorator
 import com.example.fitfit.R
 import com.example.fitfit.adapter.ChallengeListAdapter
 import com.example.fitfit.adapter.ExerciseChoiceAdapter
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.databinding.FragmentBottomSheetChallengeListBinding
 import com.example.fitfit.databinding.FragmentBottomSheetDiaryBinding
 import com.example.fitfit.viewModel.DiaryViewModel
@@ -83,16 +86,19 @@ class BottomSheetChallengeListFragment(private val homeViewModel: HomeViewModel)
 
     } // setVariable()
     
-    
-    
-
-
-
 
     //리스너 설정
-    private fun setListener(){
+    private fun setListener() {
 
+        // 운동 선택 아이템 클릭 리스너
+        challengeListAdapter.challengeItemClick = object : ChallengeListAdapter.ChallengeItemClick {
 
+            override fun onClick(view: View, challenge: Challenge) {
+                homeViewModel.setChallengeName(challenge.challengeName)
+                dismiss()
+            }
+
+        }
     } // setListener()
 
 

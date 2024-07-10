@@ -38,6 +38,13 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>): Recy
 
             binding.rank = rank
 
+                when(rank.challengeName){
+                    "기본부터 챌린지" -> binding.textViewPoint.text = "${rank.rankingPoint} / ${rank.standard} 일"
+                    "한놈만 패! 챌린지" -> binding.textViewPoint.text = "${rank.standard} ${rank.rankingPoint} 회"
+                }
+
+
+
         } // onBind()
 
     }
