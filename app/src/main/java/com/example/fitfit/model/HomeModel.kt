@@ -1,6 +1,7 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
@@ -127,4 +128,8 @@ class HomeModel() {
 
     } // setWeek()
 
+
+    //fitfit 챌린지 리스트 받아오기
+    fun getChallengeListToShared(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
+    // getChallengeListToShared()
 }
