@@ -1,4 +1,10 @@
 package com.example.fitfit.data
 
-data class Rank(val rank: Int,val userNickname: String,val userProfileImage: String) {
-}
+data class Rank(
+    val ranking: Int,
+    val nickname: String,
+    val profileImagePath: String,
+    val challengeName: String,
+    val rankingPoint: String,
+    val standard: String
+    )
