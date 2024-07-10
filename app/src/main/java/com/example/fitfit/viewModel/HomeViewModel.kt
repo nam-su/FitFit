@@ -29,6 +29,12 @@ class HomeViewModel: ViewModel() {
         get() = _challengeName
 
 
+    // 챌린지 이름 설정
+    fun setChallengeName(name: String){
+        _challengeName.value = name
+    } // setChallengeName()
+
+
     // 이번주 운동량에 따른 메시지 출력을 위한 메서드
     fun setWeekStatus(): LiveData<String> {
 
@@ -47,18 +53,19 @@ class HomeViewModel: ViewModel() {
     } // setRecyclerViewWeekStatus()
 
 
-    // 랭킹 전체보기 리스트 리사이클러뷰에 띄워주는 메서드
-    fun setRecyclerViewAllChallengeRank(): ArrayList<Rank> {
-
-        return homeModel.setAllChallengeRankList()
-
-    } // setRecyclerViewAllChallengeRank()
-
-
     // 홈 프래그먼트에서 보이는 랭킹 리사이클러뷰 띄워주는 메서드
-    fun setRecyclerViewPagedChallengeRank(): ArrayList<Rank> {
+    suspend fun getRankingListToServer(): ArrayList<Rank> {
 
-        return homeModel.setPagedChallengeRankList()
+        val response = homeModel.getRankingListToServer(challengeName.value)
+
+        Log.d(TAG, "getRankingListToServer: ${response.isSuccessful}")
+        Log.d(TAG, "getRankingListToServer: ${response.body()}")
+
+        if(response.isSuccessful && response.body() != null){
+            return response.body()!!
+        }
+
+        return ArrayList()
 
     } // setRecyclerViewPagedChallengeRank()
 

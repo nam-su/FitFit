@@ -5,6 +5,7 @@ import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.PaymentReadyRequest
 import com.example.fitfit.data.PaymentReadyResponse
 import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.data.Rank
 import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.data.User
 import okhttp3.MultipartBody
@@ -186,6 +187,16 @@ interface RetrofitInterface {
         @Body request: PaymentReadyRequest
 
     ): Response<PaymentReadyResponse>
+
+
+    //랭킹 리스트 요청
+    @FormUrlEncoded
+    @POST("rankingProcess.php")
+    suspend fun getRankingList(
+
+        @Field("challengeName") challengeName: String?
+
+        ): Response<ArrayList<Rank>>
 
 
 }

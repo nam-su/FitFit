@@ -47,39 +47,9 @@ class HomeModel() {
     } // setWeekStatusList()
 
 
-    // 챌린지 랭킹 정보 리스트 리턴하는 메서드
-    fun setAllChallengeRankList(): ArrayList<Rank> {
-
-        val challengeRankList = ArrayList<Rank>()
-
-//        challengeRankList.add(Rank(1,"언더테이커",""))
-//        challengeRankList.add(Rank(2,"케인",""))
-//        challengeRankList.add(Rank(3,"유형선",""))
-//        challengeRankList.add(Rank(4,"유형선",""))
-//        challengeRankList.add(Rank(5,"유형선",""))
-//        challengeRankList.add(Rank(6,"유형선",""))
-//        challengeRankList.add(Rank(7,"유형선",""))
-//        challengeRankList.add(Rank(8,"유형선",""))
-//        challengeRankList.add(Rank(9,"유형선",""))
-//        challengeRankList.add(Rank(10,"유형선",""))
-
-        return challengeRankList
-
-    } // setChallengeRankList()
-
-
-    // 홈프래그먼트에 보여지는 3명 랭킹 리스트
-    fun setPagedChallengeRankList(): ArrayList<Rank> {
-
-        val pagedChallengeRankList = ArrayList<Rank>()
-
-//        pagedChallengeRankList.add(Rank(1,"언더테이커",""))
-//        pagedChallengeRankList.add(Rank(2,"케인",""))
-//        pagedChallengeRankList.add(Rank(3,"유형선",""))
-
-        return pagedChallengeRankList
-
-    } // setPagedChallengeRankList()
+    // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
+    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> = retrofitInterface.getRankingList(challengeName)
+    // setPagedChallengeRankList()
 
 
     // 다양한 운동 리스트 리턴하는 메서드
