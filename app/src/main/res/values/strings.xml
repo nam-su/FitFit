@@ -50,7 +50,8 @@
 
     <!--홈 프래그먼트-->
     <string name="weekExerciseCheck">이번 주 운동량 체크</string>
-    <string name="monthChallengeRanking">이달의 챌린지 랭킹</string>
+    <string name="ranking">랭킹</string>
+    <string name="rankingChoice">챌린지 랭킹 선택</string>
     <string name="variableExercisePlay">다양한 운동을 즐겨보세요</string>
     <string name="viewAll">전체보기</string>
     <string name="allExercise">다양한 운동</string>

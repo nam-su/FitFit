@@ -158,6 +158,14 @@ class HomeFragment : Fragment() {
 
         }
 
+        // 챌린지 랭킹 텍스트 클릭 리스너
+        binding.linearLayoutRanking.setOnClickListener {
+
+            val bottomSheetChallengeListFragment = BottomSheetChallengeListFragment(homeViewModel)
+            bottomSheetChallengeListFragment.show(parentFragmentManager,"")
+
+        }
+
 
     } // setOnClickListener()
 

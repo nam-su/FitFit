@@ -7,21 +7,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
 import com.example.fitfit.model.HomeModel
 import kotlinx.coroutines.launch
 
-class HomeViewModel(): ViewModel() {
+class HomeViewModel: ViewModel() {
 
     val TAG = "홈 뷰모델"
 
     private val homeModel = HomeModel()
 
     private val _weekStatus: MutableLiveData<String> = MutableLiveData()
-    private val weekStatus: LiveData<String>
+    val weekStatus: LiveData<String>
         get() = _weekStatus
+
+    private val _challengeName= MutableLiveData(homeModel.getChallengeListToShared()[0].challengeName)
+    val challengeName: LiveData<String>
+        get() = _challengeName
 
 
     // 이번주 운동량에 따른 메시지 출력을 위한 메서드
@@ -64,5 +69,11 @@ class HomeViewModel(): ViewModel() {
         return homeModel.setAllExerciseList()
 
     } // setRecyclerViewAllExercise()
+
+
+    // 모델에서 fitfit의 챌린지 리스트 요청
+    fun getChallengeListToModel(): ArrayList<Challenge> = homeModel.getChallengeListToShared()
+
+
 
 }

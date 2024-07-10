@@ -135,7 +135,7 @@
                 app:layout_constraintBottom_toTopOf="@id/linearLayoutMonthChallenger"/>
 
 
-            <!-- 이달의 챌린지 랭킹 레이아웃-->
+            <!-- 챌린지 랭킹 레이아웃-->
             <LinearLayout
                 android:id="@+id/linearLayoutMonthChallenger"
                 android:layout_width="match_parent"
@@ -147,13 +147,38 @@
                 app:layout_constraintTop_toBottomOf="@+id/space1"
                 app:layout_constraintBottom_toTopOf="@id/recyclerViewChallengeRank">
 
+                <LinearLayout
+                    android:id="@+id/linearLayoutRanking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/monthChallengeRanking"
-                    android:textColor="@color/black"
+                    android:text="@{homeViewModel.challengeName}"
+                    android:textColor="@color/personal_bold"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/ranking"
+                        android:textColor="@color/black"
+                        android:layout_marginHorizontal="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/down_spinner"
+                        android:layout_gravity="center"
+
+                        />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
