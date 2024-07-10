@@ -2,6 +2,15 @@
 
 <layout>
 
+    <data>
+
+        <variable
+            name="payViewModel"
+            type="com.example.fitfit.viewModel.PayViewModel" />
+
+    </data>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,328 +20,345 @@
     android:background="@color/personal"
     tools:context=".fragment.PayFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <WebView
+        android:id="@+id/webViewPay"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_height="match_parent"/>
 
-        <ImageButton
-            android:id="@+id/imageButtonPayFragmentBack"
-            android:layout_margin="20dp"
-            android:layout_width="33dp"
-            android:layout_height="25dp"
-            android:background="@drawable/back_white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/linearLayoutPayReadyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewFitFit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:shadowColor="#50000000"
-            android:shadowDx="9"
-            android:shadowDy="10"
-            android:shadowRadius="1.5"
-            android:text="@string/FitFit"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonPayFragmentBack" />
-
-        <TextView
-            android:id="@+id/textViewExplainSubscribe"
-            android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="구독하고 \n다양한 운동 즐기기"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFitFit" />
+            android:layout_height="0dp"
+            android:layout_weight="3">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/textViewExplainSubscribe"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <ImageButton
+                android:id="@+id/imageButtonPayFragmentBack"
+                android:layout_margin="20dp"
+                android:layout_width="33dp"
+                android:layout_height="25dp"
+                android:background="@drawable/back_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textViewFitFit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
+                android:shadowDx="9"
+                android:shadowDy="10"
                 android:shadowRadius="1.5"
-                android:text="1일"
-                android:textColor="@color/white"
-                android:textSize="25sp"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
-                android:shadowRadius="1.5"
-                android:text="200"
+                android:text="@string/FitFit"
                 android:textColor="@color/white"
                 android:textSize="25sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageButtonPayFragmentBack" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewExplainSubscribe"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="20dp"
-                android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
-                android:shadowRadius="1.5"
-                android:text="원"
+                android:text="구독하고 \n다양한 운동 즐기기"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayoutMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/linearLayoutDay"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginVertical="20dp"
-                android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
-                android:shadowRadius="1.5"
-                android:text="30일"
-                android:textColor="@color/white"
-                android:textSize="25sp"
-                />
-            
-            <ImageView
-                android:src="@drawable/discount_month"
-                android:layout_marginHorizontal="5dp"
-                android:layout_gravity="center"
-                android:layout_width="65dp"
-                android:layout_height="45dp"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFitFit" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/linearLayoutDay"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_gravity="end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="6000"
-                    android:textColor="@color/white"/>
-
+                app:layout_constraintTop_toBottomOf="@id/textViewExplainSubscribe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
                     android:shadowColor="#50000000"
                     android:shadowDx="4"
                     android:shadowDy="5"
                     android:shadowRadius="1.5"
-                    android:text="4,200"
+                    android:text="1일"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:shadowColor="#50000000"
+                    android:shadowDx="4"
+                    android:shadowDy="5"
+                    android:shadowRadius="1.5"
+                    android:text="200"
                     android:textColor="@color/white"
                     android:textSize="25sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:shadowColor="#50000000"
+                    android:shadowDx="4"
+                    android:shadowDy="5"
+                    android:shadowRadius="1.5"
+                    android:text="원"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
 
 
-            <TextView
-                android:layout_gravity="bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7.5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="20dp"
-                android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
-                android:shadowRadius="1.5"
-                android:text="원"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayoutYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/linearLayoutMonth"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginVertical="20dp"
-                android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
-                android:shadowRadius="1.5"
-                android:text="1년"
-                android:textColor="@color/white"
-                android:textSize="25sp"
-                />
-
-            <ImageView
-                android:src="@drawable/discount_year"
-                android:layout_marginHorizontal="5dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="12dp"
-                android:layout_width="75dp"
-                android:layout_height="55dp"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/linearLayoutMonth"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_gravity="end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="73,000"
-                    android:textColor="@color/white"/>
-
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutDay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginVertical="20dp"
                     android:shadowColor="#50000000"
                     android:shadowDx="4"
                     android:shadowDy="5"
                     android:shadowRadius="1.5"
-                    android:text="36,500"
+                    android:text="30일"
                     android:textColor="@color/white"
                     android:textSize="25sp"
+                    />
+
+                <ImageView
+                    android:src="@drawable/discount_month"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center"
+                    android:layout_width="65dp"
+                    android:layout_height="45dp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6000"
+                        android:textColor="@color/white"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowColor="#50000000"
+                        android:shadowDx="4"
+                        android:shadowDy="5"
+                        android:shadowRadius="1.5"
+                        android:text="4,200"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7.5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:shadowColor="#50000000"
+                    android:shadowDx="4"
+                    android:shadowDy="5"
+                    android:shadowRadius="1.5"
+                    android:text="원"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
 
 
-            <TextView
-                android:layout_gravity="bottom"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayoutYear"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7.5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="20dp"
-                android:shadowColor="#50000000"
-                android:shadowDx="4"
-                android:shadowDy="5"
-                android:shadowRadius="1.5"
-                android:text="원"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutMonth"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:shadowColor="#50000000"
+                    android:shadowDx="4"
+                    android:shadowDy="5"
+                    android:shadowRadius="1.5"
+                    android:text="1년"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    />
+
+                <ImageView
+                    android:src="@drawable/discount_year"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    android:layout_width="75dp"
+                    android:layout_height="55dp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="73,000"
+                        android:textColor="@color/white"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowColor="#50000000"
+                        android:shadowDx="4"
+                        android:shadowDy="5"
+                        android:shadowRadius="1.5"
+                        android:text="36,500"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7.5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:shadowColor="#50000000"
+                    android:shadowDx="4"
+                    android:shadowDy="5"
+                    android:shadowRadius="1.5"
+                    android:text="원"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSubscribeButtons"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:text="여러가지 운동 컨텐츠로\n자유로운 스케쥴링을 해보세요"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSubscribeDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/button_stroke_personal"
+                android:text="하루 구독하기"
+                android:textColor="@color/personal"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSubscribeMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/login_button"
+                android:text="한달 구독하기"
+                android:textSize="16sp"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSubscribeYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/button_subscribe_year"
+                android:text="일년 구독하기"
+                android:textSize="16sp"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <LinearLayout
-        android:id="@+id/linearLayoutSubscribeButtons"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
-            android:text="여러가지 운동 컨텐츠로\n자유로운 스케쥴링을 해보세요"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonSubscribeDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/button_stroke_personal"
-            android:text="하루 구독하기"
-            android:textColor="@color/personal"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonSubscribeMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/login_button"
-            android:text="한달 구독하기"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonSubscribeYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/button_subscribe_year"
-            android:text="일년 구독하기"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
 
     </LinearLayout>
+
+
+
 
 </LinearLayout>
 

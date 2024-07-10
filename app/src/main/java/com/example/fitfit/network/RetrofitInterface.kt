@@ -2,15 +2,19 @@ package com.example.fitfit.network
 
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ChallengeResponse
+import com.example.fitfit.data.PaymentReadyRequest
+import com.example.fitfit.data.PaymentReadyResponse
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.data.User
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -174,8 +178,14 @@ interface RetrofitInterface {
     ): Response<ArrayList<Challenge>>
 
 
+    // 카카오페이 요청
+    @Headers("Authorization:SECRET_KEY DEVF70FE81BA55A6924A2361A24B570781466812")
+    @POST("v1/payment/ready")
+    suspend fun readyKakaoPay(
 
+        @Body request: PaymentReadyRequest
 
+    ): Response<PaymentReadyResponse>
 
 
 }
