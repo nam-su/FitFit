@@ -442,11 +442,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewAllChallengeRankTitle" />
 
             <TextView
+                android:id="@+id/textViewMyRanking"
                 style="@style/defaultBlackTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="000 님의 현재 랭킹은 00위 입니다."
+                android:text='@{String.format(@string/myRanking, homeViewModel.userNickname, homeViewModel.ranking)}'
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

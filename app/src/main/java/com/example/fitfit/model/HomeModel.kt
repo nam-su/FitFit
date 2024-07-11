@@ -102,4 +102,14 @@ class HomeModel() {
     //fitfit 챌린지 리스트 받아오기
     fun getChallengeListToShared(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
     // getChallengeListToShared()
+
+
+    //싱글톤 객체에서 baseUrl 받아오기
+    fun getBaseUrl(): String? = retrofitBuilder.baseUrl
+    // getBaseUrl
+
+
+    // 유저 아이디 정보 받아오기
+    fun getUserId(): String = MyApplication.sharedPreferences.getUserId()
+    // getUserId()
 }

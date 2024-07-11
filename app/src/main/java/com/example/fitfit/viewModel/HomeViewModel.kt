@@ -28,6 +28,14 @@ class HomeViewModel: ViewModel() {
     val challengeName: LiveData<String>
         get() = _challengeName
 
+    private val _userNickname= MutableLiveData<String>()
+    val userNickname: LiveData<String>
+        get() = _userNickname
+
+    private val _ranking= MutableLiveData<String>()
+    val ranking: LiveData<String>
+        get() = _ranking
+
 
     // 챌린지 이름 설정
     fun setChallengeName(name: String){
@@ -62,6 +70,17 @@ class HomeViewModel: ViewModel() {
         Log.d(TAG, "getRankingListToServer: ${response.body()}")
 
         if(response.isSuccessful && response.body() != null){
+
+            response.body()?.forEach {
+
+                if(it.id == getUserId()){
+
+                    _userNickname.value = it.nickname
+                    _ranking.value = it.ranking.toString()
+                }
+
+            }
+
             return response.body()!!
         }
 
@@ -81,6 +100,15 @@ class HomeViewModel: ViewModel() {
     // 모델에서 fitfit의 챌린지 리스트 요청
     fun getChallengeListToModel(): ArrayList<Challenge> = homeModel.getChallengeListToShared()
 
+
+    //이미지 baseUrl 받아오기
+    fun getBaseUrl(): String? = homeModel.getBaseUrl()
+    //getBaseUrl()
+
+
+    // 유저 id 받아오기
+    fun getUserId(): String = homeModel.getUserId()
+    // getUserId()
 
 
 }

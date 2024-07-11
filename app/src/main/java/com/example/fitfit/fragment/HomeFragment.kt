@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,8 @@ import com.example.fitfit.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
+
+    private val TAG = "홈 프래그먼트"
 
     lateinit var binding: FragmentHomeBinding
     lateinit var homeViewModel: HomeViewModel
@@ -64,8 +67,9 @@ class HomeFragment : Fragment() {
 
         setVariable()
         setRankingRecyclerViewAndAdapter()
-        setClickListener()
         setObserve()
+        setClickListener()
+
 
     } // onViewCreated()
 
@@ -106,14 +110,25 @@ class HomeFragment : Fragment() {
             val homeRankingList = rankingList.partition { rank -> rank.ranking < 4 }.first as ArrayList
             rankingList?.let {
                 //홈에서 보이는 랭킹 어댑터
-                binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeRankingList)
+                binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeRankingList, homeViewModel, context)
+
             }
 
             // 홈 프래그먼트에서 보이는 랭킹 어댑터
             rankingList?.let {
                 // 랭킹 모두보기 어댑터
-                binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(it)
+                binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(it, homeViewModel, context)
             }
+
+
+            //챌린지 랭킹 아이템 클릭 리스너
+            (binding.recyclerViewAllChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick = object: ChallengeRankAdapter.ChallengeRankItemClick {
+                override fun onClick(view: View, rank: Rank) {
+                    Log.d(TAG, "onClick: ${rank.id}")
+                }
+
+            }
+
         }
     }
 
@@ -179,6 +194,7 @@ class HomeFragment : Fragment() {
             }
 
         }
+
 
         // 챌린지 랭킹 텍스트 클릭 리스너
         binding.linearLayoutRanking.setOnClickListener {
