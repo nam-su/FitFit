@@ -14,15 +14,11 @@ class PayModel {
     val TAG = "페이 모델"
 
     private val retrofitBuilder = RetrofitBuilder()
-//    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
     private val retrofitKakaoInterface: RetrofitInterface = retrofitBuilder.getKakaoRetrofitObject()!!.create(RetrofitInterface::class.java)
 
 
     suspend fun readyKakaoPay(itemName: String,itemPrice: Int): Response<PaymentReadyResponse> {
 
-        Log.d(TAG, "readyKakaoPay: $itemName")
-        Log.d(TAG, "readyKakaoPay: $itemPrice")
-        
         val paymentReadyRequest = PaymentReadyRequest(
 
             cid = "TC0ONETIME",

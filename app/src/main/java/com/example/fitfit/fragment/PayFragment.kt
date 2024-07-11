@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -58,7 +59,7 @@ class PayFragment : Fragment() {
 
             binding.webViewPay.webViewClient = KakaoPayWebViewClient()
             binding.webViewPay.settings.javaScriptEnabled = true
-            binding.webViewPay.loadUrl(it.next_redirect_pc_url)
+            binding.webViewPay.loadUrl(it.next_redirect_mobile_url)
 
             binding.linearLayoutPayReadyLayout.visibility = View.GONE
             binding.webViewPay.visibility = View.VISIBLE
@@ -72,7 +73,7 @@ class PayFragment : Fragment() {
 
         binding.buttonSubscribeDay.setOnClickListener {
 
-            payViewModel.readyKakaoPay("one day",200)
+            payViewModel.readyKakaoPay("하루 구독권",200)
 
         }
 
