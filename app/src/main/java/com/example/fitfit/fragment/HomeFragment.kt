@@ -111,40 +111,44 @@ class HomeFragment : Fragment() {
 
 
     // 리사이클러뷰 세팅
-    private fun setRankingRecyclerViewAndAdapter(){
+    private fun setRankingRecyclerViewAndAdapter() {
         // 홈 프래그먼트에서 보이는 랭킹 어댑터
         lifecycleScope.launch {
             val rankingList = homeViewModel.getRankingListToServer()
-            val homeRankingList = rankingList.partition { rank -> rank.ranking < 4 }.first as ArrayList
-            rankingList?.let {
-                //홈에서 보이는 랭킹 어댑터
-                binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeRankingList, homeViewModel, context)
+            rankingList?.let { list ->
+                val homeRankingList = list.partition { rank -> rank.ranking < 4 }.first as ArrayList
 
-            }
+                // 홈에서 보이는 랭킹 어댑터 설정
+                binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeRankingList, homeViewModel)
 
-            // 홈 프래그먼트에서 보이는 랭킹 어댑터
-            rankingList?.let {
-                // 랭킹 모두보기 어댑터
-                binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(it, homeViewModel, context)
-            }
+                // 랭킹 모두 보기 어댑터 설정
+                binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(list, homeViewModel)
 
 
-            //챌린지 랭킹 아이템 클릭 리스너
-            (binding.recyclerViewAllChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick = object: ChallengeRankAdapter.ChallengeRankItemClick {
-                override fun onClick(view: View, rank: Rank) {
-                    Log.d(TAG, "onClick: ${rank.id}")
+                // 챌린지 랭킹 아이템 클릭 리스너 설정
+                (binding.recyclerViewChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
+                    override fun onClick(view: View, rank: Rank) {
+                        Log.d(TAG, "onClick: ${rank.id}")
 
-                    lifecycleScope.launch {
-                        setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                        lifecycleScope.launch {
+                            setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                        }
                     }
-
                 }
 
-            }
+                // 챌린지 랭킹 아이템 클릭 리스너 설정
+                (binding.recyclerViewAllChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
+                    override fun onClick(view: View, rank: Rank) {
+                        Log.d(TAG, "onClick: ${rank.id}")
 
+                        lifecycleScope.launch {
+                            setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                        }
+                    }
+                }
+            }
         }
     }
-
 
     // 클릭 리스너 초기화
     private fun setClickListener() {

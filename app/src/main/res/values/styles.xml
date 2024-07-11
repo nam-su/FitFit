@@ -115,4 +115,11 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <!--챌린지 랭킹 다이얼로그 닉네임 텍스트 스타일-->
+    <style name="challengeDialogNicknameStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
 </resources>

@@ -14,7 +14,7 @@ import com.example.fitfit.data.Rank
 import com.example.fitfit.databinding.ItemViewChallengeRankBinding
 import com.example.fitfit.viewModel.HomeViewModel
 
-class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, private val homeViewModel: HomeViewModel, private val context: Context?): RecyclerView.Adapter<ChallengeRankAdapter.ChallengeRankViewHolder>() {
+class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, private val homeViewModel: HomeViewModel): RecyclerView.Adapter<ChallengeRankAdapter.ChallengeRankViewHolder>() {
 
     lateinit var binding: ItemViewChallengeRankBinding
     var challengeRankItemClick: ChallengeRankItemClick? = null
@@ -29,7 +29,7 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_challenge_rank,parent,false)
 
-        return ChallengeRankViewHolder(binding, homeViewModel, context)
+        return ChallengeRankViewHolder(binding, homeViewModel, parent.context)
 
     } // onCreateViewHolder()
 

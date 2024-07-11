@@ -21,7 +21,7 @@
     >
 
     <TextView
-        style="@style/dialogText"
+        style="@style/challengeDialogNicknameStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -34,16 +34,9 @@
         android:src="@drawable/user_profile"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginVertical="30dp"
         />
 
-    <TextView
-        android:id="@+id/textViewContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="20dp"
-        style="@style/dialogText"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUserChallenge"
@@ -63,7 +56,8 @@
         android:background="@drawable/login_button"
         android:text="@string/check"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
         style="@style/diaryFragmentButtonStyle"
         />
 
