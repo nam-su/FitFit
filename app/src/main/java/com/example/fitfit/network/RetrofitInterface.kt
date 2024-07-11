@@ -194,7 +194,9 @@ interface RetrofitInterface {
     @POST("rankingProcess.php")
     suspend fun getRankingList(
 
-        @Field("challengeName") challengeName: String?
+        @Field("challengeName") challengeName: String?,
+        @Field("mode") mode: String?,
+
 
         ): Response<ArrayList<Rank>>
 

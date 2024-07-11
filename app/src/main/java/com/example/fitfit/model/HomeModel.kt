@@ -48,7 +48,7 @@ class HomeModel() {
 
 
     // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
-    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> = retrofitInterface.getRankingList(challengeName)
+    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> = retrofitInterface.getRankingList(challengeName, "getRankingList")
     // setPagedChallengeRankList()
 
 
@@ -112,4 +112,9 @@ class HomeModel() {
     // 유저 아이디 정보 받아오기
     fun getUserId(): String = MyApplication.sharedPreferences.getUserId()
     // getUserId()
+
+
+    //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
+    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> = retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
+    // saveMyChallengeList()
 }

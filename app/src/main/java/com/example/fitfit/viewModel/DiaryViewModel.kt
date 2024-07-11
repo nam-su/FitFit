@@ -122,11 +122,4 @@ class DiaryViewModel: ViewModel() {
     } // getMyChallengeListToServer()
 
 
-    //모델에 내 챌린지 리스트 호출
-    fun getMyChallengeList(): ArrayList<Challenge> = diaryModel.getMyChallengeList()
-
-
-
-
-
 }

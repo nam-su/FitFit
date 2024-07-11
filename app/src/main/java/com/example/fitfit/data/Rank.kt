@@ -1,5 +1,7 @@
 package com.example.fitfit.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Rank(val ranking: Int,
                 val id: String,
                 val nickname: String,

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rank"
+            type="com.example.fitfit.data.Rank" />
+
+    </data>
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,23 +20,22 @@
     android:background="@drawable/custom_dialog_background"
     >
 
-  <TextView
-      android:id="@+id/textViewTitle"
-      android:layout_marginTop="10dp"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="@string/guide"
-      style="@style/dialogText"
-      />
-
-    <View
-        android:id="@+id/divider1"
-        android:layout_width="360dp"
-        android:layout_height="1dp"
+    <TextView
+        style="@style/dialogText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginVertical="15dp"
-        android:background="?android:attr/listDivider" />
+        android:layout_marginTop="10dp"
+        android:text="@{rank.nickname}" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewUserProfile"
+        android:src="@drawable/user_profile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        />
 
     <TextView
         android:id="@+id/textViewContent"
@@ -38,36 +45,30 @@
         android:layout_marginVertical="20dp"
         style="@style/dialogText"/>
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUserChallenge"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"
-      >
+        android:layout_marginHorizontal="10dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
-        <TextView
-            android:id="@+id/textViewCancel"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginHorizontal="10dp"
-            android:text="@string/cancel"
-            style="@style/dialogText"
-            />
+        />
 
-        <TextView
-            android:id="@+id/textViewButtonOk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            style="@style/dialogText"
-            />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_button"
+        android:text="@string/check"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="50dp"
+        style="@style/diaryFragmentButtonStyle"
+        />
 
-    </LinearLayout>
 
 
 </LinearLayout>
+
 </layout>

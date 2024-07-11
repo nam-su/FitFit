@@ -12,7 +12,9 @@ import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
 import com.example.fitfit.model.HomeModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel: ViewModel() {
 
@@ -109,6 +111,23 @@ class HomeViewModel: ViewModel() {
     // 유저 id 받아오기
     fun getUserId(): String = homeModel.getUserId()
     // getUserId()
+
+
+    // 서버에서 내 도전리스트 호출
+    suspend fun getMyChallengeListToServer(userId: String): ArrayList<Challenge>? {
+        return withContext(Dispatchers.IO) {
+            val response = homeModel.getMyChallengeListToServer(userId)
+
+            Log.d(TAG, "getMyChallengeList: ${response.isSuccessful}")
+            Log.d(TAG, "getMyChallengeList: ${response.body()?.size}")
+
+            if (response.isSuccessful && response.body() != null) {
+                response.body()
+            } else {
+                null
+            }
+        }
+    } // getMyChallengeListToServer()
 
 
 }
