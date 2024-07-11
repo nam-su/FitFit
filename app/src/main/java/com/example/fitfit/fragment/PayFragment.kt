@@ -1,6 +1,7 @@
 package com.example.fitfit.fragment
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -35,6 +36,7 @@ class PayFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
+        setView()
         setObserve()
         setListener()
 
@@ -50,6 +52,15 @@ class PayFragment : Fragment() {
 
     } // setVariable()
 
+
+    // 뷰 초기화
+    private fun setView() {
+
+        // 취소선 긋기
+        binding.textViewMonthBasic.paintFlags = binding.textViewMonthBasic.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        binding.textViewYearBasic.paintFlags = binding.textViewYearBasic.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+
+    }
 
     // observe
     private fun setObserve() {
