@@ -92,9 +92,9 @@ class HomeViewModel: ViewModel() {
 
 
     // 운동 전체보기 리사이클러뷰 띄워주는 메서드
-    fun setRecyclerViewAllExercise(): ArrayList<PoseExercise> {
+    fun getBasicExerciseList(): ArrayList<PoseExercise> {
 
-        return homeModel.setAllExerciseList()
+        return homeModel.getBasicExerciseList()
 
     } // setRecyclerViewAllExercise()
 

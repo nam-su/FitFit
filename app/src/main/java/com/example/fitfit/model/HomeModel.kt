@@ -53,9 +53,9 @@ class HomeModel() {
 
 
     // 다양한 운동 리스트 리턴하는 메서드
-    fun setAllExerciseList(): ArrayList<PoseExercise> {
+    fun getBasicExerciseList(): ArrayList<PoseExercise> {
 
-        return MyApplication.sharedPreferences.getAllExerciseList()
+        return MyApplication.sharedPreferences.getBasicExerciseList()
 
     } // setAllExerciseList()
 

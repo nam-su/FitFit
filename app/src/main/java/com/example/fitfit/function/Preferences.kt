@@ -406,5 +406,21 @@ class Preferences(context: Context) {
     } // setMyExerciseList()
 
 
+    // 홈프래그먼트에서 사용할 기본 운동 리스트
+    fun getBasicExerciseList(): ArrayList<PoseExercise> {
+        return arrayListOf(
+            PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 0, 0).apply { isPrimium = 0 },
+            PoseExercise(0, "푸시업", "기본 푸시업", 0, 0, 0).apply { isPrimium = 0 },
+            PoseExercise(0, "런지", "기본 런지", 0, 0, 0).apply { isPrimium = 0 },
+            PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "런지", "왼쪽 런지", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "런지", "오른쪽 런지", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "레그레이즈", "기본 레그레이즈", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "레그레이즈", "왼쪽 레그레이즈", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "레그레이즈", "오른쪽 레그레이즈", 0, 0, 0).apply { isPrimium = 1 }
+        )
+    }
+
+
 
 }

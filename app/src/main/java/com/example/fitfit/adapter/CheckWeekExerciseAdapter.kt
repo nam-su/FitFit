@@ -44,12 +44,23 @@ class CheckWeekExerciseAdapter(private val checkWeekExerciseList: ArrayList<Exer
         fun onBind(exerciseDiary: ExerciseDiary) {
 
             binding.textViewDay.text = exerciseDiary.day
+
+            // 요일에 색상 추가
+            binding.textViewDay.setTextColor(
+                when (exerciseDiary.check) {
+                    true -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, R.color.personal))
+                    else -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, R.color.black))
+                }
+            )
+
+            // 네모칸에 색상 추가
             binding.viewCheckExercise.backgroundTintList = when(exerciseDiary.check){
 
                 true -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.personal))
                 else -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.grey))
 
             }
+
 
         } // onBind
 

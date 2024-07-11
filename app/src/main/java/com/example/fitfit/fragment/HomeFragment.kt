@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
 
 
         // 홈 프래그먼트에서 보이는 운동리스트 어댑터
-        binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.setRecyclerViewAllExercise(),false,"")
+        binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.getBasicExerciseList(),false,"")
         binding.recyclerViewPagedAllExercise.layoutManager = LinearLayoutManager(activity?.applicationContext,LinearLayoutManager.HORIZONTAL,false)
 
         // 운동 전체보기 리사이클러뷰 레이아웃 메니저 설정
@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
         binding.recyclerViewAllExercise.addItemDecoration(GridSpacingItemDecoration(4,(10f * Resources.getSystem().displayMetrics.density).toInt()))
 
         // 운동 전체보기 어댑터
-        binding.recyclerViewAllExercise.adapter = PoseExerciseGridAdapter(homeViewModel.setRecyclerViewAllExercise())
+        binding.recyclerViewAllExercise.adapter = PoseExerciseGridAdapter(homeViewModel.getBasicExerciseList())
 
 
 
