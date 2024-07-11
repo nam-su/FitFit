@@ -338,7 +338,7 @@
                 android:layout_marginVertical="10dp"
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/login_button"
-                android:text="한달 구독하기"
+                android:text="30일 구독하기"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>

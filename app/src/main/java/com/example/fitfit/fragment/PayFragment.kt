@@ -83,13 +83,13 @@ class PayFragment : Fragment() {
 
         binding.buttonSubscribeDay.setOnClickListener {
 
-            payViewModel.readyKakaoPay("one day",200)
+            payViewModel.readyKakaoPay("하루 구독권",200)
 
         }
 
         binding.buttonSubscribeMonth.setOnClickListener {
 
-            payViewModel.readyKakaoPay("한달 구독권",4200)
+            payViewModel.readyKakaoPay("30일 구독권",4200)
 
         }
 
