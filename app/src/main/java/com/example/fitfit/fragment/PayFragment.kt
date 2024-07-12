@@ -122,6 +122,7 @@ class PayFragment : Fragment() {
 
                 Log.d(TAG, "shouldOverrideUrlLoading:피지토큰 :  $pgToken")
 
+                
             } else if (url.contains("cancel")) {
 
                 Log.d(TAG, "shouldOverrideUrlLoading: 캔슬")
