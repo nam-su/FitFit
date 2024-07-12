@@ -3,6 +3,8 @@ package com.example.fitfit.model
 import android.util.Log
 import com.example.fitfit.data.PaymentReadyRequest
 import com.example.fitfit.data.PaymentReadyResponse
+import com.example.fitfit.data.User
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import retrofit2.Call
@@ -14,15 +16,13 @@ class PayModel {
     val TAG = "페이 모델"
 
     private val retrofitBuilder = RetrofitBuilder()
-//    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
     private val retrofitKakaoInterface: RetrofitInterface = retrofitBuilder.getKakaoRetrofitObject()!!.create(RetrofitInterface::class.java)
 
 
+    // 카카오페이 준비 단계
     suspend fun readyKakaoPay(itemName: String,itemPrice: Int): Response<PaymentReadyResponse> {
 
-        Log.d(TAG, "readyKakaoPay: $itemName")
-        Log.d(TAG, "readyKakaoPay: $itemPrice")
-        
         val paymentReadyRequest = PaymentReadyRequest(
 
             cid = "TC0ONETIME",
@@ -42,5 +42,10 @@ class PayModel {
         return retrofitKakaoInterface.readyKakaoPay(paymentReadyRequest)
 
     }
+
+
+    // 유저 정보 불러오기
+    fun getUserInfo(): User = MyApplication.sharedPreferences.getUser()
+    // getUserInfo()
 
 }
