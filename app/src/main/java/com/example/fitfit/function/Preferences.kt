@@ -200,14 +200,9 @@ class Preferences(context: Context) {
 
 
     // 유저 정보 쉐어드에 저장 하는 메서드 && 유저 체크리스트랑 유저전체 운동리스트 저장
-    fun setUser(user: User) {
+    fun setUserAndAllList(user: User) {
 
-        editor.putString("id", user.id)
-        editor.putString("nickname", user.nickname)
-        editor.putString("loginType", user.loginType)
-        editor.putString("profileImagePath", user.profileImagePath)
-        editor.putString("subscription", user.subscription)
-        editor.apply()
+        setUser(user)
 
         //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
         setAllExerciseList(user.checkList!!)
@@ -219,7 +214,21 @@ class Preferences(context: Context) {
         challengeList.clear()
         challengeList.addAll(user.challengeList!!)
 
-    } // setUser()
+    } // setUserAndAllList()
+
+
+    // 유저 정보 쉐어드에 저장하기
+    fun setUser(user: User) {
+
+        editor.putString("id", user.id)
+        editor.putString("nickname", user.nickname)
+        editor.putString("loginType", user.loginType)
+        editor.putString("profileImagePath", user.profileImagePath)
+        editor.putString("subscription", user.subscription)
+        editor.apply()
+
+    }
+
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드

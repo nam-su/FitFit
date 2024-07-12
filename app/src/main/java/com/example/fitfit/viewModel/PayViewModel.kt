@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitfit.data.PaymentApproveRequest
 import com.example.fitfit.data.PaymentReadyRequest
 import com.example.fitfit.data.PaymentReadyResponse
 import com.example.fitfit.model.PayModel
@@ -20,7 +21,13 @@ class PayViewModel: ViewModel() {
     val kakaoPaymentReadyResponse: LiveData<PaymentReadyResponse>
     get() = _kakaoPaymentReadyResponse
 
+    private val _payApproveStatus = MutableLiveData<Boolean>()
+    val payApproveStatus: LiveData<Boolean>
+        get() = _payApproveStatus
+
+
     var partner_order : String = ""
+    var days = 0
 
     var userInfo = payModel.getUserInfo()
 
@@ -28,9 +35,34 @@ class PayViewModel: ViewModel() {
     // 결제 후 응답 메서드
     fun readyKakaoPay(itemName: String,itemPrice: Int) {
 
+       days = when(itemName){
+           "하루 구독권" -> 1
+           "30일 구독권" -> 30
+           "일년 구독권" -> 365
+           else -> 0
+       }
+
         viewModelScope.launch {
 
-            val response = payModel.readyKakaoPay(itemName,itemPrice)
+            partner_order = "${userInfo.nickname}${System.currentTimeMillis()}"
+
+            val paymentReadyRequest = PaymentReadyRequest(
+
+                cid = "TC0ONETIME",
+                partner_order_id = partner_order,
+                partner_user_id = userInfo.nickname,
+                item_name = itemName,
+                quantity = 1,
+                total_amount = itemPrice,
+                vat_amount = 0,
+                tax_free_amount = 0,
+                approval_url = "http://15.164.103.25/pay_test.php",
+                fail_url = "http://15.164.103.25/pay_fail.php",
+                cancel_url="http://15.164.103.25/pay_cancel.php"
+
+            )
+
+            val response = payModel.readyKakaoPay(paymentReadyRequest)
 
             Log.d(TAG, "readyKakaoPay: ${response.code()}")
             Log.d(TAG, "readyKakaoPay: ${response.errorBody()}")
@@ -45,9 +77,7 @@ class PayViewModel: ViewModel() {
                 _kakaoPaymentReadyResponse.value = response.body()
 
                 // 통신 실패의 경우
-            } else {
-
-
+            }else{
 
             }
 
@@ -57,53 +87,38 @@ class PayViewModel: ViewModel() {
 
 
     // 카카오페이 결제 요청을 위한 pgToken 업데이트 및 서버에 데이터 수정 요청 및 응답
-    fun updatePgToken(pgToken : String) {
+    suspend fun updatePgToken(pgToken : String) {
 
-//        val map = HashMap<String, String>()
-//        map["cid"] = "TC0ONETIME"
-//        map["tid"] = _kakaoPaymentReadyResponse.value!!.tid
-//        map["partner_order_id"] = partner_order
-//        map["partner_user_id"] = userInfo.nickname
-//        map["pg_token"] = pgToken
-//
-//        payModel.approveKakaoPay(map).enqueue(object : Callback<KakaoPayLoad> {
-//            override fun onResponse(call: Call<KakaoPayLoad>, response: Response<KakaoPayLoad>) {
-//                if (response.isSuccessful) {
-//
-//                    Log.d("PayViewModel", "item_name : ${response.body()!!.item_name}")
-//                    val product = response.body()!!.item_name
-//
-//                    model.updateTicket(userInfo.nickname, product).enqueue(object : Callback<UserInfo> {
-//                        override fun onResponse(call: Call<UserInfo>, response2: Response<UserInfo>) {
-//                            if (response.isSuccessful) {
-//                                Log.d("PayViewModel", "onResponse: ${response2.body()}")
-//                                liveDataPayApproveStatus.value = true
-//                                liveDataUpdateUserInfo.value = response2.body()
-//
-//                            } else {
-//                                liveDataPayApproveStatus.value = false
-//                                Log.d("PayViewModel", "updateTicket - onResponse isFailure : ${response.errorBody()?.string()}")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-//                            liveDataPayApproveStatus.value = false
-//                            Log.d("PayViewModel", "updateTicket - onFailure : $t")
-//                        }
-//
-//                    })
-//
-//                } else {
-//                    liveDataPayApproveStatus.value = false
-//                    Log.d("PayViewModel", "updatePgToken - onResponse isFailure: ${response.errorBody()?.string()}")
-//                }
-//            }
-//            override fun onFailure(call: Call<KakaoPayLoad>, t: Throwable) {
-//                liveDataPayApproveStatus.value = false
-//                Log.d("PayViewModel", "updatePgToken - onFailure: $t")
-//            }
-//
-//        })
+            val paymentApproveRequest = PaymentApproveRequest(
+                cid = "TC0ONETIME",
+                tid = _kakaoPaymentReadyResponse.value!!.tid,
+                partner_order_id = partner_order,
+                partner_user_id = userInfo.nickname,
+                pg_token = pgToken
+            )
+
+            val pgTokenResponse = payModel.approveKakaoPay(paymentApproveRequest)
+
+            Log.d(TAG, "updatePgToken: ${pgTokenResponse.code()}")
+            Log.d(TAG, "updatePgToken: ${pgTokenResponse.isSuccessful}")
+            Log.d(TAG, "updatePgToken: ${pgTokenResponse.body()}")
+
+            if(pgTokenResponse.isSuccessful && pgTokenResponse.body() != null){
+
+                _payApproveStatus.value = true
+                val response= payModel.updateSubscription(userInfo.id, days)
+
+                if(response.isSuccessful && response.body() != null){
+
+                    payModel.setUser(response.body()!!)
+
+                }
+
+            }else{
+                _payApproveStatus.value = false
+            }
+
+
 
     } // updatePgToken()
 

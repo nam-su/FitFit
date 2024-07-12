@@ -2,6 +2,8 @@ package com.example.fitfit.network
 
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ChallengeResponse
+import com.example.fitfit.data.KakaoPayLoad
+import com.example.fitfit.data.PaymentApproveRequest
 import com.example.fitfit.data.PaymentReadyRequest
 import com.example.fitfit.data.PaymentReadyResponse
 import com.example.fitfit.data.PoseExercise
@@ -191,6 +193,18 @@ interface RetrofitInterface {
     ): Response<PaymentReadyResponse>
 
 
+
+    // 카카오페이 승인
+    @Headers("Authorization:SECRET_KEY DEVF70FE81BA55A6924A2361A24B570781466812")
+    @POST("v1/payment/approve")
+    suspend fun approveKakaoPay(
+
+        @Body paymentApproveRequest: PaymentApproveRequest
+
+    ): Response<KakaoPayLoad>
+
+
+
     //랭킹 리스트 요청
     @FormUrlEncoded
     @POST("rankingProcess.php")
@@ -199,8 +213,17 @@ interface RetrofitInterface {
         @Field("challengeName") challengeName: String?,
         @Field("mode") mode: String?,
 
-
         ): Response<ArrayList<Rank>>
 
+
+    // 구독권 기간
+    @FormUrlEncoded
+    @POST("payProcess.php")
+    suspend fun updateSubscription(
+
+        @Field("id") id: String?,
+        @Field("days") days: Int?
+
+    ): Response<User>
 
 }

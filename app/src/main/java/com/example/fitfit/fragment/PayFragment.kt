@@ -12,10 +12,13 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentPayBinding
 import com.example.fitfit.viewModel.PayViewModel
+import kotlinx.coroutines.launch
 
 class PayFragment : Fragment() {
 
@@ -77,6 +80,19 @@ class PayFragment : Fragment() {
 
         }
 
+        // 결제 승인 확인
+        payViewModel.payApproveStatus.observe(viewLifecycleOwner) {
+
+            binding.webViewPay.visibility = View.GONE
+            binding.linearLayoutPayReadyLayout.visibility = View.VISIBLE
+
+            when(it) {
+                true -> Toast.makeText(requireActivity(), "결제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                false ->  Toast.makeText(requireActivity(), "결제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
     } // setObserve()
 
 
@@ -121,6 +137,10 @@ class PayFragment : Fragment() {
                 val pgToken = url.substringAfter("pg_token=")
 
                 Log.d(TAG, "shouldOverrideUrlLoading:피지토큰 :  $pgToken")
+
+                lifecycleScope.launch {
+                    payViewModel.updatePgToken(pgToken)
+                }
 
             } else if (url.contains("cancel")) {
 
