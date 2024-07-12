@@ -1,15 +1,12 @@
 package com.example.fitfit.model
 
-import android.util.Log
 import com.example.fitfit.data.PaymentReadyRequest
 import com.example.fitfit.data.PaymentReadyResponse
 import com.example.fitfit.data.User
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
-import retrofit2.Call
 import retrofit2.Response
-import retrofit2.create
 
 class PayModel {
 

@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -69,7 +70,7 @@ class PayFragment : Fragment() {
 
             binding.webViewPay.webViewClient = KakaoPayWebViewClient()
             binding.webViewPay.settings.javaScriptEnabled = true
-            binding.webViewPay.loadUrl(it.next_redirect_pc_url)
+            binding.webViewPay.loadUrl(it.next_redirect_mobile_url)
 
             binding.linearLayoutPayReadyLayout.visibility = View.GONE
             binding.webViewPay.visibility = View.VISIBLE
@@ -120,9 +121,6 @@ class PayFragment : Fragment() {
                 val pgToken = url.substringAfter("pg_token=")
 
                 Log.d(TAG, "shouldOverrideUrlLoading:피지토큰 :  $pgToken")
-
-//                payViewModel.updatePgToken(pgToken)
-
 
             } else if (url.contains("cancel")) {
 
