@@ -205,14 +205,20 @@ class Preferences(context: Context) {
         setUser(user)
 
         //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
-        setAllExerciseList(user.checkList!!)
+        if(user.challengeList != null) {
+            setAllExerciseList(user.checkList!!)
+        }
 
         //불러온 전체 운동리스트 저장
-        setUserRecordExerciseList(user.userAllExerciseList!!)
+        if(user.userAllExerciseList != null) {
+            setUserRecordExerciseList(user.userAllExerciseList!!)
+        }
 
         //불러온 챌린지 리스트 저장
-        challengeList.clear()
-        challengeList.addAll(user.challengeList!!)
+        if(user.challengeList != null) {
+            challengeList.clear()
+            challengeList.addAll(user.challengeList!!)
+        }
 
     } // setUserAndAllList()
 
