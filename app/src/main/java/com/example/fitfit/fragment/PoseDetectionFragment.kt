@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -48,43 +49,48 @@ class PoseDetectionFragment : Fragment() {
 
     private var isStartExercise = false
 
+    // 권한 요청 계약을 등록
+    private val requestPermissionLauncher =
+
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+
+            if (isGranted) {
+
+                // 권한 허용 한 경우
+                setSurfaceTextureListener()
+
+            } else {
+
+                // 권한이 거부된 경우
+                findNavController().popBackStack()
+
+            }
+
+        } // requestPermissionLauncher
+
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        Log.d(TAG, "onCreateView: ")
 
         // 데이터 바인딩 설정
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_detection, container, false)
 
         return binding.root
-    }
+
+    } // onCreateView()
+
 
     // onViewCreated 메서드는 뷰가 생성된 후 호출됩니다.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(TAG, "onViewCreated: ")
-
-        // 필요한 권한을 체크합니다.
-        checkPermissions()
-
         setVariable()
+
+        checkPermissions()
         setObserve()
         setListener()
 
     } // onViewCreated
-
-
-    // 메모리 소모 줄이기 + tts 끊기
-//    override fun onDestroy() {
-//        super.onDestroy()
-//
-//        tts?.shutdown()
-//        tts?.stop()
-//        tts = null
-//
-//    } // onDestroy()
 
 
     // 변수 초기화
@@ -105,23 +111,6 @@ class PoseDetectionFragment : Fragment() {
 
     //리스너 관련 메서드
     private fun setListener(){
-
-        // TextureView의 SurfaceTextureListener를 설정합니다.
-        binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-
-            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
-                Log.d(TAG, "onSurfaceTextureAvailable")
-                poseDetectionViewModel.openCamera(binding.textureView)
-                initTextToSpeech()
-            }
-
-            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
-            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = false
-            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!, exerciseName)
-            }
-
-        }
 
         binding.buttonTest.setOnClickListener {
 
@@ -217,6 +206,29 @@ class PoseDetectionFragment : Fragment() {
     } //setObserve()
 
 
+    // textureView 관련 초기화
+    private fun setSurfaceTextureListener() {
+
+        binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+                Log.d(TAG, "onSurfaceTextureAvailable")
+                poseDetectionViewModel.openCamera(binding.textureView)
+                initTextToSpeech()
+
+            }
+
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = false
+            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
+                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!, exerciseName)
+            }
+
+        }
+
+    } // setSurfaceTextureListener()
+
+
     // 쿨다운 시작 메서드
     private fun triggerCoolDown(coolDownFlag: KMutableProperty0<Boolean>) {
 
@@ -242,7 +254,6 @@ class PoseDetectionFragment : Fragment() {
         mediaPlayer.start()
 
     } // startMediaPlayer()
-
 
 
     // tts speak 메서드
@@ -272,20 +283,18 @@ class PoseDetectionFragment : Fragment() {
 
     // 카메라 권한을 체크
     private fun checkPermissions() {
+
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
-        }
-    }
 
+            requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
 
-    // 권한 요청 결과를 처리
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            poseDetectionViewModel.openCamera(binding.textureView)
         } else {
-            checkPermissions()
+
+            Log.d(TAG, "checkPermissions: 여기로 오면될듯")
+            setSurfaceTextureListener()
+
         }
-    }
+
+    } // checkPermissions()
 
 }

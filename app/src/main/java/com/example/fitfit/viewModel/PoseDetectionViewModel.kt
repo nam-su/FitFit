@@ -6,9 +6,15 @@ import android.graphics.Bitmap
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
+import android.hardware.camera2.params.OutputConfiguration
+import android.hardware.camera2.params.SessionConfiguration
+import android.os.Build
 import android.util.Log
 import android.view.Surface
 import android.view.TextureView
+import androidx.annotation.RequiresApi
+
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +22,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.fitfit.model.PoseDetectionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class PoseDetectionViewModel() : ViewModel() {
 
@@ -45,7 +54,6 @@ class PoseDetectionViewModel() : ViewModel() {
     private val _checkAccuracy = MutableLiveData<Boolean>()
     val checkAccuracy: LiveData<Boolean> get() = _checkAccuracy
 
-
     // ViewModel 초기화 메서드
     fun initialize(context: Context,exerciseName: String) {
 
@@ -57,26 +65,39 @@ class PoseDetectionViewModel() : ViewModel() {
     } // initialize()
 
 
-    // 카메라 열기 메서드
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission") // 권한 재확인 안하기 위한 어노테이션
     fun openCamera(textureView: TextureView): Boolean {
+
         viewModelScope.launch(Dispatchers.Main) {
+
             cameraManager.openCamera(cameraManager.cameraIdList[0], object : CameraDevice.StateCallback() {
+
+                @RequiresApi(Build.VERSION_CODES.P)
                 override fun onOpened(cameraDevice: CameraDevice) {
+
                     val surface = Surface(textureView.surfaceTexture)
+
                     val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
                         addTarget(surface)
                     }
 
-                    cameraDevice.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
-                        override fun onConfigured(session: CameraCaptureSession) {
-                            session.setRepeatingRequest(captureRequest.build(), null, null)
-                        }
+                    val sessionConfiguration = SessionConfiguration(
+                        SessionConfiguration.SESSION_REGULAR, // 또는 SESSION_HIGH_SPEED
+                        listOf(OutputConfiguration(surface)),
+                        Executors.newSingleThreadExecutor(), // Executor
+                        object : CameraCaptureSession.StateCallback() {
+                            override fun onConfigured(session: CameraCaptureSession) {
+                                session.setRepeatingRequest(captureRequest.build(), null, null)
+                            }
 
-                        override fun onConfigureFailed(session: CameraCaptureSession) {
-                           // "Camera configuration failed"
+                            override fun onConfigureFailed(session: CameraCaptureSession) {
+                                // Session configuration failed
+                            }
                         }
-                    }, null)
+                    )
+
+                    cameraDevice.createCaptureSession(sessionConfiguration)
+
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
