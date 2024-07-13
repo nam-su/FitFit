@@ -49,7 +49,7 @@ class UserEditModel {
 
 
     // 쉐어드에 유저정보 저장.
-    fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUser(user)
+    fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUserAndAllList(user)
 
 
     // 레트로핏에서 baseurl 경로 받아오기

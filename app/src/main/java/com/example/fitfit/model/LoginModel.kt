@@ -24,7 +24,7 @@ class LoginModel() {
 
 
     // 로그인 성공시 쉐어드에 유저정보 저장.
-    fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUser(user)
+    fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUserAndAllList(user)
     // setSharedPreferencesUserInfo()
 
 }

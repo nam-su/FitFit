@@ -313,6 +313,7 @@ class UserFragment : Fragment() {
     private fun setCircleImageView(){
 
         Log.d(TAG, "setCircleImageView: ${userViewModel.profileImagePath.value}")
+
         Glide.with(this)
             //baseurl+쉐어드의 이미지경로
             .load(userViewModel.profileImagePath.value)

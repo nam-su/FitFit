@@ -3,6 +3,7 @@ package com.example.fitfit.function
 import android.content.Context
 import android.util.Log
 import com.example.fitfit.R
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
@@ -34,6 +35,9 @@ class Preferences(context: Context) {
 
     /** 내가 짠 운동 리스트**/
     private lateinit var myExerciseList: ArrayList<PoseExercise>
+
+    /** fitfit 챌린지 리스트**/
+    val challengeList = ArrayList<Challenge>()
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
@@ -196,6 +200,30 @@ class Preferences(context: Context) {
 
 
     // 유저 정보 쉐어드에 저장 하는 메서드 && 유저 체크리스트랑 유저전체 운동리스트 저장
+    fun setUserAndAllList(user: User) {
+
+        setUser(user)
+
+        //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
+        if(user.challengeList != null) {
+            setAllExerciseList(user.checkList!!)
+        }
+
+        //불러온 전체 운동리스트 저장
+        if(user.userAllExerciseList != null) {
+            setUserRecordExerciseList(user.userAllExerciseList!!)
+        }
+
+        //불러온 챌린지 리스트 저장
+        if(user.challengeList != null) {
+            challengeList.clear()
+            challengeList.addAll(user.challengeList!!)
+        }
+
+    } // setUserAndAllList()
+
+
+    // 유저 정보 쉐어드에 저장하기
     fun setUser(user: User) {
 
         editor.putString("id", user.id)
@@ -205,13 +233,8 @@ class Preferences(context: Context) {
         editor.putString("subscription", user.subscription)
         editor.apply()
 
-        //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
-        setAllExerciseList(user.checkList!!)
+    }
 
-        //불러온 전체 운동리스트 저장
-        setUserRecordExerciseList(user.userAllExerciseList!!)
-
-    } // setUser()
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드
@@ -395,6 +418,24 @@ class Preferences(context: Context) {
     fun setMyExerciseList(exerciseList: ArrayList<PoseExercise>){
         myExerciseList.clear()
         myExerciseList.addAll(exerciseList)
+    } // setMyExerciseList()
+
+
+    // 홈프래그먼트에서 사용할 기본 운동 리스트
+    fun getBasicExerciseList(): ArrayList<PoseExercise> {
+        return arrayListOf(
+            PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 0, 0).apply { isPrimium = 0 },
+            PoseExercise(0, "푸시업", "기본 푸시업", 0, 0, 0).apply { isPrimium = 0 },
+            PoseExercise(0, "런지", "기본 런지", 0, 0, 0).apply { isPrimium = 0 },
+            PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "런지", "왼쪽 런지", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "런지", "오른쪽 런지", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "레그레이즈", "기본 레그레이즈", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "레그레이즈", "왼쪽 레그레이즈", 0, 0, 0).apply { isPrimium = 1 },
+            PoseExercise(0, "레그레이즈", "오른쪽 레그레이즈", 0, 0, 0).apply { isPrimium = 1 }
+        )
     }
+
+
 
 }

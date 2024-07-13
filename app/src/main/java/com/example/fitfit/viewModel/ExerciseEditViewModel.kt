@@ -126,7 +126,7 @@ class ExerciseEditViewModel: ViewModel() {
     }
 
 
-    // 갱신한 리스트를 싱글톤에 저장
+    // 갱신한 리스트를 싱글톤에 저장하는 메서드를 모델에 요청
     fun setMyPoseExerciseList(){
         exerciseEditModel.setMyExerciseList()
     }

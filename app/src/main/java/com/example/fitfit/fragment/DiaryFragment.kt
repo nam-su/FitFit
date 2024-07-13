@@ -1,6 +1,5 @@
 package com.example.fitfit.fragment
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -10,22 +9,21 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.R
+import com.example.fitfit.adapter.ChallengeJoinAdapter
+import com.example.fitfit.adapter.ExerciseChoiceAdapter
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.databinding.FragmentDiaryBinding
-import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
 
 
 class DiaryFragment : Fragment() {
@@ -33,15 +31,16 @@ class DiaryFragment : Fragment() {
     private val TAG = "다이어리 프래그먼트"
 
     lateinit var binding: FragmentDiaryBinding
-
     lateinit var diaryViewModel: DiaryViewModel
+    private var challengeJoinAdapter: ChallengeJoinAdapter? = null
 
-    lateinit var barDataSet: BarDataSet
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
+
+        setVariable()
 
         return binding.root
     }
@@ -51,16 +50,15 @@ class DiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setVariable()
+        Log.d(TAG, "onViewCreated: ")
 
         setListener()
-
         setObserve()
-
         setBarChart(binding.barChart)
 
-    }
+        setAdapter()
 
+    }
 
 
     //초기값 설정
@@ -75,6 +73,32 @@ class DiaryFragment : Fragment() {
     } // setVariable()
 
 
+    // 리사이클러뷰와 어댑터 설정
+    private fun setAdapter() {
+
+        // 네트워크 요청을 수행하고 어댑터를 설정
+        lifecycleScope.launch {
+            val challengeList = diaryViewModel.getMyChallengeListToServer()
+            challengeList?.let {
+                challengeJoinAdapter = ChallengeJoinAdapter(it)
+                // RecyclerView 설정
+                binding.recyclerView.adapter = challengeJoinAdapter
+
+                if(challengeJoinAdapter?.itemCount!! < 1){
+
+                    binding.textViewNonChallenge.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+
+                }else{
+
+                    binding.textViewNonChallenge.visibility = View.GONE
+                    binding.recyclerView.visibility = View.VISIBLE
+
+                }
+            }
+        }
+
+    } //setAdapter()
 
     //리스너 설정
     private fun setListener(){
@@ -98,7 +122,6 @@ class DiaryFragment : Fragment() {
     } //setListener()
 
 
-
     //observe 설정
     private fun setObserve(){
 
@@ -117,6 +140,7 @@ class DiaryFragment : Fragment() {
             setBarChart(binding.barChart)
 
         }
+
     }
 
 
@@ -126,17 +150,38 @@ class DiaryFragment : Fragment() {
 
         initBarChart(barChart)
 
-        barDataSet = BarDataSet(diaryViewModel.getEntryArrayList(), "")
+        val filteredEntryList = diaryViewModel.getEntryArrayList().filter { it.y != 0f }
+
+        filteredEntryList.forEach{
+            Log.d(TAG, "setBarChart: ${it.x}, ${it.y}")
+        }
+
+        //필터링안 데이터 비어있을때 안비어있을 때 처리
+        if(filteredEntryList.isEmpty()){
+            binding.barChart.visibility = View.GONE
+            binding.textViewEmpty.visibility = View.VISIBLE
+        }else{
+            binding.barChart.visibility = View.VISIBLE
+            binding.textViewEmpty.visibility = View.GONE
+        }
+
+        val keysList = diaryViewModel.getAllExerciseMap().keys.toMutableList()
+        val labels = ArrayList<String>()
+        labels.addAll(keysList)
+
+        val barDataSet = BarDataSet(filteredEntryList, "")
 
 
+        val colorList = listOf(
+            ContextCompat.getColor(requireContext(), R.color.squat),
+            ContextCompat.getColor(requireContext(), R.color.pushUp),
+            ContextCompat.getColor(requireContext(), R.color.lunge),
+            ContextCompat.getColor(requireContext(), R.color.legRaises)
+        )
 
             barDataSet.apply {
 
-                val colorList = listOf(
-                    ContextCompat.getColor(requireContext(), R.color.squat),
-                    ContextCompat.getColor(requireContext(), R.color.pushUp),
-                    ContextCompat.getColor(requireContext(), R.color.lunge)
-                )
+
 
                 colors = colorList
                 //Setting the size of the form in the legend
@@ -149,10 +194,13 @@ class DiaryFragment : Fragment() {
 
             }
 
-            val data = BarData(barDataSet)
-            data.setValueTypeface(Typeface.DEFAULT_BOLD)
-            barChart.data = data
+
+            val barData = BarData(barDataSet)
+            barData.setValueTypeface(Typeface.DEFAULT_BOLD)
+            barData.barWidth = 0.4f
+            barChart.data = barData
             barChart.invalidate()
+            barChart.setFitBars(true) //바를 차트에 맞춤
 
     } // setBarChart()
 
@@ -178,49 +226,71 @@ class DiaryFragment : Fragment() {
         barChart.description = description
 
         //X, Y 바의 애니메이션 효과
-        barChart.animateY(1000)
-        barChart.animateX(1000)
+        barChart.animateY(500)
+        barChart.animateX(500)
 
 
         //바텀 좌표 값 설정
         barChart.xAxis.apply {
 
             //hiding the x-axis line, default true if not set
-            setDrawAxisLine(false)
+            setDrawAxisLine(true)
+            setDrawGridLines(false)  //x축의 그리드 라인 숨기기
 
-            //hiding the vertical grid lines, default true if not set
-            setDrawGridLines(false)
+            granularity = 1f
+
+            textSize = 6f
 
             //change the position of x-axis to the bottom
             position = XAxis.XAxisPosition.BOTTOM
 
-            //set the horizontal distance of the grid line
-            granularity = 1f
+            granularity = 1f // x축의 최소 간격을 1로 설정
 
             typeface = Typeface.DEFAULT_BOLD
-
 
             //x축 값에 문자열 넣는 부분 (원래 Float 형태만 출력됐음)
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String? {
-                    return diaryViewModel.getLabelMap()[value] // x 값에 해당하는 문자열 반환
+                    val keyList = diaryViewModel.getAllExerciseMap().keys.toList()
+                    return keyList[value.toInt()] // x 값에 해당하는 문자열 반환
                 }
             }
 
         }
 
 
-        //barChart의 좌측 좌표값 설정
-         barChart.axisLeft.apply {
+        // barChart의 좌측 좌표값 설정
+        barChart.axisLeft.apply {
 
-            axisMinimum = 0f  // 최소 값 설정
+            // y축 간격을 1로 설정 (즉, 눈금 간격이 1)
+            granularity = 1f
+
+            // y축 최소값을 0으로 설정
+            axisMinimum = 0f
+
+            // y축 최대값을 설정 (diaryViewModel의 calculateMaxY() 함수에 의해 계산된 값)
             axisMaximum = diaryViewModel.calculateMaxY()
+
+            // y축의 그리드 라인을 그리지 않도록 설정
             setDrawGridLines(false)
+
+            // y축의 축선을 그리도록 설정
             setDrawAxisLine(true)
+
+            // y축을 활성화
             isEnabled = true
+
+            // y축 레이블을 그리도록 설정
             setDrawLabels(true)
 
-         }
+            // y축 값들을 정수로 표현하도록 설정
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    // 값 포맷팅: 소수점 없이 정수로 변환하여 반환
+                    return value.toInt().toString()
+                }
+            }
+        }
 
         //barChart의 우측값 설정
          barChart.axisRight.apply {
@@ -232,8 +302,10 @@ class DiaryFragment : Fragment() {
 
             }
 
-        //바차트의 타이틀(범례) 설정
-        barChart.legend.isEnabled = false
+
+        barChart.legend.apply {
+            isEnabled = false
+        }
 
     } //initBarChart()
 

@@ -94,6 +94,9 @@
         <action
             android:id="@+id/action_exerciseFragment_to_payFragment"
             app:destination="@id/payFragment" />
+        <action
+            android:id="@+id/action_exerciseFragment_to_DiaryFragment"
+            app:destination="@+id/diaryFragment"/>
 
     </fragment>
 

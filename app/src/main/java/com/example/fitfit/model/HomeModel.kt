@@ -1,6 +1,7 @@
 package com.example.fitfit.model
 
 import android.util.Log
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
@@ -46,45 +47,15 @@ class HomeModel() {
     } // setWeekStatusList()
 
 
-    // 챌린지 랭킹 정보 리스트 리턴하는 메서드
-    fun setAllChallengeRankList(): ArrayList<Rank> {
-
-        val challengeRankList = ArrayList<Rank>()
-
-        challengeRankList.add(Rank(1,"언더테이커",""))
-        challengeRankList.add(Rank(2,"케인",""))
-        challengeRankList.add(Rank(3,"유형선",""))
-        challengeRankList.add(Rank(4,"유형선",""))
-        challengeRankList.add(Rank(5,"유형선",""))
-        challengeRankList.add(Rank(6,"유형선",""))
-        challengeRankList.add(Rank(7,"유형선",""))
-        challengeRankList.add(Rank(8,"유형선",""))
-        challengeRankList.add(Rank(9,"유형선",""))
-        challengeRankList.add(Rank(10,"유형선",""))
-
-        return challengeRankList
-
-    } // setChallengeRankList()
-
-
-    // 홈프래그먼트에 보여지는 3명 랭킹 리스트
-    fun setPagedChallengeRankList(): ArrayList<Rank> {
-
-        val pagedChallengeRankList = ArrayList<Rank>()
-
-        pagedChallengeRankList.add(Rank(1,"언더테이커",""))
-        pagedChallengeRankList.add(Rank(2,"케인",""))
-        pagedChallengeRankList.add(Rank(3,"유형선",""))
-
-        return pagedChallengeRankList
-
-    } // setPagedChallengeRankList()
+    // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
+    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> = retrofitInterface.getRankingList(challengeName, "getRankingList")
+    // setPagedChallengeRankList()
 
 
     // 다양한 운동 리스트 리턴하는 메서드
-    fun setAllExerciseList(): ArrayList<PoseExercise> {
+    fun getBasicExerciseList(): ArrayList<PoseExercise> {
 
-        return MyApplication.sharedPreferences.getAllExerciseList()
+        return MyApplication.sharedPreferences.getBasicExerciseList()
 
     } // setAllExerciseList()
 
@@ -101,8 +72,11 @@ class HomeModel() {
         val day: String = datePattern.format(Date())
         val dateArray = day.split("-").toTypedArray()
         val cal = Calendar.getInstance()
-        cal[dateArray[0].toInt(), dateArray[1].toInt() - 1] = dateArray[2].toInt()
+        cal.set(dateArray[0].toInt(), dateArray[1].toInt() - 1, dateArray[2].toInt())
         cal.firstDayOfWeek = Calendar.SUNDAY
+
+        // 이번 주의 첫 번째 일요일로 이동
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
         // 이번 주 날짜 리스트 초기화
         val weekDateList = ArrayList<String>()
@@ -113,7 +87,9 @@ class HomeModel() {
             weekDateList.add(date)
 
             // 기록 여부 확인
-            val hasRecord = userRecordExerciseList!!.any { SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date }
+            val hasRecord = userRecordExerciseList!!.any {
+                SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date
+            }
             Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
             exerciseDiaryList.add(ExerciseDiary(weekDays[i], hasRecord))
 
@@ -122,4 +98,23 @@ class HomeModel() {
 
     } // setWeek()
 
+
+    //fitfit 챌린지 리스트 받아오기
+    fun getChallengeListToShared(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
+    // getChallengeListToShared()
+
+
+    //싱글톤 객체에서 baseUrl 받아오기
+    fun getBaseUrl(): String? = retrofitBuilder.baseUrl
+    // getBaseUrl
+
+
+    // 유저 아이디 정보 받아오기
+    fun getUserId(): String = MyApplication.sharedPreferences.getUserId()
+    // getUserId()
+
+
+    //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
+    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> = retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
+    // saveMyChallengeList()
 }
