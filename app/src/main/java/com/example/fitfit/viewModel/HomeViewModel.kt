@@ -1,19 +1,15 @@
 package com.example.fitfit.viewModel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
 import com.example.fitfit.model.HomeModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel: ViewModel() {
@@ -40,27 +36,18 @@ class HomeViewModel: ViewModel() {
 
 
     // 챌린지 이름 설정
-    fun setChallengeName(name: String){
-        _challengeName.value = name
-    } // setChallengeName()
+    fun setChallengeName(name: String){ _challengeName.value = name }
+    // setChallengeName()
 
 
     // 이번주 운동량에 따른 메시지 출력을 위한 메서드
-    fun setWeekStatus(): LiveData<String> {
-
-        _weekStatus.value = homeModel.setWeekStatus() + " 님 이번주 운동은 순항중 이네요."
-
-        return weekStatus
-
-    } // setWeekStatus()
+    fun setWeekStatus(): String = homeModel.setWeekStatus() + " 님 이번주 운동은 순항중 이네요."
+    // setWeekStatus()
 
 
     // 이번주 운동량을 리사이클러뷰에 띄워주는 메서드
-    fun setRecyclerViewWeekStatus(): ArrayList<ExerciseDiary>{
-
-        return homeModel.setWeekStatusList()
-
-    } // setRecyclerViewWeekStatus()
+    fun setRecyclerViewWeekStatus(): ArrayList<ExerciseDiary> = homeModel.setWeekStatusList()
+    // setRecyclerViewWeekStatus()
 
 
     // 홈 프래그먼트에서 보이는 랭킹 리사이클러뷰 띄워주는 메서드
@@ -92,15 +79,13 @@ class HomeViewModel: ViewModel() {
 
 
     // 운동 전체보기 리사이클러뷰 띄워주는 메서드
-    fun getBasicExerciseList(): ArrayList<PoseExercise> {
-
-        return homeModel.getBasicExerciseList()
-
-    } // setRecyclerViewAllExercise()
+    fun getBasicExerciseList(): ArrayList<PoseExercise> = homeModel.getBasicExerciseList()
+    // setRecyclerViewAllExercise()
 
 
     // 모델에서 fitfit의 챌린지 리스트 요청
     fun getChallengeListToModel(): ArrayList<Challenge> = homeModel.getChallengeListToShared()
+    // getChallengeListToModel()
 
 
     //이미지 baseUrl 받아오기
@@ -115,18 +100,26 @@ class HomeViewModel: ViewModel() {
 
     // 서버에서 내 도전리스트 호출
     suspend fun getMyChallengeListToServer(userId: String): ArrayList<Challenge>? {
+
         return withContext(Dispatchers.IO) {
+
             val response = homeModel.getMyChallengeListToServer(userId)
 
             Log.d(TAG, "getMyChallengeList: ${response.isSuccessful}")
             Log.d(TAG, "getMyChallengeList: ${response.body()?.size}")
 
             if (response.isSuccessful && response.body() != null) {
+
                 response.body()
+
             } else {
+
                 null
+
             }
+
         }
+
     } // getMyChallengeListToServer()
 
 

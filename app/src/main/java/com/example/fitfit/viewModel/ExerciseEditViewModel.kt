@@ -38,41 +38,30 @@ class ExerciseEditViewModel: ViewModel() {
 
 
     // 모든 스쿼트 리스트
-    fun setAllSquatList(): ArrayList<PoseExercise> {
-
-        return exerciseEditModel.getAllSquatList()
-
-    } // setAllSquatList()
+    fun setAllSquatList(): ArrayList<PoseExercise> = exerciseEditModel.getAllSquatList()
+    // setAllSquatList()
 
 
     // 모든 푸시업 리스트
-    fun setAllPushUpList(): ArrayList<PoseExercise> {
-
-        return exerciseEditModel.getAllPushUpList()
-
-    } // setAllPushUpList()
+    fun setAllPushUpList(): ArrayList<PoseExercise> = exerciseEditModel.getAllPushUpList()
+    // setAllPushUpList()
 
 
     // 모든 런지 리스트
-    fun setAllLungeList(): ArrayList<PoseExercise> {
-
-        return exerciseEditModel.getAllLungeList()
-
-    } // setAllLungeList()
+    fun setAllLungeList(): ArrayList<PoseExercise> = exerciseEditModel.getAllLungeList()
+    // setAllLungeList()
 
 
     // 모든 레그레이즈 리스트
-    fun setAllLegRaisesList(): ArrayList<PoseExercise> {
-
-        return exerciseEditModel.getAllLegRaisesList()
-
-    }
+    fun setAllLegRaisesList(): ArrayList<PoseExercise> = exerciseEditModel.getAllLegRaisesList()
+    // setAllLegRaisesList()
 
 
     // 리스트에서 아이템 삭제
     fun deleteExerciseItem(myExerciseList: ArrayList<PoseExercise>,position: Int) {
 
         exerciseEditModel.deleteExerciseItem(myExerciseList,position)
+
         _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
 
     } // deleteExerciseItem()
@@ -89,18 +78,15 @@ class ExerciseEditViewModel: ViewModel() {
 
 
     // 내 운동 리스트가 최소 3개인지 판별
-    fun checkMyExerciseListSizeMin(): Boolean{
-
-        return exerciseEditModel.myExerciseList.size > 2
-
-    } // checkMyExerciseListSizeMin()
+    fun checkMyExerciseListSizeMin(): Boolean = exerciseEditModel.myExerciseList.size > 2
+    // checkMyExerciseListSizeMin()
 
 
-    
     //서버에 체크리스트를 담은 객체를 보내고 응답을 받는 메서드
     fun setMyPoseExercise(){
 
         viewModelScope.launch {
+
             val response = exerciseEditModel.setMyPoseExerciseList()
 
             if (response.isSuccessful && response.body() != null) {
@@ -113,23 +99,30 @@ class ExerciseEditViewModel: ViewModel() {
                 }
                 
             } else {
+
                 println("Failed to send data. Error code: ${response.code()}")
+
             }
+
         }
 
     } //setMyPoseExercise()
 
 
-    //model에 해시맵 변경 요청
+    // model에 해시맵 변경 요청
     fun setUserCheckList(){
+
         exerciseEditModel.setUserCheckList()
-    }
+
+    } // setUserCheckList()
 
 
     // 갱신한 리스트를 싱글톤에 저장하는 메서드를 모델에 요청
     fun setMyPoseExerciseList(){
+
         exerciseEditModel.setMyExerciseList()
-    }
+
+    } // setMyPoseExerciseList()
 
 
 }

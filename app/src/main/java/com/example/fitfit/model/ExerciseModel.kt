@@ -16,13 +16,9 @@ class ExerciseModel {
         RetrofitInterface::class.java)
 
 
-
     // 쉐어드에 있는 내 운동리스트 가져오는 메서드
-    fun getMyExerciseList(): ArrayList<PoseExercise> {
-
-        return MyApplication.sharedPreferences.getMyPoseExerciseList()
-
-    } // getMyExerciseList()
+    fun getMyExerciseList(): ArrayList<PoseExercise> = MyApplication.sharedPreferences.getMyPoseExerciseList()
+    // getMyExerciseList()
 
 
     // 운동정보 상세보기 리스트 가져오는 메서드
@@ -36,7 +32,7 @@ class ExerciseModel {
 
         return exerciseDetailViewList
 
-    }
+    } // getMyExerciseInfoList()
 
 
     // 싱글톤의 챌린지 리스트 호출
@@ -62,15 +58,5 @@ class ExerciseModel {
         MyApplication.sharedPreferences.challengeList.addAll(challengeList)
 
     } //saveChallengeList()
-
-
-    // 서버에서 받아온 내 챌린지 리스트를 싱글톤에 저장하는 메서드
-//    fun saveMyChallengeList(myChallengeList: ArrayList<Challenge>) {
-//
-//        MyApplication.sharedPreferences.myChallengeList.clear()
-//        MyApplication.sharedPreferences.myChallengeList.addAll(myChallengeList)
-//
-//    }
-
 
 }

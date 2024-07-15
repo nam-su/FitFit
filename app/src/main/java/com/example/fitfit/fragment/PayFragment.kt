@@ -1,6 +1,7 @@
 package com.example.fitfit.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -13,9 +14,12 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentPayBinding
 import com.example.fitfit.viewModel.PayViewModel
 import kotlinx.coroutines.launch
@@ -26,6 +30,17 @@ class PayFragment : Fragment() {
 
     lateinit var binding: FragmentPayBinding
     lateinit var payViewModel: PayViewModel
+
+    private lateinit var callback: OnBackPressedCallback
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -67,6 +82,7 @@ class PayFragment : Fragment() {
     }
 
     // observe
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setObserve() {
 
         payViewModel.kakaoPaymentReadyResponse.observe(viewLifecycleOwner) {
@@ -159,5 +175,24 @@ class PayFragment : Fragment() {
         }
 
     } // KakaoPayWebViewClient
+
+
+    // 뒤로가기 버튼 눌렀을 때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                findNavController().popBackStack()
+                (activity as MainActivity).visibleBottomNavi()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
 
 }

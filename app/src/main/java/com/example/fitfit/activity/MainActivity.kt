@@ -28,11 +28,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         setView()
-        setBackPressed()
-    }
+
+    } // onCreate()
 
 
     // 뷰관련 초기화
@@ -57,11 +59,12 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         // 프래그먼트 백스택 관찰을 위한 리스너
+        /** 마지막 작업 후 삭제 **/
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
 
             Log.d(TAG, "setView: 백스택 : " + navHostFragment.childFragmentManager.backStackEntryCount.toString())
-        }
 
+        }
 
     } // setView()
 
@@ -80,47 +83,5 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.GONE
 
     } // goneBottomNavi()
-
-
-    //뒤로가기 버튼 클릭시
-    private fun setBackPressed() {
-
-        onBackPressedDispatcher.addCallback(this){
-
-            // R.id.fragment -> fragment에서 백버튼 눌렀을 때에대한 처리
-            when(navController.currentDestination?.id){
-
-                R.id.loginFragment -> finish()
-                R.id.exerciseFragment -> finish()
-                R.id.diaryFragment -> finish()
-                R.id.userFragment -> finish()
-                R.id.exerciseChoiceFragment -> {
-
-                    navController.popBackStack()
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-
-                }
-
-                R.id.poseDetectionFragment -> {
-
-                    navController.popBackStack()
-
-                }
-
-                R.id.payFragment -> {
-
-                    navController.popBackStack()
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-
-                }
-
-            }
-
-        }
-
-    } // setBackPressed()
-
-
-
 
 }

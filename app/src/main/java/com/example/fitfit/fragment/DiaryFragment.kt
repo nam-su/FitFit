@@ -1,20 +1,20 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ChallengeJoinAdapter
-import com.example.fitfit.adapter.ExerciseChoiceAdapter
-import com.example.fitfit.data.Challenge
 import com.example.fitfit.databinding.FragmentDiaryBinding
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
@@ -34,31 +34,39 @@ class DiaryFragment : Fragment() {
     lateinit var diaryViewModel: DiaryViewModel
     private var challengeJoinAdapter: ChallengeJoinAdapter? = null
 
+    private lateinit var callback: OnBackPressedCallback
 
 
+    // onAttach()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
+
+    // onCreateView()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
 
-        setVariable()
-
         return binding.root
-    }
+
+    } // onCreateView()
 
 
-
+    // onViewCreated()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(TAG, "onViewCreated: ")
-
+        setVariable()
         setListener()
         setObserve()
         setBarChart(binding.barChart)
-
         setAdapter()
 
-    }
+    } // onViewCreated()
 
 
     //초기값 설정
@@ -78,29 +86,36 @@ class DiaryFragment : Fragment() {
 
         // 네트워크 요청을 수행하고 어댑터를 설정
         lifecycleScope.launch {
+
             val challengeList = diaryViewModel.getMyChallengeListToServer()
+
             challengeList?.let {
+
                 challengeJoinAdapter = ChallengeJoinAdapter(it)
+
                 // RecyclerView 설정
                 binding.recyclerView.adapter = challengeJoinAdapter
 
-                if(challengeJoinAdapter?.itemCount!! < 1){
+                if(challengeJoinAdapter?.itemCount!! < 1) {
 
                     binding.textViewNonChallenge.visibility = View.VISIBLE
                     binding.recyclerView.visibility = View.GONE
 
-                }else{
+                } else {
 
                     binding.textViewNonChallenge.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
 
                 }
+
             }
+
         }
 
-    } //setAdapter()
+    } // setAdapter()
 
-    //리스너 설정
+
+    // 리스너 설정
     private fun setListener(){
 
         //시작날짜 선택 리스너
@@ -122,7 +137,7 @@ class DiaryFragment : Fragment() {
     } //setListener()
 
 
-    //observe 설정
+    // observe 설정
     private fun setObserve(){
 
         //첫번째 선택 날짜 관찰
@@ -141,11 +156,10 @@ class DiaryFragment : Fragment() {
 
         }
 
-    }
+    } // setObserve()
 
 
-
-    //barchart 데이터 셋팅
+    // barchart 데이터 셋팅
     private fun setBarChart(barChart: BarChart) {
 
         initBarChart(barChart)
@@ -153,24 +167,30 @@ class DiaryFragment : Fragment() {
         val filteredEntryList = diaryViewModel.getEntryArrayList().filter { it.y != 0f }
 
         filteredEntryList.forEach{
+
             Log.d(TAG, "setBarChart: ${it.x}, ${it.y}")
+
         }
 
         //필터링안 데이터 비어있을때 안비어있을 때 처리
-        if(filteredEntryList.isEmpty()){
+        if(filteredEntryList.isEmpty()) {
+
             binding.barChart.visibility = View.GONE
             binding.textViewEmpty.visibility = View.VISIBLE
-        }else{
+
+        } else {
+
             binding.barChart.visibility = View.VISIBLE
             binding.textViewEmpty.visibility = View.GONE
+
         }
 
         val keysList = diaryViewModel.getAllExerciseMap().keys.toMutableList()
+
         val labels = ArrayList<String>()
         labels.addAll(keysList)
 
         val barDataSet = BarDataSet(filteredEntryList, "")
-
 
         val colorList = listOf(
             ContextCompat.getColor(requireContext(), R.color.squat),
@@ -205,14 +225,15 @@ class DiaryFragment : Fragment() {
     } // setBarChart()
 
 
-
     //BarChart 초기 설정
     private fun initBarChart(barChart: BarChart) {
 
         //hiding the grey background of the chart, default false if not set
         barChart.setDrawGridBackground(false)
+
         //remove the bar shadow, default false if not set
         barChart.setDrawBarShadow(false)
+
         //remove border of the chart, default false if not set
         barChart.setDrawBorders(false)
 
@@ -228,7 +249,6 @@ class DiaryFragment : Fragment() {
         //X, Y 바의 애니메이션 효과
         barChart.animateY(500)
         barChart.animateX(500)
-
 
         //바텀 좌표 값 설정
         barChart.xAxis.apply {
@@ -250,14 +270,18 @@ class DiaryFragment : Fragment() {
 
             //x축 값에 문자열 넣는 부분 (원래 Float 형태만 출력됐음)
             valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String? {
+
+                override fun getFormattedValue(value: Float): String {
+
                     val keyList = diaryViewModel.getAllExerciseMap().keys.toList()
+
                     return keyList[value.toInt()] // x 값에 해당하는 문자열 반환
+
                 }
+
             }
 
         }
-
 
         // barChart의 좌측 좌표값 설정
         barChart.axisLeft.apply {
@@ -285,11 +309,16 @@ class DiaryFragment : Fragment() {
 
             // y축 값들을 정수로 표현하도록 설정
             valueFormatter = object : ValueFormatter() {
+
                 override fun getFormattedValue(value: Float): String {
+
                     // 값 포맷팅: 소수점 없이 정수로 변환하여 반환
                     return value.toInt().toString()
+
                 }
+
             }
+
         }
 
         //barChart의 우측값 설정
@@ -304,9 +333,29 @@ class DiaryFragment : Fragment() {
 
 
         barChart.legend.apply {
+
             isEnabled = false
+
         }
 
-    } //initBarChart()
+    } // initBarChart()
+
+
+    // 뒤로가기 눌렀을때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                (activity as MainActivity).finish()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
 
 }

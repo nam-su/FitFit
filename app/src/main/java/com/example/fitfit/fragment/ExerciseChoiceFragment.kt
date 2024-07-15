@@ -1,11 +1,13 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -26,6 +28,15 @@ class ExerciseChoiceFragment : Fragment() {
     lateinit var binding: FragmentExerciseChoiceBinding
     lateinit var exerciseChoiceViewModel: ExerciseChoiceViewModel
     lateinit var exerciseChoiceAdapter: ExerciseChoiceAdapter
+
+    private lateinit var callback: OnBackPressedCallback
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -99,4 +110,23 @@ class ExerciseChoiceFragment : Fragment() {
             Log.d(TAG, "onResume: ${it.exerciseName}")
         }
     }
+
+    // 뒤로가기 눌렀을때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                findNavController().popBackStack()
+                (activity as MainActivity).visibleBottomNavi()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
+
 }

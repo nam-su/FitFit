@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
 import android.media.MediaPlayer
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
+import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
 import com.example.fitfit.viewModel.PoseDetectionViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +40,9 @@ class PoseDetectionFragment : Fragment() {
 
     // bundle 로 받는 이용자가 고른 운동 이름
     private lateinit var exerciseName: String
+
+    private lateinit var callback: OnBackPressedCallback
+
 
     // tts 객체
     private var tts: TextToSpeech? = null
@@ -67,6 +73,14 @@ class PoseDetectionFragment : Fragment() {
             }
 
         } // requestPermissionLauncher
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
 
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
@@ -296,5 +310,23 @@ class PoseDetectionFragment : Fragment() {
         }
 
     } // checkPermissions()
+
+
+    // 뒤로가기 버튼 눌렀을 때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                findNavController().popBackStack()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
 
 }

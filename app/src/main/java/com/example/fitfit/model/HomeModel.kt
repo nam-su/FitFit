@@ -27,10 +27,9 @@ class HomeModel() {
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
+
     // 홈에서 이번주 운동 상태 관련 메시지 정보
     fun setWeekStatus(): String {
-
-//        setWeek()
 
         return MyApplication.sharedPreferences.getUserNickname()
 
@@ -48,16 +47,14 @@ class HomeModel() {
 
 
     // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
-    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> = retrofitInterface.getRankingList(challengeName, "getRankingList")
+    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> =
+        retrofitInterface.getRankingList(challengeName, "getRankingList")
     // setPagedChallengeRankList()
 
 
     // 다양한 운동 리스트 리턴하는 메서드
-    fun getBasicExerciseList(): ArrayList<PoseExercise> {
-
-        return MyApplication.sharedPreferences.getBasicExerciseList()
-
-    } // setAllExerciseList()
+    fun getBasicExerciseList(): ArrayList<PoseExercise> = MyApplication.sharedPreferences.getBasicExerciseList()
+    // setAllExerciseList()
 
 
     // 오늘 날짜로 부터 일주일 날짜 구하는 메서드 (일요일 부터 토요일 까지)
@@ -83,17 +80,23 @@ class HomeModel() {
         val weekDays = listOf("일", "월", "화", "수", "목", "금", "토")
 
         for (i in 0 until 7) {
+
             val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(cal.time)
+
             weekDateList.add(date)
 
             // 기록 여부 확인
             val hasRecord = userRecordExerciseList!!.any {
+
                 SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date
+
             }
+
             Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
             exerciseDiaryList.add(ExerciseDiary(weekDays[i], hasRecord))
 
             cal.add(Calendar.DATE, 1)
+
         }
 
     } // setWeek()
@@ -115,6 +118,8 @@ class HomeModel() {
 
 
     //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
-    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> = retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
+    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> =
+        retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
     // saveMyChallengeList()
+
 }

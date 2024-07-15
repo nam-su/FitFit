@@ -50,15 +50,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var callback: OnBackPressedCallback
 
-    // onCreateView
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
-
-        return binding.root
-
-    } // onCreateView()
-
 
     // onAttach
     override fun onAttach(context: Context) {
@@ -69,6 +60,16 @@ class HomeFragment : Fragment() {
     } // onAttach
 
 
+    // onCreateView
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
+
+        return binding.root
+
+    } // onCreateView()
+
+
     // onViewCreated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,7 +78,6 @@ class HomeFragment : Fragment() {
         setRankingRecyclerViewAndAdapter()
         setObserve()
         setClickListener()
-
 
     } // onViewCreated()
 
@@ -93,7 +93,6 @@ class HomeFragment : Fragment() {
         binding.recyclerViewCheckWeekExercise.layoutManager = GridLayoutManager(activity?.applicationContext,7)
         binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
 
-
         // 홈 프래그먼트에서 보이는 운동리스트 어댑터
         binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.getBasicExerciseList(),false,"")
         binding.recyclerViewPagedAllExercise.layoutManager = LinearLayoutManager(activity?.applicationContext,LinearLayoutManager.HORIZONTAL,false)
@@ -105,17 +104,19 @@ class HomeFragment : Fragment() {
         // 운동 전체보기 어댑터
         binding.recyclerViewAllExercise.adapter = PoseExerciseGridAdapter(homeViewModel.getBasicExerciseList())
 
-
-
     } // setVariable()
 
 
     // 리사이클러뷰 세팅
     private fun setRankingRecyclerViewAndAdapter() {
+
         // 홈 프래그먼트에서 보이는 랭킹 어댑터
         lifecycleScope.launch {
+
             val rankingList = homeViewModel.getRankingListToServer()
-            rankingList?.let { list ->
+
+            rankingList.let { list ->
+
                 val homeRankingList = list.partition { rank -> rank.ranking < 4 }.first as ArrayList
 
                 // 홈에서 보이는 랭킹 어댑터 설정
@@ -124,16 +125,21 @@ class HomeFragment : Fragment() {
                 // 랭킹 모두 보기 어댑터 설정
                 binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(list, homeViewModel)
 
-
                 // 챌린지 랭킹 아이템 클릭 리스너 설정
-                (binding.recyclerViewChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
+                (binding.recyclerViewChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick =
+                    object : ChallengeRankAdapter.ChallengeRankItemClick {
+
                     override fun onClick(view: View, rank: Rank) {
                         Log.d(TAG, "onClick: ${rank.id}")
 
                         lifecycleScope.launch {
+
                             setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+
                         }
+
                     }
+
                 }
 
                 // 챌린지 랭킹 아이템 클릭 리스너 설정
@@ -142,13 +148,21 @@ class HomeFragment : Fragment() {
                         Log.d(TAG, "onClick: ${rank.id}")
 
                         lifecycleScope.launch {
+
                             setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+
                         }
+
                     }
+
                 }
+
             }
+
         }
-    }
+
+    } // setRankingRecyclerViewAndAdapter()
+
 
     // 클릭 리스너 초기화
     private fun setClickListener() {
@@ -161,7 +175,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
         // 챌린지 랭킹 전체보기 클릭 리스너
         binding.textViewViewAllChallenge.setOnClickListener {
 
@@ -169,7 +182,6 @@ class HomeFragment : Fragment() {
             binding.constraintLayoutAllChallenge.visibility = View.VISIBLE
 
         }
-
 
         // 챌린지 랭킹 에서 뒤로가기 버튼 클릭 리스너
         binding.imageButtonBackAllChallenge.setOnClickListener {
@@ -187,7 +199,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
         // 구독하기 버튼 클릭 리스너
         binding.buttonSubscribe.setOnClickListener {
 
@@ -197,12 +208,15 @@ class HomeFragment : Fragment() {
         }
 
         // 운동 아이템 클릭 리스너
-        (binding.recyclerViewPagedAllExercise.adapter as PoseExerciseAdapter).exerciseItemClick = object: PoseExerciseAdapter.ExerciseItemClick {
+        (binding.recyclerViewPagedAllExercise.adapter as PoseExerciseAdapter).exerciseItemClick =
+            object: PoseExerciseAdapter.ExerciseItemClick {
 
             override fun onExerciseItemClick(view: View, position: Int) {
 
                 // 운동이름을 번들로 넘긴다.
-                val exerciseName = (binding.recyclerViewPagedAllExercise.adapter as PoseExerciseAdapter).poseExerciseList[position].exerciseName
+                val exerciseName =
+                    (binding.recyclerViewPagedAllExercise.adapter as PoseExerciseAdapter).poseExerciseList[position].exerciseName
+
                 val bundle = bundleOf("exerciseName" to exerciseName)
 
                 findNavController().navigate(R.id.exerciseItemInfoFragment,bundle)
@@ -212,7 +226,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
         // 챌린지 랭킹 텍스트 클릭 리스너
         binding.linearLayoutRanking.setOnClickListener {
 
@@ -221,7 +234,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
     } // setOnClickListener()
 
 
@@ -229,10 +241,12 @@ class HomeFragment : Fragment() {
     private fun setObserve() {
 
         homeViewModel.challengeName.observe(viewLifecycleOwner){
+
             setRankingRecyclerViewAndAdapter()
+
         }
 
-    }
+    } // setObserve()
 
 
     // 뒤로가기 클릭 리스너
@@ -269,7 +283,7 @@ class HomeFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(this,callback)
 
-    }
+    } // setOnBackPressed()
 
 
     //커스텀 다이얼로그 띄우기
@@ -277,7 +291,9 @@ class HomeFragment : Fragment() {
 
         //데이터바인딩 준비
         val inflater = LayoutInflater.from(requireContext())
-        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_challenge_ranking, null, false)
+        customDialogBinding =
+            DataBindingUtil.inflate(inflater, R.layout.custom_dialog_challenge_ranking, null, false)
+
         customDialogBinding.rank = rank
 
         //다이얼로그 생성
@@ -289,12 +305,13 @@ class HomeFragment : Fragment() {
         //뒷배경 투명으로 바꿔서 둥근모서리 보이게
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
         dialog.show()
 
         //확인 버튼 클릭하면 다이얼로그 종료
         customDialogBinding.buttonCheck.setOnClickListener {
+
             dialog.dismiss()
+
         }
 
         // 서클 이미지뷰 설정
@@ -309,20 +326,21 @@ class HomeFragment : Fragment() {
         // 리사이클러뷰 설정
         setAdapter(userChallengeList)
 
-    }
+    } // setCustomDialog()
 
 
     // 리사이클러뷰와 어댑터 설정
     private fun setAdapter(userChallengeList: ArrayList<Challenge>?) {
 
         userChallengeList?.let {
+
                val challengeJoinAdapter = ChallengeJoinAdapter(it)
+
                 // RecyclerView 설정
                 customDialogBinding.recyclerViewUserChallenge.adapter = challengeJoinAdapter
 
             }
 
-
-    } //setAdapter()
+    } // setAdapter()
 
 }

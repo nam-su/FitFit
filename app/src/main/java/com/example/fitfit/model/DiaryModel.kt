@@ -2,55 +2,50 @@ package com.example.fitfit.model
 
 import android.util.Log
 import com.example.fitfit.data.Challenge
-import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
-import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
 import retrofit2.Response
 import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 
 class DiaryModel {
 
     private val TAG = "다이어리 모델"
+
     private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
     private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
     private val myChallengeList = ArrayList<Challenge>()
 
     private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
-        RetrofitInterface::class.java)
+
+    private val retrofitInterface: RetrofitInterface =
+        retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
     init {
+
         Log.d(TAG, "${MyApplication.sharedPreferences} ")
 
         myPoseExerciseList.forEach {
+
             Log.d(TAG, "[${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
+
         }
 
-//        setLabelMap()
         setAllExerciseMap()
         initEntryArrayList()
         setEntryArrayList(Date(),Date())
 
-
     }
 
 
-
     //내 운동 리스트 불러오기
-    fun getMyPoseExerciseList(): ArrayList<PoseExercise> { return myPoseExerciseList }
-
+    fun getMyPoseExerciseList(): ArrayList<PoseExercise> = myPoseExerciseList
+    // getMyPoseExerciseList()
 
 
     //그래프에 사용할 entryList 불러오기
@@ -60,30 +55,12 @@ class DiaryModel {
 
         return entryArrayList
 
-    } //getEntryArrayList()
-
+    } // getEntryArrayList()
 
 
     //그래프에 사용할 해시맵 불러오기
-    fun getAllExerciseMap(): LinkedHashMap<String,MutableList<Float>>{ return allExerciseMap }
-
-
-//
-//    //hashMap 셋팅
-//    private fun setLabelMap(){
-//
-//        labelMap[0f] = "기본 스쿼트"
-//        labelMap[1f] = "와이드 스쿼트"
-//        labelMap[2f] = "기본 푸시업"
-//        labelMap[3f] = "기본 런지"
-//        labelMap[4f] = "오른쪽 런지"
-//        labelMap[5f] = "왼쪽 런지"
-//        labelMap[6f] = "기본 레그레이즈"
-//        labelMap[7f] = "오른쪽 레그레이즈"
-//        labelMap[8f] = "왼쪽 레그레이즈"
-//
-//    } //setLabelMap()
-
+    fun getAllExerciseMap(): LinkedHashMap<String,MutableList<Float>> = allExerciseMap
+    // getAllExerciseMap()
 
 
     //allExerciseMap 초기화
@@ -101,8 +78,7 @@ class DiaryModel {
         allExerciseMap["오른쪽 레그레이즈"] = mutableListOf()
         allExerciseMap["왼쪽 레그레이즈"] = mutableListOf()
 
-    }
-
+    } // setAllExerciseMap()
 
 
     //entryArrayList 셋팅
@@ -110,12 +86,12 @@ class DiaryModel {
 
         //entryArrayList 초기값 설정
         allExerciseMap.values.forEachIndexed { index, floats ->
+
             entryArrayList.add(BarEntry(index.toFloat(),floats.toFloatArray()))
 
         }
 
-    }
-
+    } // initEntryArrayList()
 
 
     //entryArrayList 셋팅
@@ -124,11 +100,12 @@ class DiaryModel {
         reOrderAllExerciseMap()
 
         allExerciseMap.values.forEachIndexed { index, floats ->
+
             entryArrayList[index] = BarEntry(index.toFloat(), floats.sum())
+
         }
 
-    }
-
+    } // resetEntryArrayList()
 
 
     //entryArrayList 셋팅
@@ -140,6 +117,7 @@ class DiaryModel {
 
             // 타임스탬프를 Instant로 변환
             val instant = Instant.ofEpochMilli(poseExercise.date)
+
             // Instant를 Date로 변환
             val date = Date.from(instant)
 
@@ -155,12 +133,10 @@ class DiaryModel {
 
         resetEntryArrayList()
 
-
-    }
-
+    } // setEntryArrayList()
 
 
-    //0시 00분으로 만들기
+    // 0시 00분으로 만들기
     private fun setToMidnight(date: Date): Date {
 
         val calendar = Calendar.getInstance()
@@ -174,8 +150,7 @@ class DiaryModel {
 
         return calendar.time
 
-    } //setToMidnight()
-
+    } // setToMidnight()
 
 
     //23시 59분 59초로 만들기
@@ -192,7 +167,7 @@ class DiaryModel {
 
         return calendar.time
 
-    } //setToEndOfDay()
+    } // setToEndOfDay()
 
 
     // allExerciseMap에서 float 배열의 합이 0인 항목들을 맨 뒤로 보내는 메서드
@@ -202,31 +177,38 @@ class DiaryModel {
 
         // 0인 항목들을 찾아서 entriesToRemove에 추가
         allExerciseMap.forEach { (key, values) ->
+
             if (values.sum() == 0f) {
+
                 entriesToRemove.add(key)
+
             }
+
         }
 
         // entriesToRemove에 있는 항목들을 순서대로 맨 뒤로 이동
         entriesToRemove.forEach { key ->
+
             if (allExerciseMap.containsKey(key)) {
+
                 val values = allExerciseMap.remove(key)
+
                 if (values != null) {
+
                     allExerciseMap[key] = values
+
                 }
+
             }
+
         }
 
-    } //reOrderAllExerciseMap()
-
-
-    // 싱글톤에서 내 도전리스트 받아오기
-//    fun getMyChallengeList(): ArrayList<Challenge> = MyApplication.sharedPreferences.myChallengeList
-     // getMyChallengeList()
+    } // reOrderAllExerciseMap()
 
 
     //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
-    suspend fun getMyChallengeListToServer(): Response<ArrayList<Challenge>> = retrofitInterface.getMyChallengeList(MyApplication.sharedPreferences.getUserId(),"getMyChallengeList")
+    suspend fun getMyChallengeListToServer(): Response<ArrayList<Challenge>> =
+        retrofitInterface.getMyChallengeList(MyApplication.sharedPreferences.getUserId(),"getMyChallengeList")
     // saveMyChallengeList()
 
 
@@ -242,7 +224,6 @@ class DiaryModel {
         myChallengeList.addAll(list)
 
     } //setMyChallengeList()
-
 
 
 }

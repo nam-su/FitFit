@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -34,6 +36,9 @@ class LoginFragment: Fragment() {
     lateinit var gso: GoogleSignInOptions
     lateinit var gsc: GoogleSignInClient
 
+    private lateinit var callback: OnBackPressedCallback
+
+
     // 구글 로그인 런처
     private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
@@ -42,6 +47,14 @@ class LoginFragment: Fragment() {
         loginViewModel.handleGoogleLoginResult(task)
 
     } // googleAuthLauncher
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
 
 
     // onCreateView
@@ -249,5 +262,23 @@ class LoginFragment: Fragment() {
         })
 
     } // deleteToken()
+
+
+    // 뒤로가기 눌렀을때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                (activity as MainActivity).finish()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
 
 }

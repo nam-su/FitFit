@@ -1,39 +1,33 @@
 package com.example.fitfit.fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ChallengeAdapter
-import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.adapter.ExerciseDetailViewAdapter
-import com.example.fitfit.adapter.ExerciseItemInfoAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.data.Challenge
-import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentExerciseBinding
 import com.example.fitfit.viewModel.ExerciseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ExerciseFragment : Fragment() {
 
@@ -44,6 +38,18 @@ class ExerciseFragment : Fragment() {
 
     private val exerciseViewModel: ExerciseViewModel by viewModels()
     var currentPage  = 0
+
+    private lateinit var callback: OnBackPressedCallback
+
+
+    // onAttach
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
 
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -93,6 +99,7 @@ class ExerciseFragment : Fragment() {
     // 클릭리스너 초기화
     private fun setClickListener() {
 
+        // 오늘의 운동 시작 클릭 리스너
         binding.buttonStartTodayExercise.setOnClickListener {
 
             it.findNavController().navigate(R.id.action_exerciseFragment_to_exerciseChoiceFragment)
@@ -100,6 +107,7 @@ class ExerciseFragment : Fragment() {
 
         }
 
+        // 다양한 운동을 하고 싶다면? 클릭 리스너
         binding.textViewAllExercise.setOnClickListener {
 
             it.findNavController().navigate(R.id.action_exerciseFragment_to_payFragment)
@@ -107,6 +115,7 @@ class ExerciseFragment : Fragment() {
 
         }
 
+        // 자세히 보기 클릭 리스너
         binding.textViewDetailView.setOnClickListener {
 
             binding.constraintLayoutDetailView.visibility = View.VISIBLE
@@ -114,6 +123,7 @@ class ExerciseFragment : Fragment() {
 
         }
 
+        // 간략히 보기 클릭 리스너
         binding.textViewQuickView.setOnClickListener {
 
             binding.constraintLayoutDetailView.visibility = View.GONE
@@ -121,16 +131,17 @@ class ExerciseFragment : Fragment() {
 
         }
 
-        
+        // 챌린지 클릭 리스너
         challengeAdapter.challengeItemClick  = object :ChallengeAdapter.ChallengeItemClick{
+
             override fun onClick(view: View, challenge: Challenge) {
+
+                // 커스텀 다이얼로그를 띄워준다.
                 showCustomDialog(challenge)
+
             }
 
-        } 
-        
-        
-        
+        }
 
     } // setClickListener()
 
@@ -138,21 +149,30 @@ class ExerciseFragment : Fragment() {
     // 뷰모델 관찰
     private fun setObserve(){
 
+        // 챌린지 참여 여부 관찰자
         exerciseViewModel.joinResult.observe(viewLifecycleOwner) {
 
             when(it){
+
                 "already" -> Toast.makeText(requireContext(), "이미 해당 챌린지에 참여 중입니다.", Toast.LENGTH_SHORT).show()
+
                 "success" -> {
+
                     Toast.makeText(requireContext(), "해당 챌린지에 참여를 시작합니다.", Toast.LENGTH_SHORT).show()
+
                     binding.viewPager.adapter!!.notifyDataSetChanged()
+
                     this.findNavController().navigate(R.id.action_exerciseFragment_to_DiaryFragment)
+
                 }
+
                 else -> Toast.makeText(requireContext(), "네트워크 연결 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+
             }
 
         }
 
-    }
+    } // setObserve()
 
 
     // 자동 스크롤
@@ -181,6 +201,7 @@ class ExerciseFragment : Fragment() {
                 }
 
         }
+
     } // startAutoScroll()
 
 
@@ -190,7 +211,9 @@ class ExerciseFragment : Fragment() {
         //기존의 바인딩 객체가 이미 부모뷰에 속해있는지 확인하고 제거하기
         //제거하지 않으면 부모뷰의 충돌문제로 오류가 뜸.
         customDialogBinding.root.parent?.let { parent ->
+
             (parent as ViewGroup).removeView(customDialogBinding.root)
+
         }
 
         dialog = AlertDialog.Builder(context)
@@ -210,7 +233,9 @@ class ExerciseFragment : Fragment() {
 
         //다이얼로그 취소 버튼 클릭
         customDialogBinding.textViewCancel.setOnClickListener {
+
             dialog.dismiss()
+
         }
 
         //다이얼로그 참여 버튼 클릭
@@ -223,8 +248,24 @@ class ExerciseFragment : Fragment() {
             
         }
 
-    }
+    } // showCustomDialog()
 
 
+    // 뒤로가기 버튼 눌렀을 때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                (activity as MainActivity).finish()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
 
 }

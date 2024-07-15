@@ -1,7 +1,6 @@
 package com.example.fitfit.viewModel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,6 @@ import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.model.ExerciseModel
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class ExerciseViewModel: ViewModel() {
 
@@ -22,27 +20,21 @@ class ExerciseViewModel: ViewModel() {
     val joinResult: LiveData<String>
         get() = _joinResult
 
-    private var _challengeList = ArrayList<Challenge>()
 
     // 내 운동 리스트 받아오는 메서드
-    fun getMyExerciseList(): ArrayList<PoseExercise> {
-
-        return exerciseModel.getMyExerciseList()
-
-    } // getMyExerciseList()
+    fun getMyExerciseList(): ArrayList<PoseExercise> = exerciseModel.getMyExerciseList()
+    // getMyExerciseList()
 
 
     // 내 운동 리스트 운동 자세히보기 리스트
-    fun getMyExerciseInfoList(): ArrayList<ExerciseInfo> {
-
-        return exerciseModel.getMyExerciseInfoList()
-
-    } // getMyExerciseInfoList()
+    fun getMyExerciseInfoList(): ArrayList<ExerciseInfo> = exerciseModel.getMyExerciseInfoList()
+    // getMyExerciseInfoList()
 
 
     // fitfit 챌린지 리스트 모델에서 호출
     fun getChallengeList(): ArrayList<Challenge> = exerciseModel.getChallengeList()
     // getChallengeList()
+
 
     //baseURL 받아오기
     fun getBaseUrl(): String = exerciseModel.getBaseUrl()
@@ -51,7 +43,9 @@ class ExerciseViewModel: ViewModel() {
 
     //모델에서 서버와 통신하는 메서드 호출
     fun challengeJoin(challenge: Challenge){
+
         viewModelScope.launch {
+
             val response = exerciseModel.challengeJoin(challenge)
 
             Log.d(TAG, "challengeJoin: ${response?.isSuccessful}")
@@ -63,18 +57,15 @@ class ExerciseViewModel: ViewModel() {
 
                 /** 운동 모델에서 싱글톤에 저장하는 메서드 호출**/
                 if(response.body()?.challengeList != null) {
+
                     exerciseModel.saveChallengeList(response.body()?.challengeList!!)
+
                 }
 
-//                if(response.body()?.myChallengeList != null) {
-//                    exerciseModel.saveMyChallengeList(response.body()?.myChallengeList!!)
-//                }
-
-
             }
+
         }
-    }
 
-
+    } // challengeJoin()
 
 }

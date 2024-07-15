@@ -12,12 +12,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
-import com.example.fitfit.activity.MainActivity
-import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.databinding.FragmentExerciseEditBinding
-import com.example.fitfit.function.MyApplication
-import com.example.fitfit.model.ExerciseEditModel
 import com.example.fitfit.viewModel.ExerciseEditViewModel
 
 
@@ -37,6 +33,17 @@ class ExerciseEditFragment : Fragment() {
     private lateinit var allLungeAdapter: PoseExerciseAdapter
     private lateinit var allLegRaisesAdapter: PoseExerciseAdapter
 
+
+    // onAttach
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
+
+    // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_edit,container,false)
@@ -53,12 +60,6 @@ class ExerciseEditFragment : Fragment() {
 
     } // onCreateView()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        setOnBackPressed()
-
-    } // onAttach
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -70,6 +71,18 @@ class ExerciseEditFragment : Fragment() {
 
     } // onViewCreated
 
+    // onDestroy()
+    override fun onDestroy() {
+        super.onDestroy()
+
+        exerciseEditViewModel.getSharedMyExerciseList().forEach {
+
+            Log.d(TAG, "편집 프래그먼트 종료될때 : ${it.exerciseName}")
+
+        }
+
+    } // onDestroy()
+
 
     // 변수 초기화 메서드
     private fun setVariable() {
@@ -79,7 +92,6 @@ class ExerciseEditFragment : Fragment() {
             PoseExerciseAdapter(exerciseEditViewModel.getSharedMyExerciseList(),true,"true")
 
         binding.recyclerViewMyPoseExerciseList.adapter = myPoseExerciseAdapter
-
 
         // 모든 스쿼트 리스트 리사이클러뷰
         allSquatAdapter =
@@ -124,7 +136,9 @@ class ExerciseEditFragment : Fragment() {
 
         // 편집에 대한 통신 성공했을때
         exerciseEditViewModel.isSuccessfulEdit.observe(viewLifecycleOwner){
+
             when(it){
+
                 true -> {
 
                     Toast.makeText(requireContext(), "내 운동 리스트가 변경 되었습니다.", Toast.LENGTH_SHORT).show()
@@ -133,8 +147,11 @@ class ExerciseEditFragment : Fragment() {
                     findNavController().popBackStack()
 
                 }
+
                     else -> Toast.makeText(requireContext(), "네트워크 연결이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
+
             }
+
         }
 
     } // setObserve
@@ -172,7 +189,6 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
-
         // 스쿼트리스트에서 추가 버튼 눌렀을 때
         allSquatAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
@@ -190,7 +206,6 @@ class ExerciseEditFragment : Fragment() {
             }
 
         }
-
 
         // 푸시업 리스트에서 추가버튼 눌렀을 때
         allPushUpAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
@@ -210,7 +225,6 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
-
         // 런지 리스트에서 추가버튼 눌렀을 때
         allLungeAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
@@ -228,11 +242,11 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
-
         // 레그레이즈 리스트에서 추가버튼 눌렀을 때
         allLegRaisesAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
             override fun onAddButtonClick(view: View, position: Int) {
+
                 exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allLegRaisesAdapter.notifyDataSetChanged()
@@ -240,7 +254,6 @@ class ExerciseEditFragment : Fragment() {
             }
 
         }
-
 
         // 리스트 편집 후 완료 버튼 눌렀을 때
         binding.textViewEditComplete.setOnClickListener {
@@ -279,11 +292,5 @@ class ExerciseEditFragment : Fragment() {
 
     } // setOnBackPressed()
 
-    override fun onDestroy() {
-        super.onDestroy()
-        exerciseEditViewModel.getSharedMyExerciseList().forEach {
-            Log.d(TAG, "편집 프래그먼트 종료될때 : ${it.exerciseName}")
-        }
-    }
 
 }

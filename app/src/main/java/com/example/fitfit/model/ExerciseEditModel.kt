@@ -21,9 +21,8 @@ class ExerciseEditModel {
     private val allLegRaisesList = ArrayList<PoseExercise>()
 
     private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
-        RetrofitInterface::class.java)
-
+    private val retrofitInterface: RetrofitInterface =
+        retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
     init {
 
@@ -31,14 +30,9 @@ class ExerciseEditModel {
 
     }
 
-
-
     // 내 운동리스트 리턴하는 메서드
-    fun getSharedMyExerciseList(): ArrayList<PoseExercise> {
-
-        return myExerciseList
-
-    } // setMyExerciseList()
+    fun getSharedMyExerciseList(): ArrayList<PoseExercise> = myExerciseList
+    // setMyExerciseList()
 
 
     // 전체 운동 리스트에서 카테고리별 리스트에 객체 추가
@@ -129,10 +123,17 @@ class ExerciseEditModel {
 
         when(exercise.category) {
 
-            "스쿼트" -> allSquatList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
-            "푸시업" -> allPushUpList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
-            "런지" ->  allLungeList.removeAll{ poseExercise -> myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
-            "레그레이즈" -> allLegRaisesList.removeAll{ poseExercise -> myExerciseList.any{it.exerciseName == poseExercise.exerciseName} }
+            "스쿼트" -> allSquatList.removeAll{ poseExercise ->
+                myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
+
+            "푸시업" -> allPushUpList.removeAll{ poseExercise ->
+                myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
+
+            "런지" ->  allLungeList.removeAll{ poseExercise ->
+                myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
+
+            "레그레이즈" -> allLegRaisesList.removeAll{ poseExercise ->
+                myExerciseList.any{it.exerciseName == poseExercise.exerciseName} }
 
         }
 
@@ -143,7 +144,7 @@ class ExerciseEditModel {
     suspend fun setMyPoseExerciseList(): Response<SplashResponse> {
 
         val id = MyApplication.sharedPreferences.getUserId()
-        var userCheckListHashMap = LinkedHashMap<String,Int>()
+        val userCheckListHashMap = LinkedHashMap<String,Int>()
 
         // 해시맵에 전체 리스트 담기
         allExerciseList.forEach {
@@ -187,11 +188,9 @@ class ExerciseEditModel {
     } //hashMapToJson()
 
 
-
-
     //hashMap 변경
     fun setUserCheckList() = MyApplication.sharedPreferences.setUserCheckListHashMap(myExerciseList)
-
+    // setUserCheckList()
 
 
     //hashmap value가 0값이 있으면 맨뒤로 보내는 메서드
@@ -223,13 +222,15 @@ class ExerciseEditModel {
 
         }
 
-    } //moveZeroValuesToEnd()
+    } // moveZeroValuesToEnd()
 
 
-    //싱글톤에 내 리스트 저장
+    // 싱글톤에 내 리스트 저장
     fun setMyExerciseList(){
+
         MyApplication.sharedPreferences.setMyExerciseList(myExerciseList)
-    }
+
+    } // setMyExerciseList()
 
 
 }
