@@ -187,7 +187,6 @@ class SignUpViewModel : ViewModel() {
     // onPasswordFocusChanged()
 
 
-
     //비밀번호 재확인 포커스
     fun onReconfirmPasswordFocusChanged(hasFocus: Boolean) { _isReconfirmPasswordFocus.value = hasFocus }
     // onReconfirmPasswordFocusChanged()
