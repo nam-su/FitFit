@@ -49,6 +49,7 @@ class LoginFragment: Fragment() {
     } // googleAuthLauncher
 
 
+    // onAttach
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -179,9 +180,7 @@ class LoginFragment: Fragment() {
 
         }
 
-        // 네이버 로그인 감지
-
-    }
+    } // setObserve()
 
 
     // 카카오 로그인

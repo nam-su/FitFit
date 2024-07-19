@@ -36,10 +36,15 @@ class PayViewModel: ViewModel() {
     fun readyKakaoPay(itemName: String,itemPrice: Int) {
 
        days = when(itemName){
+
            "하루 구독권" -> 1
+
            "30일 구독권" -> 30
+
            "일년 구독권" -> 365
+
            else -> 0
+
        }
 
         viewModelScope.launch {
@@ -73,11 +78,13 @@ class PayViewModel: ViewModel() {
 
             if(response.isSuccessful && response.body() != null) {
 
-                Log.d(TAG, "readyKakaoPay: 통신성공")
+                Log.d(TAG, "readyKakaoPay: 통신 성공")
                 _kakaoPaymentReadyResponse.value = response.body()
 
                 // 통신 실패의 경우
-            }else{
+            } else {
+
+                Log.d(TAG, "readyKakaoPay: 통신 실패")
 
             }
 
@@ -114,11 +121,11 @@ class PayViewModel: ViewModel() {
 
                 }
 
-            }else{
+            } else {
+
                 _payApproveStatus.value = false
+
             }
-
-
 
     } // updatePgToken()
 
