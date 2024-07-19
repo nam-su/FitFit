@@ -136,7 +136,7 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
                 "기본 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
 
                 "왼쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
-                
+
                 "오른쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
 
             }
