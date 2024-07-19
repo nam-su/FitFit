@@ -3,6 +3,7 @@ package com.example.fitfit.data
 import com.google.gson.annotations.SerializedName
 
 data class PoseExercise(
+
     @SerializedName("date") var date: Long,
     @SerializedName("category") val category: String,
     @SerializedName("exerciseName") val exerciseName: String,
