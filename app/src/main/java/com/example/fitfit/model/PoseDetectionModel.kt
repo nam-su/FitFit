@@ -65,13 +65,21 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
         when(exerciseName) {
 
             "기본 스쿼트" -> pose = Squat()
+
             "기본 푸시업" -> pose = PushUp()
+
             "기본 런지" -> pose = Lunge()
+
             "와이드 스쿼트" -> pose = WideSquat()
+
             "왼쪽 런지" -> pose = SideLungeLeft()
+
             "오른쪽 런지" -> pose = SideLungeRight()
+
             "기본 레그레이즈" -> pose = LegRaises()
+
             "왼쪽 레그레이즈" -> pose = LeftLegRaises()
+
             "오른쪽 레그레이즈" -> pose = RightLegRaises()
 
         }
@@ -154,7 +162,15 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
     // 운동 종류에 따른 카운트 변화
     private fun poseExercise(floatArray: FloatArray) {
 
-        if(pose.posePoseExercise(floatArray)) {count ++} else { checkBadPose = pose.checkBadPose}
+        if(pose.posePoseExercise(floatArray)) {
+
+            count ++
+
+        } else {
+
+            checkBadPose = pose.checkBadPose
+
+        }
 
     } // poseExercise()
 
@@ -232,7 +248,8 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
 
 
     // 모델을 닫는 메서드
-    fun close() = model.close() // close()
+    fun close() = model.close()
+    // close()
 
 }
 

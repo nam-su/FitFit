@@ -50,9 +50,9 @@ class PoseDetectionViewModel() : ViewModel() {
     private val _checkBadPose = MutableLiveData<String>()
     val checkBadPose: LiveData<String> get() = _checkBadPose
 
-
     private val _checkAccuracy = MutableLiveData<Boolean>()
     val checkAccuracy: LiveData<Boolean> get() = _checkAccuracy
+
 
     // ViewModel 초기화 메서드
     fun initialize(context: Context,exerciseName: String) {
@@ -66,6 +66,7 @@ class PoseDetectionViewModel() : ViewModel() {
     } // initialize()
 
 
+    // 카메라 여는 메서드
     @SuppressLint("MissingPermission") // 권한 재확인 안하기 위한 어노테이션
     fun openCamera(textureView: TextureView): Boolean {
 
@@ -80,10 +81,13 @@ class PoseDetectionViewModel() : ViewModel() {
 
                     val captureRequest =
                         cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
+
                         addTarget(surface)
+
                     }
 
                     val sessionConfiguration = SessionConfiguration(
+
                         SessionConfiguration.SESSION_REGULAR, // 또는 SESSION_HIGH_SPEED
                         listOf(OutputConfiguration(surface)),
                         Executors.newSingleThreadExecutor(), // Executor
@@ -122,7 +126,7 @@ class PoseDetectionViewModel() : ViewModel() {
 
         return true
 
-    } //openCamera()
+    } // openCamera()
 
 
     // 이미지 처리 메서드

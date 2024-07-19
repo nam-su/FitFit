@@ -26,7 +26,6 @@ class SplashViewModel(): ViewModel() {
         get() = _isCheckLogin
 
 
-
     // 로그인 정보 확인하는 메서드
     fun checkLogin() {
 
@@ -73,8 +72,6 @@ class SplashViewModel(): ViewModel() {
 
                  /** 스플래시 모델에서 싱글톤에 저장하는 메서드 호출**/
                 splashModel.saveChallengeList(response.body()!!.challengeList!!)
-//                splashModel.saveMyChallengeList(response.body()!!.myChallengeList!!)
-
 
             } else {
 

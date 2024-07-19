@@ -111,7 +111,7 @@ class PoseDetectionFragment : Fragment() {
     } // setVariable
 
 
-    //리스너 관련 메서드
+    // 리스너 관련 메서드
     private fun setListener(){
 
         binding.buttonTest.setOnClickListener {
@@ -175,7 +175,9 @@ class PoseDetectionFragment : Fragment() {
 
         // ViewModel의 bitmap LiveData를 관찰하여 UI를 업데이트합니다.
         poseDetectionViewModel.bitmap.observe(viewLifecycleOwner, Observer { bitmap ->
+
             binding.imageView.setImageBitmap(bitmap)
+
         })
 
         // 운동 시작 후 동작인식 정확도 측정감지
@@ -225,7 +227,7 @@ class PoseDetectionFragment : Fragment() {
 
         }
 
-    } //setObserve()
+    } // setObserve()
 
 
     // textureView 관련 초기화
@@ -261,8 +263,11 @@ class PoseDetectionFragment : Fragment() {
 
         coolDownFlag.set(true)
         CoroutineScope(Dispatchers.Main).launch {
+
             delay(3000)
+
             coolDownFlag.set(false)
+
         }
 
     } // triggerCoolDown
@@ -275,7 +280,9 @@ class PoseDetectionFragment : Fragment() {
         mediaPlayer.isLooping = false
 
         mediaPlayer.setOnCompletionListener {
+
             mediaPlayer.release()
+
         }
 
         mediaPlayer.start()
