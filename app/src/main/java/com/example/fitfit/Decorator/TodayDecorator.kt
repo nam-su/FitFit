@@ -22,5 +22,4 @@ class TodayDecorator(private val context: Context) : DayViewDecorator {
         view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_circle)!!)
     // decorate()
 
-
 }

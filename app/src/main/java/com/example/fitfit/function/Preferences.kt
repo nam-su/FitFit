@@ -39,9 +39,12 @@ class Preferences(context: Context) {
     /** fitfit 챌린지 리스트**/
     val challengeList = ArrayList<Challenge>()
 
+
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
+
         setAllExerciseItemInfoList()
+
     } // init()
 
     
@@ -75,23 +78,23 @@ class Preferences(context: Context) {
         allExerciseList.forEach {
 
             if(it.exerciseName == "기본 스쿼트" || it.exerciseName == "기본 푸시업" || it.exerciseName == "기본 런지") {
+
                 it.isPrimium = 0
-            }else{
+
+            } else {
+
                 it.isPrimium = 1
+
             }
 
         }
-
 
     } // setAllExerciseList()
 
 
     // 유저 운동기록 리스트 리턴하는 메서드
-    fun getUserRecordExerciseList(): ArrayList<PoseExercise> {
-
-        return userRecordExerciseList
-
-    } // getUserRecordExerciseList()
+    fun getUserRecordExerciseList(): ArrayList<PoseExercise> = userRecordExerciseList
+    // getUserRecordExerciseList()
 
 
     //hashmap value가 0값이 있으면 맨뒤로 보내는 메서드
@@ -123,26 +126,24 @@ class Preferences(context: Context) {
 
         }
 
-    } //moveZeroValuesToEnd()
+    } // moveZeroValuesToEnd()
 
 
     // 운동 이름으로 운동 정보 객체 가져오는 메서드
-    fun getExerciseItemInfo(exerciseName: String): ExerciseItemInfo? {
-
-        return allExerciseItemInfoList.firstOrNull { it.exerciseName == exerciseName }
-
-    } // getExerciseItemInfo()
+    fun getExerciseItemInfo(exerciseName: String): ExerciseItemInfo? =
+        allExerciseItemInfoList.firstOrNull { it.exerciseName == exerciseName }
+     // getExerciseItemInfo()
 
 
     // 유저 정보 불러오는 메서드
     fun getUser(): User = User(
+
             preferences.getString("id", "").toString(),
             preferences.getString("loginType", "").toString(),
             preferences.getString("nickname", "").toString(),
             preferences.getString("profileImagePath", "").toString(),
-            preferences.getString("subscription", "").toString()
-        )
-     // getUser()
+            preferences.getString("subscription", "").toString())
+    // getUser()
 
 
     // 유저 아이디만 조회하는 메서드
@@ -233,8 +234,7 @@ class Preferences(context: Context) {
         editor.putString("subscription", user.subscription)
         editor.apply()
 
-    }
-
+    } // setUser()
 
 
     // 스케쥴링한 운동 리스트 불러오는 메서드
@@ -298,7 +298,8 @@ class Preferences(context: Context) {
         editor.clear()
         editor.apply()
 
-    } //removeAll()
+    } // removeAll()
+
 
     // 제공되는 운동 리스트 리턴
     fun getAllExerciseList(): ArrayList<PoseExercise> = allExerciseList
@@ -414,27 +415,51 @@ class Preferences(context: Context) {
     } // setAllExerciseItemInfoList()
 
 
-    //myExerciseList 셋
+    // myExerciseList 초기화
     fun setMyExerciseList(exerciseList: ArrayList<PoseExercise>){
+
         myExerciseList.clear()
+
         myExerciseList.addAll(exerciseList)
+
     } // setMyExerciseList()
 
 
     // 홈프래그먼트에서 사용할 기본 운동 리스트
     fun getBasicExerciseList(): ArrayList<PoseExercise> {
+
         return arrayListOf(
-            PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 0, 0).apply { isPrimium = 0 },
-            PoseExercise(0, "푸시업", "기본 푸시업", 0, 0, 0).apply { isPrimium = 0 },
-            PoseExercise(0, "런지", "기본 런지", 0, 0, 0).apply { isPrimium = 0 },
-            PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 0, 0).apply { isPrimium = 1 },
-            PoseExercise(0, "런지", "왼쪽 런지", 0, 0, 0).apply { isPrimium = 1 },
-            PoseExercise(0, "런지", "오른쪽 런지", 0, 0, 0).apply { isPrimium = 1 },
-            PoseExercise(0, "레그레이즈", "기본 레그레이즈", 0, 0, 0).apply { isPrimium = 1 },
-            PoseExercise(0, "레그레이즈", "왼쪽 레그레이즈", 0, 0, 0).apply { isPrimium = 1 },
-            PoseExercise(0, "레그레이즈", "오른쪽 레그레이즈", 0, 0, 0).apply { isPrimium = 1 }
+
+            PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 0, 0)
+                .apply { isPrimium = 0 },
+
+            PoseExercise(0, "푸시업", "기본 푸시업", 0, 0, 0)
+                .apply { isPrimium = 0 },
+
+            PoseExercise(0, "런지", "기본 런지", 0, 0, 0)
+                .apply { isPrimium = 0 },
+
+            PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 0, 0)
+                .apply { isPrimium = 1 },
+
+            PoseExercise(0, "런지", "왼쪽 런지", 0, 0, 0)
+                .apply { isPrimium = 1 },
+
+            PoseExercise(0, "런지", "오른쪽 런지", 0, 0, 0)
+                .apply { isPrimium = 1 },
+
+            PoseExercise(0, "레그레이즈", "기본 레그레이즈", 0, 0, 0)
+                .apply { isPrimium = 1 },
+
+            PoseExercise(0, "레그레이즈", "왼쪽 레그레이즈", 0, 0, 0)
+                .apply { isPrimium = 1 },
+
+            PoseExercise(0, "레그레이즈", "오른쪽 레그레이즈", 0, 0, 0)
+                .apply { isPrimium = 1 }
+        
         )
-    }
+
+    } // getBasicExerciseList()
 
 
 

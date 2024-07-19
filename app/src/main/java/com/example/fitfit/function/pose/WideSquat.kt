@@ -6,9 +6,9 @@ class WideSquat: Pose(){
 
     private val TAG = "와이드스쿼트"
 
-    override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
 
-//        Log.d(TAG, "poseWideSquat: 와이드 스쿼트 호출됨")
+    // 운동 동작 감지하는 메서드
+    override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
 
         checkBadPose = ""
 
@@ -59,15 +59,6 @@ class WideSquat: Pose(){
 
         return false
 
-    }
-
-
-    // 잘못된 동작 감지 여부 메서드
-    private fun checkBadPose(outputFeature0: FloatArray): Boolean {
-
-        // 잘못된 동작 감지
-        return true
-
-    } // checkBadPose()
+    } // posePoseExercise()
 
 }

@@ -6,11 +6,11 @@ class LeftLegRaises: Pose() {
 
     val TAG = "왼쪽 레그레이즈"
 
+
+    // 운동 동작 인식 메서드
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
 
         checkBadPose = ""
-
-        // 왼쪽 다리 각도 오른쪽 다리 각도 측정
 
         // 왼쪽 각도
         var leftAngle = 0.0
@@ -22,7 +22,6 @@ class LeftLegRaises: Pose() {
             outputFeature0[43],outputFeature0[42],
             outputFeature0[34],outputFeature0[33],
             outputFeature0[40],outputFeature0[39])
-
 
         // 오른쪽 각도
         var rightAngle = 0.0
@@ -59,6 +58,6 @@ class LeftLegRaises: Pose() {
 
         return false
 
-    }
+    } // posePoseExercise()
 
 }

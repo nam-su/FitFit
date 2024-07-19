@@ -15,7 +15,9 @@ open class Pose {
 
     // 운동 메서드 각각 상속받은 운동클래스에서 override 해준다.
     open fun posePoseExercise(outputFeature0: FloatArray): Boolean {
+
         TODO("Not yet implemented")
+
     } // posePoseExercise()
 
 
@@ -34,7 +36,9 @@ open class Pose {
         val magnitude2 = sqrt(vec2.first.pow(2) + vec2.second.pow(2))
 
         if (magnitude1 == 0.0f || magnitude2 == 0.0f) {
+
             return 0.0
+
         }
 
         // 코사인 값 계산
@@ -42,15 +46,9 @@ open class Pose {
 
         // 각도를 라디안으로 계산하고, 도 단위로 변환
         val angleRad = acos(cosTheta)
+
         return Math.toDegrees(angleRad.toDouble())
 
     } // calculateAngel()
-
-    // 두 점 사이에 거리를 구하는 메서드
-    fun calculateEuclideanDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
-
-        return sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2))
-
-    } // calculateEuclideanDistance()
 
 }

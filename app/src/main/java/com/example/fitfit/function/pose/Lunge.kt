@@ -10,10 +10,8 @@ class Lunge(): Pose() {
     private val TAG = "런지"
 
 
-    // 런지 감지하는 메서드.
+    // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
-
-        Log.d(TAG, "poseLunge: 호출됨")
 
         checkBadPose = ""
 
@@ -33,10 +31,9 @@ class Lunge(): Pose() {
         오른쪽 발목 = 48
          */
 
-        // 각도 계산         0.2 = 정확도를 뜻함.
+        // 각도 계산 0.2 = 정확도를 뜻함.
         val leftAccuracy = outputFeature0[35] > 0.2 && outputFeature0[41] > 0.2 && outputFeature0[47] > 0.2
         val rightAccuracy = outputFeature0[38] > 0.2 && outputFeature0[44] > 0.2 && outputFeature0[50] > 0.2
-
 
         // 정확도가 0.2 이상일때 감지한다.
         if (leftAccuracy && rightAccuracy) {
@@ -86,13 +83,11 @@ class Lunge(): Pose() {
 
         return false
 
-    } // poseLunge()
+    } // posePoseExercise()
 
 
     // 앉았을 자세가 잘못된지 판단여부 메서드
     private fun checkBadPose(outputFeature0: FloatArray): Boolean {
-
-        // 허리 관련
 
         // 왼쪽 무릎 = 13 변환값 = 39
         // 왼쪽 골반 = 11 변환값 = 33
