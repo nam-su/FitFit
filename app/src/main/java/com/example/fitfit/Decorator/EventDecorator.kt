@@ -13,30 +13,28 @@ import java.time.format.DateTimeFormatter
 
 class EventDecorator(private val poseExerciseArrayList: ArrayList<PoseExercise>) : DayViewDecorator {
 
-    override fun shouldDecorate(day: CalendarDay): Boolean {
-        return getCalendarDayArrayList().contains(day)
-    }
+    override fun shouldDecorate(day: CalendarDay): Boolean = getCalendarDayArrayList().contains(day)
 
-    override fun decorate(view: DayViewFacade) {
-        view.addSpan(DotSpan(10f, Color.RED))
-    }
-
+    override fun decorate(view: DayViewFacade) = view.addSpan(DotSpan(10f, Color.RED))
 
 
     // 캘린더데이어레이리스트로 리턴하는 메서드
     private fun getCalendarDayArrayList(): ArrayList<CalendarDay>{
 
         val calendarDayArrayList = ArrayList<CalendarDay>()
+
         poseExerciseArrayList.forEach{ poseExercise ->
+
            calendarDayArrayList.add(dateToCalendarDay(poseExercise.date))
+
        }
 
         return calendarDayArrayList
-    }
+
+    } // getCalendarDayArrayList()
 
 
-
-    //string 형태의 date를 calendarDay로 바꾸기
+    // string 형태의 date를 calendarDay로 바꾸기
     private fun dateToCalendarDay(date: Long): CalendarDay{
 
         // 타임스탬프를 Instant로 변환
@@ -48,6 +46,6 @@ class EventDecorator(private val poseExerciseArrayList: ArrayList<PoseExercise>)
         // LocalDate를 CalendarDay로 변환
         return CalendarDay.from(localDate.year, localDate.monthValue-1, localDate.dayOfMonth)
 
+    } // dateToCalendarDay()
 
-    } //dateToCalendarDay()
 }

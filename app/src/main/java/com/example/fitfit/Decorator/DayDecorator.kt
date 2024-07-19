@@ -9,16 +9,14 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 
 //선택된 날짜의 Background를 설정하는 클래스
 class DayDecorator(var context: Context) : DayViewDecorator {
-    override fun shouldDecorate(day: CalendarDay): Boolean {
-        return true
-    }
 
+    override fun shouldDecorate(day: CalendarDay): Boolean = true
+
+    // decorate 메서드
     override fun decorate(view: DayViewFacade) {
-        view.setSelectionDrawable(
-            ContextCompat.getDrawable(
-                context,
-                R.drawable.calendar_selector
-            )!!
-        )
-    }
+
+        view.setSelectionDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selector)!!)
+
+    } // decorate()
+
 }

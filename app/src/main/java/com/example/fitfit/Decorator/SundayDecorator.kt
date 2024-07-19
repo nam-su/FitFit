@@ -8,14 +8,23 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.Calendar
 
 class SundayDecorator : DayViewDecorator {
-    private val calendar = Calendar.getInstance()
-    override fun shouldDecorate(day: CalendarDay): Boolean {
-        day.copyTo(calendar)
-        val weekDay = calendar[Calendar.DAY_OF_WEEK]
-        return weekDay == Calendar.SUNDAY
-    }
 
-    override fun decorate(view: DayViewFacade) {
-        view.addSpan(ForegroundColorSpan(Color.RED))
-    }
+    private val calendar = Calendar.getInstance()
+
+    // shouldDecorate 메서드
+    override fun shouldDecorate(day: CalendarDay): Boolean {
+
+        day.copyTo(calendar)
+
+        val weekDay = calendar[Calendar.DAY_OF_WEEK]
+
+        return weekDay == Calendar.SUNDAY
+
+    } // shouldDecorate()
+
+
+    // decorate 메서드
+    override fun decorate(view: DayViewFacade) = view.addSpan(ForegroundColorSpan(Color.RED))
+    // decorate()
+
 }
