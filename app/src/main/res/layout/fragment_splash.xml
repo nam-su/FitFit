@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutSplash"
         android:layout_width="match_parent"
@@ -10,13 +11,13 @@
         android:background="@color/personal"
         tools:context=".fragment.SplashFragment">
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/FitFit"
             android:textSize="56sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            style="@style/defaultWhiteTextStyle"
             android:shadowColor="#50000000"
             android:shadowDx="9"
             android:shadowDy="10"
@@ -28,5 +29,6 @@
             app:layout_constraintVertical_bias="0.2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

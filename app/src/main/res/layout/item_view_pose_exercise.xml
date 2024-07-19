@@ -3,65 +3,68 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        
+
         <variable
             name="poseExercise"
             type="com.example.fitfit.data.PoseExercise" />
-        
+
     </data>
-    
+
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+
         <ImageView
             android:id="@+id/imageViewExerciseCategory"
-            android:background="@drawable/layout_border"
-            android:backgroundTint="@color/squat"
-            android:layout_margin="5dp"
-
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/layout_border"
+            android:backgroundTint="@color/squat"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButtonAddExerciseItem"
-            android:background="@drawable/button_add_exercise_item"
-            android:visibility="gone"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:background="@drawable/button_add_exercise_item"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButtonDeleteExerciseItem"
-            android:background="@drawable/button_delete_exercise_item"
-            android:visibility="gone"
-            android:layout_margin="1dp"
             android:layout_width="19dp"
             android:layout_height="19dp"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_delete_exercise_item"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageViewPremiumBadge"
-            android:src="@drawable/primium_badge"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_margin="2dp"
+            android:src="@drawable/primium_badge"
             app:layout_constraintStart_toStartOf="@id/imageViewExerciseCategory"
-            app:layout_constraintTop_toTopOf="@id/imageViewExerciseCategory"/>
+            app:layout_constraintTop_toTopOf="@id/imageViewExerciseCategory" />
 
         <TextView
             android:id="@+id/textViewExerciseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewExerciseCategory"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewExerciseCategory" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    
+
+
 </layout>

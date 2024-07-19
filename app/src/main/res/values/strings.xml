@@ -63,10 +63,16 @@
 
     <!--운동 프래그먼트-->
     <string name="todayExerciseStart">오늘의 운동 시작</string>
+    <string name="todayExercise">오늘의 운동</string>
+    <string name="moreExercise">더 다양한 운동을 하고 싶다면?</string>
+    <string name="quickView">간략히 보기</string>
+    <string name="detailView">자세히 보기</string>
+    <string name="monthChallenge">이달의 챌린지</string>
 
     <!--운동 선택 프래그먼트-->
     <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
     <string name="exerciseCount">%1$d / %2$d</string>
+    <string name="edit">편집</string>
 
     <!--운동 편집 프래그먼트-->
     <string name="myExerciseList">내 운동 리스트</string>
@@ -74,6 +80,7 @@
     <string name="pushUp">푸시업</string>
     <string name="lunge">런지</string>
     <string name="legRaises">레그레이즈</string>
+    <string name="startExercise">운동 시작하기</string>
 
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>
@@ -110,5 +117,21 @@
     <string name="challenge">챌린지 : </string>
     <string name="exerciseRecordEmpty">운동 기록이 존재하지 않습니다.</string>
     <string name="nonChallenge">참여 중인 챌린지가 없습니다.</string>
+
+    <!-- 결제 프래그먼트 -->
+    <string name="subscribeAndAllExerciseEnjoy">구독하고 \n다양한 운동 즐기기</string>
+    <string name="oneDay">1일</string>
+    <string name="month">30일</string>
+    <string name="year">1년</string>
+    <string name="daySubscribeCost">200</string>
+    <string name="monthSubscribeCost">6,000</string>
+    <string name="discountMonthSubscribeCost">4,200</string>
+    <string name="yearSubscribeCost">73,000</string>
+    <string name="discountYearSubscribeCost">36,500</string>
+    <string name="won">원</string>
+    <string name="pleaseScheduling">여러가지 운동 컨텐츠로\n자유로운 스케쥴링을 해보세요</string>
+    <string name="subscribeOneDay">하루 구독하기</string>
+    <string name="subscribeMonth">한달 구독하기</string>
+    <string name="subscribeYear">일년 구독하기</string>
 
 </resources>

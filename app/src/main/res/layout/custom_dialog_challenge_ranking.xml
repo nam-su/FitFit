@@ -6,63 +6,54 @@
 
         <variable
             name="rank"
-            type="com.example.fitfit.data.Rank" />
+            type="com.example.fitfit.data.Rank"/>
 
     </data>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    android:gravity="center"
-    android:background="@drawable/custom_dialog_background"
-    >
 
-    <TextView
-        style="@style/challengeDialogNicknameStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="@{rank.nickname}" />
-
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageViewUserProfile"
-        android:src="@drawable/user_profile"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginVertical="30dp"
-        />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUserChallenge"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_dialog_background"
+        android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:padding="10dp">
 
-        />
+        <TextView
+            style="@style/challengeDialogNicknameStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@{rank.nickname}"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonCheck"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/login_button"
-        android:text="@string/check"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="20dp"
-        style="@style/diaryFragmentButtonStyle"
-        />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewUserProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginVertical="30dp"
+            android:src="@drawable/user_profile"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUserChallenge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonCheck"
+            style="@style/diaryFragmentButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/login_button"
+            android:text="@string/check" />
 
-</LinearLayout>
+    </LinearLayout>
 
 </layout>

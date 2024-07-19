@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="loginViewModel"
             type="com.example.fitfit.viewModel.LoginViewModel" />
+
     </data>
 
 
@@ -22,14 +24,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/FitFit"
-            android:textColor="@color/personal"
+            style="@style/defaultPersonalTextStyle"
             android:textSize="56sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2" />
+
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -42,6 +44,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewFitFitLogo"
             app:layout_constraintVertical_bias="0.4">
 
+
             <EditText
                 android:id="@+id/editTextLoginInputEmail"
                 android:layout_width="match_parent"
@@ -49,7 +52,8 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/login_edit_text"
                 android:hint="@string/email"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/editTextLoginInputPassword"
@@ -60,42 +64,43 @@
                 android:background="@drawable/login_edit_text"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:autofillHints="" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/textViewFindPassword"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="15dp">
+                    android:text="@string/findPassword"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textViewFindPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/findPassword"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.25"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textViewSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signUp"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.75"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textViewSignUp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/signUp"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.75"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
-
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -138,14 +143,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/kakao_logo"
-
             app:layout_constraintBottom_toBottomOf="@+id/imageButtonNaverLogin"
             app:layout_constraintEnd_toStartOf="@+id/imageButtonNaverLogin"
             app:layout_constraintHorizontal_bias="0.29"
             app:layout_constraintStart_toStartOf="@+id/buttonLogin"
             app:layout_constraintTop_toTopOf="@+id/imageButtonNaverLogin" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>
 

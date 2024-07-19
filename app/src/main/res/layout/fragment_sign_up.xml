@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="SignUpViewModel"
             type="com.example.fitfit.viewModel.SignUpViewModel" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:context=".fragment.SignUpFragment">
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@+id/imageView2"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2">
-
-        <TextView
-            android:id="@+id/textView3"
-            style="@style/SignUpTitle"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/signUp" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="@+id/imageView2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView2">
 
-        <TextView
-            android:id="@+id/textViewPageCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/SignUpTitle"
-            android:layout_marginStart="10dp"
-            android:textSize="20sp"
-            android:text="@{@string/pageCount(SignUpViewModel.pageCount)}"/>
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/SignUpTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signUp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textViewPageCount"
+                style="@style/SignUpTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@{@string/pageCount(SignUpViewModel.pageCount)}"
+                android:textSize="20sp" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="15dp"
-        android:src="@drawable/back"
-        android:onClick="@{()->SignUpViewModel.setOnButtonBack()}"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:onClick="@{()->SignUpViewModel.setOnButtonBack()}"
+            android:src="@drawable/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <FrameLayout
             android:id="@+id/frameLayout"
@@ -61,6 +65,7 @@
             android:layout_marginTop="180dp"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
 
             <!--회원가입 첫번째과정-->
             <LinearLayout
@@ -88,7 +93,8 @@
                     android:hint="@string/email"
                     android:inputType="text"
                     app:layout_constraintStart_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView4"
+                    android:autofillHints="" />
 
                 <TextView
                     android:id="@+id/textViewEmailValid"
@@ -98,7 +104,7 @@
                     android:layout_marginTop="3dp"
                     android:text="@string/inValidEmailFormat"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
 
                 <LinearLayout
@@ -110,49 +116,56 @@
                     android:orientation="horizontal"
                     android:visibility="gone">
 
+
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        >
-                    <EditText
-                        android:id="@+id/editTextCode"
-                        style="@style/editTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:backgroundTint="@color/grey"
-                        android:hint="@string/authenticationCode"
-                        android:inputType="text"
-                        android:maxLength="6"
-                        app:layout_constraintStart_toStartOf="@+id/textView4"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                        android:layout_weight="3">
+
+                        <EditText
+                            android:id="@+id/editTextCode"
+                            style="@style/editTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/grey"
+                            android:hint="@string/authenticationCode"
+                            android:inputType="text"
+                            android:maxLength="6"
+                            app:layout_constraintStart_toStartOf="@+id/textView4"
+                            app:layout_constraintTop_toBottomOf="@+id/textView4"
+                            android:autofillHints="" />
 
                         <TextView
                             android:id="@+id/textViewTimer"
+                            style="@style/SignUpTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|center"
                             android:layout_marginEnd="10dp"
                             android:text="@{SignUpViewModel.setTimerFormat(SignUpViewModel.timerCount)}"
-                            style="@style/SignUpTitle"
-                            android:textColor="@color/black"
-                            />
+                            android:textColor="@color/black" />
+
 
                     </FrameLayout>
+
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/buttonResend"
                         style="@style/buttonTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:background="@drawable/login_button"
-                        android:text="@string/resend"
-                        android:onClick="@{()->SignUpViewModel.setOnButtonSendClick(editTextEmail.getText().toString())}"/>
+                        android:onClick="@{()->SignUpViewModel.setOnButtonSendClick(editTextEmail.getText().toString())}"
+                        android:text="@string/resend" />
+
 
                 </LinearLayout>
 
+
             </LinearLayout>
+
 
             <!--회원가입 두번째 과정-->
             <LinearLayout
@@ -161,6 +174,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="gone">
+
 
                 <TextView
                     style="@style/SignUpTitle"
@@ -171,6 +185,7 @@
 
                 <EditText
                     android:id="@+id/editTextPassword"
+                    style="@style/editTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
@@ -179,8 +194,8 @@
                     android:hint="@string/passwordHint"
                     android:inputType="textPassword"
                     android:maxLength="15"
-                    style="@style/editTextStyle"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:autofillHints="" />
 
                 <TextView
                     android:id="@+id/textViewPasswordValid"
@@ -190,22 +205,22 @@
                     android:layout_marginTop="3dp"
                     android:text="@string/validPasswordFormat"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
-
-                    <EditText
-                        android:id="@+id/editTextReconfirmPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="15dp"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="@color/grey"
-                        android:hint="@string/reconfirmPassword"
-                        android:inputType="textPassword"
-                        android:maxLength="15"
-                        android:visibility="gone"
-                        style="@style/editTextStyle"
-                        android:textSize="16sp"/>
+                <EditText
+                    android:id="@+id/editTextReconfirmPassword"
+                    style="@style/editTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/grey"
+                    android:hint="@string/reconfirmPassword"
+                    android:inputType="textPassword"
+                    android:maxLength="15"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:autofillHints="" />
 
                 <TextView
                     android:id="@+id/textViewPasswordCorrect"
@@ -215,10 +230,12 @@
                     android:layout_marginTop="3dp"
                     android:text="@string/inCorrectPasswordFormat"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
+
 
             </LinearLayout>
             <!--회원가입 두번째 과정 끝-->
+
 
             <!--회원가입 세번째 과정-->
             <LinearLayout
@@ -227,6 +244,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="gone">
+
 
                 <TextView
                     style="@style/SignUpTitle"
@@ -237,14 +255,14 @@
 
                 <EditText
                     android:id="@+id/editTextNickname"
+                    style="@style/editTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/grey"
                     android:hint="@string/nicknameHint"
-                    android:inputType="text"
-                    style="@style/editTextStyle"/>
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/textViewNicknameValid"
@@ -254,58 +272,62 @@
                     android:layout_marginTop="3dp"
                     android:text="@string/inValidNicknameFormat"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
+
 
             </LinearLayout>
             <!--회원가입 세번째 과정 끝-->
+
 
             <!--회원가입 네번째 과정-->
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="50dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginHorizontal="50dp">
+                android:visibility="gone">
+
 
                 <TextView
+                    style="@style/SignUpTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="50dp"
-                    android:text="@string/userInfoCheck"
-                    style="@style/SignUpTitle"/>
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="15dp"
-                   android:text="@{@string/userEmail(SignUpViewModel.signUpEmail)}"
-                   style="@style/SignUpContent"
-                   />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/personal"/>
+                    android:text="@string/userInfoCheck" />
 
                 <TextView
+                    style="@style/SignUpContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="@{@string/userNickname(SignUpViewModel.signUpNickname)}"
-                    style="@style/SignUpContent"
-                    />
+                    android:text="@{@string/userEmail(SignUpViewModel.signUpEmail)}" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/personal"/>
+                    android:background="@color/personal" />
+
+                <TextView
+                    style="@style/SignUpContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@{@string/userNickname(SignUpViewModel.signUpNickname)}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/personal" />
+
 
             </LinearLayout>
             <!--회원가입 세번째 과정 끝-->
 
+
         </FrameLayout>
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonNext"
@@ -317,27 +339,28 @@
             android:layout_marginTop="63dp"
             android:background="@drawable/login_button"
             android:backgroundTint="@color/grey"
-            android:text="@string/next"
             android:enabled="false"
             android:onClick="@{()->SignUpViewModel.setOnButtonNextClick(editTextEmail.getText().toString(),editTextCode.getText().toString(),editTextPassword.getText().toString(),editTextNickname.getText().toString())}"
+            android:text="@string/next"
             app:layout_constraintEnd_toEndOf="@+id/frameLayout"
             app:layout_constraintStart_toStartOf="@+id/frameLayout"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonComplete"
+            style="@style/buttonTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/complete"
             android:background="@color/personal"
-            android:visibility="gone"
-            style="@style/buttonTextStyle"
             android:onClick="@{()->SignUpViewModel.setOnButtonCompleteClick(SignUpViewModel.signUpEmail,SignUpViewModel.signUpPassword,SignUpViewModel.signUpNickname)}"
+            android:text="@string/complete"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>
