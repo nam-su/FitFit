@@ -161,7 +161,7 @@ class PoseDetectionViewModel() : ViewModel() {
     } // checkExerciseCount()
 
 
-    // 운동 끝난 후 운동 후 데이터 쉐어드에 갱신 및 통신 응답
+    // 운동 끝난 후 운동 후 데이터 갱신 및 통신 응답
     fun updatePoseExercise(exerciseName: String) {
 
         viewModelScope.launch {
