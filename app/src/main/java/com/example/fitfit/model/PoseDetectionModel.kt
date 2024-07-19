@@ -159,7 +159,7 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
     } // poseExercise()
 
 
-    // 쉐어드에 운동 후 기록 저장하는 메서드.
+    // 운동 후 기록 저장하는 메서드.
     suspend fun updatePoseExercise(exerciseName: String): Response<PoseExercise> {
 
         // 쉐어드로 운동객체 호출 하고 , 그 객체 갱신 후 리스트 갱신 해줘야함.

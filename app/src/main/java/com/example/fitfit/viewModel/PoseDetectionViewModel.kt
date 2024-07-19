@@ -59,6 +59,7 @@ class PoseDetectionViewModel() : ViewModel() {
 
         // 포즈 감지 모델 초기화
         poseDetectionModel = PoseDetectionModel(context,exerciseName)
+
         // 카메라 매니저 초기화
         cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
@@ -77,7 +78,8 @@ class PoseDetectionViewModel() : ViewModel() {
 
                     val surface = Surface(textureView.surfaceTexture)
 
-                    val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
+                    val captureRequest =
+                        cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
                         addTarget(surface)
                     }
 
@@ -85,16 +87,20 @@ class PoseDetectionViewModel() : ViewModel() {
                         SessionConfiguration.SESSION_REGULAR, // 또는 SESSION_HIGH_SPEED
                         listOf(OutputConfiguration(surface)),
                         Executors.newSingleThreadExecutor(), // Executor
+
                         object : CameraCaptureSession.StateCallback() {
+
                             override fun onConfigured(session: CameraCaptureSession) {
+
                                 session.setRepeatingRequest(captureRequest.build(), null, null)
+
                             }
 
                             override fun onConfigureFailed(session: CameraCaptureSession) {
                                 // Session configuration failed
                             }
-                        }
-                    )
+
+                        })
 
                     cameraDevice.createCaptureSession(sessionConfiguration)
 
@@ -105,10 +111,15 @@ class PoseDetectionViewModel() : ViewModel() {
                 }
 
                 override fun onError(camera: CameraDevice, error: Int) {
+
                     Log.e(TAG, "Camera error: $error")
+
                 }
+
             }, null)
+
         }
+
         return true
 
     } //openCamera()
@@ -150,7 +161,7 @@ class PoseDetectionViewModel() : ViewModel() {
     } // checkExerciseCount()
 
 
-    // 운동 끝난 후 운동 후 데이터 쉐어드에 갱신 및 통신 응답
+    // 운동 끝난 후 운동 후 데이터 갱신 및 통신 응답
     fun updatePoseExercise(exerciseName: String) {
 
         viewModelScope.launch {
@@ -180,6 +191,6 @@ class PoseDetectionViewModel() : ViewModel() {
         poseDetectionModel.close()
         Log.d(TAG, "onCleared:모델 리소스 해제")
 
-    }
+    } // onCleared()
 
 }

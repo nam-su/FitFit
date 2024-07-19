@@ -12,6 +12,7 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -32,6 +33,7 @@ import kotlin.reflect.KMutableProperty0
 class PoseDetectionFragment : Fragment() {
 
     private val TAG = "포즈추정 프래그먼트"
+
     // 데이터 바인딩 객체
     private lateinit var binding: FragmentPoseDetectionBinding
 
@@ -41,8 +43,8 @@ class PoseDetectionFragment : Fragment() {
     // bundle 로 받는 이용자가 고른 운동 이름
     private lateinit var exerciseName: String
 
+    // 뒤로가기 버튼 콜백 객체
     private lateinit var callback: OnBackPressedCallback
-
 
     // tts 객체
     private var tts: TextToSpeech? = null
@@ -55,26 +57,11 @@ class PoseDetectionFragment : Fragment() {
 
     private var isStartExercise = false
 
-    // 권한 요청 계약을 등록
-    private val requestPermissionLauncher =
-
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-
-            if (isGranted) {
-
-                // 권한 허용 한 경우
-                setSurfaceTextureListener()
-
-            } else {
-
-                // 권한이 거부된 경우
-                findNavController().popBackStack()
-
-            }
-
-        } // requestPermissionLauncher
+    // 권한 요청 런처 객체
+    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
 
+    // onAttach
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -99,6 +86,7 @@ class PoseDetectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
+        initRequestPermissionLauncher()
 
         checkPermissions()
         setObserve()
@@ -135,6 +123,28 @@ class PoseDetectionFragment : Fragment() {
     } // setListener()
 
 
+    // 권한요청 런처 초기화
+    private fun initRequestPermissionLauncher() {
+
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+
+            if (isGranted) {
+
+                setSurfaceTextureListener()
+                poseDetectionViewModel.openCamera(binding.textureView)
+                initTextToSpeech()
+
+            } else {
+
+                findNavController().popBackStack()
+
+            }
+
+        }
+
+    } // initRequestPermissionLauncher()
+
+
     // tts 초기화 및 초기 tts
     private fun initTextToSpeech() {
 
@@ -168,7 +178,6 @@ class PoseDetectionFragment : Fragment() {
             binding.imageView.setImageBitmap(bitmap)
         })
 
-
         // 운동 시작 후 동작인식 정확도 측정감지
         poseDetectionViewModel.checkAccuracy.observe(viewLifecycleOwner) { accuracy ->
 
@@ -182,7 +191,6 @@ class PoseDetectionFragment : Fragment() {
             }
 
         }
-
 
         // 운동 카운트 감지.
         poseDetectionViewModel.checkExerciseCount.observe(viewLifecycleOwner) {
@@ -226,6 +234,7 @@ class PoseDetectionFragment : Fragment() {
         binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
 
             override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+
                 Log.d(TAG, "onSurfaceTextureAvailable")
                 poseDetectionViewModel.openCamera(binding.textureView)
                 initTextToSpeech()
@@ -233,9 +242,13 @@ class PoseDetectionFragment : Fragment() {
             }
 
             override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+
             override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = false
+            
             override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
+
                 poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!, exerciseName)
+
             }
 
         }
@@ -304,7 +317,6 @@ class PoseDetectionFragment : Fragment() {
 
         } else {
 
-            Log.d(TAG, "checkPermissions: 여기로 오면될듯")
             setSurfaceTextureListener()
 
         }
