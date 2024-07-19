@@ -1,10 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <data>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+            name="rank"
+            type="com.example.fitfit.data.Rank" />
+
+    </data>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayoutItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp">
+
+
+        <TextView
+            android:id="@+id/textViewRank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@{String.valueOf(rank.ranking)}"
+            style="@style/defaultBlackTextStyle"
+            android:textSize="20sp" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewUserProfile"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@drawable/user_profile" />
+
+            <TextView
+                android:id="@+id/textViewUserNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:text="@{rank.nickname}"
+                style="@style/defaultBlackTextStyle"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textViewPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/defaultBlackTextStyle"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
 
 </layout>

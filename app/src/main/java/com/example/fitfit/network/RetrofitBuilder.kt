@@ -7,25 +7,51 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitBuilder {
 
-    var retrofit: Retrofit? = null
+    private var defaultRetrofit: Retrofit? = null
+    private var kakaoRetrofit: Retrofit? = null
 
+    var baseUrl: String? = "http://15.164.49.94/"
+    val KAKAOPAY_SECRET_KEY = "DEVF70FE81BA55A6924A2361A24B570781466812"
+
+    // 레트로핏 객체 초기화 하는 메서드
     fun getRetrofitObject(): Retrofit? {
 
         val gson: Gson = GsonBuilder()
             .setLenient()
             .create()
 
-        if (retrofit == null) {
+        if (defaultRetrofit == null) {
 
-            retrofit = Retrofit.Builder()
-                .baseUrl("http://13.209.76.164/")
+            defaultRetrofit = Retrofit.Builder()
+                .baseUrl(baseUrl)
                 .addConverterFactory(NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
 
         }
 
-        return retrofit
+        return defaultRetrofit
+
+    } // getRetrofitObject()
+
+
+    // 카카오 페이를 위한 레트로핏 객체 초기화
+    fun getKakaoRetrofitObject(): Retrofit? {
+
+        val gson: Gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        if (kakaoRetrofit == null) {
+
+            kakaoRetrofit = Retrofit.Builder()
+                .baseUrl("https://open-api.kakaopay.com/online/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+
+        }
+
+        return kakaoRetrofit
 
     }
 

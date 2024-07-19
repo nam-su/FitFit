@@ -1,20 +1,23 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
@@ -24,82 +27,147 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
+import kotlin.reflect.KMutableProperty0
 
 class PoseDetectionFragment : Fragment() {
 
     private val TAG = "포즈추정 프래그먼트"
+
     // 데이터 바인딩 객체
     private lateinit var binding: FragmentPoseDetectionBinding
 
     // ViewModel 객체
     private lateinit var poseDetectionViewModel: PoseDetectionViewModel
 
+    // bundle 로 받는 이용자가 고른 운동 이름
     private lateinit var exerciseName: String
+
+    // 뒤로가기 버튼 콜백 객체
+    private lateinit var callback: OnBackPressedCallback
+
+    // tts 객체
+    private var tts: TextToSpeech? = null
+
+    private var lastSpokenMessage: String? = null
+
+    private var isSpeakingCoolDown = false // 잘못된 자세시 TTS 호출 쿨다운 상태를 추적하는 변수
+
+    private var isAccuracySpeakingCoolDown = false // TTS 호출 쿨다운 상태를 추적하는 변수
+
+    private var isStartExercise = false
+
+    // 권한 요청 런처 객체
+    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
+
+    // onAttach
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         // 데이터 바인딩 설정
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_detection, container, false)
 
         return binding.root
-    }
+
+    } // onCreateView()
+
 
     // onViewCreated 메서드는 뷰가 생성된 후 호출됩니다.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 필요한 권한을 체크합니다.
-        checkPermissions()
-
         setVariable()
+        initRequestPermissionLauncher()
+
+        checkPermissions()
         setObserve()
         setListener()
 
-    }
+    } // onViewCreated
+
 
     // 변수 초기화
     private fun setVariable() {
 
         binding.lifecycleOwner = this
+
+        exerciseName = requireArguments().getString("exerciseName").toString()
+
         poseDetectionViewModel = PoseDetectionViewModel()
         binding.poseDetectionViewModel = poseDetectionViewModel
 
         // ViewModel을 초기화합니다.
-        poseDetectionViewModel.initialize(requireContext().applicationContext)
-
-        exerciseName = requireArguments().getString("exerciseName").toString()
+        poseDetectionViewModel.initialize(requireContext().applicationContext,exerciseName)
 
     } // setVariable
 
 
-    //리스너 관련 메서드
+    // 리스너 관련 메서드
     private fun setListener(){
 
-        // TextureView의 SurfaceTextureListener를 설정합니다.
-        binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-            // TextureView가 사용 가능해졌을 때 호출됩니다.
-            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
-                poseDetectionViewModel.openCamera(binding.textureView)
-            }
+        binding.buttonTest.setOnClickListener {
 
-            // TextureView의 크기가 변경되었을 때 호출됩니다.
-            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+            startMediaPlayer(R.raw.exercise_signal)
 
-            // TextureView가 파괴될 때 호출됩니다.
-            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
-                return false
-            }
-
-            // TextureView가 업데이트될 때 호출됩니다.
-            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
-
-                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!,exerciseName)
-
-            }
         }
 
     } // setListener()
 
+
+    // 권한요청 런처 초기화
+    private fun initRequestPermissionLauncher() {
+
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+
+            if (isGranted) {
+
+                setSurfaceTextureListener()
+                poseDetectionViewModel.openCamera(binding.textureView)
+                initTextToSpeech()
+
+            } else {
+
+                findNavController().popBackStack()
+
+            }
+
+        }
+
+    } // initRequestPermissionLauncher()
+
+
+    // tts 초기화 및 초기 tts
+    private fun initTextToSpeech() {
+
+        tts = TextToSpeech(requireContext()) { status ->
+
+            if (status == TextToSpeech.SUCCESS) {
+
+                tts?.language = Locale.KOREA
+
+                "$exerciseName 시작합니다.   올바른 자세로 서주세요".speak()
+
+                CoroutineScope(Dispatchers.Main).launch {
+
+                    delay(4000)
+                    isStartExercise = true
+
+                }
+
+            }
+
+        }
+
+    } // initTextToSpeech()
 
 
     //Observe 관련 메서드
@@ -107,9 +175,24 @@ class PoseDetectionFragment : Fragment() {
 
         // ViewModel의 bitmap LiveData를 관찰하여 UI를 업데이트합니다.
         poseDetectionViewModel.bitmap.observe(viewLifecycleOwner, Observer { bitmap ->
+
             binding.imageView.setImageBitmap(bitmap)
+
         })
 
+        // 운동 시작 후 동작인식 정확도 측정감지
+        poseDetectionViewModel.checkAccuracy.observe(viewLifecycleOwner) { accuracy ->
+
+            if (isStartExercise) {
+
+                if (!accuracy && !isAccuracySpeakingCoolDown) {
+                    "동작을 감지할 수 없습니다".speak()
+                    triggerCoolDown(::isAccuracySpeakingCoolDown)
+                }
+
+            }
+
+        }
 
         // 운동 카운트 감지.
         poseDetectionViewModel.checkExerciseCount.observe(viewLifecycleOwner) {
@@ -118,6 +201,8 @@ class PoseDetectionFragment : Fragment() {
 
                 // 감지 리스너를 새로 초기화 해줘야 데이터가 중첩 안됨.
                 // 초기화 해주지 않으면 감지가 계속 호출될때 마다 변수 감지해서 중첩됨.
+                "운동이 끝났습니다".speak()
+
                 binding.textureView.surfaceTextureListener = null
 
                 finishExercise(exerciseName)
@@ -126,7 +211,91 @@ class PoseDetectionFragment : Fragment() {
 
         }
 
-    } //setObserve()
+
+        // 잘못된 동작 감지
+        poseDetectionViewModel.checkBadPose.observe(viewLifecycleOwner) { message ->
+
+            if (message.isNotEmpty() && !isSpeakingCoolDown) {
+
+                message.speak()
+
+                lastSpokenMessage = message
+
+                triggerCoolDown(::isSpeakingCoolDown)
+
+            }
+
+        }
+
+    } // setObserve()
+
+
+    // textureView 관련 초기화
+    private fun setSurfaceTextureListener() {
+
+        binding.textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+
+                Log.d(TAG, "onSurfaceTextureAvailable")
+                poseDetectionViewModel.openCamera(binding.textureView)
+                initTextToSpeech()
+
+            }
+
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = false
+            
+            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
+
+                poseDetectionViewModel.checkExerciseCount(binding.textureView.bitmap!!, exerciseName)
+
+            }
+
+        }
+
+    } // setSurfaceTextureListener()
+
+
+    // 쿨다운 시작 메서드
+    private fun triggerCoolDown(coolDownFlag: KMutableProperty0<Boolean>) {
+
+        coolDownFlag.set(true)
+        CoroutineScope(Dispatchers.Main).launch {
+
+            delay(3000)
+
+            coolDownFlag.set(false)
+
+        }
+
+    } // triggerCoolDown
+
+
+    // 운동 효과음 재생하는 메서드
+    private fun startMediaPlayer(music : Int) {
+
+        val mediaPlayer = MediaPlayer.create(requireContext(), music)
+        mediaPlayer.isLooping = false
+
+        mediaPlayer.setOnCompletionListener {
+
+            mediaPlayer.release()
+
+        }
+
+        mediaPlayer.start()
+
+    } // startMediaPlayer()
+
+
+    // tts speak 메서드
+    private fun String.speak() {
+
+        tts?.speak(this, TextToSpeech.QUEUE_FLUSH, null, null)
+
+    } // speak
 
 
     // 운동 개수를 다 채웠을때 호출하는 메서드
@@ -148,20 +317,35 @@ class PoseDetectionFragment : Fragment() {
 
     // 카메라 권한을 체크
     private fun checkPermissions() {
+
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 101)
-        }
-    }
 
+            requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
 
-
-    // 권한 요청 결과를 처리
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            poseDetectionViewModel.openCamera(binding.textureView)
         } else {
-            checkPermissions()
+
+            setSurfaceTextureListener()
+
         }
-    }
+
+    } // checkPermissions()
+
+
+    // 뒤로가기 버튼 눌렀을 때
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                findNavController().popBackStack()
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // onBackPressed()
+
 }

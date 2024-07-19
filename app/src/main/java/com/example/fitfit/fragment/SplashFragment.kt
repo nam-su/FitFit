@@ -19,6 +19,7 @@ class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
     private lateinit var splashViewModel: SplashViewModel
 
+    // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_splash,container,false)
@@ -27,6 +28,8 @@ class SplashFragment : Fragment() {
 
     } // onCreateView()
 
+
+    // onViewCreated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,6 +44,7 @@ class SplashFragment : Fragment() {
     private fun setVariable() {
 
         splashViewModel = SplashViewModel()
+
         (activity as MainActivity).goneBottomNavi()
 
     } // setVariable()
@@ -56,7 +60,10 @@ class SplashFragment : Fragment() {
 
                 true -> {
 
+                    splashViewModel.selectUserExercise()
+
                     this.findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+
                     (activity as MainActivity).visibleBottomNavi()
 
                 }

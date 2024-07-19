@@ -1,44 +1,51 @@
 package com.example.fitfit.model
 
-import com.example.fitfit.data.ExerciseDiary
+import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import java.time.LocalDate
 
 class ExerciseChoiceModel {
+
+    private val TAG = "운동 선택 모델"
 
     // 리사이클러뷰에 들어가는 어레이리스트 초기화 메서드
     fun setExerciseChoiceList(): ArrayList<PoseExercise> {
 
-        val exerciseChoiceList = MyApplication.sharedPreferences.getPoseExerciseList()
+        MyApplication.sharedPreferences.getMyPoseExerciseList().forEach {
 
-        when(exerciseChoiceList.size) {
+            Log.d(TAG, "setExerciseChoiceList: ${it.exerciseName}")
 
-            0 ->{
+        }
 
-                exerciseChoiceList.add(PoseExercise("2024-05-31","스쿼트","기본 스쿼트",0,10))
-                exerciseChoiceList.add(PoseExercise("2024-05-31","푸시업","기본 푸시업",0,10))
-                exerciseChoiceList.add(PoseExercise("2024-05-31","런지","기본 런지",0,10))
+        return compareExerciseDate(MyApplication.sharedPreferences.getMyPoseExerciseList())
 
-                MyApplication.sharedPreferences.setPoseExerciseList(exerciseChoiceList)
+    } // setExerciseChoiceList()
 
-            }
 
-            else -> {
+    // 최근 운동한 날짜가 오늘과 다르다면 운동 카운트 0으로 초기화 하는 메서드
+    private fun compareExerciseDate(myExerciseList: ArrayList<PoseExercise>): ArrayList<PoseExercise> {
+
+        val todayDate = LocalDate.now()
+
+        // 내 운동리스트 순회
+        for (exercise in myExerciseList) {
+
+            // 최근 운동의 운동한 날짜.
+            val exerciseDate = LocalDate.ofEpochDay(exercise.date / (24 * 60 * 60 * 1000))
+
+            // 오늘날짜와 마지막 운동 기록의 날짜가 일치하지 않을 때
+            if(todayDate != exerciseDate) {
+
+                exercise.date = System.currentTimeMillis()
+                exercise.exerciseCount = 0
 
             }
 
         }
 
-        return exerciseChoiceList
+        return myExerciseList
 
-    } // setExerciseChoiceList()
-
-
-    // 쉐어드에 운동정보 객체 저장
-    fun setPoseExercise(poseExercise: PoseExercise) {
-
-        MyApplication.sharedPreferences.setPoseExercise(poseExercise)
-
-    } // savePoseExercse()
+    } // compareExerciseDate()
 
 }

@@ -12,14 +12,15 @@ import javax.mail.internet.MimeMessage
 class GmailSender : Authenticator() {
 
     val TAG = "메일"
+
     // 보내는 사람 이메일과 비밀번호
     private val fromEmail = "fitfit240522@gmail.com"
     private val password = "mfiwglhmabywkdgb"
 
     // 보내는 사람 계정 확인
-    override fun getPasswordAuthentication(): PasswordAuthentication {
-        return PasswordAuthentication(fromEmail, password)
-    }
+    override fun getPasswordAuthentication(): PasswordAuthentication = PasswordAuthentication(fromEmail, password)
+    // getPasswordAuthentication()
+
 
     // 메일 보내기
     fun sendEmail(toEmail: String,title : String,randomString : String) {
@@ -41,22 +42,34 @@ class GmailSender : Authenticator() {
 
             // 메시지 객체 만들기
             val message = MimeMessage(session)
-            message.sender = InternetAddress(fromEmail)                                 // 보내는 사람 설정
-            message.addRecipient(Message.RecipientType.TO, InternetAddress(toEmail))    // 받는 사람 설정
-            message.subject = title                                              // 이메일 제목
-            message.setText(randomString)                                               // 이메일 내용
+
+            // 보내는 사람 설정
+            message.sender = InternetAddress(fromEmail)
+
+            // 받는 사람 설정
+            message.addRecipient(Message.RecipientType.TO, InternetAddress(toEmail))
+
+            // 이메일 제목
+            message.subject = title
+
+            // 이메일 내용
+            message.setText(randomString)
 
             // 전송
             try {
+
                 // 이메일 전송 코드
                 Transport.send(message)
+
             } catch (e: AuthenticationFailedException) {
+
                 // 앱 비밀번호가 틀린경우
                 Log.e(TAG, "Authentication failed: ${e.message}")
+
             }
+
         }
 
-    }
-
+    } // sendEmail()
 
 }

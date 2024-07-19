@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="exerciseEditViewModel"
+            type="com.example.fitfit.viewModel.ExerciseEditViewModel" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.ExerciseEditFragment">
+
+        <ImageButton
+            android:id="@+id/imageButtonEditBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewEditComplete"
+            style="@style/defaultPersonalTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/complete"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewMyExerciseList"
+            style="@style/defaultBlackTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/myExerciseList"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewMyPoseExerciseList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonEditBack" />
+
+        <TextView
+            android:id="@+id/textViewMyExerciseListSize"
+            style="@style/defaultBlackTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{exerciseEditViewModel.myExerciseListSize + ` 개`}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/textViewMyExerciseList"
+            app:layout_constraintEnd_toEndOf="@id/textViewMyExerciseList"
+            app:layout_constraintTop_toTopOf="@id/textViewMyExerciseList" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMyPoseExerciseList"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/textViewSquat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewMyExerciseList"
+            tools:listitem="@layout/item_view_pose_exercise" />
+
+        <TextView
+            android:id="@+id/textViewSquat"
+            style="@style/defaultBlackTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/squat"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllSquat"
+            app:layout_constraintEnd_toStartOf="@+id/textViewPushUp"
+            app:layout_constraintStart_toStartOf="@id/recyclerViewMyPoseExerciseList"
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewMyPoseExerciseList" />
+
+        <TextView
+            android:id="@+id/textViewPushUp"
+            style="@style/defaultBlackTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/pushUp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllPushUp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewLunge"
+            app:layout_constraintStart_toEndOf="@id/textViewSquat"
+            app:layout_constraintTop_toTopOf="@id/textViewSquat" />
+
+        <TextView
+            android:id="@+id/textViewLunge"
+            style="@style/defaultBlackTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/lunge"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllLunge"
+            app:layout_constraintEnd_toStartOf="@+id/textViewLegRaises"
+            app:layout_constraintStart_toEndOf="@id/textViewPushUp"
+            app:layout_constraintTop_toTopOf="@id/textViewPushUp" />
+
+        <TextView
+            android:id="@+id/textViewLegRaises"
+            style="@style/defaultBlackTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/legRaises"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewAllLegRaises"
+            app:layout_constraintEnd_toEndOf="@id/recyclerViewMyPoseExerciseList"
+            app:layout_constraintStart_toEndOf="@+id/textViewLunge"
+            app:layout_constraintTop_toTopOf="@+id/textViewLunge" />
+
+        <!-- 모든 스쿼트 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAllSquat"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewSquat"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="@id/textViewSquat"
+            app:layout_constraintTop_toBottomOf="@id/textViewSquat"
+            tools:listitem="@layout/item_view_pose_exercise" />
+
+        <!-- 모든 푸시업 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAllPushUp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewPushUp"
+            app:layout_constraintStart_toStartOf="@+id/textViewPushUp"
+            app:layout_constraintTop_toBottomOf="@id/textViewPushUp"
+            tools:listitem="@layout/item_view_pose_exercise" />
+
+        <!-- 모든 런지 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAllLunge"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewLunge"
+            app:layout_constraintStart_toStartOf="@id/textViewLunge"
+            app:layout_constraintTop_toBottomOf="@id/textViewLunge"
+            tools:listitem="@layout/item_view_pose_exercise" />
+
+        <!-- 모든 레그레이즈 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAllLegRaises"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewLegRaises"
+            app:layout_constraintStart_toStartOf="@id/textViewLegRaises"
+            app:layout_constraintTop_toBottomOf="@id/textViewLegRaises"
+            tools:listitem="@layout/item_view_pose_exercise" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

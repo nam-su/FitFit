@@ -5,6 +5,8 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
+
+    <!--스플래시 프래그먼트-->
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.example.fitfit.fragment.SplashFragment"
@@ -14,15 +16,20 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            />
 
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true"/>
 
     </fragment>
 
+
+    <!--로그인 프래그먼트-->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.fitfit.fragment.LoginFragment"
@@ -32,12 +39,18 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"/>
+        <action
+            android:id="@+id/action_loginFragment_to_findPasswordFragment"
+            app:destination="@id/findPasswordFragment" />
     </fragment>
 
+
+    <!--회원가입 프래그먼트-->
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.fitfit.fragment.SignUpFragment"
@@ -50,14 +63,24 @@
 
     </fragment>
 
+
+    <!--홈 프래그먼트-->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.fitfit.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home"
-        app:popUpToInclusive="true"
         />
 
+    <!--운동 정보 프래그먼트-->
+    <fragment
+        android:id="@+id/exerciseItemInfoFragment"
+        android:name="com.example.fitfit.fragment.ExerciseItemInfoFragment"
+        android:label="fragment_exerciseItemInfo"
+        tools:layout="@layout/fragment_exercise_item_info"
+        />
+
+    <!--운동 프래그먼트-->
     <fragment
         android:id="@+id/exerciseFragment"
         android:name="com.example.fitfit.fragment.ExerciseFragment"
@@ -68,33 +91,81 @@
         <action
             android:id="@+id/action_exerciseFragment_to_exerciseChoiceFragment"
             app:destination="@id/exerciseChoiceFragment" />
+        <action
+            android:id="@+id/action_exerciseFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+        <action
+            android:id="@+id/action_exerciseFragment_to_DiaryFragment"
+            app:destination="@+id/diaryFragment"/>
+
     </fragment>
 
+
+    <!-- 운동 선택 프래그먼트 -->
     <fragment
         android:id="@+id/exerciseChoiceFragment"
         android:name="com.example.fitfit.fragment.ExerciseChoiceFragment"
         android:label="fragment_exerciseChoice"
         tools:layout="@layout/fragment_exercise_choice">
+
         <action
             android:id="@+id/action_exerciseChoiceFragment_to_poseDetectionFragment"
             app:destination="@id/poseDetectionFragment"
             app:popUpToInclusive="true"/>
 
+        <action
+            android:id="@+id/action_exerciseChoiceFragment_to_exerciseEditFragment"
+            app:destination="@id/exerciseEditFragment"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
 
+    <!--운동 리스트 편집 프래그먼트-->
+    <fragment
+        android:id="@+id/exerciseEditFragment"
+        android:name="com.example.fitfit.fragment.ExerciseEditFragment"
+        android:label="fragment_exerciseEdit"
+        tools:layout="@layout/fragment_exercise_edit"/>
+
+
+    <!--운동 일지 프래그먼트-->
     <fragment
         android:id="@+id/diaryFragment"
         android:name="com.example.fitfit.fragment.DiaryFragment"
         android:label="fragment_diary"
         tools:layout="@layout/fragment_diary"/>
 
+
+    <!--내정보 프래그먼트-->
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.fitfit.fragment.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user"/>
+        tools:layout="@layout/fragment_user">
 
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/userFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_userFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
+            />
+        <action
+            android:id="@+id/action_userFragment_to_userEditFragment"
+            app:destination="@id/userEditFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_userFragment_to_findPasswordFragment"
+            app:destination="@id/findPasswordFragment" />
+
+    </fragment>
+
+
+    <!--동작 감지 프래그먼트-->
     <fragment
         android:id="@+id/poseDetectionFragment"
         android:name="com.example.fitfit.fragment.PoseDetectionFragment"
@@ -102,11 +173,41 @@
         tools:layout="@layout/fragment_pose_detection"
         app:popUpToInclusive="true"/>
 
+
+    <!--결제 프래그먼트-->
     <fragment
         android:id="@+id/payFragment"
         android:name="com.example.fitfit.fragment.PayFragment"
         android:label="fragment_pay"
         tools:layout="@layout/fragment_pay"
         />
+
+    <fragment
+        android:id="@+id/userEditFragment"
+        android:name="com.example.fitfit.fragment.UserEditFragment"
+        android:label="fragment_user_edit"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_user_edit"
+        >
+        <action
+            android:id="@+id/action_userEditFragment_to_userFragment"
+            app:destination="@id/userFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/findPasswordFragment"
+        android:name="com.example.fitfit.fragment.FindPasswordFragment"
+        android:label="fragment_find_password"
+        tools:layout="@layout/fragment_find_password"
+        >
+
+
+        <action
+            android:id="@+id/action_findPasswordFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
+            app:popUpTo="@id/findPasswordFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 </navigation>

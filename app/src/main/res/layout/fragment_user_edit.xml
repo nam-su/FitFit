@@ -1,14 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.UserEditFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="userEditViewModel"
+            type="com.example.fitfit.viewModel.UserEditViewModel" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".fragment.UserEditFragment">
 
-</FrameLayout>
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:src="@drawable/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            style="@style/ProfileEditTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profileEdit"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewBack"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageViewBack" />
+
+        <TextView
+            android:id="@+id/textViewComplete"
+            style="@style/ProfileEditCompleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="@string/complete"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
+
+        <!--유저 프로필 이미지-->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewUserProfile"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/user_profile"
+            app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+        <ImageView
+            android:id="@+id/imageViewAdd"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/add"
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageViewUserProfile"
+            app:layout_constraintEnd_toEndOf="@+id/circleImageViewUserProfile" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editTextNickname"
+            style="@style/editTextStyle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:drawableEnd="@drawable/pencil"
+            android:gravity="center"
+            android:maxLength="8"
+            android:selectAllOnFocus="true"
+            android:text="@{userEditViewModel.nickname}"
+            app:layout_constraintEnd_toEndOf="@+id/circleImageViewUserProfile"
+            app:layout_constraintStart_toStartOf="@+id/circleImageViewUserProfile"
+            app:layout_constraintTop_toBottomOf="@+id/circleImageViewUserProfile" />
+
+        <TextView
+            android:id="@+id/textViewNicknameValid"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/nicknameHint"
+            android:textColor="@color/grey"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@id/editTextNickname"
+            app:layout_constraintTop_toBottomOf="@id/editTextNickname" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

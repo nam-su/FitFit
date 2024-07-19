@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="transparency">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#FFD9D9D9</color>
     <color name="personal">#FF496FF6</color>
+    <color name="personal_grey">#34496FF6</color>
     <color name="red">#E33333</color>
     <color name="green">#4CFF00</color>
     <color name="squat">#901040BB</color>
     <color name="pushUp">#9019B2B2</color>
     <color name="lunge">#90EF5555</color>
+    <color name="legRaises">#90EBD515</color>
     <color name="yearButton">#FF0F2264</color>
     <color name="halfGrey">#90D9D9D9</color>
+    <color name="personal_bold">#485EAA</color>
 
 </resources>

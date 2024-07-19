@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.fitfit'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.fitfit"
-        minSdk 25
-        targetSdk 33
+        minSdk 26
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -42,9 +42,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
@@ -55,7 +55,9 @@ dependencies {
     // bottomNavigation
     // Kotlin
     def nav_version = "2.5.3"
+    //noinspection GradleDependency
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    //noinspection GradleDependency
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     // retrofit
@@ -66,4 +68,36 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
+
+    //drawerLayout, bottomSheetDialogFragment
+    implementation 'com.google.android.material:material:1.6.0'
+
+    // CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    //캘린더뷰 커스텀용
+    def calendarView_version = "1.4.3"
+    implementation("com.github.prolificinteractive:material-calendarview:$calendarView_version")
+
+    //MP_chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // 뷰페이저
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // 닷 인디케이터
+    implementation 'com.tbuonomo:dotsindicator:4.2'
+
+    // 카카오 로그인
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
+
+    // 네이버 로그인
+    implementation 'com.navercorp.nid:oauth-jdk8:5.1.0' // jdk 8
+
+    // 구글 로그인
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
+
 }
