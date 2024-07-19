@@ -16,6 +16,7 @@ class CheckWeekExerciseAdapter(private val checkWeekExerciseList: ArrayList<Exer
 
     lateinit var binding: ItemViewCheckWeekExerciseBinding
 
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckWeekExerciseViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),R.layout.item_view_check_week_exercise,parent,false)
@@ -25,20 +26,18 @@ class CheckWeekExerciseAdapter(private val checkWeekExerciseList: ArrayList<Exer
     } // onCreateViewHolder()
 
 
-    override fun getItemCount(): Int {
-
-        return checkWeekExerciseList.size
-
-    } // getItemCount()
+    // getItemCount
+    override fun getItemCount(): Int = checkWeekExerciseList.size
+    // getItemCount()
 
 
-    override fun onBindViewHolder(holder: CheckWeekExerciseViewHolder, position: Int) {
-
+    // onBindViewHolder
+    override fun onBindViewHolder(holder: CheckWeekExerciseViewHolder, position: Int) =
         holder.onBind(checkWeekExerciseList[position])
+    // onBindViewHolder()
 
-    } // onBindViewHolder()
 
-
+    // 뷰홀더 클래스
     class CheckWeekExerciseViewHolder(private val binding: ItemViewCheckWeekExerciseBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(exerciseDiary: ExerciseDiary) {
@@ -47,11 +46,13 @@ class CheckWeekExerciseAdapter(private val checkWeekExerciseList: ArrayList<Exer
 
             // 요일에 색상 추가
             binding.textViewDay.setTextColor(
+
                 when (exerciseDiary.check) {
+
                     true -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, R.color.personal))
                     else -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, R.color.black))
-                }
-            )
+
+                })
 
             // 네모칸에 색상 추가
             binding.viewCheckExercise.backgroundTintList = when(exerciseDiary.check){
@@ -60,7 +61,6 @@ class CheckWeekExerciseAdapter(private val checkWeekExerciseList: ArrayList<Exer
                 else -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.grey))
 
             }
-
 
         } // onBind
 

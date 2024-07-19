@@ -13,6 +13,8 @@ class ExerciseItemInfoAdapter(private val exerciseItemInfo: ExerciseItemInfo): R
 
     lateinit var binding: ItemViewExerciseItemInfoImageBinding
 
+
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseItemInfoViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_exercise_item_info_image,parent,false)
@@ -22,9 +24,12 @@ class ExerciseItemInfoAdapter(private val exerciseItemInfo: ExerciseItemInfo): R
     } // onCreateViewHolder()
 
 
+    // getItemCount
     override fun getItemCount(): Int = 2
+    // getItemCount()
 
 
+    // onBindViewHolder
     override fun onBindViewHolder(holder: ExerciseItemInfoViewHolder, position: Int) {
 
         when(position) {
@@ -37,6 +42,7 @@ class ExerciseItemInfoAdapter(private val exerciseItemInfo: ExerciseItemInfo): R
     } // onBindViewHolder()
 
 
+    // 뷰홀더 클래스
     class ExerciseItemInfoViewHolder(val binding: ItemViewExerciseItemInfoImageBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun onBind(imageUrl: Int) {

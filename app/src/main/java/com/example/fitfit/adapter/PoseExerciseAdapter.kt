@@ -30,22 +30,26 @@ class PoseExerciseAdapter(
     interface ExerciseEditItemAddButtonClick {
 
         fun onAddButtonClick(view: View,position: Int)
+        // onAddButtonClick()
 
     }
 
     interface ExerciseEditItemDeleteButtonClick {
 
         fun onDeleteButtonClick(view: View,position: Int)
+        // onDeleteButtonClick()
 
     }
 
     interface ExerciseItemClick {
 
         fun onExerciseItemClick(view: View,position: Int)
+        // onExerciseItemClick()
 
     }
 
 
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoseExerciseViewHolder {
 
         binding = DataBindingUtil.inflate(
@@ -59,12 +63,13 @@ class PoseExerciseAdapter(
 
     } // onCreateViewHolder()
 
-    override fun getItemCount(): Int {
 
-        return poseExerciseList.size
+    // getItemCount
+    override fun getItemCount(): Int = poseExerciseList.size
+    // getItemCount()
 
-    } // getItemCount()
 
+    // onBindViewHolder
     override fun onBindViewHolder(holder: PoseExerciseViewHolder, position: Int) {
 
         holder.onBind(poseExerciseList[position], checkVisibleExerciseName)
@@ -108,6 +113,7 @@ class PoseExerciseAdapter(
     } // onBindViewHolder()
 
 
+    // 뷰홀더 클래스
     class PoseExerciseViewHolder(val binding: ItemViewPoseExerciseBinding) : RecyclerView.ViewHolder(binding.root) {
 
         val TAG = "운동객체 뷰홀더"
@@ -213,13 +219,21 @@ class PoseExerciseAdapter(
             when(exerciseName) {
 
                 "기본 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
+
                 "와이드 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.wide_squat)
+
                 "기본 푸시업" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
+
                 "기본 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+
                 "왼쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_lunge)
+
                 "오른쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_lunge)
+
                 "기본 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
+
                 "왼쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
+
                 "오른쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
 
             }

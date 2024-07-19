@@ -17,6 +17,8 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
     lateinit var binding: ItemViewPoseExerciseGridBinding
 
+
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoseExerciseGridViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_pose_exercise_grid,parent,false)
@@ -25,18 +27,18 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
     } // onCreateViewHolder()
 
-    override fun getItemCount(): Int {
 
-        return poseExerciseList.size
+    // getItemCount
+    override fun getItemCount(): Int = poseExerciseList.size
+    // getItemCount()
 
-    } // getItemCount()
 
-    override fun onBindViewHolder(holder: PoseExerciseGridViewHolder, position: Int) {
+    // onBindViewHolder
+    override fun onBindViewHolder(holder: PoseExerciseGridViewHolder, position: Int) = holder.onBind(poseExerciseList[position])
+    // onBindViewHolder
 
-        holder.onBind(poseExerciseList[position])
 
-    } // onBindViewHolder
-
+    // 뷰홀더 클래스
     class PoseExerciseGridViewHolder(val binding: ItemViewPoseExerciseGridBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(poseExercise: PoseExercise) {
@@ -120,13 +122,21 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
             when(exerciseName) {
 
                 "기본 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
+
                 "와이드 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.wide_squat)
+
                 "기본 푸시업" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
+
                 "기본 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+
                 "왼쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_lunge)
+
                 "오른쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_lunge)
+
                 "기본 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
+
                 "왼쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
+                
                 "오른쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
 
             }

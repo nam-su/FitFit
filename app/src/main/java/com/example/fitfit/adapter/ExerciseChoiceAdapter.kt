@@ -27,9 +27,12 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
     // 프래그먼트에서 아이템 클릭 리스너 호출하기 위한 인터페이스
     interface ExerciseChoiceItemClick{
         fun onClick(view: View,position: Int)
+        // onClick
 
     }
 
+
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseChoiceViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_exercise_choice,parent,false)
@@ -39,13 +42,12 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
     } // onCreateViewHolder()
 
 
-    override fun getItemCount(): Int {
-
-        return exerciseChoiceList.size
-
-    } // getItemCount()
+    // getItemCount
+    override fun getItemCount(): Int = exerciseChoiceList.size
+    // getItemCount()
 
 
+    // onBindViewHolder
     override fun onBindViewHolder(holder: ExerciseChoiceViewHolder, position: Int) {
 
         holder.onBind(exerciseChoiceList[position])
@@ -65,6 +67,7 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
     } // onBindViewHolder()
 
 
+    // 뷰홀더 클래스
     class ExerciseChoiceViewHolder(val binding: ItemViewExerciseChoiceBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(poseExercise: PoseExercise) {
@@ -75,9 +78,13 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
             binding.constraintLayoutStartExercise.backgroundTintList = when(poseExercise.category) {
 
                 "스쿼트" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.squat))
+
                 "푸시업" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.pushUp))
+
                 "런지" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.lunge))
+
                 "레그레이즈" -> ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.legRaises))
+
                 else -> {ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.personal))}
 
             }

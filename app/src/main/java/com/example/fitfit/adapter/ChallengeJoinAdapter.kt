@@ -26,6 +26,7 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
     lateinit var binding: ItemViewChallengeJoinBinding
 
 
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_challenge_join,parent,false)
@@ -35,21 +36,21 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
     } // onCreateViewHolder()
 
 
+    // getItemCount
     override fun getItemCount(): Int = myChallengeList.size
+    // getItemCount()
 
 
-    override fun onBindViewHolder(holder: ChallengeViewHolder, position: Int) {
-
-        holder.onBind(myChallengeList[position])
-
-
-
-    } // onBindViewHolder()
+    // onBindViewHolder
+    override fun onBindViewHolder(holder: ChallengeViewHolder, position: Int) = holder.onBind(myChallengeList[position])
+    // onBindViewHolder()
 
 
+    // 뷰홀더 클래스
     class ChallengeViewHolder(val binding: ItemViewChallengeJoinBinding) : RecyclerView.ViewHolder(binding.root){
 
         val TAG = "온바인드"
+
         fun onBind(challenge: Challenge) {
 
             binding.textViewChallengeName.text = challenge.challengeName
@@ -61,17 +62,23 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
                 "기본부터 챌린지" -> {
 
                     binding.progressBar1.apply {
+
                         visibility = View.VISIBLE
                         max = challenge.standard.toInt()
                         progress = challenge.rankingPoint
+
                     }
 
                     binding.textViewCount.text = "${challenge.rankingPoint} / ${challenge.standard}"
 
                 }
+
                 "한놈만 패! 챌린지" -> {
+
                     binding.textViewCount.text = "${challenge.standard} 총 ${challenge.rankingPoint} 회"
+
                 }
+
             }
 
             binding.textViewRanking.text = "${challenge.ranking} 위"

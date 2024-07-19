@@ -19,12 +19,16 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
     lateinit var binding: ItemViewChallengeRankBinding
     var challengeRankItemClick: ChallengeRankItemClick? = null
 
+
     // 프래그먼트에서 아이템 클릭 리스너 호출하기 위한 인터페이스
     interface ChallengeRankItemClick{
         fun onClick(view: View, rank: Rank)
+        // onClick()
 
     }
 
+
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeRankViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_challenge_rank,parent,false)
@@ -33,13 +37,13 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
 
     } // onCreateViewHolder()
 
-    override fun getItemCount(): Int {
 
-        return challengeRankList.size
+    // getItemCount
+    override fun getItemCount(): Int = challengeRankList.size
+    // getItemCount()
 
-    } // getItemCount()
 
-
+    // onBindViewHolder
     override fun onBindViewHolder(holder: ChallengeRankViewHolder, position: Int) {
 
         holder.onBind(challengeRankList[position])
@@ -59,6 +63,7 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
     } // onBindViewHolder()
 
 
+    // 뷰홀더 클래스
     class ChallengeRankViewHolder(
         val binding: ItemViewChallengeRankBinding,
         private val homeViewModel: HomeViewModel,
@@ -69,8 +74,11 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
             binding.rank = rank
 
                 when(rank.challengeName){
+
                     "기본부터 챌린지" -> binding.textViewPoint.text = "${rank.rankingPoint} / ${rank.standard} 일"
+
                     "한놈만 패! 챌린지" -> binding.textViewPoint.text = "${rank.standard} ${rank.rankingPoint} 회"
+
                 }
 
             Glide.with(context!!)
@@ -82,10 +90,10 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
                 .into(binding.circleImageViewUserProfile)
 
             if(homeViewModel.getUserId() == rank.id){
+
                 binding.linearLayoutItem.setBackgroundResource(R.drawable.background_rectangular_personal_grey)
+
             }
-
-
 
         } // onBind()
 

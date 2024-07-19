@@ -16,12 +16,16 @@ class ChallengeListAdapter(private val challengeList: ArrayList<Challenge>): Rec
     lateinit var binding: ItemViewChallengeListBinding
     var challengeItemClick: ChallengeItemClick? = null
 
+
     // 프래그먼트에서 아이템 클릭 리스너 호출하기 위한 인터페이스
     interface ChallengeItemClick{
         fun onClick(view: View, challenge: Challenge)
+        // onClick()
 
     }
 
+
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeListViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_challenge_list,parent,false)
@@ -30,12 +34,13 @@ class ChallengeListAdapter(private val challengeList: ArrayList<Challenge>): Rec
 
     } // onCreateViewHolder()
 
-    override fun getItemCount(): Int {
 
-        return challengeList.size
+    // getItemCount
+    override fun getItemCount(): Int = challengeList.size
+    // getItemCount()
 
-    } // getItemCount()
 
+    // onBindViewHolder
     override fun onBindViewHolder(holder: ChallengeListViewHolder, position: Int) {
 
         holder.onBind(challengeList[position])
@@ -52,9 +57,10 @@ class ChallengeListAdapter(private val challengeList: ArrayList<Challenge>): Rec
 
         }
 
-
     } // onBindViewHolder()
 
+
+    // 뷰홀더 클래스
     class ChallengeListViewHolder(val binding: ItemViewChallengeListBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(challenge: Challenge) {
@@ -62,7 +68,6 @@ class ChallengeListAdapter(private val challengeList: ArrayList<Challenge>): Rec
             binding.challenge = challenge
 
         } // onBind()
-
 
     }
 
