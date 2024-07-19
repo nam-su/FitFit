@@ -31,12 +31,15 @@ class LoginViewModel: ViewModel() {
     private val loginModel = LoginModel()
 
     private val _isSuccessLogin = MutableLiveData<String>()
+
     val isSuccessLogin: LiveData<String>
         get() = _isSuccessLogin
 
     private val _googleLoginResult = MutableLiveData<String>()
+
     val googleLoginResult: LiveData<String>
     get() = _googleLoginResult
+
 
     // 로그인 메서드
     fun login(id: String,password: String){
@@ -48,9 +51,6 @@ class LoginViewModel: ViewModel() {
             Log.d(TAG, "login: ${response.message()}")
             Log.d(TAG, "login: ${response.isSuccessful}")
             Log.d(TAG, "login: ${response.body()}")
-//            Log.d(TAG, "login: ${response.body()?.myChallengeList}")
-
-
 
             if(response.isSuccessful && response.body() != null) {
 
@@ -59,13 +59,16 @@ class LoginViewModel: ViewModel() {
                 when(user.result){
 
                         "failure" -> _isSuccessLogin.value = "failure"
+
                         else -> {
+
                             setSharedPreferencesUserinfo(user)
+
                         }
 
-                    }
+                }
 
-                // 통신 실패의 경우
+            // 통신 실패의 경우
             } else {
 
                 Log.d(TAG, "login: ${response.message()}")

@@ -9,6 +9,8 @@ class ExerciseItemInfoModel {
 
     var exerciseIndex = 0
 
+
+    // 운동 정보 초기화 메서드
     fun setExerciseItemInfo(exerciseName: String) {
 
         exerciseItemInfo = MyApplication.sharedPreferences.getExerciseItemInfo(exerciseName)!!

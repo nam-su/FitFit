@@ -10,10 +10,7 @@ class ExerciseChoiceViewModel: ViewModel(){
 
 
     // 모델의 exerciseChoiceList를 가져오는 메서드.
-    fun setRecyclerViewExerciseChoice(): ArrayList<PoseExercise>{
-
-        return exerciseChoiceModel.setExerciseChoiceList()
-
-    } // setRecyclerViewExerciseChoice()
+    fun setRecyclerViewExerciseChoice(): ArrayList<PoseExercise> = exerciseChoiceModel.setExerciseChoiceList()
+    // setRecyclerViewExerciseChoice()
 
 }

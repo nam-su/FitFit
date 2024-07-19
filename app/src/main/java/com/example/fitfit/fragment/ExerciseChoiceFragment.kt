@@ -31,13 +31,17 @@ class ExerciseChoiceFragment : Fragment() {
 
     private lateinit var callback: OnBackPressedCallback
 
+
+    // onAttach
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         setOnBackPressed()
 
-    } // onAttach
+    } // onAttach()
 
+
+    // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_choice,container,false)
@@ -46,8 +50,9 @@ class ExerciseChoiceFragment : Fragment() {
 
     } // onCreateView()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+    // onViewCreated
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
@@ -55,11 +60,29 @@ class ExerciseChoiceFragment : Fragment() {
 
     } // onViewCreated
 
+
+    // onResume
+    override fun onResume() {
+        super.onResume()
+
+        exerciseChoiceAdapter.notifyDataSetChanged()
+
+        exerciseChoiceAdapter.exerciseChoiceList.forEach {
+
+            Log.d(TAG, "onResume: ${it.exerciseName}")
+
+        }
+
+    } // onResume()
+
+
     // 변수 초기화
     fun setVariable() {
 
         exerciseChoiceViewModel = ExerciseChoiceViewModel()
+
         exerciseChoiceAdapter = ExerciseChoiceAdapter(exerciseChoiceViewModel.setRecyclerViewExerciseChoice())
+
         binding.recyclerViewExerciseChoice.adapter = exerciseChoiceAdapter
 
     } // setVariable
@@ -70,6 +93,7 @@ class ExerciseChoiceFragment : Fragment() {
 
         // 운동 선택 아이템 클릭 리스너
         exerciseChoiceAdapter.exerciseChoiceItemClick = object :ExerciseChoiceAdapter.ExerciseChoiceItemClick{
+
             // 아이템 클릭 시 동작 인식 프래그먼트로 전환.
             override fun onClick(view: View, position: Int) {
 
@@ -81,8 +105,8 @@ class ExerciseChoiceFragment : Fragment() {
                 view.findNavController().navigate(R.id.action_exerciseChoiceFragment_to_poseDetectionFragment,bundle)
 
             }
-        }
 
+        }
 
         // 운동 리스트 편집 클릭 리스너
         binding.textViewEditExerciseList.setOnClickListener {
@@ -102,14 +126,6 @@ class ExerciseChoiceFragment : Fragment() {
 
     } // setClickListener()
 
-
-    override fun onResume() {
-        super.onResume()
-        exerciseChoiceAdapter.notifyDataSetChanged()
-        exerciseChoiceAdapter.exerciseChoiceList.forEach {
-            Log.d(TAG, "onResume: ${it.exerciseName}")
-        }
-    }
 
     // 뒤로가기 눌렀을때
     private fun setOnBackPressed() {

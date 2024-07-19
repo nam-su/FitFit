@@ -34,6 +34,7 @@ class PayFragment : Fragment() {
     private lateinit var callback: OnBackPressedCallback
 
 
+    // onAttach
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -42,6 +43,7 @@ class PayFragment : Fragment() {
     } // onAttach
 
 
+    // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_pay,container,false)
@@ -51,6 +53,7 @@ class PayFragment : Fragment() {
     } // onCreateView()
 
 
+    // onViewCreated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -79,7 +82,8 @@ class PayFragment : Fragment() {
         binding.textViewMonthBasic.paintFlags = binding.textViewMonthBasic.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         binding.textViewYearBasic.paintFlags = binding.textViewYearBasic.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
-    }
+    } // setView()
+
 
     // observe
     @SuppressLint("SetJavaScriptEnabled")
@@ -103,8 +107,11 @@ class PayFragment : Fragment() {
             binding.linearLayoutPayReadyLayout.visibility = View.VISIBLE
 
             when(it) {
+
                 true -> Toast.makeText(requireActivity(), "결제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+
                 false ->  Toast.makeText(requireActivity(), "결제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+
             }
 
         }
@@ -112,6 +119,7 @@ class PayFragment : Fragment() {
     } // setObserve()
 
 
+    // 리스너 초기화
     private fun setListener() {
 
         binding.buttonSubscribeDay.setOnClickListener {
@@ -135,6 +143,7 @@ class PayFragment : Fragment() {
     } // setListener()
 
 
+    // shouldOverrideUrlLoading 메서드 사용하기 위한 이너 클래스
     inner class KakaoPayWebViewClient : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {

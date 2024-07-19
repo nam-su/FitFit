@@ -39,6 +39,16 @@ class ExerciseItemInfoFragment : Fragment() {
     private lateinit var callback: OnBackPressedCallback
 
 
+    // onAttach
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach()
+
+
+    // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_item_info,container,false)
@@ -48,13 +58,8 @@ class ExerciseItemInfoFragment : Fragment() {
 
     } // onCreateView()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
 
-        setOnBackPressed()
-
-    } // onAttach()
-
+    // onViewCreated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,7 +79,6 @@ class ExerciseItemInfoFragment : Fragment() {
         binding.exerciseItemInfoViewModel = exerciseItemInfoViewModel
         binding.lifecycleOwner = this
 
-
         binding.viewPager.adapter = ExerciseItemInfoAdapter(exerciseItemInfoViewModel.getExerciseItemInfo())
 
         binding.dotsIndicator.setViewPager2(binding.viewPager)
@@ -85,6 +89,7 @@ class ExerciseItemInfoFragment : Fragment() {
     // 변수 감지 메서드
     private fun setObserve() {
 
+        // 현재 인덱스 observe
         exerciseItemInfoViewModel.exerciseItemIndex.observe(viewLifecycleOwner) {
 
             when(it < 0) {
@@ -98,7 +103,6 @@ class ExerciseItemInfoFragment : Fragment() {
 
                 else -> {
 
-                    // 여기에 it에 맞게 어댑터 포지션을 지정해 주고 싶어
                     // it에 맞게 어댑터 포지션을 지정
                     (binding.viewPager.adapter as? ExerciseItemInfoAdapter)?.let { adapter ->
                         if (binding.viewPager.currentItem != it) {
@@ -124,13 +128,16 @@ class ExerciseItemInfoFragment : Fragment() {
     } // setObserve()
 
 
+    //  viewPager page 바뀔때 호출하는 메서드
     private fun setPageChangeListener() {
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
 
             override fun onPageSelected(position: Int) {
+
                 super.onPageSelected(position)
                 exerciseItemInfoViewModel.setExerciseItemIndex(position)
+
             }
 
         })
