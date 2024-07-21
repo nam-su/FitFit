@@ -65,7 +65,6 @@ class ExerciseItemInfoFragment : Fragment() {
 
         setVariable()
         setObserve()
-        setListener()
         setPageChangeListener()
 
     } // onViewCreated()
@@ -160,14 +159,6 @@ class ExerciseItemInfoFragment : Fragment() {
         })
 
     } // setPageChangedListener()
-
-
-    // 리스너 초기화
-    private fun setListener() {
-
-
-
-    } // setListener()
 
 
     //커스텀 다이얼로그 띄우기
