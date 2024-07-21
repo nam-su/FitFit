@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/textViewExercisePart"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/textViewExerciseName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
@@ -39,16 +39,16 @@
 
         <TextView
             android:id="@+id/textViewExerciseCalorie"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="@{String.valueOf(exerciseInfo.calorie) + `Kcal/회`}"
+            android:text="@{String.valueOf(exerciseInfo.calorie) + `cal`}"
             android:textSize="13sp" />
 
         <TextView
             android:id="@+id/textViewGoalExerciseCount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
