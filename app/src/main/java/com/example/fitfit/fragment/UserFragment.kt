@@ -347,15 +347,7 @@ class UserFragment : Fragment() {
 
     } // closeDrawerIfNeeded()
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        closeDrawerIfNeeded()
-
-    } // onDestroyView()
-
-
+    
     //프로필이미지뷰 셋
     private fun setCircleImageView(){
 
