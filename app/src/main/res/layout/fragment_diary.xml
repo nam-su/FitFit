@@ -11,163 +11,172 @@
 
     </data>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:fillViewport="true"
+        android:scrollbars="none"
         tools:context=".fragment.DiaryFragment">
 
-        <TextView
-            android:id="@+id/textViewUserFragmentTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:text="@string/diary"
-            style="@style/fragmentTitleStyle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonStartDate"
-            style="@style/buttonTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/login_button"
-            android:drawableEnd="@drawable/blue_calender"
-            android:paddingHorizontal="10dp"
-            android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.startDate)}"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewUserFragmentTitle" />
-
-        <TextView
-            android:id="@+id/textView"
-            style="@style/ProfileEditTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/wave"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonStartDate"
-            app:layout_constraintEnd_toStartOf="@+id/buttonEndDate"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/buttonStartDate"
-            app:layout_constraintTop_toTopOf="@+id/buttonStartDate" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonEndDate"
-            style="@style/buttonTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/button_stroke_personal"
-            android:drawableEnd="@drawable/blue_calender"
-            android:paddingHorizontal="10dp"
-            android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.endDate)}"
-            android:textColor="@color/personal"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
-
-        <TextView
-            android:id="@+id/textViewGraph"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/graph"
-            style="@style/diaryFragmentTextStyle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonStartDate" />
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:context=".fragment.DiaryFragment">
 
-
-        <LinearLayout
-            android:id="@+id/linearLayoutChart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/background_stroke_grey"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGraph">
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="10dp"
-                android:visibility="visible" />
 
             <TextView
-                android:id="@+id/textViewEmpty"
+                android:id="@+id/textViewUserFragmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/diary"
+                style="@style/fragmentTitleStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonStartDate"
+                style="@style/buttonTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/login_button"
+                android:drawableEnd="@drawable/blue_calender"
+                android:paddingHorizontal="10dp"
+                android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.startDate)}"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserFragmentTitle" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/ProfileEditTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/wave"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonStartDate"
+                app:layout_constraintEnd_toStartOf="@+id/buttonEndDate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/buttonStartDate"
+                app:layout_constraintTop_toTopOf="@+id/buttonStartDate" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonEndDate"
+                style="@style/buttonTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_stroke_personal"
+                android:drawableEnd="@drawable/blue_calender"
+                android:paddingHorizontal="10dp"
+                android:text="@{diaryViewModel.changeYMDFormat(diaryViewModel.endDate)}"
+                android:textColor="@color/personal"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
+
+            <TextView
+                android:id="@+id/textViewGraph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/graph"
+                style="@style/diaryFragmentTextStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonStartDate" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_stroke_grey"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewGraph">
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="10dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textViewEmpty"
+                    style="@style/diaryFragmentTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:text="@string/exerciseRecordEmpty"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/textViewChallenge"
                 style="@style/diaryFragmentTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="center"
-                android:text="@string/exerciseRecordEmpty"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/textViewChallenge"
-            style="@style/diaryFragmentTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/MyChallengeProgress"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayoutMyChallenge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutChart" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/MyChallengeProgress"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayoutMyChallenge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutChart" />
 
 
-        <LinearLayout
-            android:id="@+id/linearLayoutMyChallenge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewChallenge">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <LinearLayout
+                android:id="@+id/linearLayoutMyChallenge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:visibility="visible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewChallenge">
 
-            <TextView
-                android:id="@+id/textViewNonChallenge"
-                style="@style/diaryFragmentTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_stroke_grey"
-                android:gravity="center"
-                android:text="@string/nonChallenge"
-                android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewNonChallenge"
+                    style="@style/diaryFragmentTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_stroke_grey"
+                    android:gravity="center"
+                    android:text="@string/nonChallenge"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </ScrollView>
 
 </layout>
