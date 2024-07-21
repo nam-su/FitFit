@@ -18,4 +18,19 @@ class ExerciseItemInfoModel {
     } // setExerciseItemInfo()
 
 
+    // 유저 구독 유무 체크 메서드
+    fun checkUserSubscribe():Boolean {
+
+        var checkUserSubscribe = false
+
+        if(MyApplication.sharedPreferences.getUser().subscription == "subscribe") {
+
+            checkUserSubscribe = true
+
+        }
+
+        return checkUserSubscribe
+
+    } // checkUserSubscribe()
+
 }

@@ -133,6 +133,7 @@
             android:layout_margin="20dp"
             android:background="@drawable/login_button"
             android:text="@string/startExercise"
+            android:onClick="@{() -> exerciseItemInfoViewModel.checkUserSubscribe()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

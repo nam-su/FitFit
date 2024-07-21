@@ -65,6 +65,7 @@ class ExerciseItemInfoFragment : Fragment() {
 
         setVariable()
         setObserve()
+        setListener()
         setPageChangeListener()
 
     } // onViewCreated()
@@ -125,6 +126,22 @@ class ExerciseItemInfoFragment : Fragment() {
 
         }
 
+        exerciseItemInfoViewModel.isUserSubscribe.observe(viewLifecycleOwner) {
+
+            // 유저 구독이 되어 있는 경우
+            if(it) {
+
+
+            // 유저 구독이 안되어 있는 경우
+            } else {
+
+                // 다이얼로그 띄워준다.
+                setCustomDialog("확인","구독 후 이용 가능한 서비스 입니다.")
+
+            }
+
+        }
+
     } // setObserve()
 
 
@@ -145,11 +162,24 @@ class ExerciseItemInfoFragment : Fragment() {
     } // setPageChangedListener()
 
 
+    // 리스너 초기화
+    private fun setListener() {
+
+
+
+    } // setListener()
+
+
     //커스텀 다이얼로그 띄우기
     private fun setCustomDialog(buttonOkText: String, content:String){
 
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customDialogBinding.root)
+        }
+
         //다이얼로그 생성
-        dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
             .setCancelable(true)
             .create()
@@ -160,6 +190,22 @@ class ExerciseItemInfoFragment : Fragment() {
         customDialogBinding.textViewContent.text = content
         customDialogBinding.textViewButtonOk.text = buttonOkText
         customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
+
+        // 다이얼로그 확인 버튼 눌렀을 때
+        customDialogBinding.textViewButtonOk.setOnClickListener {
+
+            // 결제 프래그먼트로 전환
+            dialog.dismiss()
+
+        }
+
+        // 다이얼로그 취소 버튼 눌렀을 때
+        customDialogBinding.textViewCancel.setOnClickListener {
+
+            // 다이얼로그 취소
+            dialog.dismiss()
+
+        }
 
         dialog.show()
 
@@ -173,7 +219,16 @@ class ExerciseItemInfoFragment : Fragment() {
 
             override fun handleOnBackPressed() {
 
-                binding.imageButtonBackExerciseInfo.callOnClick()
+                // 다이얼로그가 보여지고 있는 경우에는 다이얼로그 dismiss()
+                if (dialog.isShowing) {
+
+                    dialog.dismiss()
+
+                } else {
+
+                    binding.imageButtonBackExerciseInfo.callOnClick()
+
+                }
 
             }
 

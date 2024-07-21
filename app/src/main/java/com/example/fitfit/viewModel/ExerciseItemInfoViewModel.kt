@@ -1,5 +1,6 @@
 package com.example.fitfit.viewModel
 
+import android.text.method.MultiTapKeyListener
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -24,9 +25,13 @@ class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
     private val _exerciseItemInfoContent = MutableLiveData<String>()
     val exerciseItemInfoContent: LiveData<String> get() = _exerciseItemInfoContent
 
-    // 구독 유무 판단
+    // 프리미엄 유무 판단
     private val _isExerciseItemInfoPrimium = MutableLiveData<Boolean>()
     val isExerciseItemInfoPrimium: LiveData<Boolean> get() = _isExerciseItemInfoPrimium
+
+    // 유저 구독 유무 판단
+    private val _isUserSubscribe = MutableLiveData<Boolean>()
+    val isUserSubscribe: LiveData<Boolean> get() = _isUserSubscribe
 
     init {
 
@@ -102,5 +107,13 @@ class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
         }
 
     } // setExerciseItemIndex()
+
+
+    // 구독 유무 파악 후 프래그먼트,다이얼로그 전환
+    fun checkUserSubscribe() {
+
+        _isUserSubscribe.value = exerciseItemInfoModel.checkUserSubscribe()
+
+    } // checkUserSubscribe()
 
 }
