@@ -104,11 +104,16 @@ class ExerciseItemInfoFragment : Fragment() {
                 else -> {
 
                     // it에 맞게 어댑터 포지션을 지정
-                    (binding.viewPager.adapter as? ExerciseItemInfoAdapter)?.let { adapter ->
+                    (binding.viewPager.adapter as? ExerciseItemInfoAdapter)?.let { _ ->
+
                         if (binding.viewPager.currentItem != it) {
+
                             binding.viewPager.currentItem = it
+
                         }
+
                     }
+
                 }
 
             }
@@ -135,7 +140,7 @@ class ExerciseItemInfoFragment : Fragment() {
             } else {
 
                 // 다이얼로그 띄워준다.
-                setCustomDialog("확인","구독 후 이용 가능한 서비스 입니다.")
+                setCustomDialog()
 
             }
 
@@ -162,7 +167,7 @@ class ExerciseItemInfoFragment : Fragment() {
 
 
     //커스텀 다이얼로그 띄우기
-    private fun setCustomDialog(buttonOkText: String, content:String){
+    private fun setCustomDialog(){
 
         // 부모가 있는지 확인하고, 있다면 부모에서 제거
         customDialogBinding.root.parent?.let {
@@ -178,8 +183,8 @@ class ExerciseItemInfoFragment : Fragment() {
         //뒷배경 투명으로 바꿔서 둥근모서리 보이게
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        customDialogBinding.textViewContent.text = content
-        customDialogBinding.textViewButtonOk.text = buttonOkText
+        customDialogBinding.textViewContent.text = "구독 후 이용 가능한 서비스 입니다."
+        customDialogBinding.textViewButtonOk.text = "확인"
         customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
 
         // 다이얼로그 확인 버튼 눌렀을 때

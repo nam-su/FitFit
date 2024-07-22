@@ -23,7 +23,7 @@ class ExerciseItemInfoModel {
 
         var checkUserSubscribe = false
 
-        if(MyApplication.sharedPreferences.getUser().subscription == "subscribe") {
+        if(MyApplication.sharedPreferences.getUser().subscription != "") {
 
             checkUserSubscribe = true
 
