@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentSplashBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.SplashViewModel
 
 class SplashFragment : Fragment() {
@@ -47,7 +48,7 @@ class SplashFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        if (!getNetworkStatus(requireContext())) {
+        if (!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
             Toast.makeText(requireContext(), "인터넷 연결이 원활하지 않습니다. \n앱을 종료합니다.", Toast.LENGTH_SHORT).show()
             view?.postDelayed({
@@ -92,15 +93,5 @@ class SplashFragment : Fragment() {
         }
 
     } // setObserve()
-
-
-    //   네트워크 연결 상태를 논리 값으로 반환.
-    //   와이파이, 모바일 데이터 연결 중일 경우 true.
-    fun getNetworkStatus(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork
-        val actNetwork = connectivityManager.getNetworkCapabilities(network)
-        return actNetwork?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-    }
 
 }

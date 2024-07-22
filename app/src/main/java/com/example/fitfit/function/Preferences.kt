@@ -1,6 +1,8 @@
 package com.example.fitfit.function
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.fitfit.R
 import com.example.fitfit.data.Challenge
@@ -462,5 +464,18 @@ class Preferences(context: Context) {
     } // getBasicExerciseList()
 
 
+    //   네트워크 연결 상태를 논리 값으로 반환.
+    //   와이파이, 모바일 데이터 연결 중일 경우 true.
+    fun getNetworkStatus(context: Context): Boolean {
+
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork
+
+        val actNetwork = connectivityManager.getNetworkCapabilities(network)
+
+        return actNetwork?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+
+    } // getNetworkStatus()
 
 }
