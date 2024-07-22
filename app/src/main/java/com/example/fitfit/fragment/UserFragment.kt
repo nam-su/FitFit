@@ -347,7 +347,7 @@ class UserFragment : Fragment() {
 
     } // closeDrawerIfNeeded()
 
-    
+
     //프로필이미지뷰 셋
     private fun setCircleImageView(){
 
