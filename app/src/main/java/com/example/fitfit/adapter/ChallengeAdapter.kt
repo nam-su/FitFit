@@ -18,7 +18,7 @@ import com.example.fitfit.databinding.ItemViewChallengeBinding
 import com.example.fitfit.databinding.ItemViewExerciseItemInfoImageBinding
 import com.example.fitfit.viewModel.ExerciseViewModel
 
-class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private val context: Context, private val exerciseViewModel: ExerciseViewModel): RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
+class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private val context: Context): RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
 
     private val TAG = "챌린지 어댑터"
 
@@ -52,7 +52,7 @@ class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private 
     // onBindViewHolder
     override fun onBindViewHolder(holder: ChallengeViewHolder, position: Int) {
 
-        holder.onBind(challengeList[position], context, exerciseViewModel)
+        holder.onBind(challengeList[position], context)
 
         // 아이템 클릭 리스너가 null이 아닐때 클릭리스너 연동
         if(challengeItemClick != null) {
@@ -72,17 +72,15 @@ class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private 
     // 뷰홀더 클래스
     class ChallengeViewHolder(val binding: ItemViewChallengeBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun onBind(challenge: Challenge,context: Context,exerciseViewModel: ExerciseViewModel) {
+        fun onBind(challenge: Challenge,context: Context) {
 
             Glide.with(context)
                 //baseurl+쉐어드의 이미지경로
-                .load(exerciseViewModel.getBaseUrl()+challenge.challengeImage)
+                .load(context.getString(R.string.baseUrl)+challenge.challengeImage)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.loading)
                 .into(binding.imageViewChallenge)
-
-            binding.textViewParticipantCount.text = "${challenge.participantCount}명 참가중"
 
         } // onBind()
 

@@ -36,9 +36,9 @@ class ExerciseViewModel: ViewModel() {
     // getChallengeList()
 
 
-    //baseURL 받아오기
-    fun getBaseUrl(): String = exerciseModel.getBaseUrl()
-    // getBaseUrl()
+//    //baseURL 받아오기
+//    fun getBaseUrl(): String = exerciseModel.getBaseUrl()
+//    // getBaseUrl()
 
 
     //모델에서 서버와 통신하는 메서드 호출

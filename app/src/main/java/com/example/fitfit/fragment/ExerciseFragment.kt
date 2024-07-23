@@ -23,8 +23,10 @@ import com.example.fitfit.adapter.ChallengeAdapter
 import com.example.fitfit.adapter.ExerciseDetailViewAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.data.Challenge
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentExerciseBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.ExerciseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,6 +36,8 @@ class ExerciseFragment : Fragment() {
     lateinit var binding: FragmentExerciseBinding
     lateinit var challengeAdapter: ChallengeAdapter
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+
     lateinit var dialog: AlertDialog
 
     private val exerciseViewModel: ExerciseViewModel by viewModels()
@@ -56,6 +60,7 @@ class ExerciseFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise,container,false)
         customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         return binding.root
 
@@ -86,7 +91,7 @@ class ExerciseFragment : Fragment() {
         binding.recyclerViewMyExerciseInfo.adapter = ExerciseDetailViewAdapter(exerciseViewModel.getMyExerciseInfoList())
 
         //뷰페이저 어댑터
-        challengeAdapter = ChallengeAdapter(exerciseViewModel.getChallengeList(), requireContext(), exerciseViewModel)
+        challengeAdapter = ChallengeAdapter(exerciseViewModel.getChallengeList(), requireContext())
         binding.viewPager.adapter = challengeAdapter
 
         //인디케이터
@@ -241,14 +246,56 @@ class ExerciseFragment : Fragment() {
         //다이얼로그 참여 버튼 클릭
         customDialogBinding.textViewButtonOk.setOnClickListener {
 
-            /**서버와 통신**/
-            exerciseViewModel.challengeJoin(challenge)
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-            dialog.dismiss()
-            
+                setNetworkCustomDialog()
+
+            } else {
+
+                /**서버와 통신**/
+                exerciseViewModel.challengeJoin(challenge)
+
+                dialog.dismiss()
+
+            }
+
         }
 
     } // showCustomDialog()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.setOnCancelListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    } // setNetworkCustomDialog()
 
 
     // 뒤로가기 버튼 눌렀을 때
