@@ -58,14 +58,17 @@ class SplashFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
+        // 인터넷 연결 확인 하는 공용 메서드
         if (!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
+            // 인터넷 연결 안되어 있을 때 인터넷 연결 불안정 하다고 다이얼로그 띄워줌.
             view?.postDelayed({
 
                 setCustomDialog()
 
             },1500)
 
+        // 인터넷 연결 되어 있는 경우 정상 진입
         } else {
 
             splashViewModel = SplashViewModel()
