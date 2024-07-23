@@ -1,9 +1,12 @@
 package com.example.fitfit.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,7 +23,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentPayBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.PayViewModel
 import kotlinx.coroutines.launch
 
@@ -30,6 +35,8 @@ class PayFragment : Fragment() {
 
     lateinit var binding: FragmentPayBinding
     lateinit var payViewModel: PayViewModel
+
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -47,6 +54,7 @@ class PayFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_pay,container,false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         return binding.root
 
@@ -124,19 +132,48 @@ class PayFragment : Fragment() {
 
         binding.buttonSubscribeDay.setOnClickListener {
 
-            payViewModel.readyKakaoPay("하루 구독권",200)
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                payViewModel.readyKakaoPay("하루 구독권",200)
+
+            }
 
         }
 
         binding.buttonSubscribeMonth.setOnClickListener {
 
-            payViewModel.readyKakaoPay("30일 구독권",4200)
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                payViewModel.readyKakaoPay("30일 구독권",4200)
+
+            }
 
         }
 
         binding.buttonSubscribeYear.setOnClickListener {
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-            payViewModel.readyKakaoPay("일년 구독권",36500)
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                payViewModel.readyKakaoPay("일년 구독권",36500)
+
+            }
 
         }
 
@@ -184,6 +221,40 @@ class PayFragment : Fragment() {
         }
 
     } // KakaoPayWebViewClient
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.setOnCancelListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    } // setNetworkCustomDialog()
 
 
     // 뒤로가기 버튼 눌렀을 때

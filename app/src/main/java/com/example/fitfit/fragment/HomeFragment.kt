@@ -35,8 +35,10 @@ import com.example.fitfit.adapter.PoseExerciseGridAdapter
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.Rank
 import com.example.fitfit.databinding.CustomDialogChallengeRankingBinding
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentHomeBinding
 import com.example.fitfit.function.GridSpacingItemDecoration
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -46,7 +48,10 @@ class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
     lateinit var homeViewModel: HomeViewModel
+
     lateinit var customDialogBinding: CustomDialogChallengeRankingBinding
+
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -64,6 +69,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         return binding.root
 
@@ -132,9 +138,19 @@ class HomeFragment : Fragment() {
                     override fun onClick(view: View, rank: Rank) {
                         Log.d(TAG, "onClick: ${rank.id}")
 
-                        lifecycleScope.launch {
+                        // 인터넷 연결 안되어 있는 경우
+                        if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-                            setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                            setNetworkCustomDialog()
+
+                        // 인터넷 연결이 되어 있는 경우
+                        } else {
+
+                            lifecycleScope.launch {
+
+                                setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+
+                            }
 
                         }
 
@@ -249,43 +265,6 @@ class HomeFragment : Fragment() {
     } // setObserve()
 
 
-    // 뒤로가기 클릭 리스너
-    private fun setOnBackPressed() {
-
-        callback = object : OnBackPressedCallback(true) {
-
-            override fun handleOnBackPressed() {
-
-                // 운동 전체보기 페이지에서 뒤로가기 눌렀을 때
-                if (binding.constraintLayoutAllExercise.visibility == View.VISIBLE) {
-
-                    binding.constraintLayoutHome.visibility = View.VISIBLE
-                    binding.constraintLayoutAllExercise.visibility = View.GONE
-
-                }
-
-                // 전체 챌린지 랭킹페이지에서 뒤로가기 눌렀을 때
-                else if(binding.constraintLayoutAllChallenge.visibility == View.VISIBLE) {
-
-                    binding.constraintLayoutHome.visibility = View.VISIBLE
-                    binding.constraintLayoutAllChallenge.visibility = View.GONE
-
-                // 다른 상황에서 뒤로가기 눌렀을 때
-                } else {
-
-                    (activity as MainActivity).finish()
-
-                }
-
-            }
-
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
-
-    } // setOnBackPressed()
-
-
     //커스텀 다이얼로그 띄우기
     private fun setCustomDialog(rank: Rank?, userChallengeList: ArrayList<Challenge>?){
 
@@ -329,6 +308,40 @@ class HomeFragment : Fragment() {
     } // setCustomDialog()
 
 
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.setOnCancelListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    } // setNetworkCustomDialog()
+
+
     // 리사이클러뷰와 어댑터 설정
     private fun setAdapter(userChallengeList: ArrayList<Challenge>?) {
 
@@ -342,5 +355,42 @@ class HomeFragment : Fragment() {
             }
 
     } // setAdapter()
+
+
+    // 뒤로가기 클릭 리스너
+    private fun setOnBackPressed() {
+
+        callback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                // 운동 전체보기 페이지에서 뒤로가기 눌렀을 때
+                if (binding.constraintLayoutAllExercise.visibility == View.VISIBLE) {
+
+                    binding.constraintLayoutHome.visibility = View.VISIBLE
+                    binding.constraintLayoutAllExercise.visibility = View.GONE
+
+                }
+
+                // 전체 챌린지 랭킹페이지에서 뒤로가기 눌렀을 때
+                else if(binding.constraintLayoutAllChallenge.visibility == View.VISIBLE) {
+
+                    binding.constraintLayoutHome.visibility = View.VISIBLE
+                    binding.constraintLayoutAllChallenge.visibility = View.GONE
+
+                    // 다른 상황에서 뒤로가기 눌렀을 때
+                } else {
+
+                    (activity as MainActivity).finish()
+
+                }
+
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,callback)
+
+    } // setOnBackPressed()
 
 }
