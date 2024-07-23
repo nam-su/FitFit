@@ -21,10 +21,9 @@ class DiaryModel {
     private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
     private val myChallengeList = ArrayList<Challenge>()
 
-    private val retrofitBuilder = RetrofitBuilder()
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface: RetrofitInterface
 
-    private val retrofitInterface: RetrofitInterface =
-        retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
     init {
 
@@ -207,9 +206,14 @@ class DiaryModel {
 
 
     //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
-    suspend fun getMyChallengeListToServer(): Response<ArrayList<Challenge>> =
-        retrofitInterface.getMyChallengeList(MyApplication.sharedPreferences.getUserId(),"getMyChallengeList")
-    // saveMyChallengeList()
+    suspend fun getMyChallengeListToServer(): Response<ArrayList<Challenge>> {
+
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.getMyChallengeList(MyApplication.sharedPreferences.getUserId(),"getMyChallengeList")
+
+    } // saveMyChallengeList()
 
 
     //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드

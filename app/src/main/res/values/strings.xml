@@ -134,4 +134,11 @@
     <string name="subscribeMonth">한달 구독하기</string>
     <string name="subscribeYear">일년 구독하기</string>
 
+
+    <!-- 인터넷 연결 불안정 할 때 다이얼로그-->
+    <string name="internetDisconnect">인터넷 연결이 원활하지 않습니다\n인터넷 연결 확인 후 다시 시도해 주세요.</string>
+
+    <!-- base url-->
+    <string name="baseUrl">http://15.164.49.94/</string>
+
 </resources>
