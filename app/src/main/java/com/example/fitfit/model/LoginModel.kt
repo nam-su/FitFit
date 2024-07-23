@@ -23,6 +23,12 @@ class LoginModel() {
      // login()
 
 
+    //소셜 로그인 통신으로 result 값 확인
+    suspend fun socialLogin(id: String, loginType: String): Response<User> =
+        retrofitInterface.socialLogin(id, loginType)
+    // socialLogin()
+
+
     // 로그인 성공시 쉐어드에 유저정보 저장.
     fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUserAndAllList(user)
     // setSharedPreferencesUserInfo()
