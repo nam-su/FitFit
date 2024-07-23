@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -186,17 +187,21 @@ class LoginFragment: Fragment() {
     // 카카오 로그인
     private fun requestKaKaoLogin() {
 
+        UserApiClient.instance.unlink { error: Throwable? ->
+            Log.d(TAG, "requestKaKaoLogin: $error")
+        }
+
         // 카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
 
             // 카카오톡 로그인
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-
+                Log.d(TAG, "requestKaKaoLogin: $error")
                 when(loginViewModel.requestKakaoApplicationLogin(token, error!!)) {
-
+                  
                     "errorUserCancel" -> return@loginWithKakaoTalk
 
-                    // 다른 에러가 있는경우 카카오 계정 로그인으로 콜백
+                    // 다른 에러가 있는 경우 카카오 계정 로그인으로 콜백
                     "elseError" -> UserApiClient.instance.loginWithKakaoAccount(requireContext(),
                         callback = loginViewModel.emailLoginCallback)
 

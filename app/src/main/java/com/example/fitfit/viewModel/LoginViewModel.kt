@@ -95,6 +95,7 @@ class LoginViewModel: ViewModel() {
     // 카카오톡 어플이 있는 경우 카카오톡 로그인 요청
     fun requestKakaoApplicationLogin(token: OAuthToken?, error: Throwable?): String {
 
+        Log.d(TAG, "requestKakaoApplicationLogin: $error")
         val result = ""
 
         // 로그인 성공 부분
@@ -130,7 +131,6 @@ class LoginViewModel: ViewModel() {
     } // requestKakaoApplicationLogin()
 
 
-    // 카카오 이메일 로그인 콜백
     // 카카오 이메일 로그인 콜백
     val emailLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
 
