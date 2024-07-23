@@ -13,14 +13,18 @@ class LoginModel() {
 
     private val TAG = "로그인 모델"
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
-
+    lateinit var retrofitBuilder: RetrofitBuilder
+    lateinit var retrofitInterface: RetrofitInterface
 
     // 로그인 통신으로 result 값 확인
-    suspend fun login(id: String, password: String, nickname: String,mode: String): Response<User> =
-        retrofitInterface.selectUserData(id, password,nickname ,mode)
-     // login()
+    suspend fun login(id: String, password: String, nickname: String,mode: String): Response<User> {
+
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.selectUserData(id, password,nickname ,mode)
+
+    } // login()
 
 
     // 로그인 성공시 쉐어드에 유저정보 저장.
