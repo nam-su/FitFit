@@ -1,5 +1,9 @@
 package com.example.fitfit.model
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
@@ -17,7 +21,7 @@ class SplashModel {
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
-    
+
     // 로그인 정보 확인하는 메서드
     fun checkLogin(): Boolean {
 
@@ -61,5 +65,33 @@ class SplashModel {
         MyApplication.sharedPreferences.challengeList.addAll(challengeList)
 
     } // saveChallengeList()
+
+
+    // 네트워크 연결 상태를 논리 값으로 반환
+    // 와이파이, 모바일 데이터 연결 중일 경우 true 반환
+    fun getNetworkStatus(context: Context): Boolean {
+
+        var networkStatus = false
+
+        val connectivityManager : ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network : Network? = connectivityManager.activeNetwork
+        val actNetwork : NetworkCapabilities? = connectivityManager.getNetworkCapabilities(network)
+
+        if (actNetwork == null) {
+
+            networkStatus = false
+
+        } else if (
+
+            actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+            actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+
+            networkStatus = true
+
+        }
+
+        return networkStatus
+
+    } // getNetworkStatus()
 
 }

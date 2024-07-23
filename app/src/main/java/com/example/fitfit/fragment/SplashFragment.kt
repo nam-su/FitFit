@@ -1,10 +1,15 @@
 package com.example.fitfit.fragment
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -12,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentSplashBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.SplashViewModel
 
 class SplashFragment : Fragment() {
@@ -33,9 +39,8 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as MainActivity).goneBottomNavi()
         setVariable()
-        setObserve()
-        splashViewModel.checkLogin()
 
     } // onViewCreated()
 
@@ -43,9 +48,22 @@ class SplashFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
-        splashViewModel = SplashViewModel()
+        if (!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-        (activity as MainActivity).goneBottomNavi()
+            Toast.makeText(requireContext(), "인터넷 연결이 원활하지 않습니다. \n앱을 종료합니다.", Toast.LENGTH_SHORT).show()
+            view?.postDelayed({
+                (activity as MainActivity).finish()
+            }, 2000) // 2초 후 종료
+
+        } else {
+
+            splashViewModel = SplashViewModel()
+
+            setObserve()
+
+            splashViewModel.checkLogin()
+
+        }
 
     } // setVariable()
 
@@ -75,6 +93,5 @@ class SplashFragment : Fragment() {
         }
 
     } // setObserve()
-
 
 }

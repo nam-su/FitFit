@@ -10,7 +10,7 @@ class RetrofitBuilder {
     private var defaultRetrofit: Retrofit? = null
     private var kakaoRetrofit: Retrofit? = null
 
-    var baseUrl: String? = "http://15.164.49.94/"
+    var baseUrl: String = "http://15.164.49.94/"
     val KAKAOPAY_SECRET_KEY = "DEVF70FE81BA55A6924A2361A24B570781466812"
 
     // 레트로핏 객체 초기화 하는 메서드
