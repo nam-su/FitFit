@@ -18,11 +18,13 @@ import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.FragmentLoginBinding
 import com.example.fitfit.viewModel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApi
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -89,6 +91,10 @@ class LoginFragment: Fragment() {
         setVariable()
         setListener()
         setObserve()
+
+        UserApiClient.instance.unlink { error: Throwable? ->
+            Log.d(TAG, "requestKaKaoLogin: $error")
+        }
 
     } // onViewCreated()
 
@@ -187,39 +193,60 @@ class LoginFragment: Fragment() {
     // 카카오 로그인
     private fun requestKaKaoLogin() {
 
-        UserApiClient.instance.unlink { error: Throwable? ->
-            Log.d(TAG, "requestKaKaoLogin: $error")
+
+
+        //카카오톡 설치 확인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { oAuthToken, throwable ->
+                UserApiClient.instance.me { user, error ->
+                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+                }
+            }
+        } else {
+            // 카카오톡이 설치되어 있지 않다면
+            UserApiClient.instance.loginWithKakaoAccount(requireContext()) { oAuthToken, throwable ->
+                UserApiClient.instance.me { user, error ->
+                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+                }
+            }
         }
+
 
         // 카카오톡 설치 확인
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
-
-            // 카카오톡 로그인
-            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-                Log.d(TAG, "requestKaKaoLogin: $error")
-                when(loginViewModel.requestKakaoApplicationLogin(token, error!!)) {
-                  
-                    "errorUserCancel" -> return@loginWithKakaoTalk
-
-                    // 다른 에러가 있는 경우 카카오 계정 로그인으로 콜백
-                    "elseError" -> UserApiClient.instance.loginWithKakaoAccount(requireContext(),
-                        callback = loginViewModel.emailLoginCallback)
-
-                    "successLogin" ->  Log.e(TAG, "로그인 성공 ${token?.accessToken}")
-
-                }
-
-            }
-
-        }
-
-        // 카카오톡 설치 안된 경우 이메일 콜백 실행
-        else {
-
-            UserApiClient.instance.loginWithKakaoAccount(requireContext(),
-                callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
-
-        }
+//        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+//
+//            // 카카오톡 로그인
+//            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
+//
+//                Log.d(TAG, "requestKaKaoLogin: $token")
+//                Log.d(TAG, "requestKaKaoLogin: ${error?.message}")
+//
+//                when(loginViewModel.requestKakaoApplicationLogin(token, error!!)) {
+//
+//                    "errorUserCancel" -> return@loginWithKakaoTalk
+//
+//                    // 다른 에러가 있는 경우 카카오 계정 로그인으로 콜백
+//                "elseError" -> UserApiClient.instance.loginWithKakaoAccount(requireContext(),
+//                callback = loginViewModel.emailLoginCallback)
+//
+//                "successLogin" ->  Log.e(TAG, "로그인 성공 ${token?.accessToken}")
+//
+//                else -> {
+//                Log.d(TAG, "requestKaKaoLogin: 하이")}
+//
+//            }
+//
+//            }
+//
+//        }
+//
+//        // 카카오톡 설치 안된 경우 이메일 콜백 실행
+//        else {
+//
+//            UserApiClient.instance.loginWithKakaoAccount(requireContext(),
+//                callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
+//
+//        }
 
     } // setKaKaoLogin()
 

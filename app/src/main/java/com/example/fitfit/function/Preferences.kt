@@ -206,7 +206,7 @@ class Preferences(context: Context) {
         setUser(user)
 
         //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
-        if(user.challengeList != null) {
+        if(user.checkList != null) {
             setAllExerciseList(user.checkList!!)
         }
 
