@@ -83,6 +83,50 @@ class LoginViewModel: ViewModel() {
     } // login()
 
 
+    // 소셜 로그인 메서드
+    fun socialLogin(id: String,loginType: String){
+
+        viewModelScope.launch {
+
+            val response = loginModel.socialLogin(id,loginType)
+
+            Log.d(TAG, "socialLogin: ${response.message()}")
+            Log.d(TAG, "socialLogin: ${response.isSuccessful}")
+            Log.d(TAG, "socialLogin: ${response.body()}")
+
+            if(response.isSuccessful && response.body() != null) {
+
+                val user = response.body()!!
+
+                when(user.result){
+
+                    "failure" -> _isSuccessLogin.value = "failure"
+
+                    "duplicatedId" -> _isSuccessLogin.value = "duplicatedId"
+
+                    else -> {
+
+                        setSharedPreferencesUserinfo(user)
+
+                    }
+
+                }
+
+                // 통신 실패의 경우
+            } else {
+
+                Log.d(TAG, "login: ${response.message()}")
+                Log.d(TAG, "login: ${response.isSuccessful}")
+                Log.d(TAG, "login: ${response.body()}")
+                _isSuccessLogin.value = "disconnect"
+
+            }
+
+        }
+
+    } // login()
+
+
     // 로그인 성공했을때 Shared에 데이터 추가해준다.
     private fun setSharedPreferencesUserinfo(user: User) {
 
@@ -179,6 +223,8 @@ class LoginViewModel: ViewModel() {
                 Log.d(TAG, "onSuccess:id: $userId \\ntoken: $naverToken")
                 Log.d(TAG, "onSuccess: 이메일 : $userEmail")
 
+                socialLogin(userEmail.toString(), "naver")
+
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
@@ -264,6 +310,8 @@ class LoginViewModel: ViewModel() {
              * account.email이 서버에 존재하면 로그인 진행 **/
 
             Log.d(TAG, "로그인 성공: ${account.email}")
+
+            socialLogin(account.email.toString(),"google")
 
             _googleLoginResult.value = "success"
 

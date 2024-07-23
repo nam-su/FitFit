@@ -100,9 +100,10 @@ class LoginFragment: Fragment() {
         setListener()
         setObserve()
 
-        UserApiClient.instance.unlink { error: Throwable? ->
-            Log.d(TAG, "requestKaKaoLogin: $error")
-        }
+        /**카카오 회원탈퇴 나중에 지우자**/
+//        UserApiClient.instance.unlink { error: Throwable? ->
+//            Log.d(TAG, "requestKaKaoLogin: $error")
+//        }
 
     } // onViewCreated()
 
@@ -223,6 +224,8 @@ class LoginFragment: Fragment() {
                 "disconnect" -> Toast.makeText(activity, "인터넷 연결이 원활하지 않습니다.", Toast.LENGTH_SHORT)
                     .show()
 
+                "duplicatedId" -> Toast.makeText(activity, "이미 존재하는 이메일 입니다.", Toast.LENGTH_SHORT).show()
+
             }
 
         }
@@ -247,16 +250,34 @@ class LoginFragment: Fragment() {
 
         //카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+
+            // 앱으로 로그인
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { oAuthToken, throwable ->
+
+                Log.d(TAG, "requestKaKaoLogin: ${oAuthToken?.idToken}")
+                Log.d(TAG, "requestKaKaoLogin: ${oAuthToken?.refreshToken}")
+                Log.d(TAG, "requestKaKaoLogin: ${oAuthToken?.accessToken}")
+                Log.d(TAG, "requestKaKaoLogin: ${throwable?.message}")
+
                 UserApiClient.instance.me { user, error ->
+
+                    /**서버에 로그인 또는 회원가입 하는 요청 필요**/
                     Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+
+                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
                 }
             }
         } else {
-            // 카카오톡이 설치되어 있지 않다면
+            // 카카오톡이 설치되어 있지 않다면 계정 로그인
             UserApiClient.instance.loginWithKakaoAccount(requireContext()) { oAuthToken, throwable ->
                 UserApiClient.instance.me { user, error ->
+
                     Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+                    Log.d(TAG, "requestKaKaoLogin: $user")
+
+                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
+
+
                 }
             }
         }
