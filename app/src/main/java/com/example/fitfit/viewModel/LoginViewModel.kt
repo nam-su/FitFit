@@ -95,6 +95,7 @@ class LoginViewModel: ViewModel() {
     // 카카오톡 어플이 있는 경우 카카오톡 로그인 요청
     fun requestKakaoApplicationLogin(token: OAuthToken?, error: Throwable?): String {
 
+        Log.d(TAG, "requestKakaoApplicationLogin: $error")
         val result = ""
 
         // 로그인 성공 부분
@@ -131,7 +132,6 @@ class LoginViewModel: ViewModel() {
 
 
     // 카카오 이메일 로그인 콜백
-    // 카카오 이메일 로그인 콜백
     val emailLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
 
         Log.d(TAG, "이메일 로그인 콜백: ")
@@ -143,6 +143,7 @@ class LoginViewModel: ViewModel() {
         } else if (token != null) {
 
             Log.e(TAG, "로그인 성공 ${token.accessToken}")
+
             UserApiClient.instance.me { user, error ->
                 if(error != null) {
 
@@ -160,6 +161,7 @@ class LoginViewModel: ViewModel() {
         }
 
     } // emailLoginCallback()
+
 
 
     // 네이버 로그인 요청
@@ -254,6 +256,12 @@ class LoginViewModel: ViewModel() {
         try {
 
             val account = task.getResult(ApiException::class.java)
+
+            /**
+             * 어카운트 계정으로 회원가입 진행
+             * account.email과 동일한 email을 갖는 다른 로그인타입이 존재하면 중복
+             * account.email이 서버에 존재하지 않으면 회원가입 진행
+             * account.email이 서버에 존재하면 로그인 진행 **/
 
             Log.d(TAG, "로그인 성공: ${account.email}")
 
