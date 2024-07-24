@@ -22,8 +22,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentUserBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.UserViewModel
 
 class UserFragment : Fragment() {
@@ -32,6 +34,10 @@ class UserFragment : Fragment() {
 
     lateinit var binding: FragmentUserBinding
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+
+    lateinit var dialog: AlertDialog
+
     lateinit var userViewModel: UserViewModel
 
     private lateinit var callback: OnBackPressedCallback
@@ -50,6 +56,7 @@ class UserFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user,container,false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         setVariable()
         setCircleImageView()
@@ -75,7 +82,7 @@ class UserFragment : Fragment() {
         userViewModel = UserViewModel()
         binding.userViewModel = userViewModel
 
-        userViewModel.setUserInformation()
+        userViewModel.setUserInformation(getString(R.string.baseUrl))
 
     } // setVariable()
 
@@ -178,8 +185,18 @@ class UserFragment : Fragment() {
 
         if(it){
 
-            userViewModel.withdrawal()
-            userViewModel.setIsWithdrawalButtonClick(false)
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                userViewModel.withdrawal()
+                userViewModel.setIsWithdrawalButtonClick(false)
+
+            }
 
         }
 
@@ -300,7 +317,7 @@ class UserFragment : Fragment() {
         customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
 
         //다이얼로그 생성
-        val dialog = AlertDialog.Builder(requireContext())
+        dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
             .setCancelable(true)
             .create()
@@ -362,6 +379,54 @@ class UserFragment : Fragment() {
             .into(binding.circleImageViewUserProfile)
 
     } // setCircleImageView()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+
+        }
+
+        //다이얼로그 생성
+        val networkDialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        networkDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            if (dialog.isShowing) {
+
+                dialog.dismiss()
+
+            }
+
+            networkDialog.dismiss()
+
+        }
+
+        networkDialog.setOnCancelListener {
+
+            if (dialog.isShowing) {
+
+                dialog.dismiss()
+
+            }
+
+            networkDialog.dismiss()
+
+        }
+
+        networkDialog.show()
+
+    } // setNetworkCustomDialog()
 
 
     // 뒤로가기 눌렀을때

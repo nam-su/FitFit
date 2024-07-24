@@ -74,6 +74,8 @@ class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private 
 
         fun onBind(challenge: Challenge,context: Context) {
 
+            binding.challenge = challenge
+
             Glide.with(context)
                 //baseurl+쉐어드의 이미지경로
                 .load(context.getString(R.string.baseUrl)+challenge.challengeImage)

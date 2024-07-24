@@ -10,9 +10,7 @@ class UserModel {
 
     private val TAG = "유저 모델"
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface =
-        retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
 
     var id = ""
     var password = ""
@@ -21,8 +19,14 @@ class UserModel {
 
 
     // 회원 탈퇴 통신 으로 result 값 확인
-    suspend fun withdrawalProcess(id: String, mode: String): Response<User> = retrofitInterface.withdrawal(id,mode)
-    // withdrawalProcess()
+    suspend fun withdrawalProcess(id: String, mode: String): Response<User> {
+
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.withdrawal(id,mode)
+
+    } // withdrawalProcess()
 
 
     // 유저정보 쉐어드에서 가져옴
@@ -36,10 +40,5 @@ class UserModel {
         MyApplication.sharedPreferences.removeAll()
 
     } // setSharedPreferencesUserInfo()
-
-
-    // 레트로핏에서 baseurl 경로 받아오기
-    fun getBaseUrl(): String = retrofitBuilder.baseUrl.toString()
-    // getBaseUrl()
 
 }

@@ -1,5 +1,7 @@
 package com.example.fitfit.fragment
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,13 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentSignUpBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.SignUpViewModel
+import kotlin.math.sign
 
 
 class SignUpFragment : Fragment() {
@@ -23,11 +29,14 @@ class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var signUpViewModel: SignUpViewModel
 
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+
 
     // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         return binding.root
 
@@ -58,6 +67,66 @@ class SignUpFragment : Fragment() {
 
     // 리스너 세팅
     private fun setListener(){
+
+        // 다음 버튼 클릭 리스너
+        binding.buttonNext.setOnClickListener {
+
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                signUpViewModel.setOnButtonNextClick(
+                    binding.editTextEmail.text.toString(),
+                    binding.editTextCode.text.toString(),
+                    binding.editTextPassword.text.toString(),
+                    binding.editTextNickname.text.toString()
+                )
+
+            }
+
+        }
+
+        // 완료 버튼 클릭 리스너
+        binding.buttonComplete.setOnClickListener {
+
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                signUpViewModel.setOnButtonCompleteClick(
+                    signUpViewModel.signUpEmail.value.toString(),
+                    signUpViewModel.signUpPassword.value.toString(),
+                    signUpViewModel.signUpNickname.value.toString()
+                )
+
+            }
+
+        }
+
+        // 이메일 코드 재전송 버튼
+        binding.buttonResend.setOnClickListener {
+
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                signUpViewModel.setOnButtonSendClick(binding.editTextEmail.text.toString())
+
+            }
+
+        }
 
         // 에딧텍스트 이메일 포커스 체인지 리스너
         binding.editTextEmail.setOnFocusChangeListener { _, hasFocus ->
@@ -506,4 +575,39 @@ class SignUpFragment : Fragment() {
         }
 
     } // setNicknameValid()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.setOnCancelListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    } // setNetworkCustomDialog()
+
 }
