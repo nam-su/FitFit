@@ -9,18 +9,15 @@ import com.example.fitfit.network.RetrofitInterface
 
 import retrofit2.Response
 
-class LoginModel() {
+class LoginModel {
 
     private val TAG = "로그인 모델"
 
-    lateinit var retrofitBuilder: RetrofitBuilder
-    lateinit var retrofitInterface: RetrofitInterface
+    private val retrofitBuilder = RetrofitBuilder()
+    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
     // 로그인 통신으로 result 값 확인
     suspend fun login(id: String, password: String, nickname: String,mode: String): Response<User> {
-
-        retrofitBuilder = RetrofitBuilder()
-        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
         return retrofitInterface.selectUserData(id, password,nickname ,mode)
 

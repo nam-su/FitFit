@@ -66,6 +66,8 @@ class LoginFragment: Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
 
+        setVariable()
+
         // 카카오 로그인 SDK 초기화
         KakaoSdk.init(requireContext(),"d997bc71e6bb7cad42042752aa3d4f9f")
 
@@ -88,14 +90,8 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setVariable()
         setListener()
         setObserve()
-
-        /**카카오 회원탈퇴 나중에 지우자**/
-//        UserApiClient.instance.unlink { error: Throwable? ->
-//            Log.d(TAG, "requestKaKaoLogin: $error")
-//        }
 
     } // onViewCreated()
 
@@ -195,6 +191,11 @@ class LoginFragment: Fragment() {
 
     // 카카오 로그인
     private fun requestKaKaoLogin() {
+
+        /**카카오 회원탈퇴 나중에 지우자**/
+        UserApiClient.instance.unlink { error: Throwable? ->
+            Log.d(TAG, "requestKaKaoLogin: $error")
+        }
 
         //카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
