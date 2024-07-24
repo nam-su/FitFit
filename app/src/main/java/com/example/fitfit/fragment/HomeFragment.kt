@@ -81,7 +81,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
-        setRankingRecyclerViewAndAdapter()
         setObserve()
         setClickListener()
 
