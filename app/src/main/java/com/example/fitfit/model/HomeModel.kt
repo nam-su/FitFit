@@ -24,8 +24,8 @@ class HomeModel() {
 
     private val exerciseDiaryList = ArrayList<ExerciseDiary>()
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface: RetrofitInterface
 
 
     // 홈에서 이번주 운동 상태 관련 메시지 정보
@@ -47,8 +47,15 @@ class HomeModel() {
 
 
     // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
-    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> =
-        retrofitInterface.getRankingList(challengeName, "getRankingList")
+    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>>{
+
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.getRankingList(challengeName, "getRankingList")
+
+    }
+
     // setPagedChallengeRankList()
 
 
@@ -118,8 +125,13 @@ class HomeModel() {
 
 
     //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
-    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> =
-        retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
-    // saveMyChallengeList()
+    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> {
+
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
+
+    } // saveMyChallengeList()
 
 }

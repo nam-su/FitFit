@@ -118,7 +118,19 @@ class HomeFragment : Fragment() {
         // 홈 프래그먼트에서 보이는 랭킹 어댑터
         lifecycleScope.launch {
 
-            val rankingList = homeViewModel.getRankingListToServer()
+            var rankingList = ArrayList<Rank>()
+
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                rankingList = homeViewModel.getRankingListToServer()
+
+            }
 
             rankingList.let { list ->
 
@@ -164,7 +176,17 @@ class HomeFragment : Fragment() {
 
                         lifecycleScope.launch {
 
-                            setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                            // 인터넷 연결 x
+                            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                                setNetworkCustomDialog()
+
+                            // 인터넷 연결 o
+                            } else {
+
+                                setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+
+                            }
 
                         }
 
@@ -316,27 +338,27 @@ class HomeFragment : Fragment() {
         }
 
         //다이얼로그 생성
-        val dialog = AlertDialog.Builder(requireContext())
+        val networkDialog = AlertDialog.Builder(requireContext())
             .setView(customNetworkDialogBinding.root)
             .setCancelable(true)
             .create()
 
         //뒷배경 투명으로 바꿔서 둥근모서리 보이게
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        networkDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
 
-            dialog.dismiss()
+            networkDialog.dismiss()
 
         }
 
-        dialog.setOnCancelListener {
+        networkDialog.setOnCancelListener {
 
-            dialog.dismiss()
+            networkDialog.dismiss()
 
         }
 
-        dialog.show()
+        networkDialog.show()
 
     } // setNetworkCustomDialog()
 

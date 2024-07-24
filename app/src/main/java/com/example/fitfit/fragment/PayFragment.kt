@@ -163,6 +163,7 @@ class PayFragment : Fragment() {
         }
 
         binding.buttonSubscribeYear.setOnClickListener {
+            
             // 인터넷 연결 x
             if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
@@ -174,6 +175,13 @@ class PayFragment : Fragment() {
                 payViewModel.readyKakaoPay("일년 구독권",36500)
 
             }
+
+        }
+
+        binding.imageButtonPayFragmentBack.setOnClickListener {
+
+            findNavController().popBackStack()
+            (activity as MainActivity).visibleBottomNavi()
 
         }
 
