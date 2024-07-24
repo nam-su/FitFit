@@ -22,7 +22,7 @@ class HomeModel() {
     // 오늘 날짜 기준 일주일 날짜 리스트
     var userRecordExerciseList: ArrayList<PoseExercise>? = null
 
-    private val exerciseDiaryList = ArrayList<ExerciseDiary>()
+    val exerciseDiaryList = ArrayList<ExerciseDiary>()
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInterface
@@ -54,9 +54,7 @@ class HomeModel() {
 
         return retrofitInterface.getRankingList(challengeName, "getRankingList")
 
-    }
-
-    // setPagedChallengeRankList()
+    } // setPagedChallengeRankList()
 
 
     // 다양한 운동 리스트 리턴하는 메서드
@@ -86,7 +84,7 @@ class HomeModel() {
         val weekDateList = ArrayList<String>()
         val weekDays = listOf("일", "월", "화", "수", "목", "금", "토")
 
-        for (i in 0 until 7) {
+        for (element in weekDays) {
 
             val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(cal.time)
 
@@ -100,11 +98,13 @@ class HomeModel() {
             }
 
             Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
-            exerciseDiaryList.add(ExerciseDiary(weekDays[i], hasRecord))
+            exerciseDiaryList.add(ExerciseDiary(element, hasRecord))
 
             cal.add(Calendar.DATE, 1)
 
         }
+
+        Log.d(TAG, "setWeek: ${exerciseDiaryList.size}")
 
     } // setWeek()
 

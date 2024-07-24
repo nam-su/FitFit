@@ -99,6 +99,8 @@ class HomeFragment : Fragment() {
         binding.recyclerViewCheckWeekExercise.layoutManager = GridLayoutManager(activity?.applicationContext,7)
         binding.recyclerViewCheckWeekExercise.adapter = CheckWeekExerciseAdapter(homeViewModel.setRecyclerViewWeekStatus())
 
+        homeViewModel.setWeekStatus()
+
         // 홈 프래그먼트에서 보이는 운동리스트 어댑터
         binding.recyclerViewPagedAllExercise.adapter = PoseExerciseAdapter(homeViewModel.getBasicExerciseList(),false,"")
         binding.recyclerViewPagedAllExercise.layoutManager = LinearLayoutManager(activity?.applicationContext,LinearLayoutManager.HORIZONTAL,false)
@@ -283,6 +285,7 @@ class HomeFragment : Fragment() {
             setRankingRecyclerViewAndAdapter()
 
         }
+
 
     } // setObserve()
 
