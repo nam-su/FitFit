@@ -83,7 +83,12 @@ class LoginFragment: Fragment() {
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
 
         // 기존 네이버 토큰 삭제
-        startNaverDeleteToken()
+//        startNaverDeleteToken()
+
+        /**카카오 회원탈퇴 나중에 지우자**/
+//        UserApiClient.instance.unlink { error: Throwable? ->
+//            Log.d(TAG, "requestKaKaoLogin: $error")
+//        }
 
         // 구글 로그인 관련 초기화
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
@@ -243,11 +248,6 @@ class LoginFragment: Fragment() {
 
     // 카카오 로그인
     private fun requestKaKaoLogin() {
-
-        /**카카오 회원탈퇴 나중에 지우자**/
-        UserApiClient.instance.unlink { error: Throwable? ->
-            Log.d(TAG, "requestKaKaoLogin: $error")
-        }
 
         //카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {

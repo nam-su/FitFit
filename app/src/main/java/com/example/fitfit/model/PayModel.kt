@@ -27,7 +27,7 @@ class PayModel {
     } // readyKakaoPay()
 
 
-    // 카카오페이 준비 단계
+    // 카카오페이 승인 단계
     suspend fun approveKakaoPay(paymentApproveRequest: PaymentApproveRequest): Response<KakaoPayLoad> {
 
         val retrofitBuilder = RetrofitBuilder()
