@@ -25,6 +25,10 @@ import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentUserBinding
 import com.example.fitfit.viewModel.UserViewModel
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 
 class UserFragment : Fragment() {
 
@@ -133,9 +137,23 @@ class UserFragment : Fragment() {
 
             item.isChecked = false
 
+            //소셜로그인이면 비밀번호 변경 메뉴 안보이게 하기
+            when(userViewModel.loginType.value){
+
+                "kakao", "naver ", "google" -> {
+                    if (item.toString() == "비밀번호 변경") {
+                        item.isVisible = false
+                    }
+                }
+
+            }
+
         }
 
     } // setAllMenuFalse()
+
+
+
 
 
     // 로그아웃 버튼 클릭 상태에 대한 처리
@@ -192,6 +210,15 @@ class UserFragment : Fragment() {
         when(it){
 
             "success" -> {
+
+                // 소셜로그인 이면 토큰 제거.
+                when(userViewModel.loginType.value){
+
+                    "kakao" ->  UserApiClient.instance.unlink{}
+
+                    "naver" -> startNaverDeleteToken()
+
+                }
 
                 // 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
                 this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
@@ -380,5 +407,39 @@ class UserFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this,callback)
 
     } // onBackPressed()
+
+
+    //네이버 토큰 제거
+    private fun startNaverDeleteToken(){
+
+        NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
+
+            override fun onSuccess() {
+
+                //서버에서 토큰 삭제에 성공한 상태입니다.
+                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                Log.d("naver", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
+                Log.d("naver", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                onFailure(errorCode, message)
+
+            }
+
+        })
+
+    } // deleteToken()
 
 }
