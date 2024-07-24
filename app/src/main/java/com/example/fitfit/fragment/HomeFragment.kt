@@ -52,7 +52,6 @@ class HomeFragment : Fragment() {
     lateinit var customDialogBinding: CustomDialogChallengeRankingBinding
 
     lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
-    lateinit var dialog: AlertDialog
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -120,17 +119,19 @@ class HomeFragment : Fragment() {
         // 홈 프래그먼트에서 보이는 랭킹 어댑터
         lifecycleScope.launch {
 
+            var rankingList = ArrayList<Rank>()
+
             // 인터넷 연결 x
             if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-
+                setNetworkCustomDialog()
 
             // 인터넷 연결 o
             } else {
 
-            }
+                rankingList = homeViewModel.getRankingListToServer()
 
-            val rankingList = homeViewModel.getRankingListToServer()
+            }
 
             rankingList.let { list ->
 
@@ -297,7 +298,7 @@ class HomeFragment : Fragment() {
         customDialogBinding.rank = rank
 
         //다이얼로그 생성
-        dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
             .setCancelable(true)
             .create()
@@ -348,23 +349,11 @@ class HomeFragment : Fragment() {
 
         customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
 
-            if (dialog.isShowing) {
-
-                dialog.dismiss()
-
-            }
-
             networkDialog.dismiss()
 
         }
 
         networkDialog.setOnCancelListener {
-
-            if (dialog.isShowing) {
-
-                dialog.dismiss()
-
-            }
 
             networkDialog.dismiss()
 
