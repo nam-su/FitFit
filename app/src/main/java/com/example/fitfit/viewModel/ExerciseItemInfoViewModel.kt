@@ -112,7 +112,16 @@ class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
     // 구독 유무 파악 후 프래그먼트,다이얼로그 전환
     fun checkUserSubscribe() {
 
-        _isUserSubscribe.value = exerciseItemInfoModel.checkUserSubscribe()
+        // 선택한 운동이 프리미엄 운동인 경우
+        if (exerciseItemInfoModel.exerciseItemInfo.isPrimium) {
+
+            _isUserSubscribe.value = exerciseItemInfoModel.checkUserSubscribe()
+
+        } else {
+
+            _isUserSubscribe.value = true
+
+        }
 
     } // checkUserSubscribe()
 

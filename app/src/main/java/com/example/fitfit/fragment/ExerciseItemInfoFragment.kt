@@ -135,6 +135,8 @@ class ExerciseItemInfoFragment : Fragment() {
             // 유저 구독이 되어 있는 경우
             if(it) {
 
+                findNavController().navigate(R.id.exerciseFragment)
+                (activity as MainActivity).visibleBottomNavi()
 
             // 유저 구독이 안되어 있는 경우
             } else {
@@ -175,7 +177,7 @@ class ExerciseItemInfoFragment : Fragment() {
         }
 
         //다이얼로그 생성
-        val dialog = AlertDialog.Builder(requireContext())
+        dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
             .setCancelable(true)
             .create()
@@ -191,6 +193,7 @@ class ExerciseItemInfoFragment : Fragment() {
         customDialogBinding.textViewButtonOk.setOnClickListener {
 
             // 결제 프래그먼트로 전환
+            findNavController().navigate(R.id.payFragment)
             dialog.dismiss()
 
         }
