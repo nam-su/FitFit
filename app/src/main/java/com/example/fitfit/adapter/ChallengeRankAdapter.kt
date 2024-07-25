@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitfit.R
-import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.Rank
 import com.example.fitfit.databinding.ItemViewChallengeRankBinding
 import com.example.fitfit.viewModel.HomeViewModel
 
-class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, private val homeViewModel: HomeViewModel): RecyclerView.Adapter<ChallengeRankAdapter.ChallengeRankViewHolder>() {
+class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, private val homeViewModel: HomeViewModel): RecyclerView.Adapter<ChallengeRankAdapter.ChallengeRankViewHolder>() {
 
     lateinit var binding: ItemViewChallengeRankBinding
     var challengeRankItemClick: ChallengeRankItemClick? = null
@@ -42,11 +41,17 @@ class ChallengeRankAdapter(private val challengeRankList: ArrayList<Rank>, priva
     override fun getItemCount(): Int = challengeRankList.size
     // getItemCount()
 
+    //setItems
+    fun setItems(challengeRanks: ArrayList<Rank>?) {
+        challengeRankList = challengeRankList
+        notifyDataSetChanged()
+    }
+
 
     // onBindViewHolder
     override fun onBindViewHolder(holder: ChallengeRankViewHolder, position: Int) {
 
-        holder.onBind(challengeRankList[position])
+        holder.onBind(challengeRankList!![position])
 
         // 아이템 클릭 리스너가 null이 아닐때 클릭리스너 연동
         if(challengeRankItemClick != null) {

@@ -47,8 +47,8 @@ class HomeModel() {
 
 
     // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
-    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>> =
-        retrofitInterface.getRankingList(challengeName, "getRankingList")
+    suspend fun getRankingListToServer(id:String?, challengeName: String?, rakingPage: Int?): Response<ArrayList<Rank>> =
+        retrofitInterface.getRankingList(id, challengeName, rakingPage, "getRankingList")
     // setPagedChallengeRankList()
 
 

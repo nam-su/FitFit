@@ -1,7 +1,6 @@
 package com.example.fitfit.fragment
 
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
@@ -12,12 +11,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -52,6 +48,9 @@ class HomeFragment : Fragment() {
     lateinit var customDialogBinding: CustomDialogChallengeRankingBinding
 
     lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+
+    lateinit var top3ChallengeRankAdapter: ChallengeRankAdapter
+    lateinit var totalChallengeRankAdapter: ChallengeRankAdapter
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -92,7 +91,12 @@ class HomeFragment : Fragment() {
 
         homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
+
         binding.lifecycleOwner = this
+
+        top3ChallengeRankAdapter = ChallengeRankAdapter(arrayListOf(),homeViewModel)
+        totalChallengeRankAdapter = ChallengeRankAdapter(arrayListOf(),homeViewModel)
+
 
         // 일주일 동안 운동양 체크하는 리사이클러뷰 어댑터
         binding.recyclerViewCheckWeekExercise.layoutManager = GridLayoutManager(activity?.applicationContext,7)
@@ -118,49 +122,59 @@ class HomeFragment : Fragment() {
         // 홈 프래그먼트에서 보이는 랭킹 어댑터
         lifecycleScope.launch {
 
-            val rankingList = homeViewModel.getRankingListToServer()
+            var rankingList = ArrayList<Rank>()
+
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+                // 인터넷 연결 o
+            } else {
+
+                rankingList = homeViewModel.getRankingListToServer()
+
+            }
 
             rankingList.let { list ->
 
                 val homeRankingList = list.partition { rank -> rank.ranking < 4 }.first as ArrayList
+                top3ChallengeRankAdapter = ChallengeRankAdapter(homeRankingList, homeViewModel)
+                totalChallengeRankAdapter = ChallengeRankAdapter(list, homeViewModel)
 
                 // 홈에서 보이는 랭킹 어댑터 설정
-                binding.recyclerViewChallengeRank.adapter = ChallengeRankAdapter(homeRankingList, homeViewModel)
+                binding.recyclerViewChallengeRank.adapter = top3ChallengeRankAdapter
 
                 // 랭킹 모두 보기 어댑터 설정
-                binding.recyclerViewAllChallengeRank.adapter = ChallengeRankAdapter(list, homeViewModel)
+                binding.recyclerViewAllChallengeRank.adapter = totalChallengeRankAdapter
+                binding.recyclerViewAllChallengeRank.smoothScrollToPosition(totalChallengeRankAdapter.itemCount - 1)
 
-                // 챌린지 랭킹 아이템 클릭 리스너 설정
-                (binding.recyclerViewChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick =
-                    object : ChallengeRankAdapter.ChallengeRankItemClick {
 
-                    override fun onClick(view: View, rank: Rank) {
-                        Log.d(TAG, "onClick: ${rank.id}")
+            }
 
-                        // 인터넷 연결 안되어 있는 경우
-                        if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+        }
 
-                            setNetworkCustomDialog()
+
+    } // setRankingRecyclerViewAndAdapter()
+
+
+    // 클릭 리스너 초기화
+    private fun setClickListener() {
+
+        // 챌린지 랭킹 아이템 클릭 리스너 설정
+        top3ChallengeRankAdapter.challengeRankItemClick =
+            object : ChallengeRankAdapter.ChallengeRankItemClick {
+
+                override fun onClick(view: View, rank: Rank) {
+                    Log.d(TAG, "onClick: ${rank.id}")
+
+                    // 인터넷 연결 안되어 있는 경우
+                    if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                        setNetworkCustomDialog()
 
                         // 인터넷 연결이 되어 있는 경우
-                        } else {
-
-                            lifecycleScope.launch {
-
-                                setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                // 챌린지 랭킹 아이템 클릭 리스너 설정
-                (binding.recyclerViewAllChallengeRank.adapter as ChallengeRankAdapter).challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
-                    override fun onClick(view: View, rank: Rank) {
-                        Log.d(TAG, "onClick: ${rank.id}")
+                    } else {
 
                         lifecycleScope.launch {
 
@@ -174,13 +188,30 @@ class HomeFragment : Fragment() {
 
             }
 
+        // 챌린지 랭킹 아이템 클릭 리스너 설정
+        totalChallengeRankAdapter.challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
+            override fun onClick(view: View, rank: Rank) {
+                Log.d(TAG, "onClick: ${rank.id}")
+
+                lifecycleScope.launch {
+
+                    // 인터넷 연결 x
+                    if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                        setNetworkCustomDialog()
+
+                        // 인터넷 연결 o
+                    } else {
+
+                        setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+
+                    }
+
+                }
+
+            }
+
         }
-
-    } // setRankingRecyclerViewAndAdapter()
-
-
-    // 클릭 리스너 초기화
-    private fun setClickListener() {
 
         // 운동 전체보기 클릭 리스너
         binding.textViewViewAllExercise.setOnClickListener{
@@ -257,8 +288,13 @@ class HomeFragment : Fragment() {
 
         homeViewModel.challengeName.observe(viewLifecycleOwner){
 
+            Log.d(TAG, "setObserve: $it")
             setRankingRecyclerViewAndAdapter()
 
+        }
+
+        homeViewModel.rankingPage.observe(viewLifecycleOwner){
+            setRankingRecyclerViewAndAdapter()
         }
 
     } // setObserve()
