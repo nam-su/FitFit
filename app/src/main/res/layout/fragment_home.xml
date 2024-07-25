@@ -441,7 +441,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text='@{String.format(@string/myRanking, homeViewModel.userNickname, homeViewModel.ranking)}'
+                android:text='@{homeViewModel.userRankText.toString()}'
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageButtonBackAllChallenge"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -471,6 +471,7 @@
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/login_button"
                 android:text="다음 순위 보기"
+                android:onClick="@{()->homeViewModel.addRankingPage()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

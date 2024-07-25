@@ -47,14 +47,13 @@ class HomeModel() {
 
 
     // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
-    suspend fun getRankingListToServer(challengeName: String?): Response<ArrayList<Rank>>{
-
+    suspend fun getRankingListToServer(id:String?, challengeName: String?, rakingPage: Int?): Response<ArrayList<Rank>>{
         retrofitBuilder = RetrofitBuilder()
         retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
-        return retrofitInterface.getRankingList(challengeName, "getRankingList")
-
-    } // setPagedChallengeRankList()
+    return retrofitInterface.getRankingList(id, challengeName, rakingPage, "getRankingList")
+    }
+    // setPagedChallengeRankList()
 
 
     // 다양한 운동 리스트 리턴하는 메서드

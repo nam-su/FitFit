@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
 import com.example.fitfit.model.HomeModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel: ViewModel() {
@@ -22,7 +24,7 @@ class HomeViewModel: ViewModel() {
     val weekStatus: LiveData<String>
         get() = _weekStatus
 
-    private val _challengeName= MutableLiveData(homeModel.getChallengeListToShared()[0].challengeName)
+    private val _challengeName= MutableLiveData<String>(homeModel.getChallengeListToShared()[0].challengeName)
     val challengeName: LiveData<String>
         get() = _challengeName
 
@@ -33,6 +35,18 @@ class HomeViewModel: ViewModel() {
     private val _ranking= MutableLiveData<String>()
     val ranking: LiveData<String>
         get() = _ranking
+
+    private val _rankingPage= MutableLiveData(1)
+    val rankingPage: LiveData<Int>
+        get() = _rankingPage
+
+    private val _rankingArrayList= MutableLiveData(ArrayList<Rank>())
+    val rankingArrayList: LiveData<ArrayList<Rank>?>
+        get() = _rankingArrayList
+
+    private val _userRankText = MutableLiveData<String>()
+    val userRankText: LiveData<String>
+        get() = _userRankText
 
 
     // 챌린지 이름 설정
@@ -72,32 +86,58 @@ class HomeViewModel: ViewModel() {
     } // setRecyclerViewWeekStatus()
 
 
+
     // 홈 프래그먼트에서 보이는 랭킹 리사이클러뷰 띄워주는 메서드
     suspend fun getRankingListToServer(): ArrayList<Rank> {
 
-        val response = homeModel.getRankingListToServer(challengeName.value)
+        val response = homeModel.getRankingListToServer(getUserId(),challengeName.value,rankingPage.value)
 
         Log.d(TAG, "getRankingListToServer: ${response.isSuccessful}")
         Log.d(TAG, "getRankingListToServer: ${response.body()}")
 
         if(response.isSuccessful && response.body() != null){
 
-            response.body()?.forEach {
-
-                if(it.id == getUserId()){
-
-                    _userNickname.value = it.nickname
-                    _ranking.value = it.ranking.toString()
-                }
-
-            }
-
-            return response.body()!!
+            return splitRankingList(response.body()!!)
         }
 
         return ArrayList()
 
     } // setRecyclerViewPagedChallengeRank()
+
+
+    // 랭킹페이지에 따른 랭킹리스트와 내 랭킹 나누기
+    private fun splitRankingList(rankingList: ArrayList<Rank>): ArrayList<Rank> {
+
+        if (rankingList.isNotEmpty()) {
+
+            if(rankingList[rankingList.size-1].id == getUserId()){
+
+                if(rankingList[rankingList.size-1].id == getUserId()) {
+                    setUserRank(rankingList[rankingList.size-1])
+                }else{
+                    _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
+                }
+
+            }else{
+                _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
+            }
+
+            // 나머지 요소들을 rankingArrayList에 설정
+          return ArrayList(rankingList.subList(0,rankingList.size-1))
+
+        }else{
+            _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
+        }
+
+        return arrayListOf()
+
+    } //splitRankingList()
+
+
+    // My Text 설정
+    private fun setUserRank(rank: Rank){
+        _userRankText.value = "${rank.nickname} 님의 현재 순위는 ${rank.ranking} 위 입니다."
+    } //setUserRank()
 
 
     // 운동 전체보기 리사이클러뷰 띄워주는 메서드
@@ -144,5 +184,10 @@ class HomeViewModel: ViewModel() {
 
     } // getMyChallengeListToServer()
 
+
+    //다음순위보기 클릭 시 랭킹페이지 +1
+    fun addRankingPage(){
+        _rankingPage.value = _rankingPage.value!! + 1
+    } //addRankingPage()
 
 }
