@@ -22,9 +22,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentUserBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.UserViewModel
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 
 class UserFragment : Fragment() {
 
@@ -32,6 +38,10 @@ class UserFragment : Fragment() {
 
     lateinit var binding: FragmentUserBinding
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+
+    lateinit var dialog: AlertDialog
+
     lateinit var userViewModel: UserViewModel
 
     private lateinit var callback: OnBackPressedCallback
@@ -50,6 +60,7 @@ class UserFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user,container,false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         setVariable()
         setCircleImageView()
@@ -75,7 +86,7 @@ class UserFragment : Fragment() {
         userViewModel = UserViewModel()
         binding.userViewModel = userViewModel
 
-        userViewModel.setUserInformation()
+        userViewModel.setUserInformation(getString(R.string.baseUrl))
 
     } // setVariable()
 
@@ -133,9 +144,23 @@ class UserFragment : Fragment() {
 
             item.isChecked = false
 
+            //소셜로그인이면 비밀번호 변경 메뉴 안보이게 하기
+            when(userViewModel.loginType.value){
+
+                "kakao", "naver ", "google" -> {
+                    if (item.toString() == "비밀번호 변경") {
+                        item.isVisible = false
+                    }
+                }
+
+            }
+
         }
 
     } // setAllMenuFalse()
+
+
+
 
 
     // 로그아웃 버튼 클릭 상태에 대한 처리
@@ -178,8 +203,18 @@ class UserFragment : Fragment() {
 
         if(it){
 
-            userViewModel.withdrawal()
-            userViewModel.setIsWithdrawalButtonClick(false)
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                userViewModel.withdrawal()
+                userViewModel.setIsWithdrawalButtonClick(false)
+
+            }
 
         }
 
@@ -192,6 +227,15 @@ class UserFragment : Fragment() {
         when(it){
 
             "success" -> {
+
+                // 소셜로그인 이면 토큰 제거.
+                when(userViewModel.loginType.value){
+
+                    "kakao" ->  UserApiClient.instance.unlink{}
+
+                    "naver" -> startNaverDeleteToken()
+
+                }
 
                 // 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
                 this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
@@ -300,7 +344,7 @@ class UserFragment : Fragment() {
         customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
 
         //다이얼로그 생성
-        val dialog = AlertDialog.Builder(requireContext())
+        dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
             .setCancelable(true)
             .create()
@@ -364,6 +408,54 @@ class UserFragment : Fragment() {
     } // setCircleImageView()
 
 
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+
+        }
+
+        //다이얼로그 생성
+        val networkDialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        networkDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            if (dialog.isShowing) {
+
+                dialog.dismiss()
+
+            }
+
+            networkDialog.dismiss()
+
+        }
+
+        networkDialog.setOnCancelListener {
+
+            if (dialog.isShowing) {
+
+                dialog.dismiss()
+
+            }
+
+            networkDialog.dismiss()
+
+        }
+
+        networkDialog.show()
+
+    } // setNetworkCustomDialog()
+
+
     // 뒤로가기 눌렀을때
     private fun setOnBackPressed() {
 
@@ -380,5 +472,39 @@ class UserFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this,callback)
 
     } // onBackPressed()
+
+
+    //네이버 토큰 제거
+    private fun startNaverDeleteToken(){
+
+        NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
+
+            override fun onSuccess() {
+
+                //서버에서 토큰 삭제에 성공한 상태입니다.
+                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                Log.d("naver", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
+                Log.d("naver", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                onFailure(errorCode, message)
+
+            }
+
+        })
+
+    } // deleteToken()
 
 }

@@ -41,13 +41,35 @@ class HomeViewModel: ViewModel() {
 
 
     // 이번주 운동량에 따른 메시지 출력을 위한 메서드
-    fun setWeekStatus(): String = homeModel.setWeekStatus() + " 님 이번주 운동은 순항중 이네요."
-    // setWeekStatus()
+    fun setWeekStatus() {
+
+        val exerciseCompleteDayCount = homeModel.exerciseDiaryList.count { it.check }
+
+        var advise = homeModel.setWeekStatus()
+
+        advise += when(exerciseCompleteDayCount) {
+
+            0 -> { " 님 이번주 운동을 시작해 주세요" }
+
+            in 1..3 -> { " 님 이번주 운동은 이제 시작 이에요" }
+
+            in 4..5 -> { " 님 이번주 운동은 순항중 이에요" }
+
+            else -> { " 님 이번주 운동은 충분히 하셨어요" }
+
+        }
+
+        _weekStatus.value = advise
+
+    } // setWeekStatus()
 
 
     // 이번주 운동량을 리사이클러뷰에 띄워주는 메서드
-    fun setRecyclerViewWeekStatus(): ArrayList<ExerciseDiary> = homeModel.setWeekStatusList()
-    // setRecyclerViewWeekStatus()
+    fun setRecyclerViewWeekStatus(): ArrayList<ExerciseDiary> {
+
+        return homeModel.setWeekStatusList()
+
+    } // setRecyclerViewWeekStatus()
 
 
     // 홈 프래그먼트에서 보이는 랭킹 리사이클러뷰 띄워주는 메서드

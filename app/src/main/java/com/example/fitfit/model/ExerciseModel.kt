@@ -1,5 +1,7 @@
 package com.example.fitfit.model
 
+import android.util.Log
+import com.example.fitfit.R
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.ExerciseInfo
@@ -11,13 +13,13 @@ import retrofit2.Response
 
 class ExerciseModel {
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
-        RetrofitInterface::class.java)
+    private val TAG = "운동 모델"
 
     private val exerciseInfoList = ArrayList<ExerciseInfo>()
     private lateinit var myExerciseList: ArrayList<PoseExercise>
 
+    var retrofitBuilder: RetrofitBuilder? = null
+    var retrofitInterface: RetrofitInterface? = null
 
     // 운동 정보 리스트에 운동 객체 추가
     init {
@@ -74,15 +76,18 @@ class ExerciseModel {
     //getChallengeList()
 
 
-    // 레트로핏에서 baseurl 경로 받아오기
-    fun getBaseUrl(): String = retrofitBuilder.baseUrl.toString()
-    //getBaseUrl()
-
-
     //챌린지 참여 서버 등록
-    suspend fun challengeJoin(challenge: Challenge?): Response<ChallengeResponse>?
-    = retrofitInterface.challengeJoin(MyApplication.sharedPreferences.getUserId(),challenge?.challengeName,"challengeJoin")
-    // challengeJoin
+    suspend fun challengeJoin(challenge: Challenge?): Response<ChallengeResponse>? {
+
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder!!.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface?.challengeJoin(
+            MyApplication.sharedPreferences.getUserId(),
+            challenge?.challengeName,
+            "challengeJoin")
+
+    } // challengeJoin
 
 
     //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드

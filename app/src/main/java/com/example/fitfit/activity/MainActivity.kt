@@ -1,20 +1,17 @@
 package com.example.fitfit.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.fitfit.R
 import com.example.fitfit.databinding.ActivityMainBinding
-import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,9 +19,9 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "메인액티비티"
 
     private lateinit var binding: ActivityMainBinding
-
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
+
 
     // onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         // 바인딩 라이프사이클 오너 초기화
         binding.lifecycleOwner = this
 
+
         // 프래그먼트 백스택 관찰을 위한 리스너
         /** 마지막 작업 후 삭제 **/
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
@@ -83,5 +81,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.GONE
 
     } // goneBottomNavi()
+
 
 }

@@ -33,10 +33,6 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
 
     private val TAG = "포즈 추정 모델"
 
-    // 레트로핏 관련 초기화
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
-
     // 이미지 처리를 위한 ImageProcessor 초기화
     private val imageProcessor: ImageProcessor = ImageProcessor.Builder()
         .add(ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR))
@@ -177,6 +173,10 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
 
     // 운동 후 기록 저장하는 메서드.
     suspend fun updatePoseExercise(exerciseName: String): Response<PoseExercise> {
+
+        // 레트로핏 관련 초기화
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
         // 쉐어드로 운동객체 호출 하고 , 그 객체 갱신 후 리스트 갱신 해줘야함.
         val poseExercise = MyApplication.sharedPreferences.getPoseExercise(exerciseName)

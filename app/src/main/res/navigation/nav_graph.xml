@@ -195,13 +195,14 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
+
+    <!--비밀번호 찾기 프래그먼트-->
     <fragment
         android:id="@+id/findPasswordFragment"
         android:name="com.example.fitfit.fragment.FindPasswordFragment"
         android:label="fragment_find_password"
         tools:layout="@layout/fragment_find_password"
         >
-
 
         <action
             android:id="@+id/action_findPasswordFragment_to_splashFragment"

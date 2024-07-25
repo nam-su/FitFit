@@ -20,9 +20,9 @@ class ExerciseEditModel {
     private val allLungeList = ArrayList<PoseExercise>()
     private val allLegRaisesList = ArrayList<PoseExercise>()
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface =
-        retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface: RetrofitInterface
+
 
     init {
 
@@ -142,6 +142,10 @@ class ExerciseEditModel {
 
     //서버에 arrayList 전송
     suspend fun setMyPoseExerciseList(): Response<SplashResponse> {
+
+        // 레트로핏 초기화
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
         val id = MyApplication.sharedPreferences.getUserId()
         val userCheckListHashMap = LinkedHashMap<String,Int>()

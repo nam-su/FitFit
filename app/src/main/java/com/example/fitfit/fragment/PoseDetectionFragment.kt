@@ -1,8 +1,11 @@
 package com.example.fitfit.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.SurfaceTexture
+import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -21,7 +24,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.PoseDetectionViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +50,9 @@ class PoseDetectionFragment : Fragment() {
 
     // 뒤로가기 버튼 콜백 객체
     private lateinit var callback: OnBackPressedCallback
+
+    // 네트워크 연결 x 다이얼로그 바인딩
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
 
     // tts 객체
     private var tts: TextToSpeech? = null
@@ -71,10 +79,11 @@ class PoseDetectionFragment : Fragment() {
 
 
     // onCreateView 메서드는 Fragment의 뷰를 생성합니다.
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         // 데이터 바인딩 설정
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_detection, container, false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         return binding.root
 
@@ -305,10 +314,20 @@ class PoseDetectionFragment : Fragment() {
 
             delay(500)
 
-            // 쉐어드에 데이터 갱신
-            poseDetectionViewModel.updatePoseExercise(exerciseName)
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-            this@PoseDetectionFragment.findNavController().popBackStack()
+                setNetworkCustomDialog()
+
+                // 인터넷 연결 o
+            } else {
+
+                // 서버에 데이터 갱신
+                poseDetectionViewModel.updatePoseExercise(exerciseName)
+
+                this@PoseDetectionFragment.findNavController().popBackStack()
+
+            }
 
         }
 
@@ -329,6 +348,42 @@ class PoseDetectionFragment : Fragment() {
         }
 
     } // checkPermissions()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+            findNavController().popBackStack()
+
+        }
+
+        dialog.setOnCancelListener {
+
+            dialog.dismiss()
+            findNavController().popBackStack()
+
+        }
+
+        dialog.show()
+
+    } // setNetworkCustomDialog()
 
 
     // 뒤로가기 버튼 눌렀을 때

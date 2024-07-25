@@ -1,7 +1,10 @@
 package com.example.fitfit.fragment
 
+import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +18,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.ChallengeJoinAdapter
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentDiaryBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Description
@@ -34,6 +39,8 @@ class DiaryFragment : Fragment() {
     lateinit var diaryViewModel: DiaryViewModel
     private var challengeJoinAdapter: ChallengeJoinAdapter? = null
 
+    lateinit var customDialogBinding: CustomDialogNetworkDisconnectBinding
+
     private lateinit var callback: OnBackPressedCallback
 
 
@@ -50,6 +57,7 @@ class DiaryFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_diary,container,false)
+        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_network_disconnect, null, false)
 
         return binding.root
 
@@ -84,27 +92,35 @@ class DiaryFragment : Fragment() {
     // 리사이클러뷰와 어댑터 설정
     private fun setAdapter() {
 
-        // 네트워크 요청을 수행하고 어댑터를 설정
-        lifecycleScope.launch {
+        if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-            val challengeList = diaryViewModel.getMyChallengeListToServer()
+            setCustomDialog()
 
-            challengeList?.let {
+        } else {
 
-                challengeJoinAdapter = ChallengeJoinAdapter(it)
+            // 네트워크 요청을 수행하고 어댑터를 설정
+            lifecycleScope.launch {
 
-                // RecyclerView 설정
-                binding.recyclerView.adapter = challengeJoinAdapter
+                val challengeList = diaryViewModel.getMyChallengeListToServer()
 
-                if(challengeJoinAdapter?.itemCount!! < 1) {
+                challengeList?.let {
 
-                    binding.textViewNonChallenge.visibility = View.VISIBLE
-                    binding.recyclerView.visibility = View.GONE
+                    challengeJoinAdapter = ChallengeJoinAdapter(it)
 
-                } else {
+                    // RecyclerView 설정
+                    binding.recyclerView.adapter = challengeJoinAdapter
 
-                    binding.textViewNonChallenge.visibility = View.GONE
-                    binding.recyclerView.visibility = View.VISIBLE
+                    if(challengeJoinAdapter?.itemCount!! < 1) {
+
+                        binding.textViewNonChallenge.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
+
+                    } else {
+
+                        binding.textViewNonChallenge.visibility = View.GONE
+                        binding.recyclerView.visibility = View.VISIBLE
+
+                    }
 
                 }
 
@@ -339,6 +355,34 @@ class DiaryFragment : Fragment() {
         }
 
     } // initBarChart()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    } // setCustomDialog()
 
 
     // 뒤로가기 눌렀을때

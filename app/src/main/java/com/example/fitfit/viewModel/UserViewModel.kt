@@ -17,8 +17,6 @@ class UserViewModel : ViewModel() {
 
     private val userModel = UserModel()
 
-    var baseUrl: String = userModel.getBaseUrl()
-
     private var _email = MutableLiveData<String>()
     val email: LiveData<String>
         get() = _email
@@ -61,7 +59,7 @@ class UserViewModel : ViewModel() {
 
 
     // 유저 정보 쉐어드에서 호출
-    fun setUserInformation() {
+    fun setUserInformation(baseUrl: String) {
 
         val user = userModel.getUser()
 
@@ -69,7 +67,7 @@ class UserViewModel : ViewModel() {
         _nickname.value = user.nickname
         _loginType.value = user.loginType
         _subscription.value = user.subscription
-        _profileImagePath.value = userModel.getBaseUrl()+user.profileImagePath
+        _profileImagePath.value = baseUrl+user.profileImagePath
 
     } // setUserInformation()
 

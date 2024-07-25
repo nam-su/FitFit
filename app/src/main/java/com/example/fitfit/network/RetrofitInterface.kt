@@ -226,4 +226,15 @@ interface RetrofitInterface {
 
     ): Response<User>
 
+
+    //소셜 로그인
+    @FormUrlEncoded
+    @POST(" socialLoginProcess.php")
+    suspend fun socialLogin(
+
+        @Field("id") id: String?,
+        @Field("loginType") loginType: String?
+
+    ): Response<User>
+
 }

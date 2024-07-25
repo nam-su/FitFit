@@ -16,11 +16,6 @@ class UserEditModel {
 
     private val TAG = "유저 에딧 모델"
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
-        RetrofitInterface::class.java)
-
-
     fun getUser(): User = MyApplication.sharedPreferences.getUser()
 
 
@@ -39,20 +34,28 @@ class UserEditModel {
 
 
     // 프로필 수정한 값 서버에 저장
-    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody, mode: RequestBody): Response<User> =
-        retrofitInterface.profileEdit(image,id,nickname, mode) // withdrawalProcess()
+    suspend fun profileEdit(image: MultipartBody.Part?, id: RequestBody, nickname: RequestBody, mode: RequestBody): Response<User> {
+
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.profileEdit(image,id,nickname, mode)
+
+    } // profileEdit()
 
 
     // 프로필 수정한 값 서버에 저장
-    suspend fun profileEditWithoutImage(id: String, nickname: String, mode: String): Response<User>
-    = retrofitInterface.profileEditWithoutImage(id,nickname,mode) // withdrawalProcess()
+    suspend fun profileEditWithoutImage(id: String, nickname: String, mode: String): Response<User> {
+
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.profileEditWithoutImage(id,nickname,mode)
+
+    } // profileEditWithoutImage()
 
 
     // 쉐어드에 유저정보 저장.
     fun setSharedPreferencesUserInfo(user: User) = MyApplication.sharedPreferences.setUserAndAllList(user)
-
-
-    // 레트로핏에서 baseurl 경로 받아오기
-    fun getBaseUrl(): String = retrofitBuilder.baseUrl.toString()
 
 }

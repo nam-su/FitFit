@@ -10,11 +10,6 @@ class SignUpModel {
 
     private val TAG = "회원가입 모델"
 
-    private val retrofitBuilder = RetrofitBuilder()
-
-    private val retrofitInterface: RetrofitInterface =
-        retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
-
     var id = ""
     var password = ""
     var nickname = ""
@@ -24,11 +19,15 @@ class SignUpModel {
     var codeGeneratedTime : Long = 0
 
     /** 초 단위 **/
-    var timeLimit = 6
+    var timeLimit = 60
 
 
     // 로그인 통신으로 result 값 확인
     suspend fun signUpProcess(id: String, password: String, nickname: String, mode: String): User {
+
+        val retrofitBuilder = RetrofitBuilder()
+
+        val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
         val response = retrofitInterface.signUp(id,password,nickname,mode)
 
