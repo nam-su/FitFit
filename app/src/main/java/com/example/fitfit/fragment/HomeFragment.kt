@@ -137,6 +137,7 @@ class HomeFragment : Fragment() {
                 rankingList = homeViewModel.getRankingListToServer()
 
             }
+            //
 
             rankingList.let { list ->
 
