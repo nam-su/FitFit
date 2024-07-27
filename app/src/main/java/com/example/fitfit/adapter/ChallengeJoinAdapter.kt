@@ -81,7 +81,9 @@ class ChallengeJoinAdapter(private val myChallengeList: ArrayList<Challenge>): R
 
             }
 
-            binding.textViewRanking.text = "${challenge.ranking} 위"
+            if(challenge.rankingPoint != 0) {
+                binding.textViewRanking.text = "${challenge.ranking} 위"
+            }
 
         } // onBind()
 
