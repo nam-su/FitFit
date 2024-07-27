@@ -86,9 +86,9 @@ class LoginFragment: Fragment() {
 //        startNaverDeleteToken()
 
         /**카카오 회원탈퇴 나중에 지우자**/
-//        UserApiClient.instance.unlink { error: Throwable? ->
-//            Log.d(TAG, "requestKaKaoLogin: $error")
-//        }
+        UserApiClient.instance.unlink { error: Throwable? ->
+            Log.d(TAG, "requestKaKaoLogin: $error")
+        }
 
         // 구글 로그인 관련 초기화
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
@@ -255,32 +255,55 @@ class LoginFragment: Fragment() {
             // 앱으로 로그인
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { oAuthToken, throwable ->
 
-                Log.d(TAG, "requestKaKaoLogin: ${oAuthToken?.idToken}")
-                Log.d(TAG, "requestKaKaoLogin: ${oAuthToken?.refreshToken}")
-                Log.d(TAG, "requestKaKaoLogin: ${oAuthToken?.accessToken}")
-                Log.d(TAG, "requestKaKaoLogin: ${throwable?.message}")
+                Log.d(TAG, "idToken: ${oAuthToken?.idToken}")
+                Log.d(TAG, "refreshToken: ${oAuthToken?.refreshToken}")
+                Log.d(TAG, "accessToken: ${oAuthToken?.accessToken}")
+                Log.d(TAG, "throwable: ${throwable}")
 
-                UserApiClient.instance.me { user, error ->
+                if(throwable != null){ // 오류가 있으면 웹으로 콜백
 
-                    /**서버에 로그인 또는 회원가입 하는 요청 필요**/
-                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+                    UserApiClient.instance.loginWithKakaoAccount(requireContext(),
+                        callback = loginViewModel.emailLoginCallback)
 
-                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
+                }else{ // 오류가 없으면 카카오 앱으로 로그인
+
+                    UserApiClient.instance.me { user, error ->
+
+                        if(error != null){
+
+                            Log.d(TAG, "requestKaKaoLogin: 로그인 실패")
+
+                        }else{
+
+                            /**서버에 로그인 또는 회원가입 하는 요청 필요**/
+                            Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+
+                            loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
+
+                        }
+
+                    }
+
                 }
+
+
             }
         } else {
             // 카카오톡이 설치되어 있지 않다면 계정 로그인
-            UserApiClient.instance.loginWithKakaoAccount(requireContext()) { oAuthToken, throwable ->
-                UserApiClient.instance.me { user, error ->
+            UserApiClient.instance.loginWithKakaoAccount(requireContext(),
+                callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
 
-                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
-                    Log.d(TAG, "requestKaKaoLogin: $user")
-
-                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
-
-
-                }
-            }
+//            UserApiClient.instance.loginWithKakaoAccount(requireContext()) { oAuthToken, throwable ->
+//                UserApiClient.instance.me { user, error ->
+//
+//                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
+//                    Log.d(TAG, "requestKaKaoLogin: $user")
+//
+//                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
+//
+//
+//                }
+//            }
         }
 
 

@@ -179,6 +179,7 @@ class LoginViewModel: ViewModel() {
     val emailLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
 
         Log.d(TAG, "이메일 로그인 콜백: ")
+        Log.d(TAG, "에러: $error ")
 
         if (error != null) {
 
@@ -189,6 +190,7 @@ class LoginViewModel: ViewModel() {
             Log.e(TAG, "로그인 성공 ${token.accessToken}")
 
             UserApiClient.instance.me { user, error ->
+
                 if(error != null) {
 
                     Log.d(TAG, "유저정보 읽어오기 실패: ")
@@ -197,6 +199,7 @@ class LoginViewModel: ViewModel() {
 
                     Log.d(TAG, "유저 아이디 : ${user?.id}")
                     Log.d(TAG, "유저 이메일 : ${user?.kakaoAccount?.email}")
+                    socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
 
                 }
 
