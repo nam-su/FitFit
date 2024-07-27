@@ -39,6 +39,7 @@ class UserFragment : Fragment() {
     lateinit var binding: FragmentUserBinding
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
     lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+    lateinit var customSubscriptionDialogBinding: CustomDialogTwoButtonBinding
 
     lateinit var dialog: AlertDialog
 
@@ -61,6 +62,8 @@ class UserFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user,container,false)
         customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
+        customSubscriptionDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
+
 
         setVariable()
         setCircleImageView()
@@ -131,6 +134,30 @@ class UserFragment : Fragment() {
 
         //다이얼로그 회원 탈퇴 버튼 클릭 관찰
         userViewModel.isWithdrawalSuccess.observe(viewLifecycleOwner) { setIsWithdrawalSuccess(it) }
+
+        // 구독권 기간 만료되었는지 관찰
+        userViewModel.subscription.observe(viewLifecycleOwner) {
+
+
+           when(userViewModel.isExpiredSubscription()){
+
+               //구독권 기간 지났을 때
+               true -> {
+                   Log.d(TAG, "setObserve: 구독권 기간 지남")
+
+                   // 서버에 구독권 삭제, 쉐어드에 구독권 데이터 삭제
+                   userViewModel.deleteSubscription()
+
+                   // 구독권 갱신 다이얼로그 띄우기
+                   setSubscriptionCustomDialog()
+
+               }
+
+               //구독권 기간 안 지났을 때
+               else -> Log.d(TAG, "setObserve: 구독권 기간 안지남")
+
+           }
+        }
 
     } // setObserve()
 
@@ -452,6 +479,49 @@ class UserFragment : Fragment() {
         }
 
         networkDialog.show()
+
+    } // setNetworkCustomDialog()
+
+
+    // 구독권 만료 안내 다이얼로그 띄우기
+    private fun setSubscriptionCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customSubscriptionDialogBinding.root.parent?.let {
+
+            (it as ViewGroup).removeView(customSubscriptionDialogBinding.root)
+
+        }
+
+        //다이얼로그 생성
+        val subscriptionDialog = AlertDialog.Builder(requireContext())
+            .setView(customSubscriptionDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        subscriptionDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customSubscriptionDialogBinding.textViewButtonOk.text = getString(R.string.subscriptionDialogButtonOk)
+        customSubscriptionDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
+        customSubscriptionDialogBinding.textViewContent.text = getString(R.string.subscriptionDialogContent)
+
+        customSubscriptionDialogBinding.textViewButtonOk.setOnClickListener {
+
+            //페이 프래그먼트로 이동
+            this.findNavController().navigate(R.id.action_userFragment_to_payFragment)
+            (activity as MainActivity).goneBottomNavi()
+
+            subscriptionDialog.dismiss()
+
+        }
+
+        customSubscriptionDialogBinding.textViewCancel.setOnClickListener {
+
+            subscriptionDialog.dismiss()
+        }
+
+        subscriptionDialog.show()
 
     } // setNetworkCustomDialog()
 

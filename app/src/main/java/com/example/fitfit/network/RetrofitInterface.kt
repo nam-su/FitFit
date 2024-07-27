@@ -229,6 +229,16 @@ interface RetrofitInterface {
     ): Response<User>
 
 
+    // 구독권 만료로 데이터 삭제
+    @FormUrlEncoded
+    @POST("payExpireProcess.php")
+    suspend fun deleteSubscription(
+
+        @Field("id") id: String?
+
+    ): Response<User>
+
+
     //소셜 로그인
     @FormUrlEncoded
     @POST(" socialLoginProcess.php")
@@ -238,5 +248,8 @@ interface RetrofitInterface {
         @Field("loginType") loginType: String?
 
     ): Response<User>
+
+
+
 
 }

@@ -41,4 +41,19 @@ class UserModel {
 
     } // setSharedPreferencesUserInfo()
 
+
+    // 구독권 만료 서버에 데이터 삭제
+    suspend fun deleteSubscription(): Response<User> {
+
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.deleteSubscription(getUser().id)
+
+    } // updateSubscription()
+
+
+    //유저 정보 저장하기
+    fun setUser(user: User) = MyApplication.sharedPreferences.setUser(user)
+
 }
