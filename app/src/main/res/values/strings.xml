@@ -6,6 +6,9 @@
     <!--앱 이름-->
     <string name="FitFit">FitFit</string>
 
+    <!--카카오 앱 키 -->
+    <string name="kakao_app_key">d997bc71e6bb7cad42042752aa3d4f9f</string>
+
     <!--바텀 내비게이션 아이템-->
     <string name="home">홈</string>
     <string name="exercise">운동</string>

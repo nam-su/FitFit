@@ -50,7 +50,7 @@
 <!--            sam꺼 :     kakao d997bc71e6bb7cad42042752aa3d4f9f-->
 <!--                harry: c013467f167f1442300eebe528257e9c-->
                 <data android:host="oauth"
-                    android:scheme="d997bc71e6bb7cad42042752aa3d4f9f" />
+                    android:scheme="kakaod997bc71e6bb7cad42042752aa3d4f9f" />
 
             </intent-filter>
 
