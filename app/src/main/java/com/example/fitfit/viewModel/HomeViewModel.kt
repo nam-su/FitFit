@@ -28,9 +28,6 @@ class HomeViewModel: ViewModel() {
     val challengeName: LiveData<String>
         get() = _challengeName
 
-    private val _userNickname= MutableLiveData<String>()
-    val userNickname: LiveData<String>
-        get() = _userNickname
 
     private val _ranking= MutableLiveData<String>()
     val ranking: LiveData<String>
@@ -40,9 +37,6 @@ class HomeViewModel: ViewModel() {
     val rankingPage: LiveData<Int>
         get() = _rankingPage
 
-    private val _rankingArrayList= MutableLiveData(ArrayList<Rank>())
-    val rankingArrayList: LiveData<ArrayList<Rank>?>
-        get() = _rankingArrayList
 
     private val _userRankText = MutableLiveData<String>()
     val userRankText: LiveData<String>
