@@ -96,7 +96,7 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
                 .load(homeViewModel.getBaseUrl()+rank.profileImagePath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.loading)
+                .thumbnail(Glide.with(context).load(R.raw.loading))
                 .into(binding.circleImageViewUserProfile)
 
             if(homeViewModel.getUserId() == rank.id){

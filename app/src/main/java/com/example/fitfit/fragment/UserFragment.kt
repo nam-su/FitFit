@@ -402,7 +402,7 @@ class UserFragment : Fragment() {
             .load(userViewModel.profileImagePath.value)
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .placeholder(R.drawable.loading)
+            .thumbnail(Glide.with(this).load(R.raw.loading))
             .into(binding.circleImageViewUserProfile)
 
     } // setCircleImageView()

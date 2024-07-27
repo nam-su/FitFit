@@ -81,7 +81,7 @@ class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private 
                 .load(context.getString(R.string.baseUrl)+challenge.challengeImage)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.loading)
+                .thumbnail(Glide.with(context).load(R.raw.loading))
                 .into(binding.imageViewChallenge)
 
         } // onBind()
