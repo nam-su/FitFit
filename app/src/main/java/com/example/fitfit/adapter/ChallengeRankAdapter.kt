@@ -78,6 +78,11 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
 
             binding.rank = rank
 
+            if(rank.ranking == 1){
+                binding.textViewRank.visibility = View.GONE
+                binding.imageViewRank.visibility = View.VISIBLE
+            }
+
                 when(rank.challengeName){
 
                     "기본부터 챌린지" -> binding.textViewPoint.text = "${rank.rankingPoint} / ${rank.standard} 일"
