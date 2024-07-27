@@ -118,13 +118,13 @@ class HomeViewModel: ViewModel() {
                     _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
                 }
                 return ArrayList(rankingList.subList(0,rankingList.size-1))
+
             }else{
                 _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
                 return ArrayList(rankingList.subList(0,rankingList.size))
             }
 
             // 나머지 요소들을 rankingArrayList에 설정
-
 
         }else{
             _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
