@@ -76,6 +76,7 @@
     <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
     <string name="exerciseCount">%1$d / %2$d</string>
     <string name="edit">편집</string>
+    <string name="sets">세트</string>
 
     <!--운동 편집 프래그먼트-->
     <string name="myExerciseList">내 운동 리스트</string>

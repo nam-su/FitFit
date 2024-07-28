@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
-            android:text="@{(poseExercise.exerciseCount/10)%10 +` 세트`}"
+            android:text='@{(poseExercise.exerciseCount / 10) % 10 + " " + @string/sets}'
             style="@style/defaultWhiteTextStyle"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
