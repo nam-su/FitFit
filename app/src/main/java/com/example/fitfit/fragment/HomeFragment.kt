@@ -225,6 +225,13 @@ class HomeFragment : Fragment() {
 
         }
 
+        // 이번 주 운동량 체크 클릭 리스너
+        binding.textViewAllExerciseCheck.setOnClickListener {
+
+            findNavController().navigate(R.id.diaryFragment)
+
+        }
+
         // 운동 전체보기 클릭 리스너
         binding.textViewViewAllExercise.setOnClickListener{
 
