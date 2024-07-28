@@ -129,6 +129,14 @@ class PoseDetectionViewModel() : ViewModel() {
     } // openCamera()
 
 
+    // 운동 시작자세 안내하는 메서드
+    fun startPoseExercise(exerciseName: String): String {
+
+        return poseDetectionModel.startPoseExercise(exerciseName)
+
+    } // startPoseExercise()
+
+
     // 이미지 처리 메서드
     private fun processImage(bitmap: Bitmap, exerciseName: String) {
 

@@ -163,11 +163,12 @@ class PoseDetectionFragment : Fragment() {
 
                 tts?.language = Locale.KOREA
 
-                "$exerciseName 시작합니다.   올바른 자세로 서주세요".speak()
+                // 여기서 시작 자세 안내 해주기.
+                poseDetectionViewModel.startPoseExercise(exerciseName).speak()
 
                 CoroutineScope(Dispatchers.Main).launch {
 
-                    delay(4000)
+                    delay(10000)
                     isStartExercise = true
 
                 }

@@ -29,7 +29,7 @@ import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class PoseDetectionModel(context: Context,exerciseName: String) {
+class PoseDetectionModel(context: Context,var exerciseName: String) {
 
     private val TAG = "포즈 추정 모델"
 
@@ -81,6 +81,37 @@ class PoseDetectionModel(context: Context,exerciseName: String) {
         }
 
     }
+
+
+    // 운동 시작 자세 안내해주는 메서드
+    fun startPoseExercise(exerciseName: String): String {
+
+        return when(exerciseName) {
+
+            "기본 스쿼트" -> "기본 스쿼트 시작합니다. 양발의 간격은 어깨넓이로 벌리고 카메라를 기준으로 45도 오른쪽을 보고 서주세요."
+
+            "기본 푸시업" -> "기본 푸시업 시작합니다. 팔을 어깨너비보다 약간 넓게 벌린 상태로 카메라를 기준으로 45도 오른쪽을 보고 엎드려 주세요."
+
+            "기본 런지" -> "기본 런지 시작합니다. 두 발을 골반 너비로 벌린 후 카메라 기준으로 왼쪽을 보고 서주세요."
+
+            "와이드 스쿼트" -> "와이드 스쿼트 시작합니다. 다리를 어깨너비 보다 넓게 벌리고 양쪽 발끝은 밖으로 향한 후 카메라를 보고 정면으로 서주세요."
+
+            "왼쪽 런지" -> "왼쪽 런지 시작합니다. 두 발을 골반너비로 벌린 자세로 카메라 기준으로 왼쪽을 보고 서주세요."
+
+            "오른쪽 런지" -> "오른쪽 런지 시작합니다. 두 발을 골반너비로 벌린 자세로 카메라 기준으로 왼쪽을 보고 서주세요."
+
+            "기본 레그레이즈" -> "기본 레그레이즈 시작합니다. 손바닥을 지면에 대고 바른 자세로 카메라 기준 왼쪽으로 누워 주세요."
+
+            "왼쪽 레그레이즈" -> "왼쪽 레그레이즈 시작합니다. 손에 머리를 기대고 시선을 옆방향에 두고 카메라 기준 왼쪽으로 누워 주세요."
+
+            "오른쪽 레그레이즈" -> "오른쪽 레그레이즈 시작합니다. 손에 머리를 기대고 시선을 옆방향에 두고 카메라 기준 왼쪽으로 누워 주세요."
+
+            else -> "잘못된 운동 입니다."
+
+        }
+
+    } // startPoseExercise()
+
 
     // 이미지를 처리하고, 결과 비트맵과 카운트를 반환하는 메서드
     fun processImage(bitmap: Bitmap): Pair<Bitmap, Int> {
