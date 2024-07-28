@@ -203,25 +203,47 @@ class Preferences(context: Context) {
 
 
     // 유저 정보 쉐어드에 저장 하는 메서드 && 유저 체크리스트랑 유저전체 운동리스트 저장
-    fun setUserAndAllList(user: User) {
+    fun setUserAndAllList(user: User): Boolean {
 
         setUser(user)
+        var checkAllExerciseList = false
+        var checkUserAllExerciseList = false
+        var checkUserChallengeList = false
 
         //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
         if(user.checkList != null) {
             setAllExerciseList(user.checkList!!)
+            checkAllExerciseList = true
         }
 
         //불러온 전체 운동리스트 저장
         if(user.userAllExerciseList != null) {
+
             setUserRecordExerciseList(user.userAllExerciseList!!)
+
+            // 시간 복잡도를 O(n * m) 에서 O(n + m) 으로 줄이기 위한 맵 사용
+            // 각 운동의 이름을 key 값으로 해서 맵을 만들고 for문 사용
+            val exerciseMap = allExerciseList.associateBy { it.exerciseName }.toMutableMap()
+
+            for (exercise in user.userAllExerciseList!!) {
+
+                if (exercise.checkList == 1) exerciseMap[exercise.exerciseName] = exercise
+
+            }
+
+            myExerciseList = ArrayList(exerciseMap.values.filter { it.checkList == 1 })
+            checkUserAllExerciseList = true
+
         }
 
         //불러온 챌린지 리스트 저장
         if(user.challengeList != null) {
             challengeList.clear()
             challengeList.addAll(user.challengeList!!)
+            checkUserChallengeList = true
         }
+
+        return checkAllExerciseList && checkUserAllExerciseList && checkUserChallengeList
 
     } // setUserAndAllList()
 

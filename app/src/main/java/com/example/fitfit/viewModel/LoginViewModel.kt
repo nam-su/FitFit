@@ -130,8 +130,15 @@ class LoginViewModel: ViewModel() {
     // 로그인 성공했을때 Shared에 데이터 추가해준다.
     private fun setSharedPreferencesUserinfo(user: User) {
 
-        _isSuccessLogin.value = "success"
-        loginModel.setSharedPreferencesUserInfo(user)
+        if (loginModel.setSharedPreferencesUserInfo(user)) {
+
+            _isSuccessLogin.value = "success"
+
+        } else {
+
+            _isSuccessLogin.value = "failure"
+
+        }
 
     } // setSharedPreferencesUserInfo()
 

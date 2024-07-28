@@ -207,10 +207,12 @@ class LoginFragment: Fragment() {
         // 로그인 버튼 클릭 했을때
         loginViewModel.isSuccessLogin.observe(viewLifecycleOwner) {
 
+            Log.d(TAG, "setObserve: 일단 로그인 버튼 감지")
+            
             when (it) {
 
                 "success" -> {
-                    this.findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     (activity as MainActivity).visibleBottomNavi()
 
                 }
