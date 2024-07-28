@@ -36,7 +36,6 @@ class SplashViewModel(): ViewModel() {
 
                 selectUserExercise()
                 delay(3000)
-                _isCheckLogin.value = true
 
             }
 
@@ -72,6 +71,9 @@ class SplashViewModel(): ViewModel() {
 
                  /** 스플래시 모델에서 싱글톤에 저장하는 메서드 호출**/
                 splashModel.saveChallengeList(response.body()!!.challengeList!!)
+
+                // 성공적으로 데이터 전부 받아왔을 때 true로
+                _isCheckLogin.value = true
 
             } else {
 
