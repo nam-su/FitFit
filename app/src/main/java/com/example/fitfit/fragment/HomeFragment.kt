@@ -157,7 +157,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
     } // setRankingRecyclerViewAndAdapter()
 
 
