@@ -155,40 +155,34 @@ class HomeFragment : Fragment() {
 
             }
 
-        }
+            // 챌린지 랭킹 아이템 클릭 리스너 설정
+            top3ChallengeRankAdapter.challengeRankItemClick =
+                object : ChallengeRankAdapter.ChallengeRankItemClick {
 
-    } // setRankingRecyclerViewAndAdapter()
+                    override fun onClick(view: View, rank: Rank) {
+                        Log.d(TAG, "onClick: ${rank.id}")
 
+                        // 인터넷 연결 안되어 있는 경우
+                        if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-    // 클릭 리스너 초기화
-    private fun setClickListener() {
+                            setNetworkCustomDialog()
 
-        // 챌린지 랭킹 아이템 클릭 리스너 설정
-        top3ChallengeRankAdapter.challengeRankItemClick =
-            object : ChallengeRankAdapter.ChallengeRankItemClick {
+                            // 인터넷 연결이 되어 있는 경우
+                        } else {
 
-                override fun onClick(view: View, rank: Rank) {
-                    Log.d(TAG, "onClick: ${rank.id}")
+                            lifecycleScope.launch {
 
-                    // 인터넷 연결 안되어 있는 경우
-                    if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+                                // 인터넷 연결 x
+                                if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-                        setNetworkCustomDialog()
+                                    setNetworkCustomDialog()
 
-                        // 인터넷 연결이 되어 있는 경우
-                    } else {
+                                    // 인터넷 연결 o
+                                } else {
 
-                        lifecycleScope.launch {
+                                    setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
 
-                            // 인터넷 연결 x
-                            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
-
-                                setNetworkCustomDialog()
-
-                            // 인터넷 연결 o
-                            } else {
-
-                                setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                                }
 
                             }
 
@@ -198,24 +192,24 @@ class HomeFragment : Fragment() {
 
                 }
 
-            }
+            // 챌린지 랭킹 아이템 클릭 리스너 설정
+            totalChallengeRankAdapter.challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
+                override fun onClick(view: View, rank: Rank) {
+                    Log.d(TAG, "onClick: ${rank.id}")
 
-        // 챌린지 랭킹 아이템 클릭 리스너 설정
-        totalChallengeRankAdapter.challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
-            override fun onClick(view: View, rank: Rank) {
-                Log.d(TAG, "onClick: ${rank.id}")
+                    lifecycleScope.launch {
 
-                lifecycleScope.launch {
+                        // 인터넷 연결 x
+                        if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-                    // 인터넷 연결 x
-                    if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+                            setNetworkCustomDialog()
 
-                        setNetworkCustomDialog()
+                            // 인터넷 연결 o
+                        } else {
 
-                        // 인터넷 연결 o
-                    } else {
+                            setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
 
-                        setCustomDialog(rank, homeViewModel.getMyChallengeListToServer(rank.id))
+                        }
 
                     }
 
@@ -223,7 +217,15 @@ class HomeFragment : Fragment() {
 
             }
 
+
         }
+
+    } // setRankingRecyclerViewAndAdapter()
+
+
+    // 클릭 리스너 초기화
+    private fun setClickListener() {
+
 
         // 이번 주 운동량 체크 클릭 리스너
         binding.textViewAllExerciseCheck.setOnClickListener {
