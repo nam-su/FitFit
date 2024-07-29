@@ -123,9 +123,12 @@ class PoseDetectionFragment : Fragment() {
     // 리스너 관련 메서드
     private fun setListener(){
 
-        binding.buttonTest.setOnClickListener {
+        // 운동 중단하기 버튼 눌렀을 때
+        binding.buttonStopPoseExercise.setOnClickListener {
 
-            startMediaPlayer(R.raw.exercise_signal)
+            tts?.stop()
+            tts?.shutdown()
+            findNavController().popBackStack()
 
         }
 
@@ -283,23 +286,6 @@ class PoseDetectionFragment : Fragment() {
     } // triggerCoolDown
 
 
-    // 운동 효과음 재생하는 메서드
-    private fun startMediaPlayer(music : Int) {
-
-        val mediaPlayer = MediaPlayer.create(requireContext(), music)
-        mediaPlayer.isLooping = false
-
-        mediaPlayer.setOnCompletionListener {
-
-            mediaPlayer.release()
-
-        }
-
-        mediaPlayer.start()
-
-    } // startMediaPlayer()
-
-
     // tts speak 메서드
     private fun String.speak() {
 
@@ -394,6 +380,8 @@ class PoseDetectionFragment : Fragment() {
 
             override fun handleOnBackPressed() {
 
+                tts?.stop()
+                tts?.shutdown()
                 findNavController().popBackStack()
 
             }

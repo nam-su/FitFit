@@ -43,8 +43,11 @@
                 android:textColor="@color/white"
                 android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/buttonTest"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonStopPoseExercise"
+                android:background="@drawable/login_button"
+                android:text="운동 중단"
+                style="@style/defaultWhiteTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

@@ -83,6 +83,12 @@ class ExerciseItemInfoFragment : Fragment() {
 
         binding.dotsIndicator.setViewPager2(binding.viewPager)
 
+        // 맨 첫 다이얼로그는 새로 초기화
+        dialog = AlertDialog.Builder(requireContext())
+            .setView(customDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
     } // setVariable()
 
 
