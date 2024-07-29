@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,9 +16,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
+import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
@@ -31,6 +33,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
+
 
 class UserFragment : Fragment() {
 
@@ -424,13 +427,25 @@ class UserFragment : Fragment() {
 
         Log.d(TAG, "setCircleImageView: ${userViewModel.profileImagePath.value}")
 
+
+
+//        Glide.with(this)
+//            //baseurl+쉐어드의 이미지경로
+//            .load(userViewModel.profileImagePath.value)
+//            .skipMemoryCache(true)
+//            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//            .thumbnail(Glide.with(this).load(R.raw.loading))
+//            .into(binding.circleImageViewUserProfile)
+
         Glide.with(this)
             //baseurl+쉐어드의 이미지경로
             .load(userViewModel.profileImagePath.value)
+            .circleCrop()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .thumbnail(Glide.with(this).load(R.raw.loading))
-            .into(binding.circleImageViewUserProfile)
+            .into(binding.imageViewUserProfile)
+
 
     } // setCircleImageView()
 

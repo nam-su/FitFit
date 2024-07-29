@@ -53,8 +53,8 @@
             android:layout_weight="5">
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageViewUserProfile"
+            <ImageView
+                android:id="@+id/imageViewUserProfile"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"

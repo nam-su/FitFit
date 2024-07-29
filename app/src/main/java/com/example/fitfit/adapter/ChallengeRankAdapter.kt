@@ -1,6 +1,7 @@
 package com.example.fitfit.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,11 +54,16 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
 
         holder.onBind(challengeRankList!![position])
 
+        Log.d("TAG", "onBindViewHolder: $challengeRankItemClick")
         // 아이템 클릭 리스너가 null이 아닐때 클릭리스너 연동
         if(challengeRankItemClick != null) {
 
+            Log.d("TAG", "onBindViewHolder: challengeRankItemClick not null")
+
             // 레이아웃 클릭 했을 때 클릭이벤트 발생
             holder.binding.linearLayoutItem.setOnClickListener {
+
+                Log.d("TAG", "onBindViewHolder: linearLayoutItem.setOnClickListener")
 
                 challengeRankItemClick!!.onClick(it,challengeRankList[position])
 
@@ -94,10 +100,11 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
             Glide.with(context!!)
                 //baseurl+쉐어드의 이미지경로
                 .load(homeViewModel.getBaseUrl()+rank.profileImagePath)
+                .circleCrop()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .thumbnail(Glide.with(context).load(R.raw.loading))
-                .into(binding.circleImageViewUserProfile)
+                .into(binding.imageViewUserProfile)
 
             if(homeViewModel.getUserId() == rank.id){
 

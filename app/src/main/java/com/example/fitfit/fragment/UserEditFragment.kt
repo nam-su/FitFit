@@ -144,7 +144,11 @@ class UserEditFragment : Fragment() {
         userEditViewModel.selectedImageUri.observe(viewLifecycleOwner) {
 
             //이미지뷰에 글라이드 사용
-                Glide.with(this).load(it).into(binding.circleImageViewUserProfile)
+                Glide.with(this).load(it) .skipMemoryCache(true)
+                    .circleCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .thumbnail(Glide.with(this).load(R.raw.loading))
+                    .into(binding.imageViewUserProfile)
 
             //완료버튼 뷰 세팅
             setTextViewComplete(userEditViewModel.isNicknameValid.value)
@@ -239,9 +243,10 @@ class UserEditFragment : Fragment() {
                 //baseurl+쉐어드의 이미지경로
             .load(getString(R.string.baseUrl)+userEditViewModel.profileImagePath.value)
             .skipMemoryCache(true)
+            .circleCrop()
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .thumbnail(Glide.with(this).load(R.raw.loading))
-            .into(binding.circleImageViewUserProfile)
+            .into(binding.imageViewUserProfile)
 
     }
 

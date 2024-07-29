@@ -47,8 +47,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!--유저 프로필 이미지-->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageViewUserProfile"
+            <ImageView
+                android:id="@+id/imageViewUserProfile"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="50dp"
@@ -65,7 +65,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/circleImageViewUserProfile"
+                app:layout_constraintTop_toBottomOf="@id/imageViewUserProfile"
                 app:layout_constraintVertical_bias="0.3">
 
 

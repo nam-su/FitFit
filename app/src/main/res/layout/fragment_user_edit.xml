@@ -53,13 +53,15 @@
             app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
 
         <!--유저 프로필 이미지-->
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageViewUserProfile"
+
+        <ImageView
+            android:id="@+id/imageViewUserProfile"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="100dp"
             android:src="@drawable/user_profile"
             app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+            app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="@+id/textViewTitle"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
@@ -68,8 +70,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/add"
-            app:layout_constraintBottom_toBottomOf="@+id/circleImageViewUserProfile"
-            app:layout_constraintEnd_toEndOf="@+id/circleImageViewUserProfile" />
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewUserProfile"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewUserProfile" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editTextNickname"
@@ -82,9 +84,9 @@
             android:maxLength="8"
             android:selectAllOnFocus="true"
             android:text="@{userEditViewModel.nickname}"
-            app:layout_constraintEnd_toEndOf="@+id/circleImageViewUserProfile"
-            app:layout_constraintStart_toStartOf="@+id/circleImageViewUserProfile"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageViewUserProfile" />
+            app:layout_constraintEnd_toEndOf="@+id/imageViewUserProfile"
+            app:layout_constraintStart_toStartOf="@+id/imageViewUserProfile"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewUserProfile" />
 
         <TextView
             android:id="@+id/textViewNicknameValid"
