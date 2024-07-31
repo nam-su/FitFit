@@ -61,9 +61,9 @@ class PayViewModel: ViewModel() {
                 total_amount = itemPrice,
                 vat_amount = 0,
                 tax_free_amount = 0,
-                approval_url = "http://15.164.103.25/pay_test.php",
-                fail_url = "http://15.164.103.25/pay_fail.php",
-                cancel_url="http://15.164.103.25/pay_cancel.php"
+                approval_url = "http://54.180.227.75/pay_test.php",
+                fail_url = "http://54.180.227.75/pay_fail.php",
+                cancel_url="http://54.180.227.75/pay_cancel.php"
 
             )
 

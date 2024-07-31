@@ -1,11 +1,13 @@
 package com.example.fitfit.viewModel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfit.data.PoseExercise
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.ExerciseEditModel
 import kotlinx.coroutines.launch
 
@@ -68,11 +70,37 @@ class ExerciseEditViewModel: ViewModel() {
 
 
     // 리스트에 아이템 추가
-    fun addExerciseItem(poseExerciseList: ArrayList<PoseExercise>,position: Int) {
+    fun addExerciseItem(poseExerciseList: ArrayList<PoseExercise>,position: Int):Boolean {
 
-        _checkMyExerciseListSizeMax.value = exerciseEditModel.addExerciseItem(poseExerciseList[position])
+        // 여기서 리스트에 아이템이 프리미엄인지 판독 우선
+        if(poseExerciseList[position].isPrimium == 1) {
 
-        _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
+            // 구독이 되어 있는 경우
+            return if(MyApplication.sharedPreferences.getUser().subscription != "") {
+
+                _checkMyExerciseListSizeMax.value = exerciseEditModel.addExerciseItem(poseExerciseList[position])
+
+                _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
+
+                true
+
+            // 구독이 안되어 있는 경우
+            } else {
+
+                Log.d(TAG, "addExerciseItem: 여기로 와야됨")
+                false
+
+            }
+
+        } else {
+
+            _checkMyExerciseListSizeMax.value = exerciseEditModel.addExerciseItem(poseExerciseList[position])
+
+            _myExerciseListSize.value = exerciseEditModel.myExerciseList.size
+
+            return true
+
+        }
 
     } // addExerciseItem()
 

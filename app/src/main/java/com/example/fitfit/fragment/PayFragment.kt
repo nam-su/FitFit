@@ -2,6 +2,7 @@ package com.example.fitfit.fragment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -197,10 +198,22 @@ class PayFragment : Fragment() {
             Log.d(TAG, "shouldOverrideUrlLoading: $url")
 
             if (url.startsWith("intent://")) {
+
                 Log.d(TAG, "shouldOverrideUrlLoading: intent")
-                val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-                startActivity(intent)
-                return true
+
+                try {
+
+                    val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                    startActivity(intent)
+                    return true
+
+                } catch (e: ActivityNotFoundException) {
+
+                    Toast.makeText(requireContext(),"카카오톡 설치 후 다시 시도해 주세요.",Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                    (activity as MainActivity).visibleBottomNavi()
+
+                }
 
             } else if (url.contains("pg_token=")) {
                 Log.d(TAG, "shouldOverrideUrlLoading: pgToken")
