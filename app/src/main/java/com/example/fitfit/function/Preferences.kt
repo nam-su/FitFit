@@ -383,6 +383,7 @@ class Preferences(context: Context) {
         userCheckListHashMap.clear()
         myExerciseList.clear()
         challengeList.clear()
+        myExerciseDiaryList = null
         editor.clear()
         editor.apply()
 
