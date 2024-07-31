@@ -14,7 +14,7 @@ class ExerciseEditModel {
     val TAG = "유저 운동 편집 모델"
 
     val myExerciseList: ArrayList<PoseExercise> = MyApplication.sharedPreferences.getMyPoseExerciseList() ?: ArrayList()
-    private val allExerciseList = MyApplication.sharedPreferences.getAllExerciseList()
+    private lateinit var allExerciseList: ArrayList<PoseExercise>
     private val allSquatList = ArrayList<PoseExercise>()
     private val allPushUpList = ArrayList<PoseExercise>()
     private val allLungeList = ArrayList<PoseExercise>()
@@ -38,7 +38,16 @@ class ExerciseEditModel {
     // 전체 운동 리스트에서 카테고리별 리스트에 객체 추가
     private fun setAllCategoryList() {
 
+        allExerciseList = MyApplication.sharedPreferences.getAllExerciseList()
+        MyApplication.sharedPreferences.setTodayMyExerciseDataList()
+
         for (exercise in allExerciseList) {
+
+            Log.d(TAG, "여기서부터")
+            Log.d(TAG, "setAllCategoryList: ${exercise.exerciseName}")
+            Log.d(TAG, "setAllCategoryList: ${exercise.exerciseCount}")
+            Log.d(TAG, "setAllCategoryList: ${exercise.date}")
+
 
             when(exercise.category){
 

@@ -39,7 +39,11 @@ class ExerciseChoiceModel {
         for (exercise in myExerciseList) {
 
             // 최근 운동의 운동한 날짜.
-            val date = Instant.ofEpochMilli(exercise.date).atZone(zoneId).toLocalDate()
+//            val date = Instant.ofEpochMilli(exercise.date).atZone(zoneId).toLocalDate()
+            val date = Instant.ofEpochMilli(exercise.date)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+
             val exerciseDate = date.format(formatter)
             Log.d(TAG, "compareExerciseDate: $exerciseDate")
             Log.d(TAG, "compareExerciseDate: $todayDate")
