@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.fitfit.R
 import com.example.fitfit.data.Challenge
+import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
@@ -15,6 +16,10 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.util.Locale
 
 
 class Preferences(context: Context) {
@@ -40,6 +45,9 @@ class Preferences(context: Context) {
 
     /** fitfit 챌린지 리스트**/
     val challengeList = ArrayList<Challenge>()
+
+    /** 이번주 운동 리스트**/
+    var myExerciseDiaryList: ArrayList<ExerciseDiary>? = null
 
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
@@ -92,6 +100,54 @@ class Preferences(context: Context) {
         }
 
     } // setAllExerciseList()
+
+
+    // 이번주 운동리스트 set해주는 메서드
+    fun setExerciseDiaryList(exerciseDiaryList: ArrayList<ExerciseDiary>) {
+
+        myExerciseDiaryList = exerciseDiaryList
+
+    } // setExerciseDiaryList()
+
+
+    // 이번주 운동리스트 리턴하는 메서드
+    fun getExerciseDiaryList() = myExerciseDiaryList
+    // getExerciseDiaryList()
+
+
+    // 이번주 운동리스트 갱신하는 메서드
+    fun updateExerciseDiaryList() {
+
+        // 오늘 요일
+        // 일 월 화 수 목 금 토
+        val today: LocalDate = LocalDate.now()
+        val dayOfWeek: DayOfWeek = today.dayOfWeek
+
+        var updateExerciseDiary: ExerciseDiary? = null
+
+        updateExerciseDiary = when (dayOfWeek) {
+            DayOfWeek.MONDAY -> ExerciseDiary(day = "월", check = true)
+            DayOfWeek.TUESDAY -> ExerciseDiary(day = "화", check = true)
+            DayOfWeek.WEDNESDAY -> ExerciseDiary(day = "수", check = true)
+            DayOfWeek.THURSDAY -> ExerciseDiary(day = "목", check = true)
+            DayOfWeek.FRIDAY -> ExerciseDiary(day = "금", check = true)
+            DayOfWeek.SATURDAY -> ExerciseDiary(day = "토", check = true)
+            DayOfWeek.SUNDAY -> ExerciseDiary(day = "일", check = true)
+        }
+
+        // null 체크
+        for (i in myExerciseDiaryList!!.indices) {
+
+            if (myExerciseDiaryList!![i].day == updateExerciseDiary.day) {
+
+                myExerciseDiaryList!![i] = updateExerciseDiary
+                break
+
+            }
+
+        }
+
+    } // updateExerciseDiaryList()
 
 
     // 유저 운동기록 리스트 리턴하는 메서드
@@ -327,6 +383,7 @@ class Preferences(context: Context) {
         userCheckListHashMap.clear()
         myExerciseList.clear()
         challengeList.clear()
+        myExerciseDiaryList = null
         editor.clear()
         editor.apply()
 
