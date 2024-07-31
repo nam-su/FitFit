@@ -209,6 +209,7 @@ class UserFragment : Fragment() {
 
             //바텀 네비게이션 GONE 처리
             (activity as MainActivity).goneBottomNavi()
+            (activity as MainActivity).setNaviItem(R.id.homeFragment)
 
         }
 

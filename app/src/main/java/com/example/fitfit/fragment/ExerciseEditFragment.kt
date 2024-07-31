@@ -172,7 +172,7 @@ class ExerciseEditFragment : Fragment() {
         // 뒤로가기 버튼 눌렀을 때
         binding.imageButtonEditBack.setOnClickListener {
 
-            findNavController().popBackStack()
+            this.findNavController().navigate(R.id.action_exerciseEditFragment_to_exerciseChoiceFragment)
 
         }
 

@@ -128,5 +128,11 @@ class MainActivity : AppCompatActivity() {
 
     } // goneBottomNavi()
 
+    //
+    fun setNaviItem(destination: Int){
+        selectedNavItemId = destination
+
+    }
+
 
 }
