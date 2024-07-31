@@ -66,6 +66,7 @@ class UserFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user,container,false)
         customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
         customSubscriptionDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
+        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
 
 
         setVariable()
@@ -130,12 +131,14 @@ class UserFragment : Fragment() {
         userViewModel.isLogoutButtonClick.observe(viewLifecycleOwner){ setIsLogoutButtonClick(it) }
 
         //다이얼로그 회원 탈퇴 절차 진행 버튼 클릭 관찰
-        userViewModel.isProgressButtonClick.observe(viewLifecycleOwner){ setIsProgressButtonClick(it) }
+        userViewModel.isProgressButtonClick.observe(viewLifecycleOwner){
+            Log.d(TAG, "진행버튼 상태: $it")
+            setIsProgressButtonClick(it) }
 
         //다이얼로그 회원 탈퇴 버튼 클릭 관찰
         userViewModel.isWithdrawalButtonClick.observe(viewLifecycleOwner){ setIsWithdrawalButtonClick(it) }
 
-        //다이얼로그 회원 탈퇴 버튼 클릭 관찰
+        //다이얼로그 회원 탈퇴 성공 여부 관찰
         userViewModel.isWithdrawalSuccess.observe(viewLifecycleOwner) { setIsWithdrawalSuccess(it) }
 
         // 구독권 기간 만료되었는지 관찰
@@ -369,12 +372,16 @@ class UserFragment : Fragment() {
     //커스텀 다이얼로그 띄우기
     private fun setCustomDialog(buttonOkText: String, content:String){
 
-        //데이터바인딩 준비
-        val inflater = LayoutInflater.from(requireContext())
-        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customDialogBinding.root.parent?.let {
+
+            (it as ViewGroup).removeView(customDialogBinding.root)
+
+        }
 
         //다이얼로그 생성
-        dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
             .setCancelable(true)
             .create()
@@ -396,7 +403,7 @@ class UserFragment : Fragment() {
 
         customDialogBinding.textViewCancel.setOnClickListener {
 
-            setAllMenuFalse()
+//            setAllMenuFalse()
             dialog.dismiss()
 
         }
@@ -426,16 +433,6 @@ class UserFragment : Fragment() {
     private fun setCircleImageView(){
 
         Log.d(TAG, "setCircleImageView: ${userViewModel.profileImagePath.value}")
-
-
-
-//        Glide.with(this)
-//            //baseurl+쉐어드의 이미지경로
-//            .load(userViewModel.profileImagePath.value)
-//            .skipMemoryCache(true)
-//            .diskCacheStrategy(DiskCacheStrategy.NONE)
-//            .thumbnail(Glide.with(this).load(R.raw.loading))
-//            .into(binding.circleImageViewUserProfile)
 
         Glide.with(this)
             //baseurl+쉐어드의 이미지경로
