@@ -22,7 +22,7 @@ class HomeModel() {
     // 오늘 날짜 기준 일주일 날짜 리스트
     var userRecordExerciseList: ArrayList<PoseExercise>? = null
 
-    val exerciseDiaryList = ArrayList<ExerciseDiary>()
+    var exerciseDiaryList = ArrayList<ExerciseDiary>()
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInterface
@@ -66,40 +66,49 @@ class HomeModel() {
 
         userRecordExerciseList = MyApplication.sharedPreferences.getUserRecordExerciseList()
 
-        // 날짜 형식 지정
-        val datePattern = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        if(MyApplication.sharedPreferences.myExerciseDiaryList == null) {
 
-        // 현재 날짜를 기준으로 주차 정의
-        val day: String = datePattern.format(Date())
-        val dateArray = day.split("-").toTypedArray()
-        val cal = Calendar.getInstance()
-        cal.set(dateArray[0].toInt(), dateArray[1].toInt() - 1, dateArray[2].toInt())
-        cal.firstDayOfWeek = Calendar.SUNDAY
+            // 날짜 형식 지정
+            val datePattern = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
 
-        // 이번 주의 첫 번째 일요일로 이동
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+            // 현재 날짜를 기준으로 주차 정의
+            val day: String = datePattern.format(Date())
+            val dateArray = day.split("-").toTypedArray()
+            val cal = Calendar.getInstance()
+            cal.set(dateArray[0].toInt(), dateArray[1].toInt() - 1, dateArray[2].toInt())
+            cal.firstDayOfWeek = Calendar.SUNDAY
 
-        // 이번 주 날짜 리스트 초기화
-        val weekDateList = ArrayList<String>()
-        val weekDays = listOf("일", "월", "화", "수", "목", "금", "토")
+            // 이번 주의 첫 번째 일요일로 이동
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
-        for (element in weekDays) {
+            // 이번 주 날짜 리스트 초기화
+            val weekDateList = ArrayList<String>()
+            val weekDays = listOf("일", "월", "화", "수", "목", "금", "토")
 
-            val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(cal.time)
+            for (element in weekDays) {
 
-            weekDateList.add(date)
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(cal.time)
 
-            // 기록 여부 확인
-            val hasRecord = userRecordExerciseList!!.any {
+                weekDateList.add(date)
 
-                SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date
+                // 기록 여부 확인
+                val hasRecord = userRecordExerciseList!!.any {
+
+                    SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date
+
+                }
+
+                Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
+                exerciseDiaryList.add(ExerciseDiary(element, hasRecord))
+                MyApplication.sharedPreferences.setExerciseDiaryList(exerciseDiaryList)
+
+                cal.add(Calendar.DATE, 1)
 
             }
 
-            Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
-            exerciseDiaryList.add(ExerciseDiary(element, hasRecord))
+        } else {
 
-            cal.add(Calendar.DATE, 1)
+            exerciseDiaryList = MyApplication.sharedPreferences.getExerciseDiaryList()!!
 
         }
 
