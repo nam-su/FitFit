@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfit.activity.MainActivity
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.SplashModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,6 @@ class SplashViewModel(): ViewModel() {
         get() = _isCheckLogin
 
 
-
     // 로그인 정보 확인하는 메서드
     fun checkLogin() {
 
@@ -36,9 +36,9 @@ class SplashViewModel(): ViewModel() {
 
                 selectUserExercise()
                 delay(3000)
-                _isCheckLogin.value = true
 
             }
+
             // 쉐어드에 정보가 없는 경우
             false -> CoroutineScope(Dispatchers.Main).launch { delay(3000)
             _isCheckLogin.value = false
@@ -63,8 +63,17 @@ class SplashViewModel(): ViewModel() {
 
             if(response.isSuccessful && response.body() != null) {
 
+                //스플래시 성공으로인해 데이터 받으면
+                //1. 데이터를 일단 싱글 톤에 저장 해야함(1. 운동 전체 리스트 저장, 2. 체크리스트 저장)
+                //유저운동정보를 저장하는 메서드 호출
                 splashModel.saveUserExerciseInfo(response.body()!!.userAllExerciseList!!)
                 splashModel.saveUserCheckList(response.body()!!.checkList!!)
+
+                 /** 스플래시 모델에서 싱글톤에 저장하는 메서드 호출**/
+                splashModel.saveChallengeList(response.body()!!.challengeList!!)
+
+                // 성공적으로 데이터 전부 받아왔을 때 true로
+                _isCheckLogin.value = true
 
             } else {
 

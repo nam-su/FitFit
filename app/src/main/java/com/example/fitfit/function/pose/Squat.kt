@@ -11,10 +11,8 @@ class Squat(): Pose() {
     private val TAG = "Squat"
 
 
-    // 스쿼트 동작인식 메서드
+    // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean{
-
-        Log.d(TAG, "poseSquat: 호출됌")
 
         checkBadPose = ""
 
@@ -32,7 +30,7 @@ class Squat(): Pose() {
         }
 
         // 앉은 상태 감지
-        if (angle in 70.0..110.0 && !sit) {
+        if (angle in 50.0..110.0 && !sit) {
 
             Log.d(TAG, "상태: 앉은 상태")
 
@@ -57,7 +55,8 @@ class Squat(): Pose() {
         }
 
         return false
-    }
+
+    } // posePoseExercise()
 
 
     // 앉았을 자세가 잘못된지 판단여부 메서드

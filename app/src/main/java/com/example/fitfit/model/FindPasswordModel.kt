@@ -23,36 +23,40 @@ class FindPasswordModel {
     var codeGeneratedTime : Long = 0
     var timeLimit = 180
 
+
     // 로그인 통신으로 result 값 확인
     suspend fun passwordResetProcess(id: String,password: String ,mode: String): User? {
 
         val response = retrofitInterface.passwordResetProcess(id,password,mode)
+
         Log.d(TAG, "passwordResetProcess: ${response.body()?.result}")
+
         return response.body()
 
     } // login()
 
 
+    // 이메일 보내는 메서드
     fun sendMail(email:String){
 
         getRandomString()
         GmailSender().sendEmail(email,"FitFit 인증번호",randomString)
 
         codeGeneratedTime = System.currentTimeMillis()
-    }
+
+    } // sendMail
 
 
-
-    //6자리 난수 만들기
+    // 6자리 난수 만들기
     private fun getRandomString() {
 
         val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
-        var randomString = (1..6)
-            .map { charset.random() }
-            .joinToString("")
-        this.randomString = randomString
-    }
 
+        val randomString = (1..6).map { charset.random() }.joinToString("")
+
+        this.randomString = randomString
+
+    } // getRandomString()
 
 
     // 쉐어드에 유저 정보 삭제

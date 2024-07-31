@@ -1,9 +1,12 @@
 package com.example.fitfit.model
 
+import android.util.Log
+import com.example.fitfit.data.Challenge
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
+import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import retrofit2.Response
@@ -14,16 +17,20 @@ import java.util.Locale
 
 class HomeModel() {
 
-    // 오늘 날짜 기준 일주일 날짜 리스트
-    private val weekDateList = ArrayList<String>()
+    val TAG = "홈 모델"
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+    // 오늘 날짜 기준 일주일 날짜 리스트
+    var userRecordExerciseList: ArrayList<PoseExercise>? = null
+
+    val exerciseDiaryList = ArrayList<ExerciseDiary>()
+
+    private lateinit var retrofitBuilder: RetrofitBuilder
+    private lateinit var retrofitInterface: RetrofitInterface
+
 
     // 홈에서 이번주 운동 상태 관련 메시지 정보
     fun setWeekStatus(): String {
 
-        setWeek()
         return MyApplication.sharedPreferences.getUserNickname()
 
     } // setWeekStatus()
@@ -32,119 +39,98 @@ class HomeModel() {
     // 유저 운동 정보 리스트 리턴하는 메서드
     fun setWeekStatusList(): ArrayList<ExerciseDiary>{
 
-        val exerciseDiaryList = ArrayList<ExerciseDiary>()
-
-        exerciseDiaryList.add(ExerciseDiary("일","true"))
-        exerciseDiaryList.add(ExerciseDiary("월","true"))
-        exerciseDiaryList.add(ExerciseDiary("화","true"))
-        exerciseDiaryList.add(ExerciseDiary("수","false"))
-        exerciseDiaryList.add(ExerciseDiary("목","false"))
-        exerciseDiaryList.add(ExerciseDiary("금","false"))
-        exerciseDiaryList.add(ExerciseDiary("토","false"))
+        setWeek()
 
         return exerciseDiaryList
 
     } // setWeekStatusList()
 
 
-    // 챌린지 랭킹 정보 리스트 리턴하는 메서드
-    fun setAllChallengeRankList(): ArrayList<Rank> {
+    // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
+    suspend fun getRankingListToServer(id:String?, challengeName: String?, rakingPage: Int?): Response<ArrayList<Rank>>{
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
-        val challengeRankList = ArrayList<Rank>()
-
-        challengeRankList.add(Rank(1,"언더테이커",""))
-        challengeRankList.add(Rank(2,"케인",""))
-        challengeRankList.add(Rank(3,"유형선",""))
-        challengeRankList.add(Rank(4,"유형선",""))
-        challengeRankList.add(Rank(5,"유형선",""))
-        challengeRankList.add(Rank(6,"유형선",""))
-        challengeRankList.add(Rank(7,"유형선",""))
-        challengeRankList.add(Rank(8,"유형선",""))
-        challengeRankList.add(Rank(9,"유형선",""))
-        challengeRankList.add(Rank(10,"유형선",""))
-
-        return challengeRankList
-
-    } // setChallengeRankList()
-
-
-    // 홈프래그먼트에 보여지는 3명 랭킹 리스트
-    fun setPagedChallengeRankList(): ArrayList<Rank> {
-
-        val pagedChallengeRankList = ArrayList<Rank>()
-
-        pagedChallengeRankList.add(Rank(1,"언더테이커",""))
-        pagedChallengeRankList.add(Rank(2,"케인",""))
-        pagedChallengeRankList.add(Rank(3,"유형선",""))
-
-        return pagedChallengeRankList
-
-    } // setPagedChallengeRankList()
+    return retrofitInterface.getRankingList(id, challengeName, rakingPage, "getRankingList")
+    }
+    // setPagedChallengeRankList()
 
 
     // 다양한 운동 리스트 리턴하는 메서드
-    fun setAllExerciseList(): ArrayList<PoseExercise> {
-
-        return MyApplication.sharedPreferences.getAllExerciseList()
-
-    } // setAllExerciseList()
+    fun getBasicExerciseList(): ArrayList<PoseExercise> = MyApplication.sharedPreferences.getBasicExerciseList()
+    // setAllExerciseList()
 
 
     // 오늘 날짜로 부터 일주일 날짜 구하는 메서드 (일요일 부터 토요일 까지)
     private fun setWeek() {
 
+        userRecordExerciseList = MyApplication.sharedPreferences.getUserRecordExerciseList()
+
+        // 날짜 형식 지정
         val datePattern = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
 
-        // format(시스템시간) 입력하면 그 날에 주차를 정의한다.
+        // 현재 날짜를 기준으로 주차 정의
         val day: String = datePattern.format(Date())
-
         val dateArray = day.split("-").toTypedArray()
-
         val cal = Calendar.getInstance()
-        cal[dateArray[0].toInt(), dateArray[1].toInt() - 1] = dateArray[2].toInt()
-
+        cal.set(dateArray[0].toInt(), dateArray[1].toInt() - 1, dateArray[2].toInt())
         cal.firstDayOfWeek = Calendar.SUNDAY
 
-        // 시작일과 특정날짜의 차이를 구한다
-        val dayOfWeek = cal[Calendar.DAY_OF_WEEK] - cal.firstDayOfWeek
+        // 이번 주의 첫 번째 일요일로 이동
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
-        // 해당 주차의 첫째날을 지정한다
-        cal.add(Calendar.DAY_OF_MONTH, -dayOfWeek)
+        // 이번 주 날짜 리스트 초기화
+        val weekDateList = ArrayList<String>()
+        val weekDays = listOf("일", "월", "화", "수", "목", "금", "토")
 
-        // 해당 주차의 첫째 날짜 (일요일)
-        val sunday = datePattern.format(cal.time)
-        weekDateList.add(sunday)
+        for (element in weekDays) {
 
-        // 해당 주차의 둘째 날짜 (월요일)
-        cal.add(Calendar.DATE, 1)
-        val monday = datePattern.format(cal.time)
-        weekDateList.add(monday)
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(cal.time)
 
-        // 해당 주차의 셋째 날짜 (화요일)
-        cal.add(Calendar.DATE, 1)
-        val tuesday = datePattern.format(cal.time)
-        weekDateList.add(tuesday)
+            weekDateList.add(date)
 
-        // 해당 주차의 넷째 날짜 (수요일)
-        cal.add(Calendar.DATE, 1)
-        val wednesday = datePattern.format(cal.time)
-        weekDateList.add(wednesday)
+            // 기록 여부 확인
+            val hasRecord = userRecordExerciseList!!.any {
 
-        // 해당 주차의 다섯째 날짜 (목요일)
-        cal.add(Calendar.DATE, 1)
-        val thursday = datePattern.format(cal.time)
-        weekDateList.add(thursday)
+                SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(it.date)) == date
 
-        // 해당 주차의 여섯째 날짜 (금요일)
-        cal.add(Calendar.DATE, 1)
-        val friday = datePattern.format(cal.time)
-        weekDateList.add(friday)
+            }
 
-        // 해당 주차의 일곱째 날짜 (토요일)
-        cal.add(Calendar.DATE, 1)
-        val saturday = datePattern.format(cal.time)
-        weekDateList.add(saturday)
+            Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
+            exerciseDiaryList.add(ExerciseDiary(element, hasRecord))
+
+            cal.add(Calendar.DATE, 1)
+
+        }
+
+        Log.d(TAG, "setWeek: ${exerciseDiaryList.size}")
 
     } // setWeek()
+
+
+    //fitfit 챌린지 리스트 받아오기
+    fun getChallengeListToShared(): ArrayList<Challenge> = MyApplication.sharedPreferences.challengeList
+    // getChallengeListToShared()
+
+
+    //싱글톤 객체에서 baseUrl 받아오기
+    fun getBaseUrl(): String? = retrofitBuilder.baseUrl
+    // getBaseUrl
+
+
+    // 유저 아이디 정보 받아오기
+    fun getUserId(): String = MyApplication.sharedPreferences.getUserId()
+    // getUserId()
+
+
+    //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
+    suspend fun getMyChallengeListToServer(userId: String): Response<ArrayList<Challenge>> {
+
+        retrofitBuilder = RetrofitBuilder()
+        retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.getMyChallengeList(userId,"getMyChallengeList")
+
+    } // saveMyChallengeList()
 
 }

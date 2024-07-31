@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,9 +23,9 @@
         <!-- 홈 화면 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutHome"
-            android:visibility="visible"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/textViewHomeFragmentTitle"
@@ -33,22 +33,19 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:text="@string/home"
-                android:textColor="@color/black"
+                style="@style/defaultBlackTextStyle"
                 android:textSize="25sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <TextView
                 android:id="@+id/textViewWeekStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@{homeViewModel.setWeekStatus()}"
-                android:textColor="@color/personal"
+                style="@style/defaultPersonalTextStyle"
+                android:text="@{homeViewModel.weekStatus}"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHomeFragmentTitle" />
@@ -59,21 +56,20 @@
                 android:id="@+id/linearLayoutCheckWeekExercise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:padding="20dp"
-                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toTopOf="@id/recyclerViewCheckWeekExercise"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWeekStatus"
-                app:layout_constraintBottom_toTopOf="@id/recyclerViewCheckWeekExercise">
+                app:layout_constraintTop_toBottomOf="@+id/textViewWeekStatus">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/weekExerciseCheck"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    style="@style/defaultBlackTextStyle"
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -89,23 +85,26 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/textViewAllExerciseCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/viewAll"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        style="@style/defaultBlackTextStyle"
+                        android:textSize="12sp"/>
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@drawable/button_forward"
-                        android:contentDescription="@drawable/button_forward" />
+                        android:layout_gravity="center"
+                        android:contentDescription="@drawable/button_forward"
+                        android:src="@drawable/button_forward" />
+
 
                 </LinearLayout>
 
+
             </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCheckWeekExercise"
@@ -113,52 +112,73 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:orientation="horizontal"
-                tools:listitem="@layout/item_view_check_week_exercise"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@id/space1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutCheckWeekExercise"
-                app:layout_constraintBottom_toBottomOf="@id/space1"
-                />
-
+                tools:listitem="@layout/item_view_check_week_exercise" />
             <!-- 이번주 운동량 체크 레이아웃 끝-->
-
 
             <View
                 android:id="@+id/space1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintVertical_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/linearLayoutMonthChallenger"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recyclerViewCheckWeekExercise"
-                app:layout_constraintBottom_toTopOf="@id/linearLayoutMonthChallenger"/>
+                app:layout_constraintVertical_weight="1" />
 
 
-            <!-- 이달의 챌린지 랭킹 레이아웃-->
+            <!-- 챌린지 랭킹 레이아웃-->
             <LinearLayout
                 android:id="@+id/linearLayoutMonthChallenger"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp"
+                app:layout_constraintBottom_toTopOf="@id/recyclerViewChallengeRank"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/space1"
-                app:layout_constraintBottom_toTopOf="@id/recyclerViewChallengeRank">
+                app:layout_constraintTop_toBottomOf="@+id/space1">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/linearLayoutRanking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/monthChallengeRanking"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{homeViewModel.challengeName}"
+                        style="@style/defaultPersonalTextStyle"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:text="@string/ranking"
+                        style="@style/defaultBlackTextStyle"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/down_spinner" />
+
+
+                </LinearLayout>
+
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
 
                 <LinearLayout
                     android:id="@+id/linearLayoutAllChallenger"
@@ -168,14 +188,14 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
+
                     <TextView
                         android:id="@+id/textViewViewAllChallenge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/defaultBlackTextStyle"
                         android:text="@string/viewAll"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textSize="12sp"/>
 
                     <ImageView
                         android:layout_width="12dp"
@@ -183,33 +203,34 @@
                         android:layout_gravity="center"
                         android:src="@drawable/button_forward" />
 
+
                 </LinearLayout>
 
 
             </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewChallengeRank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/space2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutMonthChallenger"
-                app:layout_constraintBottom_toTopOf="@+id/space2"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutMonthChallenger" />
             <!-- 이달의 챌린지 랭킹 레이아웃 끝-->
 
             <View
                 android:id="@+id/space2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintVertical_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/linearLayoutPlayAllExercise"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recyclerViewChallengeRank"
-                app:layout_constraintBottom_toTopOf="@id/linearLayoutPlayAllExercise"/>
+                app:layout_constraintVertical_weight="1" />
 
             <!-- 다양한 운동을 즐겨보세요 레이아웃-->
             <LinearLayout
@@ -218,18 +239,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp"
+                app:layout_constraintBottom_toTopOf="@id/recyclerViewPagedAllExercise"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/space2"
-                app:layout_constraintBottom_toTopOf="@id/recyclerViewPagedAllExercise">
+                app:layout_constraintTop_toBottomOf="@+id/space2">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/variableExercisePlay"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    style="@style/defaultBlackTextStyle"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="0dp"
@@ -249,15 +269,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/viewAll"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        style="@style/defaultBlackTextStyle"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_gravity="center"
                         android:src="@drawable/button_forward" />
+
 
                 </LinearLayout>
 
@@ -289,9 +309,10 @@
         <!-- 모든 운동 보기 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutAllExercise"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
 
             <TextView
                 android:id="@+id/textViewHomeFragmentAllExerciseTitle"
@@ -299,21 +320,20 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:text="@string/allExercise"
-                android:textColor="@color/black"
+                style="@style/defaultBlackTextStyle"
                 android:textSize="25sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/imageButtonBackToHome"
-                android:background="@drawable/back_black"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="20dp"
+                android:background="@drawable/back_black"
                 app:layout_constraintBottom_toBottomOf="@id/textViewExplainAllExercise"
-                app:layout_constraintTop_toTopOf="@id/textViewExplainAllExercise"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textViewExplainAllExercise" />
 
             <TextView
                 android:id="@+id/textViewExplainAllExercise"
@@ -321,9 +341,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/explainAllExercise"
-                android:textColor="@color/black"
+                style="@style/defaultBlackTextStyle"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHomeFragmentAllExerciseTitle" />
@@ -332,11 +351,11 @@
                 android:id="@+id/allExerciseSpace1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintVertical_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recyclerViewAllExercise"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewExplainAllExercise"
-                app:layout_constraintBottom_toTopOf="@id/recyclerViewAllExercise"/>
+                app:layout_constraintVertical_weight="1" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewAllExercise"
@@ -344,46 +363,47 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewDotDotDot"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/allExerciseSpace1"
-                app:layout_constraintBottom_toBottomOf="@id/imageViewDotDotDot"/>
+                app:layout_constraintTop_toBottomOf="@+id/allExerciseSpace1" />
 
             <ImageView
                 android:id="@+id/imageViewDotDotDot"
                 android:layout_width="10dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@id/recyclerViewAllExercise"
+                app:layout_constraintBottom_toTopOf="@+id/allExerciseSpace2"
                 app:layout_constraintEnd_toEndOf="@id/recyclerViewAllExercise"
-                app:layout_constraintTop_toBottomOf="@id/recyclerViewAllExercise"
-                app:layout_constraintBottom_toTopOf="@+id/allExerciseSpace2"/>
+                app:layout_constraintStart_toStartOf="@id/recyclerViewAllExercise"
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewAllExercise" />
 
             <View
                 android:id="@+id/allExerciseSpace2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintVertical_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/buttonSubscribe"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imageViewDotDotDot"
-                app:layout_constraintBottom_toTopOf="@id/buttonSubscribe"/>
+                app:layout_constraintVertical_weight="1" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonSubscribe"
-                android:background="@drawable/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/login_button"
                 android:text="@string/subscribe"
-                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/allExerciseSpace2"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/allExerciseSpace2" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- 모든 운동 보기 레이아웃 끝 -->
@@ -392,17 +412,17 @@
         <!--챌린지 랭킹 모두보기 레이아웃-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutAllChallenge"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textViewAllChallengeRankTitle"
+                style="@style/defaultBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:text="@string/challengeRanking"
-                style="@style/defaultBlackTextStyle"
                 android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -411,50 +431,53 @@
                 android:id="@+id/imageButtonBackAllChallenge"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/back_black"
                 android:layout_marginStart="20dp"
+                android:background="@drawable/back_black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAllChallengeRankTitle" />
 
             <TextView
+                android:id="@+id/textViewMyRanking"
                 style="@style/defaultBlackTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="000 님의 현재 랭킹은 00위 입니다."
+                android:text='@{homeViewModel.userRankText.toString()}'
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButtonBackAllChallenge"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageButtonBackAllChallenge"
-                app:layout_constraintBottom_toBottomOf="@+id/imageButtonBackAllChallenge"/>
+                app:layout_constraintTop_toTopOf="@+id/imageButtonBackAllChallenge" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewAllChallengeRank"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintVertical_weight="1"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_view_challenge_rank"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/buttonNextRankingView"
-                app:layout_constraintTop_toBottomOf="@+id/imageButtonBackAllChallenge"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonBackAllChallenge"
+                app:layout_constraintVertical_weight="1"
+                tools:listitem="@layout/item_view_challenge_rank" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonNextRankingView"
-                android:background="@drawable/login_button"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
+                style="@style/buttonTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/login_button"
                 android:text="다음 순위 보기"
-                style="@style/buttonTextStyle"
-                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="@{()->homeViewModel.addRankingPage()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewAllChallengeRank"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewAllChallengeRank" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!--챌린지 랭킹 모두보기 레이아웃 끝-->

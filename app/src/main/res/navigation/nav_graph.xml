@@ -94,6 +94,9 @@
         <action
             android:id="@+id/action_exerciseFragment_to_payFragment"
             app:destination="@id/payFragment" />
+        <action
+            android:id="@+id/action_exerciseFragment_to_DiaryFragment"
+            app:destination="@+id/diaryFragment"/>
 
     </fragment>
 
@@ -134,7 +137,7 @@
         tools:layout="@layout/fragment_diary"/>
 
 
-    <!--내정보 프래그먼트-->
+    <!--유저 프래그먼트-->
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.fitfit.fragment.UserFragment"
@@ -147,17 +150,24 @@
             app:popUpTo="@id/userFragment"
             app:popUpToInclusive="true"
             />
+
         <action
             android:id="@+id/action_userFragment_to_splashFragment"
             app:destination="@id/splashFragment"
             />
+
         <action
             android:id="@+id/action_userFragment_to_userEditFragment"
             app:destination="@id/userEditFragment"
             app:popUpToInclusive="true"/>
+
         <action
             android:id="@+id/action_userFragment_to_findPasswordFragment"
             app:destination="@id/findPasswordFragment" />
+
+        <action
+            android:id="@+id/action_userFragment_to_payFragment"
+            app:destination="@id/payFragment" />
 
     </fragment>
 
@@ -192,13 +202,14 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
+
+    <!--비밀번호 찾기 프래그먼트-->
     <fragment
         android:id="@+id/findPasswordFragment"
         android:name="com.example.fitfit.fragment.FindPasswordFragment"
         android:label="fragment_find_password"
         tools:layout="@layout/fragment_find_password"
         >
-
 
         <action
             android:id="@+id/action_findPasswordFragment_to_splashFragment"

@@ -13,6 +13,8 @@ class ExerciseDetailViewAdapter(private val exerciseInfoList: ArrayList<Exercise
 
     lateinit var binding: ItemViewDetailExerciseBinding
 
+
+    // onCreateViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseDetailViewViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_view_detail_exercise,parent,false)
@@ -21,19 +23,19 @@ class ExerciseDetailViewAdapter(private val exerciseInfoList: ArrayList<Exercise
 
     } // onCreateViewHolder()
 
-    override fun getItemCount(): Int {
 
-        return exerciseInfoList.size
+    // getItemCount
+    override fun getItemCount(): Int = exerciseInfoList.size
+    // getItemCount()
 
-    } // getItemCount()
 
-    override fun onBindViewHolder(holder: ExerciseDetailViewViewHolder, position: Int) {
-
+    // onBindViewHolder
+    override fun onBindViewHolder(holder: ExerciseDetailViewViewHolder, position: Int) =
         holder.onBind(exerciseInfoList[position])
+    // onBindViewHolder()
 
-    } // onBindViewHolder()
 
-
+    // 뷰홀더 클래스
     class ExerciseDetailViewViewHolder(private val binding: ItemViewDetailExerciseBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(exerciseInfo: ExerciseInfo) {

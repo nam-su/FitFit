@@ -1,6 +1,9 @@
 package com.example.fitfit.fragment
 
+import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,11 +16,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
-import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.adapter.PoseExerciseAdapter
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentExerciseEditBinding
 import com.example.fitfit.function.MyApplication
-import com.example.fitfit.model.ExerciseEditModel
 import com.example.fitfit.viewModel.ExerciseEditViewModel
 
 
@@ -30,6 +32,8 @@ class ExerciseEditFragment : Fragment() {
 
     private lateinit var callback: OnBackPressedCallback
 
+    lateinit var customDialogBinding: CustomDialogNetworkDisconnectBinding
+
     private lateinit var myPoseExerciseAdapter: PoseExerciseAdapter
 
     private lateinit var allSquatAdapter: PoseExerciseAdapter
@@ -37,9 +41,21 @@ class ExerciseEditFragment : Fragment() {
     private lateinit var allLungeAdapter: PoseExerciseAdapter
     private lateinit var allLegRaisesAdapter: PoseExerciseAdapter
 
+
+    // onAttach
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        setOnBackPressed()
+
+    } // onAttach
+
+
+    // onCreateView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_edit,container,false)
+        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_network_disconnect, null, false)
 
         // 뷰모델 초기화
         exerciseEditViewModel = ExerciseEditViewModel()
@@ -53,12 +69,6 @@ class ExerciseEditFragment : Fragment() {
 
     } // onCreateView()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        setOnBackPressed()
-
-    } // onAttach
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -70,6 +80,18 @@ class ExerciseEditFragment : Fragment() {
 
     } // onViewCreated
 
+    // onDestroy()
+    override fun onDestroy() {
+        super.onDestroy()
+
+        exerciseEditViewModel.getSharedMyExerciseList().forEach {
+
+            Log.d(TAG, "편집 프래그먼트 종료될때 : ${it.exerciseName}")
+
+        }
+
+    } // onDestroy()
+
 
     // 변수 초기화 메서드
     private fun setVariable() {
@@ -79,7 +101,6 @@ class ExerciseEditFragment : Fragment() {
             PoseExerciseAdapter(exerciseEditViewModel.getSharedMyExerciseList(),true,"true")
 
         binding.recyclerViewMyPoseExerciseList.adapter = myPoseExerciseAdapter
-
 
         // 모든 스쿼트 리스트 리사이클러뷰
         allSquatAdapter =
@@ -124,14 +145,22 @@ class ExerciseEditFragment : Fragment() {
 
         // 편집에 대한 통신 성공했을때
         exerciseEditViewModel.isSuccessfulEdit.observe(viewLifecycleOwner){
+
             when(it){
+
                 true -> {
+
                     Toast.makeText(requireContext(), "내 운동 리스트가 변경 되었습니다.", Toast.LENGTH_SHORT).show()
                     exerciseEditViewModel.setUserCheckList()
+                    exerciseEditViewModel.setMyPoseExerciseList()
                     findNavController().popBackStack()
+
                 }
+
                     else -> Toast.makeText(requireContext(), "네트워크 연결이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
+
             }
+
         }
 
     } // setObserve
@@ -160,10 +189,14 @@ class ExerciseEditFragment : Fragment() {
                 allLungeAdapter.notifyDataSetChanged()
                 allLegRaisesAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
+
             }
 
         }
-
 
         // 스쿼트리스트에서 추가 버튼 눌렀을 때
         allSquatAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
@@ -174,10 +207,14 @@ class ExerciseEditFragment : Fragment() {
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allSquatAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
+
             }
 
         }
-
 
         // 푸시업 리스트에서 추가버튼 눌렀을 때
         allPushUpAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
@@ -188,10 +225,14 @@ class ExerciseEditFragment : Fragment() {
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allPushUpAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
+
             }
 
         }
-
 
         // 런지 리스트에서 추가버튼 눌렀을 때
         allLungeAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
@@ -202,6 +243,10 @@ class ExerciseEditFragment : Fragment() {
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allLungeAdapter.notifyDataSetChanged()
 
+                /**오류 확인중**/
+                myPoseExerciseAdapter.poseExerciseList.forEach {
+                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
+                }
             }
 
         }
@@ -210,6 +255,7 @@ class ExerciseEditFragment : Fragment() {
         allLegRaisesAdapter.exerciseEditItemAddButtonClick = object :PoseExerciseAdapter.ExerciseEditItemAddButtonClick{
 
             override fun onAddButtonClick(view: View, position: Int) {
+
                 exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)
                 myPoseExerciseAdapter.notifyDataSetChanged()
                 allLegRaisesAdapter.notifyDataSetChanged()
@@ -218,27 +264,30 @@ class ExerciseEditFragment : Fragment() {
 
         }
 
-
         // 리스트 편집 후 완료 버튼 눌렀을 때
         binding.textViewEditComplete.setOnClickListener {
 
-            if(!exerciseEditViewModel.checkMyExerciseListSizeMin()) {
+            // 인터넷 연결 안되어 있는 경우
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-                Toast.makeText(requireContext(),"최소 3개 이상의 운동이 있어야 합니다.",Toast.LENGTH_SHORT).show()
+                setCustomDialog()
 
             } else {
 
-                // 여기에 서버와 통신해서 리스트 갱신해주는 메서드 필요.
+                if(!exerciseEditViewModel.checkMyExerciseListSizeMin()) {
 
-                //리스트 불러오기
-                exerciseEditViewModel.setMyPoseExercise()
-                MyApplication.sharedPreferences.getMyPoseExerciseList()
+                    Toast.makeText(requireContext(),"최소 3개 이상의 운동이 있어야 합니다.",Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    exerciseEditViewModel.setMyPoseExercise()
+
+
+                }
 
             }
 
         }
-
-
 
     } // setClickListener()
 
@@ -259,5 +308,40 @@ class ExerciseEditFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this,callback)
 
     } // setOnBackPressed()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customDialogBinding.textViewButtonOk.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.setOnCancelListener {
+
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    } // setCustomDialog()
+
 
 }

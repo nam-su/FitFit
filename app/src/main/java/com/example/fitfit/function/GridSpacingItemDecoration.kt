@@ -11,6 +11,8 @@ internal class GridSpacingItemDecoration(
 
 ) : RecyclerView.ItemDecoration() {
 
+
+    // getItemOffsets 메서드
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
 
         val position: Int = parent.getChildAdapterPosition(view)
@@ -41,5 +43,6 @@ internal class GridSpacingItemDecoration(
 
         }
 
-    }
+    } // getItemOffsets()
+
 }

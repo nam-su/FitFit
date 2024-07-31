@@ -6,9 +6,15 @@ import android.graphics.Bitmap
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
+import android.hardware.camera2.params.OutputConfiguration
+import android.hardware.camera2.params.SessionConfiguration
+import android.os.Build
 import android.util.Log
 import android.view.Surface
 import android.view.TextureView
+import androidx.annotation.RequiresApi
+
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +22,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.fitfit.model.PoseDetectionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class PoseDetectionViewModel() : ViewModel() {
 
@@ -41,7 +50,6 @@ class PoseDetectionViewModel() : ViewModel() {
     private val _checkBadPose = MutableLiveData<String>()
     val checkBadPose: LiveData<String> get() = _checkBadPose
 
-
     private val _checkAccuracy = MutableLiveData<Boolean>()
     val checkAccuracy: LiveData<Boolean> get() = _checkAccuracy
 
@@ -51,32 +59,55 @@ class PoseDetectionViewModel() : ViewModel() {
 
         // 포즈 감지 모델 초기화
         poseDetectionModel = PoseDetectionModel(context,exerciseName)
+
         // 카메라 매니저 초기화
         cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
     } // initialize()
 
 
-    // 카메라 열기 메서드
-    @SuppressLint("MissingPermission")
+    // 카메라 여는 메서드
+    @SuppressLint("MissingPermission") // 권한 재확인 안하기 위한 어노테이션
     fun openCamera(textureView: TextureView): Boolean {
+
         viewModelScope.launch(Dispatchers.Main) {
+
             cameraManager.openCamera(cameraManager.cameraIdList[0], object : CameraDevice.StateCallback() {
+
+                @RequiresApi(Build.VERSION_CODES.P)
                 override fun onOpened(cameraDevice: CameraDevice) {
+
                     val surface = Surface(textureView.surfaceTexture)
-                    val captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
+
+                    val captureRequest =
+                        cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply {
+
                         addTarget(surface)
+
                     }
 
-                    cameraDevice.createCaptureSession(listOf(surface), object : CameraCaptureSession.StateCallback() {
-                        override fun onConfigured(session: CameraCaptureSession) {
-                            session.setRepeatingRequest(captureRequest.build(), null, null)
-                        }
+                    val sessionConfiguration = SessionConfiguration(
 
-                        override fun onConfigureFailed(session: CameraCaptureSession) {
-                           // "Camera configuration failed"
-                        }
-                    }, null)
+                        SessionConfiguration.SESSION_REGULAR, // 또는 SESSION_HIGH_SPEED
+                        listOf(OutputConfiguration(surface)),
+                        Executors.newSingleThreadExecutor(), // Executor
+
+                        object : CameraCaptureSession.StateCallback() {
+
+                            override fun onConfigured(session: CameraCaptureSession) {
+
+                                session.setRepeatingRequest(captureRequest.build(), null, null)
+
+                            }
+
+                            override fun onConfigureFailed(session: CameraCaptureSession) {
+                                // Session configuration failed
+                            }
+
+                        })
+
+                    cameraDevice.createCaptureSession(sessionConfiguration)
+
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
@@ -84,13 +115,26 @@ class PoseDetectionViewModel() : ViewModel() {
                 }
 
                 override fun onError(camera: CameraDevice, error: Int) {
+
                     Log.e(TAG, "Camera error: $error")
+
                 }
+
             }, null)
+
         }
+
         return true
 
-    } //openCamera()
+    } // openCamera()
+
+
+    // 운동 시작자세 안내하는 메서드
+    fun startPoseExercise(exerciseName: String): String {
+
+        return poseDetectionModel.startPoseExercise(exerciseName)
+
+    } // startPoseExercise()
 
 
     // 이미지 처리 메서드
@@ -129,7 +173,7 @@ class PoseDetectionViewModel() : ViewModel() {
     } // checkExerciseCount()
 
 
-    // 운동 끝난 후 운동 후 데이터 쉐어드에 갱신 및 통신 응답
+    // 운동 끝난 후 운동 후 데이터 갱신 및 통신 응답
     fun updatePoseExercise(exerciseName: String) {
 
         viewModelScope.launch {
@@ -159,6 +203,6 @@ class PoseDetectionViewModel() : ViewModel() {
         poseDetectionModel.close()
         Log.d(TAG, "onCleared:모델 리소스 해제")
 
-    }
+    } // onCleared()
 
 }

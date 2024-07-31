@@ -1,6 +1,5 @@
 package com.example.fitfit.model
 
-import android.util.Log
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.User
 import com.example.fitfit.network.RetrofitBuilder
@@ -11,9 +10,7 @@ class UserModel {
 
     private val TAG = "유저 모델"
 
-    private val retrofitBuilder = RetrofitBuilder()
-    private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(
-        RetrofitInterface::class.java)
+
 
     var id = ""
     var password = ""
@@ -21,21 +18,20 @@ class UserModel {
     var randomString = ""
 
 
-
     // 회원 탈퇴 통신 으로 result 값 확인
-    suspend fun withdrawalProcess(id: String, mode: String) : Response<User> {
+    suspend fun withdrawalProcess(id: String, mode: String): Response<User> {
+
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
         return retrofitInterface.withdrawal(id,mode)
 
     } // withdrawalProcess()
 
 
-    fun getUser(): User {
-
-        return MyApplication.sharedPreferences.getUser()
-
-    }
-
+    // 유저정보 쉐어드에서 가져옴
+    fun getUser(): User = MyApplication.sharedPreferences.getUser()
+    // getUser()
 
 
     // 쉐어드에 유저 정보 삭제
@@ -46,10 +42,18 @@ class UserModel {
     } // setSharedPreferencesUserInfo()
 
 
+    // 구독권 만료 서버에 데이터 삭제
+    suspend fun deleteSubscription(): Response<User> {
 
-    // 레트로핏에서 baseurl 경로 받아오기
-    fun getBaseUrl(): String{
-        return retrofitBuilder.baseUrl.toString()
-    }
+        val retrofitBuilder = RetrofitBuilder()
+        val retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
+
+        return retrofitInterface.deleteSubscription(getUser().id)
+
+    } // updateSubscription()
+
+
+    //유저 정보 저장하기
+    fun setUser(user: User) = MyApplication.sharedPreferences.setUser(user)
 
 }

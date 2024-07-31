@@ -13,12 +13,13 @@ class TodayDecorator(private val context: Context) : DayViewDecorator {
 
     private var date: CalendarDay = CalendarDay.today()
 
-    override fun shouldDecorate(day: CalendarDay): Boolean {
-        return day == date
-    }
+    // shouldDecorate 메서드
+    override fun shouldDecorate(day: CalendarDay): Boolean = day == date
 
-    override fun decorate(view: DayViewFacade) {
+
+    // decorate 메서드
+    override fun decorate(view: DayViewFacade) =
         view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_circle)!!)
-    }
+    // decorate()
 
 }

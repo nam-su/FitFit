@@ -1,20 +1,17 @@
 package com.example.fitfit.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.fitfit.R
 import com.example.fitfit.databinding.ActivityMainBinding
-import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,17 +19,19 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "메인액티비티"
 
     private lateinit var binding: ActivityMainBinding
-
-
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
 
+
+    // onCreate
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         setView()
-        setBackPressed()
-    }
+
+    } // onCreate()
 
 
     // 뷰관련 초기화
@@ -56,12 +55,14 @@ class MainActivity : AppCompatActivity() {
         // 바인딩 라이프사이클 오너 초기화
         binding.lifecycleOwner = this
 
+
         // 프래그먼트 백스택 관찰을 위한 리스너
+        /** 마지막 작업 후 삭제 **/
         navHostFragment.childFragmentManager.addOnBackStackChangedListener {
 
             Log.d(TAG, "setView: 백스택 : " + navHostFragment.childFragmentManager.backStackEntryCount.toString())
-        }
 
+        }
 
     } // setView()
 
@@ -80,47 +81,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.GONE
 
     } // goneBottomNavi()
-
-
-    //뒤로가기 버튼 클릭시
-    private fun setBackPressed() {
-
-        onBackPressedDispatcher.addCallback(this){
-
-            // R.id.fragment -> fragment에서 백버튼 눌렀을 때에대한 처리
-            when(navController.currentDestination?.id){
-
-                R.id.loginFragment -> finish()
-                R.id.exerciseFragment -> finish()
-                R.id.diaryFragment -> finish()
-                R.id.userFragment -> finish()
-                R.id.exerciseChoiceFragment -> {
-
-                    navController.popBackStack()
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-
-                }
-
-                R.id.poseDetectionFragment -> {
-
-                    navController.popBackStack()
-
-                }
-
-                R.id.payFragment -> {
-
-                    navController.popBackStack()
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-
-                }
-
-            }
-
-        }
-
-    } // setBackPressed()
-
-
 
 
 }

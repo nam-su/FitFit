@@ -6,8 +6,9 @@ class SideLungeRight : Pose() {
 
     private val TAG = "오른쪽 런지"
 
+
+    // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
-        Log.d(TAG, "posePoseExercise:")
 
         checkBadPose = ""
 
@@ -27,7 +28,6 @@ class SideLungeRight : Pose() {
         오른쪽 골반 = 36
          */
 
-
         angleLeft = calculateAngle(
             outputFeature0[46], outputFeature0[45], // 왼쪽 발목
             outputFeature0[40], outputFeature0[39], // 왼쪽 무릎
@@ -39,7 +39,6 @@ class SideLungeRight : Pose() {
             outputFeature0[43], outputFeature0[42], // 오른쪽 무릎
             outputFeature0[37], outputFeature0[36]  // 오른쪽 골반
         )
-
 
         Log.d(TAG, "각도 : 오른쪽 : $angleRight , 왼쪽 : $angleLeft")
 
@@ -68,6 +67,6 @@ class SideLungeRight : Pose() {
 
         return false
 
-    }
+    } // posePoseExercise()
 
 }

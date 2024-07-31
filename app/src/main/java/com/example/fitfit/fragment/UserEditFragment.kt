@@ -24,8 +24,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.data.User
+import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentUserEditBinding
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.UserEditViewModel
 
 class UserEditFragment : Fragment() {
@@ -34,6 +36,8 @@ class UserEditFragment : Fragment() {
 
     lateinit var binding: FragmentUserEditBinding
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+
     lateinit var dialog: AlertDialog
     private lateinit var userEditViewModel: UserEditViewModel
 
@@ -51,6 +55,7 @@ class UserEditFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user_edit,container,false)
         customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
 
         setVariable()
         permissionCheck()
@@ -107,9 +112,21 @@ class UserEditFragment : Fragment() {
         }
 
         customDialogBinding.textViewButtonOk.setOnClickListener {
-            //통신 처리
-            userEditViewModel.profileEdit(requireActivity(),binding.editTextNickname.text.toString())
-            dialog.dismiss()
+
+            // 인터넷 연결 x
+            if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
+
+                setNetworkCustomDialog()
+
+            // 인터넷 연결 o
+            } else {
+
+                //통신 처리
+                userEditViewModel.profileEdit(requireActivity(),binding.editTextNickname.text.toString())
+                dialog.dismiss()
+
+            }
+
         }
 
         customDialogBinding.textViewCancel.setOnClickListener {
@@ -127,7 +144,11 @@ class UserEditFragment : Fragment() {
         userEditViewModel.selectedImageUri.observe(viewLifecycleOwner) {
 
             //이미지뷰에 글라이드 사용
-                Glide.with(this).load(it).into(binding.circleImageViewUserProfile)
+                Glide.with(this).load(it) .skipMemoryCache(true)
+                    .circleCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .thumbnail(Glide.with(this).load(R.raw.loading))
+                    .into(binding.imageViewUserProfile)
 
             //완료버튼 뷰 세팅
             setTextViewComplete(userEditViewModel.isNicknameValid.value)
@@ -179,6 +200,13 @@ class UserEditFragment : Fragment() {
     //커스텀 다이얼로그 띄우기
     private fun setCustomDialog(buttonOkText: String, content:String){
 
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customDialogBinding.root.parent?.let {
+
+            (it as ViewGroup).removeView(customDialogBinding.root)
+
+        }
+
         //다이얼로그 생성
         dialog = AlertDialog.Builder(requireContext())
             .setView(customDialogBinding.root)
@@ -210,17 +238,17 @@ class UserEditFragment : Fragment() {
     //프로필이미지뷰 셋
     private fun setCircleImageView(){
 
-        Log.d(TAG, "setCircleImageView: ${userEditViewModel.baseUrl+userEditViewModel.profileImagePath.value}")
+        Log.d(TAG, "setCircleImageView: ${getString(R.string.baseUrl)+userEditViewModel.profileImagePath.value}")
         Glide.with(this)
                 //baseurl+쉐어드의 이미지경로
-            .load(userEditViewModel.baseUrl+userEditViewModel.profileImagePath.value)
+            .load(getString(R.string.baseUrl)+userEditViewModel.profileImagePath.value)
             .skipMemoryCache(true)
+            .circleCrop()
             .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .placeholder(R.drawable.loading)
-            .into(binding.circleImageViewUserProfile)
+            .thumbnail(Glide.with(this).load(R.raw.loading))
+            .into(binding.imageViewUserProfile)
 
     }
-
 
 
     //닉네임 유효성에 따른 처리
@@ -228,18 +256,71 @@ class UserEditFragment : Fragment() {
 
         //완료 버튼 처리
         if(!userEditViewModel.selectedImageUri.isInitialized) {
-            if (it && userEditViewModel.nickname.value != binding.editTextNickname.text.toString()) {
-                setTextViewComplete(true)
-            } else {
-                setTextViewComplete(false)
-            }
-        }else{
-            setTextViewComplete(it)
-        }
 
+            if (it && userEditViewModel.nickname.value != binding.editTextNickname.text.toString()) {
+
+                setTextViewComplete(true)
+
+            } else {
+
+                setTextViewComplete(false)
+
+            }
+
+        } else {
+
+            setTextViewComplete(it)
+
+        }
 
     } //setNicknameValid()
 
-    }
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        // 다이얼로그 생성
+        val netWorkDialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        // 뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        netWorkDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
+
+            if(dialog.isShowing) {
+
+                dialog.dismiss()
+
+            }
+
+            netWorkDialog.dismiss()
+
+        }
+
+        netWorkDialog.setOnCancelListener {
+
+            if(dialog.isShowing) {
+
+                dialog.dismiss()
+
+            }
+
+            netWorkDialog.dismiss()
+
+        }
+
+        netWorkDialog.show()
+
+    } // setNetworkCustomDialog()
+
+}
 
 

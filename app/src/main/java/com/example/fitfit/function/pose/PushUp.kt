@@ -11,6 +11,7 @@ class PushUp: Pose() {
     private val TAG = "PushUp"
 
 
+    // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean{
 
         checkBadPose = ""
@@ -19,8 +20,8 @@ class PushUp: Pose() {
         var rightElbowBend = 0.0
         var rightKneeAngle = 0.0
 
-        //(x,y,신뢰도) 좌표
-        //오른쪽 골반 (36,37,38), 오른쪽 무릎 (42,43,44), 오른쪽 발목 (48,49,50)
+        // (x,y,신뢰도) 좌표
+        // 오른쪽 골반 (36,37,38), 오른쪽 무릎 (42,43,44), 오른쪽 발목 (48,49,50)
         // 오른쪽 어깨 (18,19,20), 오른쪽 팔꿈치 (24,25,26), 오른쪽 손목 (30,31,32)
 
         /** 오른쪽 팔꿈치 각도 계산 **/
@@ -81,6 +82,7 @@ class PushUp: Pose() {
 
            // up
             if(sit && !stand && isElbowExtend){
+
                 stand = true
                 return false
 
@@ -88,12 +90,14 @@ class PushUp: Pose() {
 
            // 두개조건 만족 했을 때
            if(sit && stand){
+
                sit = false
                stand = false
                return true
+
            }
 
-        }else{ //구부려지면 다시 초기화
+        } else { //구부려지면 다시 초기화
             
             if (rightKneeAngle != 0.0) {
 
@@ -109,6 +113,7 @@ class PushUp: Pose() {
         }
 
         return false
-    }
+
+    } // posePoseExercise()
 
 }

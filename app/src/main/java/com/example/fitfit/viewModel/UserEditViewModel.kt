@@ -13,6 +13,7 @@ import com.example.fitfit.data.User
 import com.example.fitfit.model.UserEditModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.Response
@@ -49,8 +50,6 @@ class UserEditViewModel :ViewModel() {
     val profileEditResult: LiveData<String>
         get() = _profileEditResult
 
-    var baseUrl: String = userEditModel.getBaseUrl()
-
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation() {
 
@@ -65,7 +64,9 @@ class UserEditViewModel :ViewModel() {
 
     // 갤러리 인텐트 모델에서 받아오기
     fun getGalleryIntent(): Intent{
+
        return userEditModel.getGalleryIntent()
+
     }
 
 
@@ -105,23 +106,27 @@ class UserEditViewModel :ViewModel() {
 
             val image = if(selectedImageUri.value != null){
                 val imageFile = File(getRealPathFromUri(activity, selectedImageUri.value))
-                val requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
+                val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
                 MultipartBody.Part.createFormData("image", imageFile.name, requestBody)
-            } else{ null }
+            } else { null }
 
                Log.d(TAG, "profileEdit: 3")
             // 문자열 값을 RequestBody로 변환합니다.
             Log.d(TAG, "profileEdit: $image")
             Log.d(TAG, "profileEdit: $mode")
 
-            val requestBodyId: RequestBody = RequestBody.create(MediaType.parse("text/plain"), userEditModel.getUser().id)
-            val requestBodyNickname: RequestBody = RequestBody.create(MediaType.parse("text/plain"), nickname)
-            val requestBodyMode: RequestBody = RequestBody.create(MediaType.parse("text/plain"), mode)
+            val requestBodyId: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), userEditModel.getUser().id)
+            val requestBodyNickname: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), nickname)
+            val requestBodyMode: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), mode)
 
             val response = if(selectedImageUri.value != null){
+
                 userEditModel.profileEdit(image!!,requestBodyId,requestBodyNickname, requestBodyMode)
-            }else{
+
+            } else {
+
                 userEditModel.profileEditWithoutImage(userEditModel.getUser().id,nickname,mode)
+
             }
 
             Log.d(TAG, "profileEdit: ${response.isSuccessful}")
@@ -133,14 +138,19 @@ class UserEditViewModel :ViewModel() {
 
                 // 이미지업로드와 닉네임변경 성공했을 때만 쉐어드 갱신
                 if(_profileEditResult.value == "success"){
+
                     setSharedPreferencesUserinfo(response.body()!!)
                     setUserInformation()
                 }
-            }else{
+
+            } else {
+
                 _profileEditResult.value = "failure"
+
             }
 
         }
+
     } // profileEdit()
 
 
@@ -153,8 +163,11 @@ class UserEditViewModel :ViewModel() {
         var fileOutputStream: FileOutputStream? = null
 
             try {
+
                 parcelFileDescriptor = activity.contentResolver.openFileDescriptor(uri!!, "r")
+
                 if (parcelFileDescriptor != null) {
+
                     fileInputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
 
                     // 파일을 저장할 임시 디렉토리를 만든다.
@@ -166,44 +179,65 @@ class UserEditViewModel :ViewModel() {
                     fileOutputStream = FileOutputStream(tempFile)
                     val buffer = ByteArray(1024)
                     var bytesRead: Int
+
                     while (fileInputStream.read(buffer).also { bytesRead = it } != -1) {
+
                         fileOutputStream.write(buffer, 0, bytesRead)
+
                     }
 
                     // 파일 경로 설정
                     filePath = tempFile.absolutePath
+
                 }
+
             } catch (e: IOException) {
+
                 e.printStackTrace()
+
             } finally {
+
                 // 리소스 해제
                 try {
+
                     fileInputStream?.close()
+
                 } catch (e: IOException) {
+
                     e.printStackTrace()
+
                 }
+
                 try {
+
                     fileOutputStream?.close()
+
                 } catch (e: IOException) {
+
                     e.printStackTrace()
+
                 }
+
                 try {
+
                     parcelFileDescriptor?.close()
+
                 } catch (e: IOException) {
+
                     e.printStackTrace()
+
                 }
             }
 
-
         Log.d(TAG, "getRealPathFromUri: $filePath")
         return filePath
-    }
 
+    } // getRealPathFromUri()
 
 
     // 프로필 수정 성공했을때 Shared에 데이터 추가해준다.
     private fun setSharedPreferencesUserinfo(user: User) {
-        Log.d(TAG, "setSharedPreferencesUserinfo: 여그?")
+
         userEditModel.setSharedPreferencesUserInfo(user)
 
     } // setSharedPreferencesUserInfo()
