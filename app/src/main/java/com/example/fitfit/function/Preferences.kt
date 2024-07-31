@@ -326,6 +326,7 @@ class Preferences(context: Context) {
         userRecordExerciseList.clear()
         userCheckListHashMap.clear()
         myExerciseList.clear()
+        challengeList.clear()
         editor.clear()
         editor.apply()
 
