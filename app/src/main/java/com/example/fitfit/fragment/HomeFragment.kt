@@ -315,7 +315,9 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.rankingPage.observe(viewLifecycleOwner){
-            setRankingRecyclerViewAndAdapter()
+            if(it>1) {
+                setRankingRecyclerViewAndAdapter()
+            }
         }
 
     } // setObserve()
