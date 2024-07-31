@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
+    private var selectedNavItemId: Int = R.id.homeFragment
+
 
 
     // onCreate
@@ -55,6 +57,10 @@ class MainActivity : AppCompatActivity() {
         // 바인딩 라이프사이클 오너 초기화
         binding.lifecycleOwner = this
 
+        // BottomNavigationView의 OnItemSelectedListener 설정
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            handleBottomNavigationItemSelection(item)
+        }
 
         // 프래그먼트 백스택 관찰을 위한 리스너
         /** 마지막 작업 후 삭제 **/
@@ -65,6 +71,46 @@ class MainActivity : AppCompatActivity() {
         }
 
     } // setView()
+
+
+    private fun handleBottomNavigationItemSelection(item: MenuItem): Boolean {
+        return if (selectedNavItemId != item.itemId) {
+            selectedNavItemId = item.itemId
+            when (item.itemId) {
+                R.id.homeFragment -> {
+                    navigateToFragment(R.id.homeFragment)
+                    true
+                }
+                R.id.exerciseFragment -> {
+                    navigateToFragment(R.id.exerciseFragment)
+                    true
+                }
+                R.id.diaryFragment -> {
+                    navigateToFragment(R.id.diaryFragment)
+                    true
+                }
+                R.id.userFragment -> {
+                    navigateToFragment(R.id.userFragment)
+                    true
+                }
+                else -> false
+            }
+        } else {
+            false
+        }
+
+    }
+
+
+    private fun navigateToFragment(fragmentId: Int) {
+        // 현재 백스택의 최상위에 있는 프래그먼트를 가져옵니다.
+        val currentDestination = navController.currentDestination
+
+        // 이동하려는 프래그먼트가 현재 프래그먼트와 동일한지 확인합니다.
+        if (currentDestination?.id != fragmentId) {
+            navController.navigate(fragmentId)
+        }
+    }
 
 
     // 바텀 내비 visible 메서드
@@ -81,6 +127,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.GONE
 
     } // goneBottomNavi()
+
+    //
+    fun setNaviItem(destination: Int){
+        selectedNavItemId = destination
+
+    }
 
 
 }

@@ -105,8 +105,6 @@ class UserViewModel : ViewModel() {
 
                 setIsProgressButtonClick(true)
 
-                Log.d(TAG, "setOnDialogOkButtonClick: 진행")
-
             }
 
         }

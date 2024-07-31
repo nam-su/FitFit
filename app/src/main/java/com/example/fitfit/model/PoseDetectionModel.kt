@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.function.pose.LeftLegRaises
@@ -26,7 +27,9 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import retrofit2.Response
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class PoseDetectionModel(context: Context,var exerciseName: String) {
@@ -254,11 +257,19 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
     private fun isSameDate(poseExercise: PoseExercise): Boolean {
 
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val previousDate = LocalDate.ofEpochDay(poseExercise.date / (24 * 60 * 60 * 1000)).format(formatter)
+
+        val zoneId = ZoneId.of("Asia/Seoul")
+        val date = Instant.ofEpochMilli(poseExercise.date).atZone(zoneId).toLocalDate()
+
+        val previousDate = date.format(formatter)
         val currentDate = LocalDate.now().format(formatter)
+        Log.d(TAG, "서버에 저장되있는 날짜: $previousDate")
+        Log.d(TAG, "오늘날짜: $currentDate")
 
         // 이전 날짜와 현재 날짜가 같은 경우. 카운트 + 해준다
         return if (previousDate == currentDate) {
+
+            Log.d(TAG, "isSameDate: same")
 
             poseExercise.exerciseCount += count
             poseExercise.date = System.currentTimeMillis()
@@ -267,6 +278,9 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
 
             // 이전 날짜와 현재 날짜가 다른 경우 방금한 운동이 카운트로 초기화됨.
         } else {
+
+            Log.d(TAG, "isSameDate: differ")
+
 
             poseExercise.exerciseCount = count
             poseExercise.date = System.currentTimeMillis()

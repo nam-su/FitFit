@@ -172,7 +172,7 @@ class ExerciseEditFragment : Fragment() {
         // 뒤로가기 버튼 눌렀을 때
         binding.imageButtonEditBack.setOnClickListener {
 
-            findNavController().popBackStack()
+            this.findNavController().navigate(R.id.action_exerciseEditFragment_to_exerciseChoiceFragment)
 
         }
 
@@ -203,10 +203,17 @@ class ExerciseEditFragment : Fragment() {
 
             override fun onAddButtonClick(view: View, position: Int) {
 
-                exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)
-                myPoseExerciseAdapter.notifyDataSetChanged()
-                allSquatAdapter.notifyDataSetChanged()
+                if(!exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)) {
 
+                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    myPoseExerciseAdapter.notifyDataSetChanged()
+                    allSquatAdapter.notifyDataSetChanged()
+
+                }
+                
                 /**오류 확인중**/
                 myPoseExerciseAdapter.poseExerciseList.forEach {
                     Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
@@ -221,9 +228,16 @@ class ExerciseEditFragment : Fragment() {
 
             override fun onAddButtonClick(view: View, position: Int) {
 
-                exerciseEditViewModel.addExerciseItem(allPushUpAdapter.poseExerciseList,position)
-                myPoseExerciseAdapter.notifyDataSetChanged()
-                allPushUpAdapter.notifyDataSetChanged()
+                if(!exerciseEditViewModel.addExerciseItem(allPushUpAdapter.poseExerciseList,position)) {
+
+                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    myPoseExerciseAdapter.notifyDataSetChanged()
+                    allPushUpAdapter.notifyDataSetChanged()
+
+                }
 
                 /**오류 확인중**/
                 myPoseExerciseAdapter.poseExerciseList.forEach {
@@ -239,9 +253,16 @@ class ExerciseEditFragment : Fragment() {
 
             override fun onAddButtonClick(view: View, position: Int) {
 
-                exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)
-                myPoseExerciseAdapter.notifyDataSetChanged()
-                allLungeAdapter.notifyDataSetChanged()
+                if(!exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)) {
+
+                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    myPoseExerciseAdapter.notifyDataSetChanged()
+                    allLungeAdapter.notifyDataSetChanged()
+
+                }
 
                 /**오류 확인중**/
                 myPoseExerciseAdapter.poseExerciseList.forEach {
@@ -256,9 +277,16 @@ class ExerciseEditFragment : Fragment() {
 
             override fun onAddButtonClick(view: View, position: Int) {
 
-                exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)
-                myPoseExerciseAdapter.notifyDataSetChanged()
-                allLegRaisesAdapter.notifyDataSetChanged()
+                if(!exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)) {
+
+                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    myPoseExerciseAdapter.notifyDataSetChanged()
+                    allLegRaisesAdapter.notifyDataSetChanged()
+
+                }
 
             }
 

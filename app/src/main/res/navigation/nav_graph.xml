@@ -126,7 +126,15 @@
         android:id="@+id/exerciseEditFragment"
         android:name="com.example.fitfit.fragment.ExerciseEditFragment"
         android:label="fragment_exerciseEdit"
-        tools:layout="@layout/fragment_exercise_edit"/>
+        tools:layout="@layout/fragment_exercise_edit">
+
+        <action
+            android:id="@+id/action_exerciseEditFragment_to_exerciseChoiceFragment"
+            app:destination="@id/exerciseChoiceFragment"
+            app:popUpTo="@id/userFragment"
+            app:popUpToInclusive="true"
+            />
+</fragment>
 
 
     <!--운동 일지 프래그먼트-->
@@ -135,6 +143,7 @@
         android:name="com.example.fitfit.fragment.DiaryFragment"
         android:label="fragment_diary"
         tools:layout="@layout/fragment_diary"/>
+
 
 
     <!--유저 프래그먼트-->

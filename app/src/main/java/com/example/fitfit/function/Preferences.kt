@@ -75,10 +75,10 @@ class Preferences(context: Context) {
             //알맞은 값 어레이리스트에 add
             when {
 
-                s.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",s,0,0,i))
-                s.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",s,0,0,i))
-                s.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",s,0,0,i))
-                s.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",s,0,0,i))
+                s.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",s,0,10,i))
+                s.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",s,0,10,i))
+                s.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",s,0,10,i))
+                s.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",s,0,10,i))
 
             }
 
@@ -262,6 +262,7 @@ class Preferences(context: Context) {
     fun setUserAndAllList(user: User): Boolean {
 
         setUser(user)
+
         var checkAllExerciseList = false
         var checkUserAllExerciseList = false
         var checkUserChallengeList = false
@@ -275,7 +276,7 @@ class Preferences(context: Context) {
         //불러온 전체 운동리스트 저장
         if(user.userAllExerciseList != null) {
 
-            setUserRecordExerciseList(user.userAllExerciseList!!)
+            setUserAllExerciseList(user.userAllExerciseList!!)
 
             // 시간 복잡도를 O(n * m) 에서 O(n + m) 으로 줄이기 위한 맵 사용
             // 각 운동의 이름을 key 값으로 해서 맵을 만들고 for문 사용
@@ -288,6 +289,7 @@ class Preferences(context: Context) {
             }
 
             myExerciseList = ArrayList(exerciseMap.values.filter { it.checkList == 1 })
+
             checkUserAllExerciseList = true
 
         }
@@ -329,7 +331,7 @@ class Preferences(context: Context) {
 
         return poseExerciseList
 
-    } // getExerciseSchedule()
+    } // getMyPoseExerciseList()
 
 
     // 스케쥴링한 운동 리스트 저장하는 메서드
@@ -364,6 +366,10 @@ class Preferences(context: Context) {
 
         val exerciseMap = myExerciseList.associateBy { it.exerciseName }
 
+        myExerciseList.forEach {
+            Log.d(TAG, "getPoseExercise: ${it.exerciseName}, ${it.date}")
+        }
+
         return exerciseMap[exerciseName]!!
 
     } // loadPoseExercise
@@ -375,6 +381,8 @@ class Preferences(context: Context) {
         allExerciseList.clear()
         userRecordExerciseList.clear()
         userCheckListHashMap.clear()
+        myExerciseList.clear()
+        challengeList.clear()
         editor.clear()
         editor.apply()
 
@@ -407,14 +415,6 @@ class Preferences(context: Context) {
         }
 
     } //setUserCheckListHashMap()
-
-
-    //서버의 전체운동리스트 클라이언트에 저장
-    private fun setUserRecordExerciseList(userRecordList: ArrayList<PoseExercise>) {
-
-        userRecordExerciseList = userRecordList
-
-    } //setUserRecordExerciseList()
 
 
     // 전체 운동 정보 리스트 초기화 하는 메서드
