@@ -162,7 +162,7 @@ class PoseDetectionViewModel() : ViewModel() {
     // 모델의 카운트가 몇인지 확인 하는 메서드
     fun checkExerciseCount(bitmap: Bitmap, exerciseName: String) {
 
-        if(poseDetectionModel.count == 2) {
+        if(poseDetectionModel.count == 10) {
 
             _checkExerciseCount.value = true
 
