@@ -110,6 +110,8 @@ class DiaryFragment : Fragment() {
                     // RecyclerView 설정
                     binding.recyclerView.adapter = challengeJoinAdapter
 
+                    Log.d(TAG, "setAdapter: ${challengeJoinAdapter?.itemCount}")
+
                     if(challengeJoinAdapter?.itemCount!! < 1) {
 
                         binding.textViewNonChallenge.visibility = View.VISIBLE
