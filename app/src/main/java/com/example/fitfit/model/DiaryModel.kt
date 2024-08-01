@@ -11,6 +11,7 @@ import retrofit2.Response
 import java.time.Instant
 import java.util.Calendar
 import java.util.Date
+import java.util.TimeZone
 
 class DiaryModel {
 
@@ -37,7 +38,7 @@ class DiaryModel {
 
         setAllExerciseMap()
         initEntryArrayList()
-        setEntryArrayList(Date(),Date())
+        setEntryArrayList(setToMidnight(Date()),setToEndOfDay(Date()))
 
     }
 
@@ -118,7 +119,10 @@ class DiaryModel {
             val instant = Instant.ofEpochMilli(poseExercise.date)
 
             // Instant를 Date로 변환
-            val date = Date.from(instant)
+            val date = setToNoon(Date.from(instant))
+            Log.d(TAG, "setToMidnight: ${setToMidnight(startDate!!)}")
+            Log.d(TAG, "date: $date")
+            Log.d(TAG, "setToEndOfDay: ${setToEndOfDay(endDate!!)}")
 
             //날짜 안에 있는 데이터만 추가
             if(date.after(setToMidnight(startDate!!)) && date.before(setToEndOfDay(endDate!!))) {
@@ -137,8 +141,7 @@ class DiaryModel {
 
     // 0시 00분으로 만들기
     private fun setToMidnight(date: Date): Date {
-
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
         calendar.time = date
 
         // 시간을 0시 00분 00초 000밀리초로 설정합니다.
@@ -148,14 +151,26 @@ class DiaryModel {
         calendar.set(Calendar.MILLISECOND, 0)
 
         return calendar.time
-
     } // setToMidnight()
 
 
-    //23시 59분 59초로 만들기
-    private fun setToEndOfDay(date: Date): Date {
+    // 12시 00분으로 만들기 (정오)
+    private fun setToNoon(date: Date): Date {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        calendar.time = date
 
-        val calendar = Calendar.getInstance()
+        // 시간을 12시 00분 00초 000밀리초로 설정합니다.
+        calendar.set(Calendar.HOUR_OF_DAY, 12)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.time
+    } // setToNoon()
+
+    // 23시 59분 59초로 만들기
+    private fun setToEndOfDay(date: Date): Date {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
         calendar.time = date
 
         // 시간을 23시 59분 59초 999밀리초로 설정합니다.
@@ -165,9 +180,7 @@ class DiaryModel {
         calendar.set(Calendar.MILLISECOND, 999)
 
         return calendar.time
-
     } // setToEndOfDay()
-
 
     // allExerciseMap에서 float 배열의 합이 0인 항목들을 맨 뒤로 보내는 메서드
     private fun reOrderAllExerciseMap() {
