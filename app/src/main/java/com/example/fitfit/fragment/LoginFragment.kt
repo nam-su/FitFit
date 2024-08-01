@@ -74,9 +74,6 @@ class LoginFragment: Fragment() {
 
         setVariable()
 
-        // 카카오 로그인 SDK 초기화
-        KakaoSdk.init(requireContext(),"d997bc71e6bb7cad42042752aa3d4f9f")
-
         // 네이버 로그인 SDK 초기화
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
 

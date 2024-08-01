@@ -19,10 +19,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitfit.data.ExerciseDiary
+import com.example.fitfit.function.MyApplication
 import com.example.fitfit.model.PoseDetectionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -183,6 +186,9 @@ class PoseDetectionViewModel() : ViewModel() {
             if (response.isSuccessful && response.body() != null) {
 
                 Log.d(TAG, "Exercise data successfully updated on server")
+
+                // 여기서 preferences 에 데이터를 갱신 해준다
+                MyApplication.sharedPreferences.updateExerciseDiaryList()
 
             } else {
 

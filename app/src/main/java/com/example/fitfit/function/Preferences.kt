@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.fitfit.R
 import com.example.fitfit.data.Challenge
+import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.ExerciseItemInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.User
@@ -15,6 +16,13 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 
 class Preferences(context: Context) {
@@ -40,6 +48,12 @@ class Preferences(context: Context) {
 
     /** fitfit 챌린지 리스트**/
     val challengeList = ArrayList<Challenge>()
+
+    /** 이번주 운동 리스트**/
+    var myExerciseDiaryList: ArrayList<ExerciseDiary>? = null
+
+    /** 오늘 수행한 운동 리스트**/
+    private var todayUserExerciseList: ArrayList<PoseExercise> = ArrayList<PoseExercise>()
 
 
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
@@ -92,6 +106,127 @@ class Preferences(context: Context) {
         }
 
     } // setAllExerciseList()
+
+
+    // 내 운동기록 받아온 데이터에서 오늘 운동 데이터만 추출
+    fun setTodayMyExerciseDataList() {
+
+            // 오늘 날짜를 구합니다
+            val today = LocalDate.now()
+
+            // 사용자 운동 기록 리스트에서 오늘 날짜와 일치하는 운동 데이터만 필터링합니다
+            todayUserExerciseList = userRecordExerciseList.filter { poseExercise ->
+
+                // 밀리초 단위의 타임스탬프를 LocalDate로 변환합니다
+                val poseExerciseDate = Instant.ofEpochMilli(poseExercise.date)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+
+                // 날짜를 비교합니다
+                poseExerciseDate == today
+
+            } as ArrayList<PoseExercise> // 필터링된 결과를 ArrayList로 변환합니다
+
+            for(poseExercise in todayUserExerciseList!!) {
+
+                Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseName}")
+                Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseCount}")
+                Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.date}")
+
+            }
+
+
+            // 오늘 운동 데이터의 exerciseName을 키로 하는 Map을 생성합니다
+            val poseExerciseMap = todayUserExerciseList!!.associateBy { it.exerciseName }
+
+            // allExerciseList에서 exerciseName을 키로 하여 poseExercise 객체를 업데이트합니다
+
+            Log.d(TAG, "setTodayMyExerciseDataList: 리스트 사이즈 : ${allExerciseList.size}")
+            
+            allExerciseList.forEach { allPoseExercise ->
+
+                Log.d(TAG, "setTodayMyExerciseDataList: 여기 들어오긴 함 ?")
+
+                poseExerciseMap[allPoseExercise.exerciseName]?.let { poseExercise ->
+
+                    Log.d(TAG, "setTodayMyExerciseDataList: 여기 들어오긴 함 ?")
+
+                    // poseExercise의 속성을 allPoseExercise에 복사합니다
+                    allPoseExercise.exerciseCount = poseExercise.exerciseCount
+                    allPoseExercise.date = poseExercise.date
+                  
+                }
+                
+            }
+
+        for (poseExercise in allExerciseList) {
+
+            Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseName}")
+            Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseCount}")
+            Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.date}")
+
+        }
+
+    } // setTodayMyExerciseDataList()
+
+
+    // 이번주 운동리스트 set해주는 메서드
+    fun setExerciseDiaryList(exerciseDiaryList: ArrayList<ExerciseDiary>) {
+
+        myExerciseDiaryList = exerciseDiaryList
+
+    } // setExerciseDiaryList()
+
+
+    // 이번주 운동리스트 리턴하는 메서드
+    fun getExerciseDiaryList() = myExerciseDiaryList
+    // getExerciseDiaryList()
+
+
+    // 이번주 운동리스트 갱신하는 메서드
+    fun updateExerciseDiaryList() {
+
+        // 오늘 요일
+        // 일 월 화 수 목 금 토
+        val today: LocalDate = LocalDate.now()
+        val dayOfWeek: DayOfWeek = today.dayOfWeek
+
+        var updateExerciseDiary: ExerciseDiary? = null
+
+        updateExerciseDiary = when (dayOfWeek) {
+            DayOfWeek.MONDAY -> ExerciseDiary(day = "월", check = true)
+            DayOfWeek.TUESDAY -> ExerciseDiary(day = "화", check = true)
+            DayOfWeek.WEDNESDAY -> ExerciseDiary(day = "수", check = true)
+            DayOfWeek.THURSDAY -> ExerciseDiary(day = "목", check = true)
+            DayOfWeek.FRIDAY -> ExerciseDiary(day = "금", check = true)
+            DayOfWeek.SATURDAY -> ExerciseDiary(day = "토", check = true)
+            DayOfWeek.SUNDAY -> ExerciseDiary(day = "일", check = true)
+        }
+
+        // null 체크
+        for (i in myExerciseDiaryList!!.indices) {
+
+            if (myExerciseDiaryList!![i].day == updateExerciseDiary.day) {
+
+                myExerciseDiaryList!![i] = updateExerciseDiary
+                break
+
+            }
+
+        }
+
+    } // updateExerciseDiaryList()
+
+
+    fun exceptionNoDataMyAllExercise(poseExercise: PoseExercise) {
+
+        if (userRecordExerciseList.size == 0) {
+
+            userRecordExerciseList.add(poseExercise)
+
+        }
+
+    } // exceptionNoDataMyAllExercise()
 
 
     // 유저 운동기록 리스트 리턴하는 메서드
@@ -173,6 +308,12 @@ class Preferences(context: Context) {
         //리스트 추가
         userRecordExerciseList.addAll(exerciseList)
 
+        for (poseExercise in userRecordExerciseList) {
+
+            Log.d(TAG, "setUserAllExerciseList 운동 날짜: ${poseExercise.date}")
+
+        }
+
     } //setUserAllExerciseList()
 
 
@@ -224,8 +365,11 @@ class Preferences(context: Context) {
 
         //서버의 체크리스트를 프리퍼런스에서 배열로 갖고 있자.
         if(user.checkList != null) {
+
             setAllExerciseList(user.checkList!!)
+
             checkAllExerciseList = true
+
         }
 
         //불러온 전체 운동리스트 저장
@@ -340,6 +484,7 @@ class Preferences(context: Context) {
         userCheckListHashMap.clear()
         myExerciseList.clear()
         challengeList.clear()
+        myExerciseDiaryList = null
         editor.clear()
         editor.apply()
 
