@@ -84,25 +84,25 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
 
             binding.rank = rank
 
-            when(rank.ranking){
-                1 -> {
-                    binding.textViewRank.visibility = View.GONE
-                    binding.imageViewRank.visibility = View.VISIBLE
-                    Glide.with(context!!).load(R.drawable.medal_gold).into(binding.imageViewRank)
-                }
-                2 -> {
-                    binding.textViewRank.visibility = View.GONE
-                    binding.imageViewRank.visibility = View.VISIBLE
-                    Glide.with(context!!).load(R.drawable.medal_silver).into(binding.imageViewRank)
-
-                }
-                3 -> {
-                    binding.textViewRank.visibility = View.GONE
-                    binding.imageViewRank.visibility = View.VISIBLE
-                    Glide.with(context!!).load(R.drawable.medal_bronze).into(binding.imageViewRank)
-
-                }
-            }
+//            when(rank.ranking){
+//                1 -> {
+//                    binding.textViewRank.visibility = View.GONE
+//                    binding.imageViewRank.visibility = View.VISIBLE
+//                    Glide.with(context!!).load(R.drawable.medal_gold).into(binding.imageViewRank)
+//                }
+//                2 -> {
+//                    binding.textViewRank.visibility = View.GONE
+//                    binding.imageViewRank.visibility = View.VISIBLE
+//                    Glide.with(context!!).load(R.drawable.medal_silver).into(binding.imageViewRank)
+//
+//                }
+//                3 -> {
+//                    binding.textViewRank.visibility = View.GONE
+//                    binding.imageViewRank.visibility = View.VISIBLE
+//                    Glide.with(context!!).load(R.drawable.medal_bronze).into(binding.imageViewRank)
+//
+//                }
+//            }
 
                 when(rank.challengeName){
 

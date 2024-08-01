@@ -32,13 +32,13 @@
             style="@style/defaultBlackTextStyle"
             android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/imageViewRank"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            android:visibility="gone"
-            android:src="@drawable/crown"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/imageViewRank"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="0.7"-->
+<!--            android:visibility="gone"-->
+<!--            android:src="@drawable/crown"/>-->
 
         <View
             android:layout_width="0dp"

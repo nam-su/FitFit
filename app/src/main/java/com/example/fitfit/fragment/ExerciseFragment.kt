@@ -168,7 +168,7 @@ class ExerciseFragment : Fragment() {
                     binding.viewPager.adapter!!.notifyDataSetChanged()
 
                     this.findNavController().navigate(R.id.action_exerciseFragment_to_DiaryFragment)
-                    (activity as MainActivity).setNaviItem(R.id.diaryFragment)
+//                    (activity as MainActivity).setNaviItem(R.id.diaryFragment)
 
                 }
 

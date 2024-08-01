@@ -209,7 +209,7 @@ class UserFragment : Fragment() {
 
             //바텀 네비게이션 GONE 처리
             (activity as MainActivity).goneBottomNavi()
-            (activity as MainActivity).setNaviItem(0)
+//            (activity as MainActivity).setNaviItem(0)
 
         }
 
@@ -274,7 +274,7 @@ class UserFragment : Fragment() {
                 (activity as MainActivity).goneBottomNavi()
 
                 //바텀네비게이션 아이템클릭 초기화
-                (activity as MainActivity).setNaviItem(0)
+//                (activity as MainActivity).setNaviItem(0)
 
                 Toast.makeText(requireActivity(), "회원탈퇴가 정상적으로 처리 되었습니다.",Toast.LENGTH_SHORT).show()
 
