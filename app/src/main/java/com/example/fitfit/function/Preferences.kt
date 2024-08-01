@@ -176,6 +176,17 @@ class Preferences(context: Context) {
     } //setUserAllExerciseList()
 
 
+    /**데이터가 없을 때**/
+    fun addRecordExerciseList(poseExercise: PoseExercise) {
+
+        //리스트 추가
+        if (!userRecordExerciseList.contains(poseExercise)) {
+            userRecordExerciseList.add(poseExercise)
+        }
+
+    } //setUserAllExerciseList()
+
+
     // 서버에서 유저 운동 정보 불러온 후 리스트에 저장하는 메서드
     /** 내 운동 리스트를 여기서 초기화 함 **/
     fun setUserExerciseInfoList(userAllExerciseList: ArrayList<PoseExercise>) {
@@ -236,6 +247,8 @@ class Preferences(context: Context) {
 
             checkUserAllExerciseList = true
 
+        }else{
+            setUserAllExerciseList(ArrayList<PoseExercise>())
         }
 
         //불러온 챌린지 리스트 저장

@@ -274,6 +274,10 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
             poseExercise.exerciseCount += count
             poseExercise.date = System.currentTimeMillis()
             MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
+
+            //전체 운동기록 리스트에 데이터가 없으면 추가
+            MyApplication.sharedPreferences.addRecordExerciseList(poseExercise)
+
             true
 
             // 이전 날짜와 현재 날짜가 다른 경우 방금한 운동이 카운트로 초기화됨.
@@ -285,6 +289,10 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
             poseExercise.exerciseCount = count
             poseExercise.date = System.currentTimeMillis()
             MyApplication.sharedPreferences.updateMyPoseExerciseList(poseExercise)
+
+            //전체 운동기록 리스트에 데이터가 없으면 추가
+            MyApplication.sharedPreferences.addRecordExerciseList(poseExercise)
+
             false
 
         }

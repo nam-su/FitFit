@@ -44,6 +44,8 @@ class LoginFragment: Fragment() {
 
     private lateinit var callback: OnBackPressedCallback
 
+    var loginType:String = ""
+
 
     // 구글 로그인 런처
     private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -78,13 +80,18 @@ class LoginFragment: Fragment() {
         // 네이버 로그인 SDK 초기화
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
 
-        // 기존 네이버 토큰 삭제
-//        startNaverDeleteToken()
 
-        /**카카오 회원탈퇴 나중에 지우자**/
-        UserApiClient.instance.unlink { error: Throwable? ->
-            Log.d(TAG, "requestKaKaoLogin: $error")
+        // 소셜로그인 이면 토큰 제거.
+        when(requireArguments().getString("loginType").toString()){
+
+            "kakao" ->  UserApiClient.instance.unlink { error ->
+                Log.d(TAG, "setIsWithdrawalSuccess: $error")
+            }
+
+            "naver" -> startNaverDeleteToken()
+
         }
+
 
         // 구글 로그인 관련 초기화
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()

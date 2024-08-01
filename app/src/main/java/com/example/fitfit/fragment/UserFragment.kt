@@ -180,7 +180,7 @@ class UserFragment : Fragment() {
             //소셜로그인이면 비밀번호 변경 메뉴 안보이게 하기
             when(userViewModel.loginType.value){
 
-                "kakao", "naver ", "google" -> {
+                "kakao", "naver", "google" -> {
                     if (item.toString() == "비밀번호 변경") {
                         item.isVisible = false
                     }
@@ -209,7 +209,7 @@ class UserFragment : Fragment() {
 
             //바텀 네비게이션 GONE 처리
             (activity as MainActivity).goneBottomNavi()
-            (activity as MainActivity).setNaviItem(R.id.homeFragment)
+            (activity as MainActivity).setNaviItem(0)
 
         }
 
@@ -262,22 +262,19 @@ class UserFragment : Fragment() {
 
             "success" -> {
 
-                // 소셜로그인 이면 토큰 제거.
-                when(userViewModel.loginType.value){
+                val bundle = bundleOf("loginType" to userViewModel.loginType.value)
 
-                    "kakao" ->  UserApiClient.instance.unlink{}
+                // 로그인 프래그먼트로 이동 후 회원탈퇴값 false값으로 변경
+                this.findNavController().navigate(R.id.action_userFragment_to_loginFragment, bundle)
 
-                    "naver" -> startNaverDeleteToken()
-
-                }
-
-                // 로그인 프래그먼트로 이동 후 로그아웃 false값으로 변경
-                this.findNavController().navigate(R.id.action_userFragment_to_loginFragment)
 
                 userViewModel.setIsWithdrawalButtonClick(false)
 
                 //바텀 네비게이션 GONE 처리
                 (activity as MainActivity).goneBottomNavi()
+
+                //바텀네비게이션 아이템클릭 초기화
+                (activity as MainActivity).setNaviItem(0)
 
                 Toast.makeText(requireActivity(), "회원탈퇴가 정상적으로 처리 되었습니다.",Toast.LENGTH_SHORT).show()
 
@@ -565,7 +562,7 @@ class UserFragment : Fragment() {
             override fun onSuccess() {
 
                 //서버에서 토큰 삭제에 성공한 상태입니다.
-                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
 
             }
 
