@@ -77,18 +77,7 @@ class LoginFragment: Fragment() {
         // 네이버 로그인 SDK 초기화
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
 
-
-        // 소셜로그인 이면 토큰 제거.
-        when(requireArguments().getString("loginType").toString()){
-
-            "kakao" ->  UserApiClient.instance.unlink { error ->
-                Log.d(TAG, "setIsWithdrawalSuccess: $error")
-            }
-
-            "naver" -> startNaverDeleteToken()
-
-        }
-
+        setBundle()
 
         // 구글 로그인 관련 초기화
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
@@ -203,6 +192,25 @@ class LoginFragment: Fragment() {
         }
         
     } // setListener()
+
+
+    // 프래그먼트 이동시 번들에 데이터 받아오는 코드
+    private fun setBundle(){
+
+        // 소셜로그인 토근 제거시 사용
+        val arguments = arguments
+        if (arguments != null && arguments.containsKey("loginType")) {
+            when (arguments.getString("loginType").toString()) {
+                "kakao" -> UserApiClient.instance.unlink { error ->
+                    Log.d(TAG, "setIsWithdrawalSuccess: $error")
+                }
+                "naver" -> startNaverDeleteToken()
+                else -> {}
+            }
+        } else {
+            Log.d(TAG, "No arguments provided")
+        }
+    } // setBundle()
 
 
     // Observe 관련 메서드

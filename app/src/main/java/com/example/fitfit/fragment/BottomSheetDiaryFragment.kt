@@ -1,5 +1,6 @@
 package com.example.fitfit.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,6 +35,8 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
 
     private val TAG = "바텀시트 다이어리 프래그먼트"
 
+    private var onDismissListener: (() -> Unit)? = null
+
     lateinit var dayDecorator: DayDecorator
     lateinit var todayDecorator: TodayDecorator
     lateinit var sundayDecorator: SundayDecorator
@@ -44,6 +47,10 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
 
     var startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
     var endDayDecorator = EndDayDecorator(viewModel.endDate.value!!)
+
+    fun setOnDismissListener(listener: () -> Unit) {
+        onDismissListener = listener
+    }
 
 
     // onCreateView
@@ -89,6 +96,12 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         setListener()
 
     } // onViewCreated()
+
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissListener?.invoke()
+    }
 
 
     // 변수 초기화

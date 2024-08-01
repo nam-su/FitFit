@@ -3,6 +3,7 @@ package com.example.fitfit.adapter
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.provider.Settings.Global.getString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,7 @@ class ExerciseChoiceAdapter(val exerciseChoiceList: ArrayList<PoseExercise>): Re
             holder.binding.constraintLayoutStartExercise.setOnClickListener {
 
                 exerciseChoiceItemClick!!.onClick(it,position)
+                Log.d("TAG", "onBindViewHolder: ${exerciseChoiceList[position].date}")
 
             }
 

@@ -134,20 +134,36 @@ class DiaryFragment : Fragment() {
     // 리스너 설정
     private fun setListener(){
 
-        //시작날짜 선택 리스너
+        // 시작 날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
+            // 버튼을 클릭한 후 비활성화
+            binding.buttonStartDate.isEnabled = false
+            binding.buttonEndDate.isEnabled = false
 
-            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,0)
-            bottomSheetDiaryFragment.show(parentFragmentManager,"")
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel, 0)
+            bottomSheetDiaryFragment.show(parentFragmentManager, "")
 
+            // BottomSheet가 닫힌 후 다시 활성화
+            bottomSheetDiaryFragment.setOnDismissListener {
+                binding.buttonStartDate.isEnabled = true
+                binding.buttonEndDate.isEnabled = true
+            }
         }
 
-        //마지막날짜 선택 리스너
+        // 마지막 날짜 선택 리스너
         binding.buttonEndDate.setOnClickListener {
+            // 버튼을 클릭한 후 비활성화
+            binding.buttonStartDate.isEnabled = false
+            binding.buttonEndDate.isEnabled = false
 
-            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel,1)
-            bottomSheetDiaryFragment.show(parentFragmentManager,"")
+            val bottomSheetDiaryFragment = BottomSheetDiaryFragment(diaryViewModel, 1)
+            bottomSheetDiaryFragment.show(parentFragmentManager, "")
 
+            // BottomSheet가 닫힌 후 다시 활성화
+            bottomSheetDiaryFragment.setOnDismissListener {
+                binding.buttonStartDate.isEnabled = true
+                binding.buttonEndDate.isEnabled = true
+            }
         }
 
     } //setListener()

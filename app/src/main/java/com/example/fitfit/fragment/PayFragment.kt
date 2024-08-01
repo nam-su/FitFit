@@ -102,7 +102,7 @@ class PayFragment : Fragment() {
 
             binding.webViewPay.webViewClient = KakaoPayWebViewClient()
             binding.webViewPay.settings.javaScriptEnabled = true
-            binding.webViewPay.loadUrl(it.next_redirect_pc_url)
+            binding.webViewPay.loadUrl(it.next_redirect_mobile_url)
 
             binding.linearLayoutPayReadyLayout.visibility = View.GONE
             binding.webViewPay.visibility = View.VISIBLE
