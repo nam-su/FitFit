@@ -12,12 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
+import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentExerciseEditBinding
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.ExerciseEditViewModel
@@ -32,7 +34,8 @@ class ExerciseEditFragment : Fragment() {
 
     private lateinit var callback: OnBackPressedCallback
 
-    lateinit var customDialogBinding: CustomDialogNetworkDisconnectBinding
+    lateinit var customNetworkDialogBinding: CustomDialogNetworkDisconnectBinding
+    lateinit var customDialogBinding: CustomDialogTwoButtonBinding
 
     private lateinit var myPoseExerciseAdapter: PoseExerciseAdapter
 
@@ -55,7 +58,8 @@ class ExerciseEditFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise_edit,container,false)
-        customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_network_disconnect, null, false)
+        customDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_two_button,null,false)
+        customNetworkDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_network_disconnect, null, false)
 
         // 뷰모델 초기화
         exerciseEditViewModel = ExerciseEditViewModel()
@@ -205,7 +209,8 @@ class ExerciseEditFragment : Fragment() {
 
                 if(!exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)) {
 
-                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+                    // 다이얼로그 띄워주기.
+                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
 
                 } else {
 
@@ -230,7 +235,8 @@ class ExerciseEditFragment : Fragment() {
 
                 if(!exerciseEditViewModel.addExerciseItem(allPushUpAdapter.poseExerciseList,position)) {
 
-                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+                    // 다이얼로그 띄워주기.
+                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
 
                 } else {
 
@@ -255,7 +261,8 @@ class ExerciseEditFragment : Fragment() {
 
                 if(!exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)) {
 
-                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+                    // 다이얼로그 띄워주기.
+                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
 
                 } else {
 
@@ -279,7 +286,8 @@ class ExerciseEditFragment : Fragment() {
 
                 if(!exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)) {
 
-                    Toast.makeText(requireContext(),"구독 후 이용가능한 운동입니다.",Toast.LENGTH_SHORT).show()
+                    // 다이얼로그 띄워주기.
+                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
 
                 } else {
 
@@ -298,7 +306,7 @@ class ExerciseEditFragment : Fragment() {
             // 인터넷 연결 안되어 있는 경우
             if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
 
-                setCustomDialog()
+                setNetworkCustomDialog()
 
             } else {
 
@@ -339,11 +347,14 @@ class ExerciseEditFragment : Fragment() {
 
 
     //커스텀 다이얼로그 띄우기
-    private fun setCustomDialog(){
+    private fun setCustomDialog(buttonOkText: String, content:String){
+
 
         // 부모가 있는지 확인하고, 있다면 부모에서 제거
         customDialogBinding.root.parent?.let {
+
             (it as ViewGroup).removeView(customDialogBinding.root)
+
         }
 
         //다이얼로그 생성
@@ -355,7 +366,47 @@ class ExerciseEditFragment : Fragment() {
         //뒷배경 투명으로 바꿔서 둥근모서리 보이게
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
+
+        customDialogBinding.textViewContent.text = content
+        customDialogBinding.textViewButtonOk.text = buttonOkText
+
+        dialog.show()
+
         customDialogBinding.textViewButtonOk.setOnClickListener {
+
+            findNavController().navigate(R.id.payFragment)
+            dialog.dismiss()
+
+        }
+
+        customDialogBinding.textViewCancel.setOnClickListener {
+
+            dialog.dismiss()
+
+        }
+
+    } // setCustomDialog()
+
+
+    //커스텀 다이얼로그 띄우기
+    private fun setNetworkCustomDialog(){
+
+        // 부모가 있는지 확인하고, 있다면 부모에서 제거
+        customNetworkDialogBinding.root.parent?.let {
+            (it as ViewGroup).removeView(customNetworkDialogBinding.root)
+        }
+
+        //다이얼로그 생성
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customNetworkDialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        //뒷배경 투명으로 바꿔서 둥근모서리 보이게
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        customNetworkDialogBinding.textViewButtonOk.setOnClickListener {
 
             dialog.dismiss()
 
