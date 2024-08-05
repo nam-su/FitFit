@@ -289,6 +289,18 @@ class SignUpFragment : Fragment() {
 
         }
 
+
+        // 타이머 관찰
+        signUpViewModel.timerCount.observe(viewLifecycleOwner) {
+
+            if(it == 0) {
+
+                Toast.makeText(requireContext(), "코드를 재전송 해주세요.", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+
         // 사용 가능 이메일 관찰
         signUpViewModel.isEmailPossible.observe(viewLifecycleOwner){
 
