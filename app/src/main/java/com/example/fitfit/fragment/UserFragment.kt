@@ -90,6 +90,8 @@ class UserFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
+        (activity as MainActivity).visibleBottomNavi()
+
         userViewModel = UserViewModel()
         binding.userViewModel = userViewModel
 

@@ -82,6 +82,8 @@ class ExerciseFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
+        (activity as MainActivity).visibleBottomNavi()
+
         binding.exerciseViewModel = exerciseViewModel
 
         //내 운동리스트

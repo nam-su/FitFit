@@ -89,6 +89,8 @@ class HomeFragment : Fragment() {
     // 변수 초기화
     private fun setVariable() {
 
+        (activity as MainActivity).visibleBottomNavi()
+
         homeViewModel = HomeViewModel()
         binding.homeViewModel = homeViewModel
 

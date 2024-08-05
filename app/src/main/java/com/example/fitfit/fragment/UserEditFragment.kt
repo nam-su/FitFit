@@ -171,7 +171,6 @@ class UserEditFragment : Fragment() {
                 else -> Toast.makeText(requireContext(), "통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
             }
             this.findNavController().popBackStack()
-            (activity as MainActivity).visibleBottomNavi()
         }
 
         }

@@ -120,7 +120,6 @@ class ExerciseChoiceFragment : Fragment() {
         binding.imageButtonBackExerciseChoice.setOnClickListener {
 
             it.findNavController().popBackStack()
-            (activity as MainActivity).visibleBottomNavi()
 
         }
 
@@ -135,7 +134,6 @@ class ExerciseChoiceFragment : Fragment() {
             override fun handleOnBackPressed() {
 
                 findNavController().popBackStack()
-                (activity as MainActivity).visibleBottomNavi()
 
             }
 

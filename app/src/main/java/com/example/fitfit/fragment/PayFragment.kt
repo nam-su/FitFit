@@ -182,7 +182,6 @@ class PayFragment : Fragment() {
         binding.imageButtonPayFragmentBack.setOnClickListener {
 
             findNavController().popBackStack()
-            (activity as MainActivity).visibleBottomNavi()
 
         }
 
@@ -211,7 +210,6 @@ class PayFragment : Fragment() {
 
                     Toast.makeText(requireContext(),"카카오톡 설치 후 다시 시도해 주세요.",Toast.LENGTH_SHORT).show()
                     findNavController().popBackStack()
-                    (activity as MainActivity).visibleBottomNavi()
 
                 }
 
@@ -286,7 +284,6 @@ class PayFragment : Fragment() {
             override fun handleOnBackPressed() {
 
                 findNavController().popBackStack()
-                (activity as MainActivity).visibleBottomNavi()
 
             }
 

@@ -80,6 +80,8 @@ class DiaryFragment : Fragment() {
     //초기값 설정
     private fun setVariable(){
 
+        (activity as MainActivity).visibleBottomNavi()
+
         binding.lifecycleOwner = this
 
         diaryViewModel = DiaryViewModel()
