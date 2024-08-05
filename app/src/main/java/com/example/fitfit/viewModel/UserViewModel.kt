@@ -59,6 +59,10 @@ class UserViewModel : ViewModel() {
     val isWithdrawalSuccess: LiveData<String>
         get() = _isWithdrawalSuccess
 
+    private var _isVisibleDueDateText = MutableLiveData<Boolean>()
+    val isVisibleDueDateText: LiveData<Boolean>
+    get() = _isVisibleDueDateText
+
 
     // 유저 정보 쉐어드에서 호출
     fun setUserInformation(baseUrl: String) {
@@ -67,8 +71,27 @@ class UserViewModel : ViewModel() {
 
         _email.value = user.id
         _nickname.value = user.nickname
-        _loginType.value = user.loginType
-        _subscription.value = user.subscription
+
+        if (user.loginType == "") {
+
+            _loginType.value = "FitFit"
+
+        } else {
+
+            _loginType.value = user.loginType
+
+        }
+
+        if (user.subscription != "") {
+
+            _subscription.value = user.subscription
+
+        } else {
+
+            _subscription.value = "현재 구독중이 아닙니다"
+
+        }
+
         _profileImagePath.value = baseUrl+user.profileImagePath
 
     } // setUserInformation()
@@ -199,7 +222,8 @@ class UserViewModel : ViewModel() {
     // 구독권 기간이 만료 여부 판단 메서드
     fun isExpiredSubscription(): Boolean {
 
-        if(subscription.value != "") {
+        if(subscription.value != "현재 구독중이 아닙니다") {
+
             val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
             // 문자열을 LocalDate로 변환
@@ -208,7 +232,21 @@ class UserViewModel : ViewModel() {
             // 오늘 날짜 가져오기
             val today = LocalDate.now()
 
-            return date.isBefore(today)
+            // 구독권 만료인 경우
+            return if(date.isBefore(today)) {
+
+                _isVisibleDueDateText.value = false
+
+                true
+
+            } else {
+
+                _isVisibleDueDateText.value = true
+
+                false
+
+            }
+
         }
 
         return false

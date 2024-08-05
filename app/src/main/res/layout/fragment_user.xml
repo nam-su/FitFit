@@ -181,6 +181,16 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/textViewDueDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="만료 일자 "
+                        style="@style/defaultPersonalTextStyle"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/textViewUserSubscription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{userViewModel.subscription}"

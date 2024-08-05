@@ -165,6 +165,20 @@ class UserFragment : Fragment() {
            }
         }
 
+        userViewModel.isVisibleDueDateText.observe(viewLifecycleOwner) {
+
+            if (it) {
+
+                binding.textViewDueDate.visibility = View.VISIBLE
+
+            } else {
+
+                binding.textViewDueDate.visibility = View.GONE
+
+            }
+
+        }
+
     } // setObserve()
 
 
