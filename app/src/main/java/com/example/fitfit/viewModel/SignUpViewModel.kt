@@ -209,7 +209,7 @@ class SignUpViewModel : ViewModel() {
     //닉네임 유효성 여부
     fun validationNickname(nickname: String){
 
-        val pattern = Regex("^[가-힣]{3,8}$")
+        val pattern = Regex("^[가-힣0-9]{2,8}$")
         _isNicknameValid.value = pattern.matches(nickname)
 
     } // validationNickname()

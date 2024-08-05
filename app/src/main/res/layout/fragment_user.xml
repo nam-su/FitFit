@@ -185,7 +185,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
-                        android:text="만료 일자 "
+                        android:text="@string/dueDateText"
                         style="@style/defaultPersonalTextStyle"
                         android:textSize="16sp"/>
 
