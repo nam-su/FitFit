@@ -141,8 +141,7 @@ class ExerciseItemInfoFragment : Fragment() {
             // 유저 구독이 되어 있는 경우
             if(it) {
 
-                findNavController().navigate(R.id.exerciseFragment)
-                (activity as MainActivity).visibleBottomNavi()
+                findNavController().navigate(R.id.exerciseEditFragment)
 
             // 유저 구독이 안되어 있는 경우
             } else {
