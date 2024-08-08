@@ -278,7 +278,7 @@ class FindPasswordFragment : Fragment() {
 
             if(it){
 
-                Toast.makeText(requireContext(), "현재 사용중인 비밀번호 입니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "기존 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
                 binding.editTextPassword.setText("")
                 binding.editTextReconfirmPassword.setText("")
                 binding.editTextReconfirmPassword.visibility = View.GONE
@@ -295,9 +295,12 @@ class FindPasswordFragment : Fragment() {
 
             when (it) {
 
-                true -> Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
+                "true" -> Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
 
-                false -> Toast.makeText(requireContext(), getString(R.string.code_verification_failure),Toast.LENGTH_SHORT).show()
+                "wrong" -> Toast.makeText(requireContext(), getString(R.string.code_verification_failure),Toast.LENGTH_SHORT).show()
+
+                else -> Toast.makeText(requireContext(), getString(R.string.code_verification_resend),Toast.LENGTH_SHORT).show()
+
 
             }
 

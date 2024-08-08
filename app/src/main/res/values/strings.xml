@@ -50,6 +50,8 @@
     <string name="timer">00:00</string>
     <string name="code_verification_successful">코드 인증에 성공 했습니다.</string>
     <string name="code_verification_failure">유효하지 않은 인증코드 입니다.</string>
+    <string name="code_verification_resend">인증코드를 재전송 해주세요.</string>
+
 
     <!--홈 프래그먼트-->
     <string name="weekExerciseCheck">이번 주 운동량 체크</string>
@@ -99,7 +101,7 @@
     <string name="progress">진행</string>
     <string name="subscriptionDialogButtonOk">구독 하러가기</string>
     <string name="subscriptionDialogContent">구독 기간이 만료 되었습니다.\n다양한 운동을 계속해서 이용하시려면\n구독하러 가기를 눌러주세요.</string>
-    <string name="dueDateText">만료 일자 :</string>
+    <string name="dueDateText">만료 일자 </string>
     <string name="setting">설정</string>
 
     <!--커스텀 다이얼로그-->
