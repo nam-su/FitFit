@@ -186,8 +186,13 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:text="@string/dueDateText"
-                        style="@style/defaultPersonalTextStyle"
+                        style="@style/defaultBlackTextStyle"
                         android:textSize="16sp"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1" />
 
                     <TextView
                         android:id="@+id/textViewUserSubscription"

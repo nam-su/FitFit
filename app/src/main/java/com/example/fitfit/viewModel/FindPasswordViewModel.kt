@@ -14,6 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigInteger
 import kotlin.math.log
 import kotlin.time.ExperimentalTime
 
@@ -58,6 +59,10 @@ class FindPasswordViewModel : ViewModel() {
     private val _startingPoint = MutableLiveData<String>()
     val startingPoint: LiveData<String>
         get() = _startingPoint
+
+    private val _isPasswordDuplicated = MutableLiveData<Boolean>()
+    val isPasswordDuplicated: LiveData<Boolean>
+        get() = _isPasswordDuplicated
 
     private lateinit var job: Job
 
@@ -194,7 +199,10 @@ class FindPasswordViewModel : ViewModel() {
                 when(model.passwordResetProcess(id, password, "passwordUpdate")!!.result){
 
                     "success" -> true
-
+                    "duplicated" -> {
+                        _isPasswordDuplicated.postValue(true)
+                        false
+                    }
                     else -> false
 
                 }

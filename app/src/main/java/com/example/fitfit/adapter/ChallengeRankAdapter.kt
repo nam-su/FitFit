@@ -106,9 +106,18 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
 
                 when(rank.challengeName){
 
-                    "기본부터 챌린지" -> binding.textViewPoint.text = "${rank.rankingPoint} / ${rank.standard} 일"
+                    "기본부터 챌린지" -> {
+                        binding.textView1.text = "${rank.rankingPoint}"
+                        binding.textView2.text = " / ${rank.standard} 일"
+                    }
 
-                    "한놈만 패! 챌린지" -> binding.textViewPoint.text = "${rank.standard} ${rank.rankingPoint} 회"
+                    "한놈만 패! 챌린지" -> {
+                        binding.textView1.apply {
+                            text = "${rank.standard}"
+                            textSize = 12f
+                        }
+                        binding.textView2.text = " ${rank.rankingPoint} 회"
+                    }
 
                 }
 
