@@ -125,7 +125,7 @@ class DiaryModel {
             Log.d(TAG, "setToEndOfDay: ${setToEndOfDay(endDate!!)}")
 
             //날짜 안에 있는 데이터만 추가
-            if(date.after(setToMidnight(startDate!!)) && date.before(setToEndOfDay(endDate!!))) {
+            if(date.after(setToMidnight(startDate)) && date.before(setToEndOfDay(endDate))) {
 
                 //날짜에 맞게 데이터 allExerciseMap에 넣기
                 allExerciseMap[poseExercise.exerciseName]?.add(poseExercise.exerciseCount.toFloat())
@@ -227,20 +227,5 @@ class DiaryModel {
         return retrofitInterface.getMyChallengeList(MyApplication.sharedPreferences.getUserId(),"getMyChallengeList")
 
     } // saveMyChallengeList()
-
-
-    //서버에서 받아온 챌린지 리스트를 싱글톤에 저장하는 메서드
-    fun getMyChallengeList(): ArrayList<Challenge> = myChallengeList
-    // saveMyChallengeList()
-
-
-    // 챌린지 리스트 초기화
-    fun setMyChallengeList(list: ArrayList<Challenge>){
-
-        myChallengeList.clear()
-        myChallengeList.addAll(list)
-
-    } //setMyChallengeList()
-
 
 }

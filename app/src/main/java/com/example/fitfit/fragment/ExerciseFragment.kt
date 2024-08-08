@@ -40,7 +40,7 @@ class ExerciseFragment : Fragment() {
 
     lateinit var dialog: AlertDialog
 
-    private val exerciseViewModel: ExerciseViewModel by viewModels()
+    private lateinit var exerciseViewModel: ExerciseViewModel
     var currentPage  = 0
 
     private lateinit var callback: OnBackPressedCallback
@@ -72,7 +72,7 @@ class ExerciseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
-        setClickListener()
+        setListener()
         startAutoScroll()
         setObserve()
 
@@ -104,7 +104,7 @@ class ExerciseFragment : Fragment() {
 
 
     // 클릭리스너 초기화
-    private fun setClickListener() {
+    private fun setListener() {
 
         // 오늘의 운동 시작 클릭 리스너
         binding.buttonStartTodayExercise.setOnClickListener {
@@ -170,7 +170,6 @@ class ExerciseFragment : Fragment() {
                     binding.viewPager.adapter!!.notifyDataSetChanged()
 
                     this.findNavController().navigate(R.id.action_exerciseFragment_to_DiaryFragment)
-//                    (activity as MainActivity).setNaviItem(R.id.diaryFragment)
 
                 }
 
@@ -190,7 +189,7 @@ class ExerciseFragment : Fragment() {
 
             while (true) {
 
-                delay(5000) // 3초 대기
+                delay(5000) // 5초 대기
 
                     if (currentPage == (binding.viewPager.adapter?.itemCount ?: (0 - 1))) { // 마지막 페이지 확인
 

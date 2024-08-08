@@ -74,6 +74,7 @@ class LoginFragment: Fragment() {
 
         setVariable()
 
+        /** 키값 스트링 파일로 **/
         // 네이버 로그인 SDK 초기화
         NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
 
@@ -199,17 +200,29 @@ class LoginFragment: Fragment() {
 
         // 소셜로그인 토근 제거시 사용
         val arguments = arguments
+
         if (arguments != null && arguments.containsKey("loginType")) {
+
             when (arguments.getString("loginType").toString()) {
+
                 "kakao" -> UserApiClient.instance.unlink { error ->
+
                     Log.d(TAG, "setIsWithdrawalSuccess: $error")
+
                 }
+
                 "naver" -> startNaverDeleteToken()
+
                 else -> {}
+
             }
+
         } else {
+
             Log.d(TAG, "No arguments provided")
+
         }
+
     } // setBundle()
 
 
@@ -224,8 +237,8 @@ class LoginFragment: Fragment() {
             when (it) {
 
                 "success" -> {
+
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    (activity as MainActivity).visibleBottomNavi()
 
                 }
 
@@ -299,59 +312,12 @@ class LoginFragment: Fragment() {
 
             }
         } else {
+
             // 카카오톡이 설치되어 있지 않다면 계정 로그인
             UserApiClient.instance.loginWithKakaoAccount(requireContext(),
                 callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
 
-//            UserApiClient.instance.loginWithKakaoAccount(requireContext()) { oAuthToken, throwable ->
-//                UserApiClient.instance.me { user, error ->
-//
-//                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
-//                    Log.d(TAG, "requestKaKaoLogin: $user")
-//
-//                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
-//
-//
-//                }
-//            }
         }
-
-
-        // 카카오톡 설치 확인
-//        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
-//
-//            // 카카오톡 로그인
-//            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-//
-//                Log.d(TAG, "requestKaKaoLogin: $token")
-//                Log.d(TAG, "requestKaKaoLogin: ${error?.message}")
-//
-//                when(loginViewModel.requestKakaoApplicationLogin(token, error!!)) {
-//
-//                    "errorUserCancel" -> return@loginWithKakaoTalk
-//
-//                    // 다른 에러가 있는 경우 카카오 계정 로그인으로 콜백
-//                "elseError" -> UserApiClient.instance.loginWithKakaoAccount(requireContext(),
-//                callback = loginViewModel.emailLoginCallback)
-//
-//                "successLogin" ->  Log.e(TAG, "로그인 성공 ${token?.accessToken}")
-//
-//                else -> {
-//                Log.d(TAG, "requestKaKaoLogin: 하이")}
-//
-//            }
-//
-//            }
-//
-//        }
-//
-//        // 카카오톡 설치 안된 경우 이메일 콜백 실행
-//        else {
-//
-//            UserApiClient.instance.loginWithKakaoAccount(requireContext(),
-//                callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
-//
-//        }
 
     } // setKaKaoLogin()
 
@@ -371,12 +337,7 @@ class LoginFragment: Fragment() {
 
         NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
 
-            override fun onSuccess() {
-
-                //서버에서 토큰 삭제에 성공한 상태입니다.
-                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
-
-            }
+            override fun onSuccess() {}
 
             override fun onFailure(httpStatus: Int, message: String) {
 

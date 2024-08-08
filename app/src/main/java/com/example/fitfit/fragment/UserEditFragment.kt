@@ -41,12 +41,19 @@ class UserEditFragment : Fragment() {
     lateinit var dialog: AlertDialog
     private lateinit var userEditViewModel: UserEditViewModel
 
-    private val activityResultImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val activityResultImage =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
         if (result.resultCode == Activity.RESULT_OK) {
+
             result.data?.data?.let { uri ->
+
                 userEditViewModel.setImageUri(uri,requireActivity())
+
             }
+
         }
+
     }
 
 

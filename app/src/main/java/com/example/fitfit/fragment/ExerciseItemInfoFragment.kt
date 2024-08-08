@@ -103,7 +103,6 @@ class ExerciseItemInfoFragment : Fragment() {
                 true -> {
 
                     findNavController().popBackStack()
-                    (activity as MainActivity).visibleBottomNavi()
 
                 }
 
@@ -126,6 +125,7 @@ class ExerciseItemInfoFragment : Fragment() {
 
         }
 
+        /****/
         exerciseItemInfoViewModel.isExerciseItemInfoPrimium.observe(viewLifecycleOwner) {
             
             if(it) {
@@ -136,6 +136,7 @@ class ExerciseItemInfoFragment : Fragment() {
 
         }
 
+        /****/
         exerciseItemInfoViewModel.isUserSubscribe.observe(viewLifecycleOwner) {
 
             // 유저 구독이 되어 있는 경우

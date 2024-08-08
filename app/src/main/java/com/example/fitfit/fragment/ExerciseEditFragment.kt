@@ -61,14 +61,6 @@ class ExerciseEditFragment : Fragment() {
         customDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_two_button,null,false)
         customNetworkDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_network_disconnect, null, false)
 
-        // 뷰모델 초기화
-        exerciseEditViewModel = ExerciseEditViewModel()
-
-        // xml 파일에 뷰모델 연결
-        binding.exerciseEditViewModel = exerciseEditViewModel
-
-        binding.lifecycleOwner = viewLifecycleOwner
-
         return binding.root
 
     } // onCreateView()
@@ -83,6 +75,7 @@ class ExerciseEditFragment : Fragment() {
         setObserve()
 
     } // onViewCreated
+
 
     // onDestroy()
     override fun onDestroy() {
@@ -99,6 +92,14 @@ class ExerciseEditFragment : Fragment() {
 
     // 변수 초기화 메서드
     private fun setVariable() {
+
+        // 뷰모델 초기화
+        exerciseEditViewModel = ExerciseEditViewModel()
+
+        // xml 파일에 뷰모델 연결
+        binding.exerciseEditViewModel = exerciseEditViewModel
+
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // 내 운동 리스트 리사이클러뷰
         myPoseExerciseAdapter =
@@ -193,11 +194,6 @@ class ExerciseEditFragment : Fragment() {
                 allLungeAdapter.notifyDataSetChanged()
                 allLegRaisesAdapter.notifyDataSetChanged()
 
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
-                }
-
             }
 
         }
@@ -217,11 +213,6 @@ class ExerciseEditFragment : Fragment() {
                     myPoseExerciseAdapter.notifyDataSetChanged()
                     allSquatAdapter.notifyDataSetChanged()
 
-                }
-                
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
                 }
 
             }
@@ -245,11 +236,6 @@ class ExerciseEditFragment : Fragment() {
 
                 }
 
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
-                }
-
             }
 
         }
@@ -271,10 +257,6 @@ class ExerciseEditFragment : Fragment() {
 
                 }
 
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
-                }
             }
 
         }

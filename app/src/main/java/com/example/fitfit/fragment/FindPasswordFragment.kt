@@ -211,10 +211,6 @@ class FindPasswordFragment : Fragment() {
 
                         (activity as MainActivity).goneBottomNavi()
 
-                    } else if (findPasswordViewModel.startingPoint.value == "userFragment") {
-
-                        (activity as MainActivity).visibleBottomNavi()
-
                     }
 
                 }

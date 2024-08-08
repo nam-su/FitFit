@@ -61,6 +61,7 @@ class ExerciseChoiceFragment : Fragment() {
     } // onViewCreated
 
 
+    /****/
     // onResume
     override fun onResume() {
         super.onResume()

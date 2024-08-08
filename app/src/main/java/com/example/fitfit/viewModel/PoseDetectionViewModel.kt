@@ -75,7 +75,7 @@ class PoseDetectionViewModel() : ViewModel() {
 
         viewModelScope.launch(Dispatchers.Main) {
 
-            cameraManager.openCamera(cameraManager.cameraIdList[0], object : CameraDevice.StateCallback() {
+            cameraManager.openCamera(cameraManager.cameraIdList[1], object : CameraDevice.StateCallback() {
 
                 @RequiresApi(Build.VERSION_CODES.P)
                 override fun onOpened(cameraDevice: CameraDevice) {
@@ -199,16 +199,5 @@ class PoseDetectionViewModel() : ViewModel() {
         }
 
     } // updatePoseExercise()
-
-
-    // ViewModel이 소멸될 때 호출되는 메서드
-    override fun onCleared() {
-        super.onCleared()
-
-        // 모델 리소스 해제
-        poseDetectionModel.close()
-        Log.d(TAG, "onCleared:모델 리소스 해제")
-
-    } // onCleared()
 
 }

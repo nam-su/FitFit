@@ -140,6 +140,7 @@ class DiaryFragment : Fragment() {
 
         // 시작 날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
+
             // 버튼을 클릭한 후 비활성화
             binding.buttonStartDate.isEnabled = false
             binding.buttonEndDate.isEnabled = false
@@ -149,13 +150,17 @@ class DiaryFragment : Fragment() {
 
             // BottomSheet가 닫힌 후 다시 활성화
             bottomSheetDiaryFragment.setOnDismissListener {
+
                 binding.buttonStartDate.isEnabled = true
                 binding.buttonEndDate.isEnabled = true
+
             }
+
         }
 
         // 마지막 날짜 선택 리스너
         binding.buttonEndDate.setOnClickListener {
+
             // 버튼을 클릭한 후 비활성화
             binding.buttonStartDate.isEnabled = false
             binding.buttonEndDate.isEnabled = false
@@ -168,6 +173,7 @@ class DiaryFragment : Fragment() {
                 binding.buttonStartDate.isEnabled = true
                 binding.buttonEndDate.isEnabled = true
             }
+
         }
 
     } //setListener()
@@ -237,8 +243,6 @@ class DiaryFragment : Fragment() {
 
             barDataSet.apply {
 
-
-
                 colors = colorList
                 //Setting the size of the form in the legend
                 formSize = 15f
@@ -249,7 +253,6 @@ class DiaryFragment : Fragment() {
                 valueTextSize = 12f
 
             }
-
 
             val barData = BarData(barDataSet)
             barData.setValueTypeface(Typeface.DEFAULT_BOLD)
@@ -365,7 +368,7 @@ class DiaryFragment : Fragment() {
             isEnabled = false
             setDrawLabels(true)
 
-            }
+         }
 
 
         barChart.legend.apply {

@@ -301,10 +301,5 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
 
     } // compareDate()
 
-
-    // 모델을 닫는 메서드
-    fun close() = model.close()
-    // close()
-
 }
 

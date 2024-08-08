@@ -160,6 +160,7 @@ class FindPasswordViewModel : ViewModel() {
     } // setOnNextButtonClick()
 
 
+    /****/
     // 아이디 중복 검사 메서드
     private suspend fun isEmailExist(id: String): Boolean {
 
@@ -184,6 +185,7 @@ class FindPasswordViewModel : ViewModel() {
     } // duplicateCheckId()
 
 
+    /****/
     // 비밀번호 변경
     private suspend fun passwordReset(id: String, password: String): Boolean {
 

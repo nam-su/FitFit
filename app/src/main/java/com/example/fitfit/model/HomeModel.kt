@@ -48,6 +48,7 @@ class HomeModel() {
 
     // 홈프래그먼트에 보여지는 랭킹 리스트 서버에서 불러오기
     suspend fun getRankingListToServer(id:String?, challengeName: String?, rakingPage: Int?): Response<ArrayList<Rank>>{
+
         retrofitBuilder = RetrofitBuilder()
         retrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
@@ -122,8 +123,9 @@ class HomeModel() {
     // getChallengeListToShared()
 
 
+    /****/
     //싱글톤 객체에서 baseUrl 받아오기
-    fun getBaseUrl(): String? = retrofitBuilder.baseUrl
+    fun getBaseUrl(): String = retrofitBuilder.baseUrl
     // getBaseUrl
 
 

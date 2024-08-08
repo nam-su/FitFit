@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
 
         setVariable()
         setObserve()
-        setClickListener()
+        setListener()
 
     } // onViewCreated()
 
@@ -139,7 +139,6 @@ class HomeFragment : Fragment() {
                 rankingList = homeViewModel.getRankingListToServer()
 
             }
-            //
 
             rankingList.let { list ->
 
@@ -226,8 +225,7 @@ class HomeFragment : Fragment() {
 
 
     // 클릭 리스너 초기화
-    private fun setClickListener() {
-
+    private fun setListener() {
 
         // 이번 주 운동량 체크 클릭 리스너
         binding.textViewAllExerciseCheck.setOnClickListener {

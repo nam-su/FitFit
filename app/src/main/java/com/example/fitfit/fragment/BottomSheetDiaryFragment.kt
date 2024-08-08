@@ -48,6 +48,8 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
     var startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
     var endDayDecorator = EndDayDecorator(viewModel.endDate.value!!)
 
+
+    /****/
     fun setOnDismissListener(listener: () -> Unit) {
         onDismissListener = listener
     }
@@ -97,7 +99,7 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
 
     } // onViewCreated()
 
-
+    /****/
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         onDismissListener?.invoke()
@@ -165,10 +167,12 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
         //선택 버튼 리스너
         binding.buttonSelect.setOnClickListener {
 
+            /****/
             if (mode == 0) {
 
                 viewModel.setStartDate(binding.calendarView.selectedDate.date)
 
+                /****/
             } else if (mode == 1) {
 
                 viewModel.setEndDate(binding.calendarView.selectedDate.date)
