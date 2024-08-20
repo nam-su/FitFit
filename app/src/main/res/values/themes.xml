@@ -5,5 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.FitFit" parent="Base.Theme.FitFit" />
+    <style name="Theme.FitFit" parent="Base.Theme.FitFit" >
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>
