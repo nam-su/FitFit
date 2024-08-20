@@ -186,8 +186,11 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:text="@string/dueDateText"
-                        style="@style/defaultPersonalTextStyle"
+                        android:layout_marginEnd="5dp"
+                        android:layout_gravity="center"
+                        style="@style/defaultBlackTextStyle"
                         android:textSize="16sp"/>
+
 
                     <TextView
                         android:id="@+id/textViewUserSubscription"
@@ -195,6 +198,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{userViewModel.subscription}"
                         style="@style/defaultBlackTextStyle"
+                        android:layout_gravity="center"
                         android:textSize="16sp" />
 
 

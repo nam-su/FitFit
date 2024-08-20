@@ -14,9 +14,6 @@ class FindPasswordModel {
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
-    var id = ""
-    var password = ""
-    var nickname = ""
     var randomString = ""
 
     /** 코드 만들어서 메일 보낸 시간 변수 **/

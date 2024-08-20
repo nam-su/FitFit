@@ -48,6 +48,8 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
     var startDayDecorator = StartDayDecorator(viewModel.startDate.value!!)
     var endDayDecorator = EndDayDecorator(viewModel.endDate.value!!)
 
+
+    /****/
     fun setOnDismissListener(listener: () -> Unit) {
         onDismissListener = listener
     }

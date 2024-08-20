@@ -301,7 +301,7 @@ class ExerciseEditFragment : Fragment() {
         }
 
         // 리스트 편집 후 완료 버튼 눌렀을 때
-        binding.textViewEditComplete.setOnClickListener {
+        binding.buttonComplete.setOnClickListener {
 
             // 인터넷 연결 안되어 있는 경우
             if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {

@@ -27,16 +27,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textViewEditComplete"
-            style="@style/defaultPersonalTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/complete"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/textViewEditComplete"-->
+<!--            style="@style/defaultPersonalTextStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="20dp"-->
+<!--            android:text="@string/complete"-->
+<!--            android:textSize="20sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/textViewMyExerciseList"
@@ -134,9 +134,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonComplete"
             app:layout_constraintEnd_toEndOf="@id/textViewSquat"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@id/textViewSquat"
@@ -149,9 +150,10 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonComplete"
             app:layout_constraintEnd_toEndOf="@id/textViewPushUp"
             app:layout_constraintStart_toStartOf="@+id/textViewPushUp"
             app:layout_constraintTop_toBottomOf="@id/textViewPushUp"
@@ -163,9 +165,10 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonComplete"
             app:layout_constraintEnd_toEndOf="@id/textViewLunge"
             app:layout_constraintStart_toStartOf="@id/textViewLunge"
             app:layout_constraintTop_toBottomOf="@id/textViewLunge"
@@ -177,13 +180,33 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonComplete"
             app:layout_constraintEnd_toEndOf="@id/textViewLegRaises"
             app:layout_constraintStart_toStartOf="@id/textViewLegRaises"
             app:layout_constraintTop_toBottomOf="@id/textViewLegRaises"
             tools:listitem="@layout/item_view_pose_exercise" />
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/complete"
+            android:background="@drawable/login_button"
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewAllLunge"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            style="@style/defaultWhiteTextStyle"
+            />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

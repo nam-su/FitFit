@@ -60,8 +60,8 @@ class SignUpViewModel : ViewModel() {
     val isEmailSend: LiveData<Boolean>
         get() = _isEmailSend
 
-    private val _isCodeValid = MutableLiveData<Boolean>()
-    val isCodeValid : LiveData<Boolean>
+    private val _isCodeValid = MutableLiveData<String>()
+    val isCodeValid : LiveData<String>
         get() = _isCodeValid
 
     private val _isNicknameValid = MutableLiveData<Boolean>()
@@ -111,6 +111,7 @@ class SignUpViewModel : ViewModel() {
 
                 Log.d(TAG, "보낸 인증코드: ${model.randomString}")
                 Log.d(TAG, "입력한 인증코드: $code")
+
                 when(isCodeValid(code)){
 
                     true -> {
@@ -325,14 +326,25 @@ class SignUpViewModel : ViewModel() {
 
             val currentTime = System.currentTimeMillis()
 
-            _isCodeValid.value = (currentTime - model.codeGeneratedTime) <= model.timeLimit * 1000
+            if((currentTime - model.codeGeneratedTime) <= model.timeLimit * 1000){
 
-        }else{
+                _isCodeValid.value = "true"
 
-            _isCodeValid.value = false
+                return true
+
+            }else{
+
+                _isCodeValid.value = "expired"
+
+            }
+
+        } else {
+
+            _isCodeValid.value = "wrong"
+
         }
 
-        return _isCodeValid.value!! // 1분(60초) 이내인지 확인
+        return false // 1분(60초) 이내인지 확인
 
     } // isCodeValid()
 
