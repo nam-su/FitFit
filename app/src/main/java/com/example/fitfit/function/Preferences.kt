@@ -27,8 +27,6 @@ import java.util.Locale
 
 class Preferences(context: Context) {
 
-    private val TAG = "쉐어드"
-
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
 
@@ -55,14 +53,12 @@ class Preferences(context: Context) {
     /** 오늘 수행한 운동 리스트**/
     private var todayUserExerciseList: ArrayList<PoseExercise> = ArrayList<PoseExercise>()
 
-
     // 현재 제공하는 모든 운동에 관한 내용 더미 데이터
     init {
 
         setAllExerciseItemInfoList()
 
     } // init()
-
     
     /**서버에서 받아온 유저의 checkList를 사용해서 allExerciseList를 초기화 하는 메서드**/
     fun setAllExerciseList(checkList: String) {
@@ -127,29 +123,13 @@ class Preferences(context: Context) {
 
             } as ArrayList<PoseExercise> // 필터링된 결과를 ArrayList로 변환합니다
 
-            for(poseExercise in todayUserExerciseList!!) {
-
-                Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseName}")
-                Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseCount}")
-                Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.date}")
-
-            }
-
-
             // 오늘 운동 데이터의 exerciseName을 키로 하는 Map을 생성합니다
             val poseExerciseMap = todayUserExerciseList!!.associateBy { it.exerciseName }
 
             // allExerciseList에서 exerciseName을 키로 하여 poseExercise 객체를 업데이트합니다
-
-            Log.d(TAG, "setTodayMyExerciseDataList: 리스트 사이즈 : ${allExerciseList.size}")
-            
             allExerciseList.forEach { allPoseExercise ->
 
-                Log.d(TAG, "setTodayMyExerciseDataList: 여기 들어오긴 함 ?")
-
                 poseExerciseMap[allPoseExercise.exerciseName]?.let { poseExercise ->
-
-                    Log.d(TAG, "setTodayMyExerciseDataList: 여기 들어오긴 함 ?")
 
                     // poseExercise의 속성을 allPoseExercise에 복사합니다
                     allPoseExercise.exerciseCount = poseExercise.exerciseCount
@@ -158,14 +138,6 @@ class Preferences(context: Context) {
                 }
                 
             }
-
-        for (poseExercise in allExerciseList) {
-
-            Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseName}")
-            Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.exerciseCount}")
-            Log.d(TAG, "setTodayMyExerciseDataList: ${poseExercise.date}")
-
-        }
 
     } // setTodayMyExerciseDataList()
 
@@ -307,12 +279,6 @@ class Preferences(context: Context) {
         userRecordExerciseList.clear()
         //리스트 추가
         userRecordExerciseList.addAll(exerciseList)
-
-        for (poseExercise in userRecordExerciseList) {
-
-            Log.d(TAG, "setUserAllExerciseList 운동 날짜: ${poseExercise.date}")
-
-        }
 
     } //setUserAllExerciseList()
 
@@ -466,10 +432,6 @@ class Preferences(context: Context) {
     fun getPoseExercise(exerciseName: String?): PoseExercise {
 
         val exerciseMap = myExerciseList.associateBy { it.exerciseName }
-
-        myExerciseList.forEach {
-            Log.d(TAG, "getPoseExercise: ${it.exerciseName}, ${it.date}")
-        }
 
         return exerciseMap[exerciseName]!!
 

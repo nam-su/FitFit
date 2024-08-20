@@ -203,5 +203,7 @@
     <string name="naverClientId">7M1HmHGA6kKvKrXgOScl</string>
     <string name="naverClientSecret">3so4YyCSuU</string>
     <string name="naverClientName">네이버아이디 로그인</string>
+    <string name="kakaoAppKey">d997bc71e6bb7cad42042752aa3d4f9f</string>
+    <string name="sender">fitfit240522@gmail.com</string>
 
 </resources>

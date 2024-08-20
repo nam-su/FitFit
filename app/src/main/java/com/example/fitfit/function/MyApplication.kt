@@ -1,7 +1,7 @@
 package com.example.fitfit.function
 
 import android.app.Application
-import android.util.Log
+import com.example.fitfit.R
 import com.kakao.sdk.common.KakaoSdk
 
 class MyApplication: Application() { // 쉐어드 싱글톤을 구현하기 위한 어플리케이션 클래스
@@ -17,7 +17,7 @@ class MyApplication: Application() { // 쉐어드 싱글톤을 구현하기 위�
 
         super.onCreate()
 
-        KakaoSdk.init(this, "d997bc71e6bb7cad42042752aa3d4f9f")
+        KakaoSdk.init(this, getString(R.string.kakaoAppKey))
         sharedPreferences = Preferences(applicationContext)
 
     } // onCreate()
