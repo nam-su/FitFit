@@ -132,6 +132,7 @@ class FindPasswordFragment : Fragment() {
 
                 }
 
+
             }
 
         }
@@ -267,15 +268,35 @@ class FindPasswordFragment : Fragment() {
 
         // 패스워드 일치 여부 관찰
         findPasswordViewModel.isPasswordCorrect.observe(viewLifecycleOwner) { setPasswordCorrect(it) }
+        
+        // 패스워드 중복 관찰
+        findPasswordViewModel.isPasswordDuplicated.observe(viewLifecycleOwner) {
+
+            if(it){
+
+                Toast.makeText(requireContext(), "기존 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
+                binding.editTextPassword.setText("")
+                binding.editTextReconfirmPassword.setText("")
+                binding.editTextReconfirmPassword.visibility = View.GONE
+                binding.textViewPasswordValid.text = ""
+                binding.textViewPasswordCorrect.text = ""
+                binding.buttonNext.isEnabled = false
+                binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)
+
+            }
+        }
 
         // 코드 유효성 관찰
         findPasswordViewModel.isCodeValid.observe(viewLifecycleOwner) {
 
             when (it) {
 
-                true -> Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
+                "true" -> Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
 
-                false -> Toast.makeText(requireContext(), getString(R.string.code_verification_failure),Toast.LENGTH_SHORT).show()
+                "wrong" -> Toast.makeText(requireContext(), getString(R.string.code_verification_failure),Toast.LENGTH_SHORT).show()
+
+                else -> Toast.makeText(requireContext(), getString(R.string.code_verification_resend),Toast.LENGTH_SHORT).show()
+
 
             }
 

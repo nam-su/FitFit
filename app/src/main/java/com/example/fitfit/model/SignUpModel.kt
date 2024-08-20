@@ -19,7 +19,7 @@ class SignUpModel {
     var codeGeneratedTime : Long = 0
 
     /** 초 단위 **/
-    var timeLimit = 60
+    var timeLimit = 180
 
 
     // 로그인 통신으로 result 값 확인

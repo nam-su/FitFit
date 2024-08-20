@@ -276,14 +276,11 @@ class SignUpFragment : Fragment() {
 
             when(it){
 
-                true ->  Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
+                "true" -> Toast.makeText(requireContext(), getString(R.string.code_verification_successful), Toast.LENGTH_SHORT).show()
 
-                false -> {
+                "wrong" -> Toast.makeText(requireContext(), getString(R.string.code_verification_failure),Toast.LENGTH_SHORT).show()
 
-                    Log.d(TAG, "setObserve: 또반복?")
-                    Toast.makeText(requireContext(), getString(R.string.code_verification_failure), Toast.LENGTH_SHORT).show()
-
-                }
+                else -> Toast.makeText(requireContext(), getString(R.string.code_verification_resend),Toast.LENGTH_SHORT).show()
 
             }
 

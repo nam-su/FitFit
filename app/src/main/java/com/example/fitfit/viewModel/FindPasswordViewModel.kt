@@ -14,6 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigInteger
 import kotlin.math.log
 import kotlin.time.ExperimentalTime
 
@@ -27,8 +28,8 @@ class FindPasswordViewModel : ViewModel() {
     val isEmailValid: LiveData<Boolean>
         get() = _isEmailValid
 
-    private val _isCodeValid = MutableLiveData<Boolean>()
-    val isCodeValid: LiveData<Boolean>
+    private val _isCodeValid = MutableLiveData<String>()
+    val isCodeValid: LiveData<String>
         get() = _isCodeValid
 
     private val _timerCount = MutableLiveData<Int>()
@@ -58,6 +59,10 @@ class FindPasswordViewModel : ViewModel() {
     private val _startingPoint = MutableLiveData<String>()
     val startingPoint: LiveData<String>
         get() = _startingPoint
+
+    private val _isPasswordDuplicated = MutableLiveData<Boolean>()
+    val isPasswordDuplicated: LiveData<Boolean>
+        get() = _isPasswordDuplicated
 
     private lateinit var job: Job
 
@@ -196,7 +201,10 @@ class FindPasswordViewModel : ViewModel() {
                 when(model.passwordResetProcess(id, password, "passwordUpdate")!!.result){
 
                     "success" -> true
-
+                    "duplicated" -> {
+                        _isPasswordDuplicated.postValue(true)
+                        false
+                    }
                     else -> false
 
                 }
@@ -223,15 +231,25 @@ class FindPasswordViewModel : ViewModel() {
 
             val currentTime = System.currentTimeMillis()
 
-            _isCodeValid.value = (currentTime - model.codeGeneratedTime) <= model.timeLimit * 1000
+            if((currentTime - model.codeGeneratedTime) <= model.timeLimit * 1000){
+
+                _isCodeValid.value = "true"
+
+                return true
+
+            }else{
+
+                _isCodeValid.value = "expired"
+
+            }
 
         } else {
 
-            _isCodeValid.value = false
+            _isCodeValid.value = "wrong"
 
         }
 
-        return _isCodeValid.value!! // 1분(60초) 이내인지 확인
+        return false // 1분(60초) 이내인지 확인
 
     } // isCodeValid()
 
