@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
-import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.adapter.PoseExerciseAdapter
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
@@ -26,8 +24,6 @@ import com.example.fitfit.viewModel.ExerciseEditViewModel
 
 
 class ExerciseEditFragment : Fragment() {
-
-    val TAG = "운동 편집 프래그먼트"
 
     private lateinit var binding: FragmentExerciseEditBinding
     private lateinit var exerciseEditViewModel: ExerciseEditViewModel
@@ -84,18 +80,6 @@ class ExerciseEditFragment : Fragment() {
 
     } // onViewCreated
 
-    // onDestroy()
-    override fun onDestroy() {
-        super.onDestroy()
-
-        exerciseEditViewModel.getSharedMyExerciseList().forEach {
-
-            Log.d(TAG, "편집 프래그먼트 종료될때 : ${it.exerciseName}")
-
-        }
-
-    } // onDestroy()
-
 
     // 변수 초기화 메서드
     private fun setVariable() {
@@ -141,7 +125,7 @@ class ExerciseEditFragment : Fragment() {
 
             if(!it) {
 
-                Toast.makeText(requireContext(),"최대 20개 이상의 운동까지 추가 가능합니다.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.maximumEditExercise),Toast.LENGTH_SHORT).show()
 
             }
 
@@ -154,14 +138,14 @@ class ExerciseEditFragment : Fragment() {
 
                 true -> {
 
-                    Toast.makeText(requireContext(), "내 운동 리스트가 변경 되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.changeMyExerciseList), Toast.LENGTH_SHORT).show()
                     exerciseEditViewModel.setUserCheckList()
                     exerciseEditViewModel.setMyPoseExerciseList()
                     findNavController().popBackStack()
 
                 }
 
-                    else -> Toast.makeText(requireContext(), "네트워크 연결이 원할하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    else -> Toast.makeText(requireContext(),getString(R.string.networkConnectionIsUnstable), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -193,11 +177,6 @@ class ExerciseEditFragment : Fragment() {
                 allLungeAdapter.notifyDataSetChanged()
                 allLegRaisesAdapter.notifyDataSetChanged()
 
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
-                }
-
             }
 
         }
@@ -210,18 +189,13 @@ class ExerciseEditFragment : Fragment() {
                 if(!exerciseEditViewModel.addExerciseItem(allSquatAdapter.poseExerciseList,position)) {
 
                     // 다이얼로그 띄워주기.
-                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
+                    setCustomDialog(getString(R.string.check),getString(R.string.canISubscribe))
 
                 } else {
 
                     myPoseExerciseAdapter.notifyDataSetChanged()
                     allSquatAdapter.notifyDataSetChanged()
 
-                }
-                
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
                 }
 
             }
@@ -236,18 +210,13 @@ class ExerciseEditFragment : Fragment() {
                 if(!exerciseEditViewModel.addExerciseItem(allPushUpAdapter.poseExerciseList,position)) {
 
                     // 다이얼로그 띄워주기.
-                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
+                    setCustomDialog(getString(R.string.check),getString(R.string.canISubscribe))
 
                 } else {
 
                     myPoseExerciseAdapter.notifyDataSetChanged()
                     allPushUpAdapter.notifyDataSetChanged()
 
-                }
-
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
                 }
 
             }
@@ -262,7 +231,7 @@ class ExerciseEditFragment : Fragment() {
                 if(!exerciseEditViewModel.addExerciseItem(allLungeAdapter.poseExerciseList,position)) {
 
                     // 다이얼로그 띄워주기.
-                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
+                    setCustomDialog(getString(R.string.check),getString(R.string.canISubscribe))
 
                 } else {
 
@@ -271,10 +240,6 @@ class ExerciseEditFragment : Fragment() {
 
                 }
 
-                /**오류 확인중**/
-                myPoseExerciseAdapter.poseExerciseList.forEach {
-                    Log.d(TAG, "편집 버튼 클릭 시 내 운동리스트 : ${it.exerciseName}")
-                }
             }
 
         }
@@ -287,7 +252,7 @@ class ExerciseEditFragment : Fragment() {
                 if(!exerciseEditViewModel.addExerciseItem(allLegRaisesAdapter.poseExerciseList,position)) {
 
                     // 다이얼로그 띄워주기.
-                    setCustomDialog("확인","구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?")
+                    setCustomDialog(getString(R.string.check),getString(R.string.canISubscribe))
 
                 } else {
 
@@ -312,7 +277,7 @@ class ExerciseEditFragment : Fragment() {
 
                 if(!exerciseEditViewModel.checkMyExerciseListSizeMin()) {
 
-                    Toast.makeText(requireContext(),"최소 3개 이상의 운동이 있어야 합니다.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.minimumEditExercise),Toast.LENGTH_SHORT).show()
 
                 } else {
 
@@ -348,7 +313,6 @@ class ExerciseEditFragment : Fragment() {
 
     //커스텀 다이얼로그 띄우기
     private fun setCustomDialog(buttonOkText: String, content:String){
-
 
         // 부모가 있는지 확인하고, 있다면 부모에서 제거
         customDialogBinding.root.parent?.let {

@@ -1,7 +1,6 @@
 package com.example.fitfit.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
@@ -19,8 +17,6 @@ import com.example.fitfit.viewModel.FindPasswordViewModel
 
 
 class FindPasswordFragment : Fragment() {
-
-    val TAG = "비밀번호 재설정 프래그먼트"
 
     private lateinit var binding: FragmentFindPasswordBinding
     private lateinit var findPasswordViewModel: FindPasswordViewModel
@@ -55,8 +51,6 @@ class FindPasswordFragment : Fragment() {
 
         findPasswordViewModel = FindPasswordViewModel()
 
-        Log.d(TAG, "setVariable: ${requireArguments().getString("startingPoint").toString()}")
-
         binding.findPasswordViewModel = findPasswordViewModel
 
         findPasswordViewModel.setStartingPoint(requireArguments().getString("startingPoint").toString())
@@ -72,7 +66,7 @@ class FindPasswordFragment : Fragment() {
 
             this.findNavController().navigate(R.id.action_findPasswordFragment_to_splashFragment)
 
-            Toast.makeText(requireContext(), "회원정보가 변경되었습니다. 다시 로그인 해 주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),getString(R.string.changeUserInfoReLoginPlease), Toast.LENGTH_SHORT).show()
 
         }
 
@@ -239,11 +233,13 @@ class FindPasswordFragment : Fragment() {
                 true -> {
 
                     binding.linearLayoutCode.visibility = View.VISIBLE
-                    Toast.makeText(requireContext(), "사용가능한 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.canUseEmail), Toast.LENGTH_SHORT).show()
 
                 }
 
-                false -> Toast.makeText(requireContext(), "이미 존재하는 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                false -> Toast.makeText(
+
+                    requireContext(),getString(R.string.alreadyExistEmail), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -256,12 +252,13 @@ class FindPasswordFragment : Fragment() {
 
                 true -> {
 
-                    Toast.makeText(requireContext(), "인증코드를 전송 했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.codeTransmission), Toast.LENGTH_SHORT).show()
+
                     binding.buttonNext.isEnabled = true
 
                 }
 
-                false -> Toast.makeText(requireContext(), "전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                false -> Toast.makeText(requireContext(), getString(R.string.failCodeTransmission), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -278,7 +275,10 @@ class FindPasswordFragment : Fragment() {
 
             if(it){
 
-                Toast.makeText(requireContext(), "기존 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().getString(R.string.cannotUseSamePassword), Toast.LENGTH_SHORT).show()
+
                 binding.editTextPassword.setText("")
                 binding.editTextReconfirmPassword.setText("")
                 binding.editTextReconfirmPassword.visibility = View.GONE

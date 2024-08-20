@@ -1,47 +1,23 @@
 package com.example.fitfit.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
-import com.example.fitfit.Decorator.AfterTodayDecorator
-import com.example.fitfit.Decorator.DayDecorator
-import com.example.fitfit.Decorator.EndDayDecorator
-import com.example.fitfit.Decorator.EventDecorator
-import com.example.fitfit.Decorator.SaturdayDecorator
-import com.example.fitfit.Decorator.SelectedMonthDecorator
-import com.example.fitfit.Decorator.StartDayDecorator
-import com.example.fitfit.Decorator.SundayDecorator
-import com.example.fitfit.Decorator.TodayDecorator
 import com.example.fitfit.R
 import com.example.fitfit.adapter.ChallengeListAdapter
-import com.example.fitfit.adapter.ExerciseChoiceAdapter
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.databinding.FragmentBottomSheetChallengeListBinding
-import com.example.fitfit.databinding.FragmentBottomSheetDiaryBinding
-import com.example.fitfit.viewModel.DiaryViewModel
-import com.example.fitfit.viewModel.ExerciseChoiceViewModel
 import com.example.fitfit.viewModel.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 class BottomSheetChallengeListFragment(private val homeViewModel: HomeViewModel) : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetChallengeListBinding
     lateinit var challengeListAdapter: ChallengeListAdapter
-
-    private val TAG = "바텀시트 챌린지 리스트 프래그먼트"
 
 
     // onCreateView

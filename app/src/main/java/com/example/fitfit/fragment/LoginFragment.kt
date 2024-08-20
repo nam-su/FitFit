@@ -25,7 +25,6 @@ import com.example.fitfit.viewModel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -33,7 +32,6 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 
 class LoginFragment: Fragment() {
 
-    val TAG = "로그인 프래그먼트"
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
 
@@ -67,7 +65,7 @@ class LoginFragment: Fragment() {
 
 
     // onCreateView
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
         customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
@@ -75,7 +73,10 @@ class LoginFragment: Fragment() {
         setVariable()
 
         // 네이버 로그인 SDK 초기화
-        NaverIdLoginSDK.initialize(activity as MainActivity, "7M1HmHGA6kKvKrXgOScl", "3so4YyCSuU","네이버아이디 로그인")
+        NaverIdLoginSDK.initialize(activity as MainActivity,
+            getString(R.string.naverClientId),
+            getString(R.string.naverClientSecret),
+            getString(R.string.naverClientName))
 
         setBundle()
 
@@ -199,16 +200,27 @@ class LoginFragment: Fragment() {
 
         // 소셜로그인 토근 제거시 사용
         val arguments = arguments
+
         if (arguments != null && arguments.containsKey("loginType")) {
+
             when (arguments.getString("loginType").toString()) {
+
                 "kakao" -> UserApiClient.instance.unlink { error ->
-                    Log.d(TAG, "setIsWithdrawalSuccess: $error")
+
+                    Log.d("TAG", "setIsWithdrawalSuccess: $error")
+
                 }
+
                 "naver" -> startNaverDeleteToken()
+
                 else -> {}
+
             }
+
         } else {
-            Log.d(TAG, "No arguments provided")
+
+            Log.d("TAG", "No arguments provided")
+
         }
     } // setBundle()
 
@@ -219,8 +231,6 @@ class LoginFragment: Fragment() {
         // 로그인 버튼 클릭 했을때
         loginViewModel.isSuccessLogin.observe(viewLifecycleOwner) {
 
-            Log.d(TAG, "setObserve: 일단 로그인 버튼 감지")
-            
             when (it) {
 
                 "success" -> {
@@ -229,13 +239,13 @@ class LoginFragment: Fragment() {
 
                 }
 
-                "failure" -> Toast.makeText(activity, "아이디 혹은 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT)
-                    .show()
+                "failure" -> Toast.makeText(requireContext(),
+                    getString(R.string.cannotLogin), Toast.LENGTH_SHORT).show()
 
-                "disconnect" -> Toast.makeText(activity, "인터넷 연결이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-                    .show()
+                "disconnect" -> Toast.makeText(requireContext(),
+                    getString(R.string.networkConnectionIsUnstable), Toast.LENGTH_SHORT).show()
 
-                "duplicatedId" -> Toast.makeText(activity, "이미 존재하는 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                "duplicatedId" -> Toast.makeText(requireContext(), getString(R.string.alreadyExistEmail), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -265,11 +275,6 @@ class LoginFragment: Fragment() {
             // 앱으로 로그인
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { oAuthToken, throwable ->
 
-                Log.d(TAG, "idToken: ${oAuthToken?.idToken}")
-                Log.d(TAG, "refreshToken: ${oAuthToken?.refreshToken}")
-                Log.d(TAG, "accessToken: ${oAuthToken?.accessToken}")
-                Log.d(TAG, "throwable: ${throwable}")
-
                 if(throwable != null){ // 오류가 있으면 웹으로 콜백
 
                     UserApiClient.instance.loginWithKakaoAccount(requireContext(),
@@ -281,13 +286,11 @@ class LoginFragment: Fragment() {
 
                         if(error != null){
 
-                            Log.d(TAG, "requestKaKaoLogin: 로그인 실패")
+                            Log.d("TAG", "requestKaKaoLogin: 로그인 실패")
 
                         }else{
 
                             /**서버에 로그인 또는 회원가입 하는 요청 필요**/
-                            Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
-
                             loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
 
                         }
@@ -299,59 +302,12 @@ class LoginFragment: Fragment() {
 
             }
         } else {
+
             // 카카오톡이 설치되어 있지 않다면 계정 로그인
             UserApiClient.instance.loginWithKakaoAccount(requireContext(),
                 callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
 
-//            UserApiClient.instance.loginWithKakaoAccount(requireContext()) { oAuthToken, throwable ->
-//                UserApiClient.instance.me { user, error ->
-//
-//                    Log.d(TAG, "requestKaKaoLogin: ${user?.kakaoAccount?.email}")
-//                    Log.d(TAG, "requestKaKaoLogin: $user")
-//
-//                    loginViewModel.socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
-//
-//
-//                }
-//            }
         }
-
-
-        // 카카오톡 설치 확인
-//        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
-//
-//            // 카카오톡 로그인
-//            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-//
-//                Log.d(TAG, "requestKaKaoLogin: $token")
-//                Log.d(TAG, "requestKaKaoLogin: ${error?.message}")
-//
-//                when(loginViewModel.requestKakaoApplicationLogin(token, error!!)) {
-//
-//                    "errorUserCancel" -> return@loginWithKakaoTalk
-//
-//                    // 다른 에러가 있는 경우 카카오 계정 로그인으로 콜백
-//                "elseError" -> UserApiClient.instance.loginWithKakaoAccount(requireContext(),
-//                callback = loginViewModel.emailLoginCallback)
-//
-//                "successLogin" ->  Log.e(TAG, "로그인 성공 ${token?.accessToken}")
-//
-//                else -> {
-//                Log.d(TAG, "requestKaKaoLogin: 하이")}
-//
-//            }
-//
-//            }
-//
-//        }
-//
-//        // 카카오톡 설치 안된 경우 이메일 콜백 실행
-//        else {
-//
-//            UserApiClient.instance.loginWithKakaoAccount(requireContext(),
-//                callback = loginViewModel.emailLoginCallback) // 카카오 이메일 로그인
-//
-//        }
 
     } // setKaKaoLogin()
 
@@ -366,17 +322,12 @@ class LoginFragment: Fragment() {
     } // startNaverLogin()
 
 
-    /** 네이버 아이디 토큰 삭제 정식 구현시 없어져야 함 **/
+    /** 네이버 아이디 토큰 삭제 **/
     private fun startNaverDeleteToken(){
 
         NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
 
-            override fun onSuccess() {
-
-                //서버에서 토큰 삭제에 성공한 상태입니다.
-                Toast.makeText(requireContext(), "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
-
-            }
+            override fun onSuccess() {}
 
             override fun onFailure(httpStatus: Int, message: String) {
 

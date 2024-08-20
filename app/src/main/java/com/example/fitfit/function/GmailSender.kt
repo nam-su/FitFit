@@ -11,8 +11,6 @@ import javax.mail.internet.MimeMessage
 
 class GmailSender : Authenticator() {
 
-    val TAG = "메일"
-
     // 보내는 사람 이메일과 비밀번호
     private val fromEmail = "fitfit240522@gmail.com"
     private val password = "mfiwglhmabywkdgb"
@@ -64,7 +62,7 @@ class GmailSender : Authenticator() {
             } catch (e: AuthenticationFailedException) {
 
                 // 앱 비밀번호가 틀린경우
-                Log.e(TAG, "Authentication failed: ${e.message}")
+                Log.e("TAG", "Authentication failed: ${e.message}")
 
             }
 

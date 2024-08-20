@@ -7,9 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfit.R
 import com.example.fitfit.data.Challenge
-import com.example.fitfit.data.Rank
 import com.example.fitfit.databinding.ItemViewChallengeListBinding
-import com.example.fitfit.databinding.ItemViewChallengeRankBinding
 
 class ChallengeListAdapter(private val challengeList: ArrayList<Challenge>): RecyclerView.Adapter<ChallengeListAdapter.ChallengeListViewHolder>() {
 

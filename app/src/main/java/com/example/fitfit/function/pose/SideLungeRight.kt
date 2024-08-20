@@ -4,9 +4,6 @@ import android.util.Log
 
 class SideLungeRight : Pose() {
 
-    private val TAG = "오른쪽 런지"
-
-
     // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
 
@@ -40,13 +37,9 @@ class SideLungeRight : Pose() {
             outputFeature0[37], outputFeature0[36]  // 오른쪽 골반
         )
 
-        Log.d(TAG, "각도 : 오른쪽 : $angleRight , 왼쪽 : $angleLeft")
-
         // 오른쪽 다리 각도 115 155
         // 앉은 상태 감지
         if (angleRight in 80.0..120.0 && angleLeft in 160.0..180.0 && !sit) {
-
-            Log.d(TAG, "상태: 앉은상태")
 
             // 잘못된 동작 없을 경우 앉은변수 true
             sit = true
@@ -55,8 +48,6 @@ class SideLungeRight : Pose() {
 
         // 선 상태 감지 및 카운트 증가
         if (angleRight in 160.0..180.0 && angleLeft in 160.0..180.0 && sit) {
-
-            Log.d(TAG, "상태: 앉았다가 선상태")
 
             sit = false
             stand = false

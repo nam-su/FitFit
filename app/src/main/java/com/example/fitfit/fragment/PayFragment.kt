@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
-import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentPayBinding
 import com.example.fitfit.function.MyApplication
@@ -31,8 +29,6 @@ import com.example.fitfit.viewModel.PayViewModel
 import kotlinx.coroutines.launch
 
 class PayFragment : Fragment() {
-
-    val TAG = "페이 프래그먼트"
 
     lateinit var binding: FragmentPayBinding
     lateinit var payViewModel: PayViewModel
@@ -117,9 +113,9 @@ class PayFragment : Fragment() {
 
             when(it) {
 
-                true -> Toast.makeText(requireActivity(), "결제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                true -> Toast.makeText(requireActivity(), getString(R.string.successPay), Toast.LENGTH_SHORT).show()
 
-                false ->  Toast.makeText(requireActivity(), "결제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                false ->  Toast.makeText(requireActivity(), getString(R.string.failPay), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -141,7 +137,7 @@ class PayFragment : Fragment() {
             // 인터넷 연결 o
             } else {
 
-                payViewModel.readyKakaoPay("하루 구독권",200)
+                payViewModel.readyKakaoPay(getString(R.string.oneDaySubscribeItem),200)
 
             }
 
@@ -157,7 +153,7 @@ class PayFragment : Fragment() {
             // 인터넷 연결 o
             } else {
 
-                payViewModel.readyKakaoPay("30일 구독권",4200)
+                payViewModel.readyKakaoPay(getString(R.string.monthSubscribeItem),4200)
 
             }
 
@@ -173,7 +169,7 @@ class PayFragment : Fragment() {
             // 인터넷 연결 o
             } else {
 
-                payViewModel.readyKakaoPay("일년 구독권",36500)
+                payViewModel.readyKakaoPay(getString(R.string.yearSubscribeItem),36500)
 
             }
 
@@ -194,11 +190,8 @@ class PayFragment : Fragment() {
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
 
             val url = request?.url.toString()
-            Log.d(TAG, "shouldOverrideUrlLoading: $url")
 
             if (url.startsWith("intent://")) {
-
-                Log.d(TAG, "shouldOverrideUrlLoading: intent")
 
                 try {
 
@@ -208,28 +201,19 @@ class PayFragment : Fragment() {
 
                 } catch (e: ActivityNotFoundException) {
 
-                    Toast.makeText(requireContext(),"카카오톡 설치 후 다시 시도해 주세요.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.tryAgainInstallKakaoTalk),Toast.LENGTH_SHORT).show()
+
                     findNavController().popBackStack()
 
                 }
 
             } else if (url.contains("pg_token=")) {
-                Log.d(TAG, "shouldOverrideUrlLoading: pgToken")
-                val pgToken = url.substringAfter("pg_token=")
 
-                Log.d(TAG, "shouldOverrideUrlLoading:피지토큰 :  $pgToken")
+                val pgToken = url.substringAfter("pg_token=")
 
                 lifecycleScope.launch {
                     payViewModel.updatePgToken(pgToken)
                 }
-
-            } else if (url.contains("cancel")) {
-
-                Log.d(TAG, "shouldOverrideUrlLoading: 캔슬")
-
-            } else if (url.contains("fail")) {
-
-                Log.d(TAG, "shouldOverrideUrlLoading: 실패")
 
             }
 

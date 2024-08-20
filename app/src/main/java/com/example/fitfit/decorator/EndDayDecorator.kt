@@ -1,4 +1,4 @@
-package com.example.fitfit.Decorator
+package com.example.fitfit.decorator
 
 import android.graphics.Color
 import android.text.style.ForegroundColorSpan

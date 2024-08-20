@@ -6,10 +6,8 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.SurfaceTexture
 import android.graphics.drawable.ColorDrawable
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
@@ -23,7 +21,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fitfit.R
-import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentPoseDetectionBinding
 import com.example.fitfit.function.MyApplication
@@ -36,8 +33,6 @@ import java.util.Locale
 import kotlin.reflect.KMutableProperty0
 
 class PoseDetectionFragment : Fragment() {
-
-    private val TAG = "포즈추정 프래그먼트"
 
     // 데이터 바인딩 객체
     private lateinit var binding: FragmentPoseDetectionBinding
@@ -199,8 +194,10 @@ class PoseDetectionFragment : Fragment() {
             if (isStartExercise) {
 
                 if (!accuracy && !isAccuracySpeakingCoolDown) {
-                    "동작을 감지할 수 없습니다".speak()
+
+                    getString(R.string.cannotDetectPose).speak()
                     triggerCoolDown(::isAccuracySpeakingCoolDown)
+
                 }
 
             }
@@ -214,7 +211,7 @@ class PoseDetectionFragment : Fragment() {
 
                 // 감지 리스너를 새로 초기화 해줘야 데이터가 중첩 안됨.
                 // 초기화 해주지 않으면 감지가 계속 호출될때 마다 변수 감지해서 중첩됨.
-                "운동이 끝났습니다".speak()
+                getString(R.string.endExercise).speak()
 
                 binding.textureView.surfaceTextureListener = null
 
@@ -250,7 +247,6 @@ class PoseDetectionFragment : Fragment() {
 
             override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
 
-                Log.d(TAG, "onSurfaceTextureAvailable")
                 poseDetectionViewModel.openCamera(binding.textureView)
                 initTextToSpeech()
 

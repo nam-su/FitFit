@@ -1,13 +1,11 @@
-package com.example.fitfit.Decorator
+package com.example.fitfit.decorator
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.fitfit.R
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
-import java.util.Date
 
 class TodayDecorator(private val context: Context) : DayViewDecorator {
 

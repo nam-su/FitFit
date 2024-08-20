@@ -3,7 +3,6 @@ package com.example.fitfit.fragment
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,12 +18,9 @@ import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.FragmentSignUpBinding
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.SignUpViewModel
-import kotlin.math.sign
 
 
 class SignUpFragment : Fragment() {
-
-    val TAG = "회원가입 프래그먼트"
 
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var signUpViewModel: SignUpViewModel
@@ -203,8 +199,6 @@ class SignUpFragment : Fragment() {
     // Observe 관련 메서드
     private fun setObserve() {
 
-        Log.d(TAG, "setObserve:")
-
         // 페이지 카운트 observe
         signUpViewModel.pageCount.observe(viewLifecycleOwner) { setPageCount(it)}
 
@@ -292,7 +286,7 @@ class SignUpFragment : Fragment() {
 
             if(it == 0) {
 
-                Toast.makeText(requireContext(), "코드를 재전송 해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.code_verification_resend), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -306,11 +300,11 @@ class SignUpFragment : Fragment() {
                 true -> {
 
                     binding.linearLayoutCode.visibility = View.VISIBLE
-                    Toast.makeText(requireContext(), "사용가능한 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.canUseEmail), Toast.LENGTH_SHORT).show()
 
                 }
 
-                false ->Toast.makeText(requireContext(), "이미 존재하는 이메일 입니다.", Toast.LENGTH_SHORT).show()
+                false ->Toast.makeText(requireContext(),getString(R.string.alreadyExistEmail), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -323,12 +317,12 @@ class SignUpFragment : Fragment() {
 
                 true -> {
 
-                    Toast.makeText(requireContext(), "인증코드를 전송 했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.codeTransmission), Toast.LENGTH_SHORT).show()
                     binding.buttonNext.isEnabled = true
 
                 }
 
-                false ->Toast.makeText(requireContext(), "전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                false ->Toast.makeText(requireContext(), getString(R.string.failCodeTransmission), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -348,9 +342,9 @@ class SignUpFragment : Fragment() {
 
             when(it){
 
-                true -> Toast.makeText(requireContext(), "사용 가능한 닉네임 입니다.", Toast.LENGTH_SHORT).show()
+                true -> Toast.makeText(requireContext(), getString(R.string.canUseNickname), Toast.LENGTH_SHORT).show()
 
-                false -> Toast.makeText(requireContext(), "이미 존재하는 닉네임 입니다.", Toast.LENGTH_SHORT).show()
+                false -> Toast.makeText(requireContext(), getString(R.string.alreadyExistNickname), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -363,12 +357,12 @@ class SignUpFragment : Fragment() {
 
                 true -> {
 
-                    Toast.makeText(requireContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.successSignUp), Toast.LENGTH_SHORT).show()
                     this.findNavController().popBackStack()
 
                 }
 
-                false -> Toast.makeText(requireContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                false -> Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -379,8 +373,6 @@ class SignUpFragment : Fragment() {
 
     // 페이지에 따른 View처리 정리
     private fun setPageCount(it:Int){
-
-        Log.d(TAG, "setObserve: ${signUpViewModel.pageCount.value}")
 
         binding.buttonNext.isEnabled = false
         binding.buttonNext.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.grey)

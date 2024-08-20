@@ -5,15 +5,12 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -25,8 +22,6 @@ import com.example.fitfit.databinding.FragmentExerciseItemInfoBinding
 import com.example.fitfit.viewModel.ExerciseItemInfoViewModel
 
 class ExerciseItemInfoFragment : Fragment() {
-
-    val TAG = "운동아이템정보 프래그먼트"
 
     lateinit var binding: FragmentExerciseItemInfoBinding
     lateinit var exerciseItemInfoViewModel: ExerciseItemInfoViewModel
@@ -190,8 +185,8 @@ class ExerciseItemInfoFragment : Fragment() {
         //뒷배경 투명으로 바꿔서 둥근모서리 보이게
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        customDialogBinding.textViewContent.text = "구독 후 이용 가능한 서비스 입니다."
-        customDialogBinding.textViewButtonOk.text = "확인"
+        customDialogBinding.textViewContent.text = getString(R.string.afterSubscribeService)
+        customDialogBinding.textViewButtonOk.text = getString(R.string.check)
         customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
 
         // 다이얼로그 확인 버튼 눌렀을 때

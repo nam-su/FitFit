@@ -1,4 +1,4 @@
-package com.example.fitfit.Decorator
+package com.example.fitfit.decorator
 
 import android.graphics.Color
 import android.text.style.ForegroundColorSpan
@@ -7,7 +7,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.Calendar
 
-class SaturdayDecorator : DayViewDecorator {
+class SundayDecorator : DayViewDecorator {
 
     private val calendar = Calendar.getInstance()
 
@@ -18,13 +18,13 @@ class SaturdayDecorator : DayViewDecorator {
 
         val weekDay = calendar[Calendar.DAY_OF_WEEK]
 
-        return weekDay == Calendar.SATURDAY
+        return weekDay == Calendar.SUNDAY
 
     } // shouldDecorate()
 
 
     // decorate 메서드
-    override fun decorate(view: DayViewFacade) = view.addSpan(ForegroundColorSpan(Color.BLUE))
+    override fun decorate(view: DayViewFacade) = view.addSpan(ForegroundColorSpan(Color.RED))
     // decorate()
 
 }

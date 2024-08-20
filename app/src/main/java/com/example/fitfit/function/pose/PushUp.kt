@@ -1,22 +1,14 @@
 package com.example.fitfit.function.pose
 
-import android.util.Log
-import kotlin.math.acos
-import kotlin.math.log
-import kotlin.math.pow
-import kotlin.math.sqrt
+
 
 class PushUp: Pose() {
-
-    private val TAG = "PushUp"
-
 
     // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean{
 
         checkBadPose = ""
 
-        Log.d(TAG, "posePushUp: 호출됌")
         var rightElbowBend = 0.0
         var rightKneeAngle = 0.0
 
@@ -62,9 +54,6 @@ class PushUp: Pose() {
          **/
         val isElbowExtend = rightElbowBend in 150.0..180.0
 
-
-        Log.d(TAG, "isElbowBend : $isElbowBend ")
-        Log.d(TAG, "isKneeBend : $isKneeBend")
         /**
          * 다리를 구부리지않고 팔꿈치가 40~60도로 들어왔다가 다시 ready 자세가 되면 true
          */
@@ -101,7 +90,6 @@ class PushUp: Pose() {
             
             if (rightKneeAngle != 0.0) {
 
-                Log.d(TAG, "posePushUp: $rightKneeAngle")
                 checkBadPose = "무릎을 일자로 펴주세요"
 
             }

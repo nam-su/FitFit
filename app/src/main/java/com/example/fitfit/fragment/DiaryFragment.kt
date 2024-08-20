@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +31,6 @@ import kotlinx.coroutines.launch
 
 
 class DiaryFragment : Fragment() {
-
-    private val TAG = "다이어리 프래그먼트"
 
     lateinit var binding: FragmentDiaryBinding
     lateinit var diaryViewModel: DiaryViewModel
@@ -112,8 +109,6 @@ class DiaryFragment : Fragment() {
                     // RecyclerView 설정
                     binding.recyclerView.adapter = challengeJoinAdapter
 
-                    Log.d(TAG, "setAdapter: ${challengeJoinAdapter?.itemCount}")
-
                     if(challengeJoinAdapter?.itemCount!! < 1) {
 
                         binding.textViewNonChallenge.visibility = View.VISIBLE
@@ -140,6 +135,7 @@ class DiaryFragment : Fragment() {
 
         // 시작 날짜 선택 리스너
         binding.buttonStartDate.setOnClickListener {
+
             // 버튼을 클릭한 후 비활성화
             binding.buttonStartDate.isEnabled = false
             binding.buttonEndDate.isEnabled = false
@@ -149,13 +145,17 @@ class DiaryFragment : Fragment() {
 
             // BottomSheet가 닫힌 후 다시 활성화
             bottomSheetDiaryFragment.setOnDismissListener {
+
                 binding.buttonStartDate.isEnabled = true
                 binding.buttonEndDate.isEnabled = true
+
             }
+
         }
 
         // 마지막 날짜 선택 리스너
         binding.buttonEndDate.setOnClickListener {
+
             // 버튼을 클릭한 후 비활성화
             binding.buttonStartDate.isEnabled = false
             binding.buttonEndDate.isEnabled = false
@@ -165,9 +165,12 @@ class DiaryFragment : Fragment() {
 
             // BottomSheet가 닫힌 후 다시 활성화
             bottomSheetDiaryFragment.setOnDismissListener {
+
                 binding.buttonStartDate.isEnabled = true
                 binding.buttonEndDate.isEnabled = true
+
             }
+
         }
 
     } //setListener()
@@ -202,12 +205,6 @@ class DiaryFragment : Fragment() {
 
         val filteredEntryList = diaryViewModel.getEntryArrayList().filter { it.y != 0f }
 
-        filteredEntryList.forEach{
-
-            Log.d(TAG, "setBarChart: ${it.x}, ${it.y}")
-
-        }
-
         //필터링안 데이터 비어있을때 안비어있을 때 처리
         if(filteredEntryList.isEmpty()) {
 
@@ -237,8 +234,6 @@ class DiaryFragment : Fragment() {
 
             barDataSet.apply {
 
-
-
                 colors = colorList
                 //Setting the size of the form in the legend
                 formSize = 15f
@@ -249,7 +244,6 @@ class DiaryFragment : Fragment() {
                 valueTextSize = 12f
 
             }
-
 
             val barData = BarData(barDataSet)
             barData.setValueTypeface(Typeface.DEFAULT_BOLD)

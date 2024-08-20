@@ -2,38 +2,31 @@ package com.example.fitfit.fragment
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.example.fitfit.Decorator.AfterTodayDecorator
-import com.example.fitfit.Decorator.DayDecorator
-import com.example.fitfit.Decorator.EndDayDecorator
-import com.example.fitfit.Decorator.EventDecorator
-import com.example.fitfit.Decorator.SaturdayDecorator
-import com.example.fitfit.Decorator.SelectedMonthDecorator
-import com.example.fitfit.Decorator.StartDayDecorator
-import com.example.fitfit.Decorator.SundayDecorator
-import com.example.fitfit.Decorator.TodayDecorator
+import com.example.fitfit.decorator.AfterTodayDecorator
+import com.example.fitfit.decorator.DayDecorator
+import com.example.fitfit.decorator.EndDayDecorator
+import com.example.fitfit.decorator.EventDecorator
+import com.example.fitfit.decorator.SaturdayDecorator
+import com.example.fitfit.decorator.SelectedMonthDecorator
+import com.example.fitfit.decorator.StartDayDecorator
+import com.example.fitfit.decorator.SundayDecorator
+import com.example.fitfit.decorator.TodayDecorator
 import com.example.fitfit.R
 import com.example.fitfit.databinding.FragmentBottomSheetDiaryBinding
 import com.example.fitfit.viewModel.DiaryViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private val mode: Int) : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetDiaryBinding
-
-    private val TAG = "바텀시트 다이어리 프래그먼트"
 
     private var onDismissListener: (() -> Unit)? = null
 
@@ -146,7 +139,6 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
             binding.calendarView.removeDecorators()
             binding.calendarView.invalidateDecorators()
             selectedMonthDecorator = SelectedMonthDecorator(requireContext(), date.month)
-            Log.d(TAG, "onMonthChanged: " + date.month)
 
             setDecorator()
 
@@ -154,8 +146,6 @@ class BottomSheetDiaryFragment(private val viewModel: DiaryViewModel, private va
 
         // 날짜 변경 리스너
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
-
-            Log.d(TAG, "setListener: ${date.date}")
 
             binding.buttonSelect.text = viewModel.changeYMDWFormat(date.date)
             binding.buttonSelect.backgroundTintList =
