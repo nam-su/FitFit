@@ -126,46 +126,6 @@ class LoginViewModel: ViewModel() {
 
     } // setSharedPreferencesUserInfo()
 
-
-<<<<<<< HEAD
-=======
-    // 카카오톡 어플이 있는 경우 카카오톡 로그인 요청
-    fun requestKakaoApplicationLogin(token: OAuthToken?, error: Throwable?): String {
-
-        val result = ""
-
-        // 로그인 성공 부분
-        if (token != null) {
-
-            return "successLogin"
-
-        }
-
-        // 로그인 실패 부분
-        else if (error != null) {
-
-            // 사용자가 취소
-            return if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-
-                "errorUserCancel"
-
-            }
-            // 다른 오류
-
-            else {
-
-                "elseError"// 카카오 이메일 로그인
-
-            }
-
-        }
-
-        return result
-
-    } // requestKakaoApplicationLogin()
-
-
->>>>>>> feature/Refactor
     // 카카오 이메일 로그인 콜백
     val emailLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
 

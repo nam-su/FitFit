@@ -208,11 +208,7 @@ class LoginFragment: Fragment() {
 
                 "kakao" -> UserApiClient.instance.unlink { error ->
 
-<<<<<<< HEAD
-                    Log.d(TAG, "setIsWithdrawalSuccess: $error")
-=======
                     Log.d("TAG", "setIsWithdrawalSuccess: $error")
->>>>>>> feature/Refactor
 
                 }
 
@@ -224,11 +220,7 @@ class LoginFragment: Fragment() {
 
         } else {
 
-<<<<<<< HEAD
-            Log.d(TAG, "No arguments provided")
-=======
             Log.d("TAG", "No arguments provided")
->>>>>>> feature/Refactor
 
         }
 

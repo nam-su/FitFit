@@ -103,25 +103,7 @@ class HomeViewModel: ViewModel() {
             return if(rankingList[rankingList.size-1].id == getUserId()) {
 
                 if(rankingList[rankingList.size-1].id == getUserId()) {
-<<<<<<< HEAD
 
-                    setUserRank(rankingList[rankingList.size-1])
-
-                } else {
-
-                    _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
-
-                }
-
-                ArrayList(rankingList.subList(0,rankingList.size-1))
-
-            } else {
-
-                _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
-                ArrayList(rankingList.subList(0,rankingList.size))
-
-=======
-                    setUserRank(rankingList[rankingList.size-1])
                 }else{
                     _userRankText.value = homeModel.stringResource.joinChallenge
                 }
@@ -130,20 +112,16 @@ class HomeViewModel: ViewModel() {
             }else{
                 _userRankText.value = homeModel.stringResource.joinChallenge
                 return ArrayList(rankingList.subList(0,rankingList.size))
->>>>>>> feature/Refactor
+
             }
 
             // 나머지 요소들을 rankingArrayList에 설정
 
-<<<<<<< HEAD
-        } else {
 
-            _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
+        } else{
 
-=======
-        }else{
             _userRankText.value = homeModel.stringResource.joinChallenge
->>>>>>> feature/Refactor
+
         }
 
         return arrayListOf()

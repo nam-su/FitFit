@@ -115,7 +115,7 @@ class DiaryModel {
             val date = setToNoon(Date.from(instant))
 
             //날짜 안에 있는 데이터만 추가
-            if(date.after(setToMidnight(startDate)) && date.before(setToEndOfDay(endDate))) {
+            if(date.after(setToMidnight(startDate!!)) && date.before(setToEndOfDay(endDate!!))) {
 
                 //날짜에 맞게 데이터 allExerciseMap에 넣기
                 allExerciseMap[poseExercise.exerciseName]?.add(poseExercise.exerciseCount.toFloat())

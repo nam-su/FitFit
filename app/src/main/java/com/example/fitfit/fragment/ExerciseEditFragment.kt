@@ -72,23 +72,6 @@ class ExerciseEditFragment : Fragment() {
 
     } // onViewCreated
 
-<<<<<<< HEAD
-
-    // onDestroy()
-    override fun onDestroy() {
-        super.onDestroy()
-
-        exerciseEditViewModel.getSharedMyExerciseList().forEach {
-
-            Log.d(TAG, "편집 프래그먼트 종료될때 : ${it.exerciseName}")
-
-        }
-
-    } // onDestroy()
-
-=======
->>>>>>> feature/Refactor
-
     // 변수 초기화 메서드
     private fun setVariable() {
 

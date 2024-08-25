@@ -196,17 +196,4 @@ class PoseDetectionViewModel() : ViewModel() {
 
     } // updatePoseExercise()
 
-<<<<<<< HEAD
-=======
-
-    // ViewModel이 소멸될 때 호출되는 메서드
-    override fun onCleared() {
-        super.onCleared()
-
-        // 모델 리소스 해제
-        poseDetectionModel.close()
-
-    } // onCleared()
-
->>>>>>> feature/Refactor
 }
