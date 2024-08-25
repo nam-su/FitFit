@@ -8,15 +8,10 @@ import retrofit2.Response
 
 class UserModel {
 
-    private val TAG = "유저 모델"
-
-
-
     var id = ""
     var password = ""
     var nickname = ""
     var randomString = ""
-
 
     // 회원 탈퇴 통신 으로 result 값 확인
     suspend fun withdrawalProcess(id: String, mode: String): Response<User> {

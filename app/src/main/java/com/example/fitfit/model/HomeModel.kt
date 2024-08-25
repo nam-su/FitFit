@@ -6,6 +6,7 @@ import com.example.fitfit.function.MyApplication
 import com.example.fitfit.data.ExerciseDiary
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.Rank
+import com.example.fitfit.function.StringResource
 import com.example.fitfit.function.pose.Pose
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
@@ -17,8 +18,6 @@ import java.util.Locale
 
 class HomeModel() {
 
-    val TAG = "홈 모델"
-
     // 오늘 날짜 기준 일주일 날짜 리스트
     var userRecordExerciseList: ArrayList<PoseExercise>? = null
 
@@ -26,6 +25,8 @@ class HomeModel() {
 
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInterface
+
+    val stringResource = StringResource.HomeModelStringResource
 
 
     // 홈에서 이번주 운동 상태 관련 메시지 정보
@@ -98,7 +99,6 @@ class HomeModel() {
 
                 }
 
-                Log.d(TAG, "setWeek: Date=$date, hasRecord=$hasRecord")
                 exerciseDiaryList.add(ExerciseDiary(element, hasRecord))
                 MyApplication.sharedPreferences.setExerciseDiaryList(exerciseDiaryList)
 
@@ -111,8 +111,6 @@ class HomeModel() {
             exerciseDiaryList = MyApplication.sharedPreferences.getExerciseDiaryList()!!
 
         }
-
-        Log.d(TAG, "setWeek: ${exerciseDiaryList.size}")
 
     } // setWeek()
 

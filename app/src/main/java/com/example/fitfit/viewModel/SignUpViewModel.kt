@@ -13,8 +13,6 @@ import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
 
-    val TAG = "회원가입 뷰모델"
-
     private val model = SignUpModel()
     private val _pageCount: MutableLiveData<Int> = MutableLiveData(1)
     val pageCount: LiveData<Int>
@@ -99,7 +97,6 @@ class SignUpViewModel : ViewModel() {
     //다음 버튼 클릭
     fun setOnButtonNextClick(email:String, code:String,password: String,nickname: String){
 
-        Log.d(TAG, "setOnButtonNextClick: ${_course.value}")
         //현재 진행상황에 따라 버튼 클릭을 다르게 적용
         when(_course.value){
 
@@ -109,16 +106,12 @@ class SignUpViewModel : ViewModel() {
             //진행상황이 이메일 인증일때
             "emailAuthentication" -> {
 
-                Log.d(TAG, "보낸 인증코드: ${model.randomString}")
-                Log.d(TAG, "입력한 인증코드: $code")
-
                 when(isCodeValid(code)){
 
                     true -> {
 
                         _pageCount.value = _pageCount.value!! + 1
                         _signUpEmail.value = email
-                        Log.d(TAG, "뷰모델: 요기")
                         timerStop()
 
                     }
@@ -126,7 +119,6 @@ class SignUpViewModel : ViewModel() {
                     false -> {
 
                         _signUpEmail.value = ""
-                        Log.d(TAG, "뷰모델: 유효x")
 
                     }
 
@@ -293,10 +285,6 @@ class SignUpViewModel : ViewModel() {
 
     // 완료버튼 ( 서버 저장 + 로그인 프래그먼트로 이동)
     fun setOnButtonCompleteClick(email: String,password: String,nickname: String){
-
-        Log.d(TAG, "setOnButtonCompleteClick: $email")
-        Log.d(TAG, "setOnButtonCompleteClick: $password")
-        Log.d(TAG, "setOnButtonCompleteClick: $nickname")
 
         viewModelScope.launch {
 

@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class ExerciseViewModel: ViewModel() {
 
-    private val TAG = "운동 뷰모델"
     private val exerciseModel = ExerciseModel()
 
     private var _joinResult = MutableLiveData<String>()
@@ -48,10 +47,7 @@ class ExerciseViewModel: ViewModel() {
 
             val response = exerciseModel.challengeJoin(challenge)
 
-            Log.d(TAG, "challengeJoin: ${response?.isSuccessful}")
-            Log.d(TAG, "challengeJoin: ${response?.body()!!.result}")
-
-            if(response.isSuccessful && response.body() != null){
+            if(response!!.isSuccessful && response.body() != null){
 
                _joinResult.value = response.body()!!.result.toString()
 

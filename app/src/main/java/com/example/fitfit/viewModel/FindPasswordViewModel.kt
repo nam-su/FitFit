@@ -20,8 +20,6 @@ import kotlin.time.ExperimentalTime
 
 class FindPasswordViewModel : ViewModel() {
 
-    val TAG = "회원가입 뷰모델"
-
     private val model = FindPasswordModel()
 
     private val _isEmailValid = MutableLiveData<Boolean>()

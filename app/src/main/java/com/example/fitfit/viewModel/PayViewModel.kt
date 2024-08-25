@@ -13,8 +13,6 @@ import kotlinx.coroutines.launch
 
 class PayViewModel: ViewModel() {
 
-    private val TAG = "페이 뷰모델"
-
     private val payModel = PayModel()
 
     private val _kakaoPaymentReadyResponse = MutableLiveData<PaymentReadyResponse>()
@@ -37,11 +35,11 @@ class PayViewModel: ViewModel() {
 
        days = when(itemName){
 
-           "하루 구독권" -> 1
+           payModel.stringResource.oneDaySubscribe -> 1
 
-           "30일 구독권" -> 30
+           payModel.stringResource.monthSubscribe -> 30
 
-           "일년 구독권" -> 365
+           payModel.stringResource.yearSubscribe -> 365
 
            else -> 0
 
@@ -61,30 +59,21 @@ class PayViewModel: ViewModel() {
                 total_amount = itemPrice,
                 vat_amount = 0,
                 tax_free_amount = 0,
-                approval_url = "http://54.180.227.75/pay_test.php",
-                fail_url = "http://54.180.227.75/pay_fail.php",
-                cancel_url="http://54.180.227.75/pay_cancel.php"
+                approval_url = payModel.stringResource.approval_url,
+                fail_url = payModel.stringResource.fail_url,
+                cancel_url= payModel.stringResource.cancel_url
 
             )
 
             val response = payModel.readyKakaoPay(paymentReadyRequest)
 
-            Log.d(TAG, "readyKakaoPay: ${response.code()}")
-            Log.d(TAG, "readyKakaoPay: ${response.errorBody()}")
-
-            Log.d(TAG, "readyKaKaoPay: ${response.message()}")
-            Log.d(TAG, "readyKaKaoPay: ${response.isSuccessful}")
-            Log.d(TAG, "readyKaKaoPay: ${response.body()}")
-
             if(response.isSuccessful && response.body() != null) {
 
-                Log.d(TAG, "readyKakaoPay: 통신 성공")
                 _kakaoPaymentReadyResponse.value = response.body()
 
                 // 통신 실패의 경우
             } else {
 
-                Log.d(TAG, "readyKakaoPay: 통신 실패")
 
             }
 
@@ -105,10 +94,6 @@ class PayViewModel: ViewModel() {
             )
 
             val pgTokenResponse = payModel.approveKakaoPay(paymentApproveRequest)
-
-            Log.d(TAG, "updatePgToken: ${pgTokenResponse.code()}")
-            Log.d(TAG, "updatePgToken: ${pgTokenResponse.isSuccessful}")
-            Log.d(TAG, "updatePgToken: ${pgTokenResponse.body()}")
 
             if(pgTokenResponse.isSuccessful && pgTokenResponse.body() != null){
 

@@ -11,8 +11,6 @@ import retrofit2.Response
 
 class LoginModel {
 
-    private val TAG = "로그인 모델"
-
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 

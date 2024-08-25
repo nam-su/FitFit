@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.StringResource
 import com.example.fitfit.function.pose.LeftLegRaises
 import com.example.fitfit.function.pose.LegRaises
 import com.example.fitfit.function.pose.Lunge
@@ -34,8 +35,6 @@ import java.time.format.DateTimeFormatter
 
 class PoseDetectionModel(context: Context,var exerciseName: String) {
 
-    private val TAG = "포즈 추정 모델"
-
     // 이미지 처리를 위한 ImageProcessor 초기화
     private val imageProcessor: ImageProcessor = ImageProcessor.Builder()
         .add(ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR))
@@ -58,28 +57,30 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
     // 자세불량을 판별하는 변수
     var checkBadPose = ""
 
+    private val stringResource = StringResource.PoseDetectionModelStringResource
+
     init {
 
         // 운동 이름에 따른 객체 초기화 진행
         when(exerciseName) {
 
-            "기본 스쿼트" -> pose = Squat()
+            stringResource.basicSquat -> pose = Squat()
 
-            "기본 푸시업" -> pose = PushUp()
+            stringResource.basicPushUp -> pose = PushUp()
 
-            "기본 런지" -> pose = Lunge()
+            stringResource.basicLunge -> pose = Lunge()
 
-            "와이드 스쿼트" -> pose = WideSquat()
+            stringResource.wideSquat -> pose = WideSquat()
 
-            "왼쪽 런지" -> pose = SideLungeLeft()
+            stringResource.leftLunge -> pose = SideLungeLeft()
 
-            "오른쪽 런지" -> pose = SideLungeRight()
+            stringResource.rightLunge -> pose = SideLungeRight()
 
-            "기본 레그레이즈" -> pose = LegRaises()
+            stringResource.basicLegRaises -> pose = LegRaises()
 
-            "왼쪽 레그레이즈" -> pose = LeftLegRaises()
+            stringResource.leftLegRaises -> pose = LeftLegRaises()
 
-            "오른쪽 레그레이즈" -> pose = RightLegRaises()
+            stringResource.rightLegRaises -> pose = RightLegRaises()
 
         }
 
@@ -91,25 +92,25 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
 
         return when(exerciseName) {
 
-            "기본 스쿼트" -> "기본 스쿼트 시작합니다. 양발의 간격은 어깨넓이로 벌리고 카메라를 기준으로 45도 오른쪽을 보고 서주세요."
+            stringResource.basicSquat -> stringResource.startBasicSquat
 
-            "기본 푸시업" -> "기본 푸시업 시작합니다. 팔을 어깨너비보다 약간 넓게 벌린 상태로 카메라를 기준으로 45도 오른쪽을 보고 엎드려 주세요."
+            stringResource.basicPushUp -> stringResource.startBasicPushUp
 
-            "기본 런지" -> "기본 런지 시작합니다. 두 발을 골반 너비로 벌린 후 카메라 기준으로 왼쪽을 보고 서주세요."
+            stringResource.basicLunge -> stringResource.startBasicLunge
 
-            "와이드 스쿼트" -> "와이드 스쿼트 시작합니다. 다리를 어깨너비 보다 넓게 벌리고 양쪽 발끝은 밖으로 향한 후 카메라를 보고 정면으로 서주세요."
+            stringResource.wideSquat -> stringResource.startWideSquat
 
-            "왼쪽 런지" -> "왼쪽 런지 시작합니다. 두 발을 골반너비로 벌린 자세로 카메라 기준으로 왼쪽을 보고 서주세요."
+            stringResource.leftLunge -> stringResource.startLeftLunge
 
-            "오른쪽 런지" -> "오른쪽 런지 시작합니다. 두 발을 골반너비로 벌린 자세로 카메라 기준으로 왼쪽을 보고 서주세요."
+            stringResource.rightLunge -> stringResource.startRightLunge
 
-            "기본 레그레이즈" -> "기본 레그레이즈 시작합니다. 손바닥을 지면에 대고 바른 자세로 카메라 기준 왼쪽으로 누워 주세요."
+            stringResource.basicLegRaises -> stringResource.startBasicLegRaises
 
-            "왼쪽 레그레이즈" -> "왼쪽 레그레이즈 시작합니다. 손에 머리를 기대고 시선을 옆방향에 두고 카메라 기준 왼쪽으로 누워 주세요."
+            stringResource.leftLegRaises -> stringResource.leftLegRaises
 
-            "오른쪽 레그레이즈" -> "오른쪽 레그레이즈 시작합니다. 손에 머리를 기대고 시선을 옆방향에 두고 카메라 기준 왼쪽으로 누워 주세요."
+            stringResource.rightLegRaises -> stringResource.rightLegRaises
 
-            else -> "잘못된 운동 입니다."
+            else -> stringResource.etc
 
         }
 
@@ -265,13 +266,9 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
 
         val previousDate = date.format(formatter)
         val currentDate = LocalDate.now().format(formatter)
-        Log.d(TAG, "서버에 저장되있는 날짜: $previousDate")
-        Log.d(TAG, "오늘날짜: $currentDate")
 
         // 이전 날짜와 현재 날짜가 같은 경우. 카운트 + 해준다
         return if (previousDate == currentDate) {
-
-            Log.d(TAG, "isSameDate: same")
 
             poseExercise.exerciseCount += count
             poseExercise.date = System.currentTimeMillis()
@@ -284,9 +281,6 @@ class PoseDetectionModel(context: Context,var exerciseName: String) {
 
             // 이전 날짜와 현재 날짜가 다른 경우 방금한 운동이 카운트로 초기화됨.
         } else {
-
-            Log.d(TAG, "isSameDate: differ")
-
 
             poseExercise.exerciseCount = count
             poseExercise.date = System.currentTimeMillis()

@@ -26,8 +26,6 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel: ViewModel() {
 
-    val TAG = "로그인 뷰모델"
-
     private val loginModel = LoginModel()
 
     private val _isSuccessLogin = MutableLiveData<String>()
@@ -48,10 +46,6 @@ class LoginViewModel: ViewModel() {
 
             val response = loginModel.login(id,password,"","login")
 
-            Log.d(TAG, "login: ${response.message()}")
-            Log.d(TAG, "login: ${response.isSuccessful}")
-            Log.d(TAG, "login: ${response.body()}")
-
             if(response.isSuccessful && response.body() != null) {
 
                 val user = response.body()!!
@@ -71,9 +65,6 @@ class LoginViewModel: ViewModel() {
             // 통신 실패의 경우
             } else {
 
-                Log.d(TAG, "login: ${response.message()}")
-                Log.d(TAG, "login: ${response.isSuccessful}")
-                Log.d(TAG, "login: ${response.body()}")
                 _isSuccessLogin.value = "disconnect"
 
             }
@@ -89,10 +80,6 @@ class LoginViewModel: ViewModel() {
         viewModelScope.launch {
 
             val response = loginModel.socialLogin(id,loginType)
-
-            Log.d(TAG, "socialLogin: ${response.message()}")
-            Log.d(TAG, "socialLogin: ${response.isSuccessful}")
-            Log.d(TAG, "socialLogin: ${response.body()}")
 
             if(response.isSuccessful && response.body() != null) {
 
@@ -115,9 +102,6 @@ class LoginViewModel: ViewModel() {
                 // 통신 실패의 경우
             } else {
 
-                Log.d(TAG, "login: ${response.message()}")
-                Log.d(TAG, "login: ${response.isSuccessful}")
-                Log.d(TAG, "login: ${response.body()}")
                 _isSuccessLogin.value = "disconnect"
 
             }
@@ -146,7 +130,6 @@ class LoginViewModel: ViewModel() {
     // 카카오톡 어플이 있는 경우 카카오톡 로그인 요청
     fun requestKakaoApplicationLogin(token: OAuthToken?, error: Throwable?): String {
 
-        Log.d(TAG, "requestKakaoApplicationLogin: $error")
         val result = ""
 
         // 로그인 성공 부분
@@ -158,8 +141,6 @@ class LoginViewModel: ViewModel() {
 
         // 로그인 실패 부분
         else if (error != null) {
-
-            Log.e(TAG, "로그인 실패 $error")
 
             // 사용자가 취소
             return if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
@@ -185,27 +166,19 @@ class LoginViewModel: ViewModel() {
     // 카카오 이메일 로그인 콜백
     val emailLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
 
-        Log.d(TAG, "이메일 로그인 콜백: ")
-        Log.d(TAG, "에러: $error ")
-
         if (error != null) {
 
-            Log.e(TAG, "로그인 실패 $error")
 
         } else if (token != null) {
-
-            Log.e(TAG, "로그인 성공 ${token.accessToken}")
 
             UserApiClient.instance.me { user, error ->
 
                 if(error != null) {
 
-                    Log.d(TAG, "유저정보 읽어오기 실패: ")
+                    Log.e("TAG", ": $error")
 
                 } else {
 
-                    Log.d(TAG, "유저 아이디 : ${user?.id}")
-                    Log.d(TAG, "유저 이메일 : ${user?.kakaoAccount?.email}")
                     socialLogin(user?.kakaoAccount?.email.toString(),"kakao")
 
                 }
@@ -230,9 +203,6 @@ class LoginViewModel: ViewModel() {
                 val userId = result.profile?.id
                 val userEmail = result.profile?.email
 
-                Log.d(TAG, "onSuccess:id: $userId \\ntoken: $naverToken")
-                Log.d(TAG, "onSuccess: 이메일 : $userEmail")
-
                 socialLogin(userEmail.toString(), "naver")
 
             }
@@ -242,8 +212,6 @@ class LoginViewModel: ViewModel() {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
 
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-
-                Log.d(TAG, "onFailure:  ${errorCode}\\n\" +\n" +"\"errorDescription: ${errorDescription}\"")
 
             }
 
@@ -261,8 +229,6 @@ class LoginViewModel: ViewModel() {
             override fun onSuccess() {
 
                 // 네이버 로그인 인증이 성공했을 때 수행할 코드 추가
-                Log.d(TAG, "onSuccess: 로그인 인증이 성공 했을 때")
-
                 naverToken = NaverIdLoginSDK.getAccessToken()
 
                 //로그인 유저 정보 가져오기
@@ -275,8 +241,6 @@ class LoginViewModel: ViewModel() {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
 
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-
-                Log.d(TAG, "onFailure:  ${errorCode}\\n\" +\n" +"\"errorDescription: ${errorDescription}\"")
 
             }
 
@@ -319,15 +283,11 @@ class LoginViewModel: ViewModel() {
              * account.email이 서버에 존재하지 않으면 회원가입 진행
              * account.email이 서버에 존재하면 로그인 진행 **/
 
-            Log.d(TAG, "로그인 성공: ${account.email}")
-
             socialLogin(account.email.toString(),"google")
 
             _googleLoginResult.value = "success"
 
         } catch (e: ApiException) {
-
-            Log.e(TAG, "로그인 실패: ${e.statusCode}", e)
 
             _googleLoginResult.value = "failure"
 

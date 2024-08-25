@@ -10,6 +10,35 @@ public class StringResource {
 
     }
 
+    // 레트로핏 클래스
+    object RetrofitStringResource {
+
+        const val baseUrl = "http://15.164.49.94/"
+        const val KAKAOPAY_SECRET_KEY = "DEVF70FE81BA55A6924A2361A24B570781466812"
+
+    }
+
+    // 운동명 사용
+    object ExerciseNames {
+
+        const val squat = "스쿼트"
+        const val pushUp = "푸시업"
+        const val lunge = "런지"
+        const val legRaises = "레그레이즈"
+        const val basicSquat = "기본 스쿼트"
+        const val basicPushUp = "기본 푸시업"
+        const val basicLunge = "기본 런지"
+        const val basicLegRaises = "기본 레그레이즈"
+        const val wideSquat = "와이드 스쿼트"
+        const val leftLegRaises = "왼쪽 레그레이즈"
+        const val leftLunge = "왼쪽 런지"
+        const val rightLegRaises = "오른쪽 레그레이즈"
+        const val rightLunge = "오른쪽 런지"
+        const val up = "상체"
+        const val down = "하체"
+
+    }
+
     // preferences 클래스
     object PreferencesStringResource {
 
@@ -56,5 +85,68 @@ public class StringResource {
 
     }
 
+    // HomeViewModel 클래스
+    object HomeModelStringResource {
+
+        const val exercise0 = " 님 이번주 운동을 시작해 주세요"
+        const val exercise1 = " 님 이번주 운동은 이제 시작 이에요"
+        const val exercise2 = " 님 이번주 운동은 순항중 이에요"
+        const val exercise3 = " 님 이번주 운동은 충분히 하셨어요"
+
+        const val joinChallenge = "챌린지에 참여하고 순위를 경쟁해 보세요."
+        const val USER_RANK_TEXT = "%s 님의 현재 순위는 %d 위 입니다."
+
+    }
+
+    // PoseDetection 클래스
+    object PoseDetectionModelStringResource {
+
+        const val squat = "스쿼트"
+        const val pushUp = "푸시업"
+        const val lunge = "런지"
+        const val legRaises = "레그레이즈"
+
+        const val basicSquat = "기본 스쿼트"
+        const val startBasicSquat = "기본 스쿼트 시작합니다. 양발의 간격은 어깨넓이로 벌리고 카메라를 기준으로 45도 오른쪽을 보고 서주세요."
+
+        const val basicPushUp = "기본 푸시업"
+        const val startBasicPushUp = "기본 푸시업 시작합니다. 팔을 어깨너비보다 약간 넓게 벌린 상태로 카메라를 기준으로 45도 오른쪽을 보고 엎드려 주세요."
+
+        const val basicLunge = "기본 런지"
+        const val startBasicLunge = "기본 런지 시작합니다. 두 발을 골반 너비로 벌린 후 카메라 기준으로 왼쪽을 보고 서주세요."
+
+        const val basicLegRaises = "기본 레그레이즈"
+        const val startBasicLegRaises = "기본 레그레이즈 시작합니다. 손바닥을 지면에 대고 바른 자세로 카메라 기준 왼쪽으로 누워 주세요."
+
+        const val wideSquat = "와이드 스쿼트"
+        const val startWideSquat = "와이드 스쿼트 시작합니다. 다리를 어깨너비 보다 넓게 벌리고 양쪽 발끝은 밖으로 향한 후 카메라를 보고 정면으로 서주세요."
+
+        const val leftLegRaises = "왼쪽 레그레이즈"
+        const val startLeftLegRaises = "왼쪽 레그레이즈 시작합니다. 손에 머리를 기대고 시선을 옆방향에 두고 카메라 기준 왼쪽으로 누워 주세요."
+
+        const val leftLunge = "왼쪽 런지"
+        const val startLeftLunge = "왼쪽 런지 시작합니다. 두 발을 골반너비로 벌린 자세로 카메라 기준으로 왼쪽을 보고 서주세요."
+
+        const val rightLegRaises = "오른쪽 레그레이즈"
+        const val startRightLegRaises = "오른쪽 레그레이즈 시작합니다. 손에 머리를 기대고 시선을 옆방향에 두고 카메라 기준 왼쪽으로 누워 주세요."
+
+        const val rightLunge = "오른쪽 런지"
+        const val startRightLunge = "오른쪽 런지 시작합니다. 두 발을 골반너비로 벌린 자세로 카메라 기준으로 왼쪽을 보고 서주세요."
+
+        const val etc = "잘못된 운동입니다."
+
+    }
+
+    object PayModelStringResource {
+
+        const val oneDaySubscribe = "하루 구독권"
+        const val monthSubscribe = "30일 구독권"
+        const val yearSubscribe = "일년 구독권"
+
+        const val approval_url = "http://54.180.227.75/pay_test.php"
+        const val fail_url = "http://54.180.227.75/pay_fail.php"
+        const val cancel_url = "http://54.180.227.75/pay_cancel.php"
+
+    }
 
 }

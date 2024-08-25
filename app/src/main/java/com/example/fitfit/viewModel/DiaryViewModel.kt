@@ -17,8 +17,6 @@ import java.util.Locale
 
 class DiaryViewModel: ViewModel() {
 
-    private val TAG = "다이어리 뷰모델"
-
     private val diaryModel = DiaryModel()
 
     private var _startDate = MutableLiveData<Date>(Date())
@@ -101,8 +99,6 @@ class DiaryViewModel: ViewModel() {
 
             for (entry in diaryModel.getEntryArrayList(startDate.value, endDate.value)) {
 
-                Log.d(TAG, "calculateMaxY: ${entry.y}")
-
                 if (entry.y > maxYValue) {
 
                     maxYValue = entry.y
@@ -127,9 +123,6 @@ class DiaryViewModel: ViewModel() {
         return withContext(Dispatchers.IO) {
 
             val response = diaryModel.getMyChallengeListToServer()
-
-            Log.d(TAG, "getMyChallengeList: ${response.isSuccessful}")
-            Log.d(TAG, "getMyChallengeList: ${response.body()?.size}")
 
             if (response.isSuccessful && response.body() != null) {
 

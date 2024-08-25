@@ -24,7 +24,7 @@ class DiaryModel {
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInterface
 
-    private val stringResource = StringResource.PreferencesStringResource
+    private val stringResource = StringResource.ExerciseNames
 
 
     init {

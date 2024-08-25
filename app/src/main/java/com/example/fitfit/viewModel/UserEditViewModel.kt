@@ -25,8 +25,6 @@ import java.io.IOException
 
 class UserEditViewModel :ViewModel() {
 
-    private val TAG = "유저 에딧 뷰모델"
-
     private val userEditModel = UserEditModel()
 
     private var _nickname = MutableLiveData<String>()
@@ -97,12 +95,9 @@ class UserEditViewModel :ViewModel() {
     // 프로필 수정 메서드
     fun profileEdit(activity: Activity, nickname: String){
 
-        Log.d(TAG, "profileEdit: 1")
         viewModelScope.launch {
 
-            Log.d(TAG, "profileEdit: 2")
-
-            var mode:String = if(selectedImageUri.value != null){ "withImage" }else{ "withoutImage" }
+            val mode:String = if(selectedImageUri.value != null){ "withImage" }else{ "withoutImage" }
 
             val image = if(selectedImageUri.value != null){
                 val imageFile = File(getRealPathFromUri(activity, selectedImageUri.value))
@@ -110,11 +105,7 @@ class UserEditViewModel :ViewModel() {
                 MultipartBody.Part.createFormData("image", imageFile.name, requestBody)
             } else { null }
 
-               Log.d(TAG, "profileEdit: 3")
             // 문자열 값을 RequestBody로 변환합니다.
-            Log.d(TAG, "profileEdit: $image")
-            Log.d(TAG, "profileEdit: $mode")
-
             val requestBodyId: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), userEditModel.getUser().id)
             val requestBodyNickname: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), nickname)
             val requestBodyMode: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), mode)
@@ -128,9 +119,6 @@ class UserEditViewModel :ViewModel() {
                 userEditModel.profileEditWithoutImage(userEditModel.getUser().id,nickname,mode)
 
             }
-
-            Log.d(TAG, "profileEdit: ${response.isSuccessful}")
-            Log.d(TAG, "profileEdit: ${response.body()!!.result}")
 
             if(response.isSuccessful && response.body() != null){
 
@@ -229,7 +217,6 @@ class UserEditViewModel :ViewModel() {
                 }
             }
 
-        Log.d(TAG, "getRealPathFromUri: $filePath")
         return filePath
 
     } // getRealPathFromUri()

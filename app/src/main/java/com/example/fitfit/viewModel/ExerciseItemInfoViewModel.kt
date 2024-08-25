@@ -13,8 +13,6 @@ import com.example.fitfit.model.ExerciseItemInfoModel
 
 class ExerciseItemInfoViewModel(val exerciseName: String): ViewModel() {
 
-    val TAG = "운동아이템정보 뷰모델"
-
     private val exerciseItemInfoModel = ExerciseItemInfoModel()
 
     // 인덱스 변수

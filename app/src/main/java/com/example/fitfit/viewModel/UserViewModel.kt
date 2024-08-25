@@ -15,8 +15,6 @@ import java.time.format.DateTimeFormatter
 
 class UserViewModel : ViewModel() {
 
-    private val TAG = "유저 뷰모델"
-
     private val userModel = UserModel()
 
     private var _email = MutableLiveData<String>()
@@ -156,7 +154,6 @@ class UserViewModel : ViewModel() {
         /**서버 데이터 삭제 메서드**/
         viewModelScope.launch {
 
-            Log.d(TAG, "코루틴 시작")
             val response =  userModel.withdrawalProcess(userModel.getUser().id,"withdrawal")
 
             if(response.isSuccessful && response.body() != null) {
@@ -177,16 +174,11 @@ class UserViewModel : ViewModel() {
                 // 통신 실패의 경우
             } else {
 
-                Log.d(TAG, "withdrawal: ${response.message()}")
-                Log.d(TAG, "withdrawal: ${response.isSuccessful}")
-                Log.d(TAG, "withdrawal: ${response.body()}")
                 _isWithdrawalSuccess.value = "disconnect"
 
             }
 
         }
-
-        Log.d(TAG, "setOnDialogOkButtonClick: 회원탈퇴")
 
     } // withdrawal()
 
@@ -206,15 +198,11 @@ class UserViewModel : ViewModel() {
                 // 통신 실패의 경우
             } else {
 
-                Log.d(TAG, "withdrawal: ${response.message()}")
-                Log.d(TAG, "withdrawal: ${response.isSuccessful}")
-                Log.d(TAG, "withdrawal: ${response.body()}")
+                Log.e("TAG", "deleteSubscription: 통신실패")
 
             }
 
         }
-
-        Log.d(TAG, "setOnDialogOkButtonClick: 회원탈퇴")
 
     } // withdrawal()
 

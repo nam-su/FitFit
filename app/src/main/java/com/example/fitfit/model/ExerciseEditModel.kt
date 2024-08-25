@@ -4,14 +4,13 @@ import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.data.SplashResponse
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.StringResource
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import com.google.gson.Gson
 import retrofit2.Response
 
 class ExerciseEditModel {
-
-    val TAG = "유저 운동 편집 모델"
 
     val myExerciseList: ArrayList<PoseExercise> = MyApplication.sharedPreferences.getMyPoseExerciseList() ?: ArrayList()
     private lateinit var allExerciseList: ArrayList<PoseExercise>
@@ -23,6 +22,7 @@ class ExerciseEditModel {
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInterface
 
+    private val stringResource = StringResource.ExerciseNames
 
     init {
 
@@ -43,21 +43,16 @@ class ExerciseEditModel {
 
         for (exercise in allExerciseList) {
 
-            Log.d(TAG, "여기서부터")
-            Log.d(TAG, "setAllCategoryList: ${exercise.exerciseName}")
-            Log.d(TAG, "setAllCategoryList: ${exercise.exerciseCount}")
-            Log.d(TAG, "setAllCategoryList: ${exercise.date}")
-
 
             when(exercise.category){
 
-                "스쿼트" -> allSquatList.add(exercise)
+                stringResource.squat -> allSquatList.add(exercise)
 
-                "푸시업" -> allPushUpList.add(exercise)
+                stringResource.pushUp -> allPushUpList.add(exercise)
 
-                "런지" ->  allLungeList.add(exercise)
+                stringResource.lunge ->  allLungeList.add(exercise)
 
-                "레그레이즈" -> allLegRaisesList.add(exercise)
+                stringResource.legRaises -> allLegRaisesList.add(exercise)
 
             }
 
@@ -96,10 +91,10 @@ class ExerciseEditModel {
 
         when(myExerciseList[position].category) {
 
-            "스쿼트" -> allSquatList.add(myExerciseList[position])
-            "푸시업" -> allPushUpList.add(myExerciseList[position])
-            "런지" -> allLungeList.add(myExerciseList[position])
-            "레그레이즈" -> allLegRaisesList.add(myExerciseList[position])
+            stringResource.squat -> allSquatList.add(myExerciseList[position])
+            stringResource.pushUp -> allPushUpList.add(myExerciseList[position])
+            stringResource.lunge -> allLungeList.add(myExerciseList[position])
+            stringResource.legRaises -> allLegRaisesList.add(myExerciseList[position])
 
         }
 
@@ -132,16 +127,16 @@ class ExerciseEditModel {
 
         when(exercise.category) {
 
-            "스쿼트" -> allSquatList.removeAll{ poseExercise ->
+            stringResource.squat -> allSquatList.removeAll{ poseExercise ->
                 myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
 
-            "푸시업" -> allPushUpList.removeAll{ poseExercise ->
+            stringResource.pushUp -> allPushUpList.removeAll{ poseExercise ->
                 myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
 
-            "런지" ->  allLungeList.removeAll{ poseExercise ->
+            stringResource.lunge ->  allLungeList.removeAll{ poseExercise ->
                 myExerciseList.any {it.exerciseName == poseExercise.exerciseName} }
 
-            "레그레이즈" -> allLegRaisesList.removeAll{ poseExercise ->
+            stringResource.legRaises -> allLegRaisesList.removeAll{ poseExercise ->
                 myExerciseList.any{it.exerciseName == poseExercise.exerciseName} }
 
         }
