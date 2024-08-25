@@ -30,6 +30,8 @@ class Preferences(context: Context) {
     private val preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = preferences.edit()
 
+    private val stringResource = StringResource.PreferencesStringResource
+
     /** 운동 편집 프래그먼트에서 사용**/
     private val allExerciseList = ArrayList<PoseExercise>()
 
@@ -77,10 +79,17 @@ class Preferences(context: Context) {
             //알맞은 값 어레이리스트에 add
             when {
 
-                s.contains("스쿼트") -> allExerciseList.add(PoseExercise(0,"스쿼트",s,0,10,i))
-                s.contains("런지") -> allExerciseList.add(PoseExercise(0,"런지",s,0,10,i))
-                s.contains("푸시업") -> allExerciseList.add(PoseExercise(0,"푸시업",s,0,10,i))
-                s.contains("레그레이즈") -> allExerciseList.add(PoseExercise(0,"레그레이즈",s,0,10,i))
+                s.contains(stringResource.squat) ->
+                    allExerciseList.add(PoseExercise(0,stringResource.squat,s,0,10,i))
+
+                s.contains(stringResource.lunge) ->
+                    allExerciseList.add(PoseExercise(0,stringResource.lunge,s,0,10,i))
+
+                s.contains(stringResource.pushUp) ->
+                    allExerciseList.add(PoseExercise(0,stringResource.pushUp,s,0,10,i))
+
+                s.contains(stringResource.legRaises) ->
+                    allExerciseList.add(PoseExercise(0,stringResource.legRaises,s,0,10,i))
 
             }
 
@@ -89,7 +98,9 @@ class Preferences(context: Context) {
         //프리미엄
         allExerciseList.forEach {
 
-            if(it.exerciseName == "기본 스쿼트" || it.exerciseName == "기본 푸시업" || it.exerciseName == "기본 런지") {
+            if(it.exerciseName == stringResource.basicSquat ||
+                it.exerciseName == stringResource.basicPushUp ||
+                it.exerciseName == stringResource.basicLunge) {
 
                 it.isPrimium = 0
 
@@ -252,6 +263,7 @@ class Preferences(context: Context) {
             preferences.getString("nickname", "").toString(),
             preferences.getString("profileImagePath", "").toString(),
             preferences.getString("subscription", "").toString())
+
     // getUser()
 
 
@@ -485,75 +497,75 @@ class Preferences(context: Context) {
     private fun setAllExerciseItemInfoList() {
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "기본 푸시업",
+            stringResource.basicPushUp,
             R.drawable.push_up_index_0,
             R.drawable.push_up_index_1,
-            "팔을 어깨너비보다 약간 넓게 벌린 상태로 엎드린다.",
-            "가슴이 바닥에 거의 닿을 때까지 구부리면서 몸을 내린다.",
+            stringResource.basicPushUpContent0,
+            stringResource.basicPushUpContent1,
             false))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "기본 스쿼트",
+            stringResource.basicSquat,
             R.drawable.squat_index_0,
             R.drawable.squat_index_1,
-            "양발의 간격은 어깨넓이로 벌리고 발을 11자로 만들어 선다.",
-            "뒤에 의자가 있다고 생각하고 엉덩이를 뒤로 빼면서 앉는다. 이때 무릎이 발가락보다 너무 많이 앞으로 나가면 안된다.",
+            stringResource.basicSquatContent0,
+            stringResource.basicSquatContent1,
             false))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "기본 런지",
+            stringResource.basicLunge,
             R.drawable.lunge_index_0,
             R.drawable.lunge_index_1,
-            "두 발을 골반너비로 벌린 자세로 바로 선다.",
-            "등과 허리를 바로 편 상태에서 양 무릎을 90도 굽힌다 이때 뒤쪽 무릎이 바닥에 닿는 느낌으로 몸을 내린다.",
+            stringResource.basicLungeContent0,
+            stringResource.basicLungeContent1,
             false))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "와이드 스쿼트",
+            stringResource.wideSquat,
             R.drawable.wide_squat_index_0,
             R.drawable.wide_squat_index_1,
-            "다리를 어깨너비보다 넓게 벌리고 양쪽 발끝은 45도 각도로 밖으로 향한다.",
-            "무릎이 엄지발가락으로 향하도록 호흡을 들이 마시면서 천천히 무릎을 굽힌다.",
+            stringResource.wideSquatContent0,
+            stringResource.wideSquatContent1,
             true))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "왼쪽 런지",
+            stringResource.leftLunge,
             R.drawable.right_lunge_index_0,
             R.drawable.left_lunge_index_1,
-            "두 발을 골반너비로 벌린 자세로 바로 선다.",
-            "손은 허리에 놓고 몸통을 한쪽으로 치우치면서 왼쪽 다리를 굽혀준다.반대편 다리는 쭉뻗어준다.",
+            stringResource.leftLungeContent0,
+            stringResource.leftLungeContent1,
             true))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "오른쪽 런지",
+            stringResource.rightLunge,
             R.drawable.right_lunge_index_0,
             R.drawable.right_lunge_index_1,
-            "두 발을 골반너비로 벌린 자세로 바로 선다.",
-            "손은 허리에 놓고 몸통을 한쪽으로 치우치면서 오른쪽 다리를 굽혀준다.반대편 다리는 쭉뻗어준다.",
+            stringResource.rightLungeContent0,
+            stringResource.rightLungeContent1,
             true))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "기본 레그레이즈",
+            stringResource.basicLegRaises,
             R.drawable.leg_raises_index_0,
             R.drawable.leg_raises_index_1,
-            "손바닥을 지면에 대고 바른 자세로 눕는다.",
-            "무릎을 곧게 뻗은 상태에서 복부쪽으로 그대로 다리를 당기고 다리가 지면과 수직을 이루는 지점에서 시작자세로 돌아간다.",
+            stringResource.basicLegRaisesContent0,
+            stringResource.basicLegRaisesContent1,
             true))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "왼쪽 레그레이즈",
+            stringResource.leftLegRaises,
             R.drawable.left_leg_raises_index_0,
             R.drawable.left_leg_raises_index_1,
-            "손에 머리를 기대고 시선을 옆방향에 두고 누워준다.",
-            "오른쪽 다리는 그대로 두고 왼쪽 다리를 위로 뻗는다 이때 무릅을 굽히지 않고 통채로 뻗어주면 된다.",
+            stringResource.leftLegRaisesContent0,
+            stringResource.leftLegRaisesContent1,
             true))
 
         allExerciseItemInfoList.add(ExerciseItemInfo(
-            "오른쪽 레그레이즈",
+            stringResource.rightLegRaises,
             R.drawable.right_leg_raises_index_0,
             R.drawable.right_leg_raises_index_1,
-            "손에 머리를 기대고 시선을 옆방향에 두고 누워준다.",
-            "왼쪽 다리는 그대로 두고 오른쪽 다리를 위로 뻗는다 이때 무릅을 굽히지 않고 통채로 뻗어주면 된다.",
+            stringResource.rightLegRaisesContent0,
+            stringResource.rightLegRaisesContent1,
             true))
 
     } // setAllExerciseItemInfoList()
@@ -574,31 +586,31 @@ class Preferences(context: Context) {
 
         return arrayListOf(
 
-            PoseExercise(0, "스쿼트", "기본 스쿼트", 0, 10, 0)
+            PoseExercise(0, stringResource.squat, stringResource.basicSquat, 0, 10, 0)
                 .apply { isPrimium = 0 },
 
-            PoseExercise(0, "푸시업", "기본 푸시업", 0, 10, 0)
+            PoseExercise(0, stringResource.pushUp, stringResource.basicPushUp, 0, 10, 0)
                 .apply { isPrimium = 0 },
 
-            PoseExercise(0, "런지", "기본 런지", 0, 10, 0)
+            PoseExercise(0, stringResource.lunge, stringResource.basicLunge, 0, 10, 0)
                 .apply { isPrimium = 0 },
 
-            PoseExercise(0, "스쿼트", "와이드 스쿼트", 0, 10, 0)
+            PoseExercise(0, stringResource.squat, stringResource.wideSquat, 0, 10, 0)
                 .apply { isPrimium = 1 },
 
-            PoseExercise(0, "런지", "왼쪽 런지", 0, 10, 0)
+            PoseExercise(0, stringResource.lunge, stringResource.leftLunge, 0, 10, 0)
                 .apply { isPrimium = 1 },
 
-            PoseExercise(0, "런지", "오른쪽 런지", 0, 10, 0)
+            PoseExercise(0, stringResource.lunge, stringResource.rightLunge, 0, 10, 0)
                 .apply { isPrimium = 1 },
 
-            PoseExercise(0, "레그레이즈", "기본 레그레이즈", 0, 10, 0)
+            PoseExercise(0, stringResource.legRaises, stringResource.basicLegRaises, 0, 10, 0)
                 .apply { isPrimium = 1 },
 
-            PoseExercise(0, "레그레이즈", "왼쪽 레그레이즈", 0, 10, 0)
+            PoseExercise(0, stringResource.legRaises, stringResource.leftLegRaises, 0, 10, 0)
                 .apply { isPrimium = 1 },
 
-            PoseExercise(0, "레그레이즈", "오른쪽 레그레이즈", 0, 10, 0)
+            PoseExercise(0, stringResource.legRaises, stringResource.rightLegRaises, 0, 10, 0)
                 .apply { isPrimium = 1 }
         
         )
