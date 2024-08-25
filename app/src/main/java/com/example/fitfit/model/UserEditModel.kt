@@ -14,10 +14,7 @@ import retrofit2.Response
 
 class UserEditModel {
 
-    private val TAG = "유저 에딧 모델"
-
     fun getUser(): User = MyApplication.sharedPreferences.getUser()
-
 
     //
     fun getGalleryIntent(): Intent {

@@ -1,11 +1,6 @@
 package com.example.fitfit.function.pose
 
-import android.util.Log
-
 class WideSquat: Pose(){
-
-    private val TAG = "와이드스쿼트"
-
 
     // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
@@ -35,13 +30,9 @@ class WideSquat: Pose(){
 
         }
 
-        Log.d(TAG, "poseWideSquat: 왼쪽 각도 : $leftAngle")
-        Log.d(TAG, "poseWideSquat: 오른쪽 각도 : $rightAngle")
-        
         // 앉은 상태 감지 150 ~ 180 사이로 나옴
         if(rightAngle in 140.0..180.0 && leftAngle in 140.0..180.0 && !sit) {
 
-            Log.d(TAG, "poseWideSquat: 앉은 상태")
             sit = true
 
         }
@@ -50,7 +41,6 @@ class WideSquat: Pose(){
 //        // 1번 서있을 때 다리를 벌려야 한다 이 각도는 계속 가져가야함
         if(leftAngle in 80.0..120.0 && rightAngle in 80.0..120.0 && sit) {
 
-            Log.d(TAG, "poseWideSquat: 앉았다가 선상태")
             sit = false
             stand = false
             return true

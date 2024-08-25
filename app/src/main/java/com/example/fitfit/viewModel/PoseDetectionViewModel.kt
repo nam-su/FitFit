@@ -31,8 +31,6 @@ import java.util.concurrent.Executors
 
 class PoseDetectionViewModel() : ViewModel() {
 
-    private val TAG = "포즈 추정 뷰 모델"
-
     // 포즈 감지 모델 객체
     private lateinit var poseDetectionModel: PoseDetectionModel
 
@@ -119,7 +117,7 @@ class PoseDetectionViewModel() : ViewModel() {
 
                 override fun onError(camera: CameraDevice, error: Int) {
 
-                    Log.e(TAG, "Camera error: $error")
+                    Log.e("TAG", "Camera error: $error")
 
                 }
 
@@ -185,14 +183,12 @@ class PoseDetectionViewModel() : ViewModel() {
 
             if (response.isSuccessful && response.body() != null) {
 
-                Log.d(TAG, "Exercise data successfully updated on server")
-
                 // 여기서 preferences 에 데이터를 갱신 해준다
                 MyApplication.sharedPreferences.updateExerciseDiaryList()
 
             } else {
 
-                Log.e(TAG, "Failed to update exercise data: ${response.message()}")
+                Log.e("TAG", "Failed to update exercise data: ${response.message()}")
 
             }
 
@@ -200,4 +196,17 @@ class PoseDetectionViewModel() : ViewModel() {
 
     } // updatePoseExercise()
 
+<<<<<<< HEAD
+=======
+
+    // ViewModel이 소멸될 때 호출되는 메서드
+    override fun onCleared() {
+        super.onCleared()
+
+        // 모델 리소스 해제
+        poseDetectionModel.close()
+
+    } // onCleared()
+
+>>>>>>> feature/Refactor
 }

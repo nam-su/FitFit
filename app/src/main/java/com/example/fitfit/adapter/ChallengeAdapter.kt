@@ -20,11 +20,8 @@ import com.example.fitfit.viewModel.ExerciseViewModel
 
 class ChallengeAdapter(private val challengeList: ArrayList<Challenge>, private val context: Context): RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
 
-    private val TAG = "챌린지 어댑터"
-
     lateinit var binding: ItemViewChallengeBinding
-    var challengeItemClick: ChallengeAdapter.ChallengeItemClick? = null
-
+    var challengeItemClick: ChallengeItemClick? = null
 
     // 프래그먼트에서 아이템 클릭 리스너 호출하기 위한 인터페이스
     interface ChallengeItemClick{

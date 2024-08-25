@@ -7,6 +7,7 @@ import com.example.fitfit.data.ChallengeResponse
 import com.example.fitfit.data.ExerciseInfo
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.StringResource
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import retrofit2.Response
@@ -21,18 +22,20 @@ class ExerciseModel {
     var retrofitBuilder: RetrofitBuilder? = null
     var retrofitInterface: RetrofitInterface? = null
 
+    private val stringResource = StringResource.ExerciseNames
+
     // 운동 정보 리스트에 운동 객체 추가
     init {
 
-        exerciseInfoList.add(ExerciseInfo("하체","기본 스쿼트",40,10))
-        exerciseInfoList.add(ExerciseInfo("상체","기본 푸시업",20,10))
-        exerciseInfoList.add(ExerciseInfo("하체","기본 런지",80,10))
-        exerciseInfoList.add(ExerciseInfo("하체","와이드 스쿼트",50,10))
-        exerciseInfoList.add(ExerciseInfo("하체","기본 레그레이즈",60,10))
-        exerciseInfoList.add(ExerciseInfo("하체","왼쪽 런지",70,10))
-        exerciseInfoList.add(ExerciseInfo("하체","오른쪽 런지",70,10))
-        exerciseInfoList.add(ExerciseInfo("하체","왼쪽 레그레이즈",50,10))
-        exerciseInfoList.add(ExerciseInfo("하체","오른쪽 레그레이즈",50,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.basicSquat,40,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.up,stringResource.basicPushUp,20,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.basicLunge,80,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.wideSquat,50,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.basicLegRaises,60,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.leftLunge,70,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.rightLunge,70,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.leftLegRaises,50,10))
+        exerciseInfoList.add(ExerciseInfo(stringResource.down,stringResource.rightLegRaises,50,10))
 
     }
 

@@ -17,8 +17,6 @@ import kotlinx.coroutines.launch
 
 class SplashViewModel(): ViewModel() {
 
-    val TAG = "스플래시 뷰모델"
-
     private val splashModel = SplashModel()
 
     private val _isCheckLogin = MutableLiveData<Boolean>()
@@ -57,10 +55,6 @@ class SplashViewModel(): ViewModel() {
 
             val response = splashModel.selectUserExercise()
 
-            Log.d(TAG, "selectUserExercise: ${response.isSuccessful}")
-            Log.d(TAG, "selectUserExercise: ${response.body()}")
-            Log.d(TAG, "selectUserExercise: ${response.message()}")
-
             if(response.isSuccessful && response.body() != null) {
 
                 //스플래시 성공으로인해 데이터 받으면
@@ -77,7 +71,7 @@ class SplashViewModel(): ViewModel() {
 
             } else {
 
-                Log.d(TAG, "selectUserExercise: 통신 실패")
+                Log.d("TAG", "selectUserExercise: 통신 실패")
 
             }
 

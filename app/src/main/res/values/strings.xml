@@ -21,6 +21,7 @@
     <string name="findPassword">비밀번호 찾기</string>
     <string name="signUp">회원가입</string>
     <string name="login">로그인</string>
+    <string name="cannotLogin">아이디 혹은 비밀번호가 일치하지 않습니다.</string>
 
     <!--회원가입 프래그먼트-->
     <string name="pageCount">(%s/4)</string>
@@ -51,7 +52,10 @@
     <string name="code_verification_successful">코드 인증에 성공 했습니다.</string>
     <string name="code_verification_failure">유효하지 않은 인증코드 입니다.</string>
     <string name="code_verification_resend">인증코드를 재전송 해주세요.</string>
-
+    <string name="canUseNickname">사용 가능한 닉네임 입니다.</string>
+    <string name="alreadyExistNickname">이미 존재하는 닉네임 입니다.</string>
+    <string name="successSignUp">회원가입이 완료되었습니다.</string>
+    <string name="error">오류가 발생했습니다.</string>
 
     <!--홈 프래그먼트-->
     <string name="weekExerciseCheck">이번 주 운동량 체크</string>
@@ -65,6 +69,11 @@
     <string name="subscribe">구독하기</string>
     <string name="myRanking">%1$s 님의 현재 랭킹은 %2$s 위 입니다.</string>
     <string name="check">확인</string>
+    <string name="challengeCountText">%1$s / %2$s</string>
+    <string name="challengeCountFormat">%1$s 총 %2$s 회</string>
+    <string name="challengeRank">%1$d 위</string>
+    <string name="rankStandardFormat"> / %1$s 일</string>
+    <string name="rankPointFormat">%1$s 회</string>
 
     <!--운동 프래그먼트-->
     <string name="todayExerciseStart">오늘의 운동 시작</string>
@@ -73,15 +82,23 @@
     <string name="quickView">간략히 보기</string>
     <string name="detailView">자세히 보기</string>
     <string name="monthChallenge">이달의 챌린지</string>
+    <string name="alreadyParticipatingThisChallenge">이미 해당 챌린지에 참여 중입니다.</string>
+    <string name="startThisChallenge">해당 챌린지에 참여를 시작합니다.</string>
+    <string name="join">참여</string>
 
     <!--운동 정보 프래그먼트-->
     <string name="scheduleExercise">운동 스케줄링 하러가기</string>
+    <string name="afterSubscribeService">"구독 후 이용 가능한 서비스 입니다."</string>
 
     <!--운동 선택 프래그먼트-->
     <string name="touchAndExerciseStart">터치 후 바로 운동 시작</string>
     <string name="exerciseCount">%1$d / %2$d</string>
     <string name="edit">편집</string>
     <string name="sets">세트</string>
+
+    <!-- 동작인식 프래그먼트 -->
+    <string name="cannotDetectPose">동작을 감지할 수 없습니다</string>
+    <string name="endExercise">운동이 끝났습니다</string>
 
     <!--운동 편집 프래그먼트-->
     <string name="myExerciseList">내 운동 리스트</string>
@@ -90,6 +107,20 @@
     <string name="lunge">런지</string>
     <string name="legRaises">레그레이즈</string>
     <string name="startExercise">운동 시작하기</string>
+    <string name="basicSquat">기본 스쿼트</string>
+    <string name="wideSquat">와이드 스쿼트</string>
+    <string name="basicPushUp">기본 푸시업</string>
+    <string name="basicLunge">기본 런지</string>
+    <string name="leftLunge">왼쪽 런지</string>
+    <string name="rightLunge">오른쪽 런지</string>
+    <string name="basicLegRaises">기본 레그레이즈</string>
+    <string name="leftLegRaises">왼쪽 레그레이즈</string>
+    <string name="rightLegRaises">오른쪽 레그레이즈</string>
+    <string name="maximumEditExercise">최대 20개 이상의 운동까지 추가 가능합니다.</string>
+    <string name="changeMyExerciseList">내 운동 리스트가 변경 되었습니다.</string>
+    <string name="networkConnectionIsUnstable">"네트워크 연결이 원할하지 않습니다.</string>
+    <string name="canISubscribe">구독 후 이용 가능한 운동입니다. \n구독 하시겠습니까?</string>
+    <string name="minimumEditExercise">최소 3개 이상의 운동이 있어야 합니다.</string>
 
     <!--유저 프래그먼트-->
     <string name="loginType">로그인 방식</string>
@@ -103,6 +134,11 @@
     <string name="subscriptionDialogContent">구독 기간이 만료 되었습니다.\n다양한 운동을 계속해서 이용하시려면\n구독하러 가기를 눌러주세요.</string>
     <string name="dueDateText">만료 일자 </string>
     <string name="setting">설정</string>
+    <string name="successWithdrawal">회원탈퇴가 정상적으로 처리 되었습니다.</string>
+
+    <!-- 유저 정보 편집 프래그먼트 -->
+    <string name="successEditProfile">프로필 수정이 완료 되었습니다.</string>
+    <string name="cannotUseNickname">사용할 수 없는 닉네임 입니다.</string>
 
     <!--커스텀 다이얼로그-->
     <string name="guide">안내</string>
@@ -120,6 +156,12 @@
     <string name="correctUserEmail">회원정보와 일치하는 이메일 입니다.</string>
     <string name="myEmailInput">가입한 이메일을 입력해 주세요.</string>
     <string name="passwordResetComplete">성공적으로 비밀번호를 변경하였습니다.</string>
+    <string name="changeUserInfoReLoginPlease">회원정보가 변경되었습니다. 다시 로그인 해 주세요.</string>
+    <string name="canUseEmail">사용가능한 이메일 입니다.</string>
+    <string name="alreadyExistEmail">이미 존재하는 이메일 입니다.</string>
+    <string name="codeTransmission">인증코드를 전송 했습니다.</string>
+    <string name="failCodeTransmission">전송에 실패했습니다.</string>
+    <string name="cannotUseSamePassword">기존 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.</string>
 
     <!--다이어리 프래그먼트-->
     <string name="wave">~</string>
@@ -145,12 +187,23 @@
     <string name="subscribeOneDay">하루 구독하기</string>
     <string name="subscribeMonth">한달 구독하기</string>
     <string name="subscribeYear">일년 구독하기</string>
+    <string name="successPay">결제가 완료되었습니다.</string>
+    <string name="failPay">결제에 실패하였습니다.</string>
+    <string name="oneDaySubscribeItem">하루 구독권</string>
+    <string name="monthSubscribeItem">30일 구독권</string>
+    <string name="yearSubscribeItem">일년 구독권</string>
+    <string name="tryAgainInstallKakaoTalk">카카오톡 설치 후 다시 시도해 주세요.</string>
 
 
     <!-- 인터넷 연결 불안정 할 때 다이얼로그-->
     <string name="internetDisconnect">인터넷 연결이 원활하지 않습니다\n인터넷 연결 확인 후 다시 시도해 주세요.</string>
 
-    <!-- base url-->
+    <!-- private Info -->
     <string name="baseUrl">http://15.164.49.94/</string>
+    <string name="naverClientId">7M1HmHGA6kKvKrXgOScl</string>
+    <string name="naverClientSecret">3so4YyCSuU</string>
+    <string name="naverClientName">네이버아이디 로그인</string>
+    <string name="kakaoAppKey">d997bc71e6bb7cad42042752aa3d4f9f</string>
+    <string name="sender">fitfit240522@gmail.com</string>
 
 </resources>

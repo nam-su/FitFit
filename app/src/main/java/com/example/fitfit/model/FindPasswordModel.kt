@@ -9,8 +9,6 @@ import com.example.fitfit.network.RetrofitInterface
 
 class FindPasswordModel {
 
-    private val TAG = "비밀번호 찾기 모델"
-
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
@@ -25,8 +23,6 @@ class FindPasswordModel {
     suspend fun passwordResetProcess(id: String,password: String ,mode: String): User? {
 
         val response = retrofitInterface.passwordResetProcess(id,password,mode)
-
-        Log.d(TAG, "passwordResetProcess: ${response.body()?.result}")
 
         return response.body()
 

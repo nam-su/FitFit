@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.fitfit.data.Challenge
 import com.example.fitfit.data.PoseExercise
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.StringResource
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import com.github.mikephil.charting.data.BarEntry
@@ -15,8 +16,6 @@ import java.util.TimeZone
 
 class DiaryModel {
 
-    private val TAG = "다이어리 모델"
-
     private val myPoseExerciseList = MyApplication.sharedPreferences.getMyAllExerciseList()
     private var entryArrayList = ArrayList<BarEntry>()
     private var allExerciseMap = LinkedHashMap<String,MutableList<Float>>()
@@ -25,16 +24,10 @@ class DiaryModel {
     private lateinit var retrofitBuilder: RetrofitBuilder
     private lateinit var retrofitInterface: RetrofitInterface
 
+    private val stringResource = StringResource.ExerciseNames
+
 
     init {
-
-        Log.d(TAG, "${MyApplication.sharedPreferences} ")
-
-        myPoseExerciseList.forEach {
-
-            Log.d(TAG, "[${it.category},${it.exerciseName},${it.exerciseCount},${it.goalExerciseCount},${it.date},${it.checkList}]: ")
-
-        }
 
         setAllExerciseMap()
         initEntryArrayList()
@@ -68,15 +61,15 @@ class DiaryModel {
 
         //allExerciseMap 초기값 설정
         //mutableFloatList는 날짜마다 따로 값을 배열에 받기 위해서 사용
-        allExerciseMap["기본 스쿼트"] = mutableListOf()
-        allExerciseMap["기본 푸시업"] = mutableListOf()
-        allExerciseMap["기본 런지"] = mutableListOf()
-        allExerciseMap["기본 레그레이즈"] = mutableListOf()
-        allExerciseMap["와이드 스쿼트"] = mutableListOf()
-        allExerciseMap["오른쪽 런지"] = mutableListOf()
-        allExerciseMap["왼쪽 런지"] = mutableListOf()
-        allExerciseMap["오른쪽 레그레이즈"] = mutableListOf()
-        allExerciseMap["왼쪽 레그레이즈"] = mutableListOf()
+        allExerciseMap[stringResource.basicSquat] = mutableListOf()
+        allExerciseMap[stringResource.basicPushUp] = mutableListOf()
+        allExerciseMap[stringResource.basicLunge] = mutableListOf()
+        allExerciseMap[stringResource.basicLegRaises] = mutableListOf()
+        allExerciseMap[stringResource.wideSquat] = mutableListOf()
+        allExerciseMap[stringResource.rightLunge] = mutableListOf()
+        allExerciseMap[stringResource.leftLunge] = mutableListOf()
+        allExerciseMap[stringResource.rightLegRaises] = mutableListOf()
+        allExerciseMap[stringResource.leftLegRaises] = mutableListOf()
 
     } // setAllExerciseMap()
 
@@ -120,9 +113,6 @@ class DiaryModel {
 
             // Instant를 Date로 변환
             val date = setToNoon(Date.from(instant))
-            Log.d(TAG, "setToMidnight: ${setToMidnight(startDate!!)}")
-            Log.d(TAG, "date: $date")
-            Log.d(TAG, "setToEndOfDay: ${setToEndOfDay(endDate!!)}")
 
             //날짜 안에 있는 데이터만 추가
             if(date.after(setToMidnight(startDate)) && date.before(setToEndOfDay(endDate))) {

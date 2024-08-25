@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class ExerciseEditViewModel: ViewModel() {
 
-    private val TAG = "운동 편집 뷰모델"
     private val exerciseEditModel = ExerciseEditModel()
 
     private val _checkMyExerciseListSizeMax = MutableLiveData<Boolean>()
@@ -87,7 +86,6 @@ class ExerciseEditViewModel: ViewModel() {
             // 구독이 안되어 있는 경우
             } else {
 
-                Log.d(TAG, "addExerciseItem: 여기로 와야됨")
                 false
 
             }

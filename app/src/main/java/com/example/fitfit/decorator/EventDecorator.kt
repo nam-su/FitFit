@@ -1,7 +1,6 @@
-package com.example.fitfit.Decorator
+package com.example.fitfit.decorator
 
 import android.graphics.Color
-import android.util.Log
 import com.example.fitfit.data.PoseExercise
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
@@ -9,7 +8,6 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import java.time.Instant
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 class EventDecorator(private val poseExerciseArrayList: ArrayList<PoseExercise>) : DayViewDecorator {
 

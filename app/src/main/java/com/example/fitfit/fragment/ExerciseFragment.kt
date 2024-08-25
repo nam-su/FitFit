@@ -56,7 +56,7 @@ class ExerciseFragment : Fragment() {
 
 
     // onCreateView
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exercise,container,false)
         customDialogBinding = DataBindingUtil.inflate(inflater, R.layout.custom_dialog_two_button, null, false)
@@ -161,11 +161,13 @@ class ExerciseFragment : Fragment() {
 
             when(it){
 
-                "already" -> Toast.makeText(requireContext(), "이미 해당 챌린지에 참여 중입니다.", Toast.LENGTH_SHORT).show()
+                "already" -> Toast.makeText(
+                    requireContext(),
+                    getString(R.string.alreadyParticipatingThisChallenge), Toast.LENGTH_SHORT).show()
 
                 "success" -> {
 
-                    Toast.makeText(requireContext(), "해당 챌린지에 참여를 시작합니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.startThisChallenge), Toast.LENGTH_SHORT).show()
 
                     binding.viewPager.adapter!!.notifyDataSetChanged()
 
@@ -173,7 +175,7 @@ class ExerciseFragment : Fragment() {
 
                 }
 
-                else -> Toast.makeText(requireContext(), "네트워크 연결 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                else -> Toast.makeText(requireContext(),getString(R.string.networkConnectionIsUnstable), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -233,7 +235,7 @@ class ExerciseFragment : Fragment() {
 
         customDialogBinding.textViewContent.text = challenge.detail
         customDialogBinding.textViewTitle.text = challenge.challengeName
-        customDialogBinding.textViewButtonOk.text = "참여"
+        customDialogBinding.textViewButtonOk.text = getString(R.string.join)
         customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
 
         dialog.show()

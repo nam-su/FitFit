@@ -16,8 +16,6 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel: ViewModel() {
 
-    val TAG = "홈 뷰모델"
-
     private val homeModel = HomeModel()
 
     private val _weekStatus: MutableLiveData<String> = MutableLiveData()
@@ -57,13 +55,13 @@ class HomeViewModel: ViewModel() {
 
         advise += when(exerciseCompleteDayCount) {
 
-            0 -> { " 님 이번주 운동을 시작해 주세요" }
+            0 -> { homeModel.stringResource.exercise0 }
 
-            in 1..3 -> { " 님 이번주 운동은 이제 시작 이에요" }
+            in 1..3 -> { homeModel.stringResource.exercise1 }
 
-            in 4..5 -> { " 님 이번주 운동은 순항중 이에요" }
+            in 4..5 -> { homeModel.stringResource.exercise2 }
 
-            else -> { " 님 이번주 운동은 충분히 하셨어요" }
+            else -> { homeModel.stringResource.exercise3 }
 
         }
 
@@ -86,9 +84,6 @@ class HomeViewModel: ViewModel() {
 
         val response = homeModel.getRankingListToServer(getUserId(),challengeName.value,rankingPage.value)
 
-        Log.d(TAG, "getRankingListToServer: ${response.isSuccessful}")
-        Log.d(TAG, "getRankingListToServer: ${response.body()}")
-
         if(response.isSuccessful && response.body() != null){
 
             return splitRankingList(response.body()!!)
@@ -108,6 +103,7 @@ class HomeViewModel: ViewModel() {
             return if(rankingList[rankingList.size-1].id == getUserId()) {
 
                 if(rankingList[rankingList.size-1].id == getUserId()) {
+<<<<<<< HEAD
 
                     setUserRank(rankingList[rankingList.size-1])
 
@@ -124,14 +120,30 @@ class HomeViewModel: ViewModel() {
                 _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
                 ArrayList(rankingList.subList(0,rankingList.size))
 
+=======
+                    setUserRank(rankingList[rankingList.size-1])
+                }else{
+                    _userRankText.value = homeModel.stringResource.joinChallenge
+                }
+                return ArrayList(rankingList.subList(0,rankingList.size-1))
+
+            }else{
+                _userRankText.value = homeModel.stringResource.joinChallenge
+                return ArrayList(rankingList.subList(0,rankingList.size))
+>>>>>>> feature/Refactor
             }
 
             // 나머지 요소들을 rankingArrayList에 설정
 
+<<<<<<< HEAD
         } else {
 
             _userRankText.value = "챌린지에 참여하고 순위를 경쟁해 보세요."
 
+=======
+        }else{
+            _userRankText.value = homeModel.stringResource.joinChallenge
+>>>>>>> feature/Refactor
         }
 
         return arrayListOf()
@@ -141,7 +153,10 @@ class HomeViewModel: ViewModel() {
 
     // My Text 설정
     private fun setUserRank(rank: Rank){
-        _userRankText.value = "${rank.nickname} 님의 현재 순위는 ${rank.ranking} 위 입니다."
+
+//        _userRankText.value = "${rank.nickname} 님의 현재 순위는 ${rank.ranking} 위 입니다."
+        _userRankText.value = String.format(homeModel.stringResource.USER_RANK_TEXT,rank.nickname,rank.ranking)
+
     } //setUserRank()
 
 
@@ -171,9 +186,6 @@ class HomeViewModel: ViewModel() {
         return withContext(Dispatchers.IO) {
 
             val response = homeModel.getMyChallengeListToServer(userId)
-
-            Log.d(TAG, "getMyChallengeList: ${response.isSuccessful}")
-            Log.d(TAG, "getMyChallengeList: ${response.body()?.size}")
 
             if (response.isSuccessful && response.body() != null) {
 

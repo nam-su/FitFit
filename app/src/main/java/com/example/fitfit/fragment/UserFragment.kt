@@ -20,8 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
-import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
@@ -29,15 +27,12 @@ import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentUserBinding
 import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.UserViewModel
-import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 
 
 class UserFragment : Fragment() {
-
-    private val TAG = "유저 프래그먼트"
 
     lateinit var binding: FragmentUserBinding
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
@@ -133,9 +128,7 @@ class UserFragment : Fragment() {
         userViewModel.isLogoutButtonClick.observe(viewLifecycleOwner){ setIsLogoutButtonClick(it) }
 
         //다이얼로그 회원 탈퇴 절차 진행 버튼 클릭 관찰
-        userViewModel.isProgressButtonClick.observe(viewLifecycleOwner){
-            Log.d(TAG, "진행버튼 상태: $it")
-            setIsProgressButtonClick(it) }
+        userViewModel.isProgressButtonClick.observe(viewLifecycleOwner){ setIsProgressButtonClick(it) }
 
         //다이얼로그 회원 탈퇴 버튼 클릭 관찰
         userViewModel.isWithdrawalButtonClick.observe(viewLifecycleOwner){ setIsWithdrawalButtonClick(it) }
@@ -151,7 +144,6 @@ class UserFragment : Fragment() {
 
                //구독권 기간 지났을 때
                true -> {
-                   Log.d(TAG, "setObserve: 구독권 기간 지남")
 
                    // 서버에 구독권 삭제, 쉐어드에 구독권 데이터 삭제
                    userViewModel.deleteSubscription()
@@ -162,9 +154,10 @@ class UserFragment : Fragment() {
                }
 
                //구독권 기간 안 지났을 때
-               else -> Log.d(TAG, "setObserve: 구독권 기간 안지남")
+               else -> {}
 
            }
+
         }
 
         userViewModel.isVisibleDueDateText.observe(viewLifecycleOwner) {
@@ -197,9 +190,13 @@ class UserFragment : Fragment() {
             when(userViewModel.loginType.value){
 
                 "kakao", "naver", "google" -> {
-                    if (item.toString() == "비밀번호 변경") {
+
+                    if (item.toString() == getString(R.string.passwordChange)) {
+
                         item.isVisible = false
+
                     }
+
                 }
 
             }
@@ -225,7 +222,6 @@ class UserFragment : Fragment() {
 
             //바텀 네비게이션 GONE 처리
             (activity as MainActivity).goneBottomNavi()
-//            (activity as MainActivity).setNaviItem(0)
 
         }
 
@@ -292,13 +288,13 @@ class UserFragment : Fragment() {
                 //바텀네비게이션 아이템클릭 초기화
 //                (activity as MainActivity).setNaviItem(0)
 
-                Toast.makeText(requireActivity(), "회원탈퇴가 정상적으로 처리 되었습니다.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), getString(R.string.successWithdrawal),Toast.LENGTH_SHORT).show()
 
             }
 
             else -> {
 
-                Toast.makeText(requireContext(), "인터넷 연결이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.networkConnectionIsUnstable), Toast.LENGTH_SHORT).show()
 
             }
 
@@ -314,26 +310,20 @@ class UserFragment : Fragment() {
         // isChecked = true : 메뉴 텍스트 굵기가 굵어짐.
         it.isChecked = true
 
-        Log.d(TAG, "setObserve: $it")
-
         when(it.toString()){
 
-            "프로필 수정"  -> {
+            getString(R.string.profileEdit)  -> {
 
                 //프로필 수정 프래그먼트로 이동
-                Log.d(TAG, "setObserve: 프로필 수정 프래그먼트로 이동")
-
                 this.findNavController().navigate(R.id.action_userFragment_to_userEditFragment)
 
                 (activity as MainActivity).goneBottomNavi()
 
             }
 
-           "비밀번호 변경"   -> {
+           getString(R.string.passwordChange)   -> {
 
                 //비밀번호 변경 프래그먼트로 이동
-                Log.d(TAG, "setObserve: 비밀번호 변경 프래그먼트로 이동")
-
                val bundle = bundleOf("startingPoint" to "userFragment")
 
                this.findNavController().navigate(R.id.action_userFragment_to_findPasswordFragment,bundle)
@@ -342,22 +332,18 @@ class UserFragment : Fragment() {
 
             }
 
-            "로그아웃"   -> {
+            getString(R.string.logout)   -> {
 
                 //로그아웃 다이얼로그
-                Log.d(TAG, "setObserve: 로그아웃 다이얼로그")
-
                 setCustomDialog(getString(R.string.logout),getString(R.string.logoutDialogContent))
 
                 customDialogBinding.textViewButtonOk.setTextColor(ContextCompat.getColor(requireContext(), R.color.personal))
 
             }
 
-            "회원탈퇴"  -> {
+            getString(R.string.withdrawal)  -> {
 
                 //회원탈퇴 진행 다이얼로그
-                Log.d(TAG, "회원탈퇴 다이얼로그 구독권기한 ${userViewModel.subscription.value}")
-
                 if(userViewModel.subscription.value != ""){ //유저정보에 구독권 기간이 존재하면
 
                     setCustomDialog(getString(R.string.progress),getString(R.string.progressDialogContent))
@@ -372,11 +358,7 @@ class UserFragment : Fragment() {
 
             }
 
-            else -> {
-
-                Log.d(TAG, "setObserve: 빈칸고름")
-
-            }
+            else -> {}
 
         }
 
@@ -446,8 +428,6 @@ class UserFragment : Fragment() {
     //프로필이미지뷰 셋
     private fun setCircleImageView(){
 
-        Log.d(TAG, "setCircleImageView: ${userViewModel.profileImagePath.value}")
-
         Glide.with(this)
             //baseurl+쉐어드의 이미지경로
             .load(userViewModel.profileImagePath.value)
@@ -456,7 +436,6 @@ class UserFragment : Fragment() {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .thumbnail(Glide.with(this).load(R.raw.loading))
             .into(binding.imageViewUserProfile)
-
 
     } // setCircleImageView()
 

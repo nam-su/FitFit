@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfit.R
 import com.example.fitfit.data.PoseExercise
-import com.example.fitfit.databinding.ItemViewPoseExerciseBinding
 import com.example.fitfit.databinding.ItemViewPoseExerciseGridBinding
 
 class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExercise>): RecyclerView.Adapter<PoseExerciseGridAdapter.PoseExerciseGridViewHolder>() {
@@ -41,6 +40,8 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
     // 뷰홀더 클래스
     class PoseExerciseGridViewHolder(val binding: ItemViewPoseExerciseGridBinding): RecyclerView.ViewHolder(binding.root) {
 
+        private val context = itemView.context
+
         fun onBind(poseExercise: PoseExercise) {
 
             // 구독 후 이용가능한 프리미엄 운동이면 뱃지 보이게
@@ -60,7 +61,7 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
             when (poseExercise.category) {
 
-                "스쿼트" -> {
+                context.getString(R.string.squat) -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
                         ColorStateList.valueOf(
@@ -72,7 +73,7 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
                 }
 
-                "푸시업" -> {
+                context.getString(R.string.pushUp) -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
                         ColorStateList.valueOf(
@@ -86,7 +87,7 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
                 }
 
-                "런지" -> {
+                context.getString(R.string.lunge) -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
                         ColorStateList.valueOf(
@@ -98,7 +99,7 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
                 }
 
-                "레그레이즈" -> {
+                context.getString(R.string.legRaises) -> {
 
                     binding.imageViewExerciseCategory.backgroundTintList =
                         ColorStateList.valueOf(
@@ -121,23 +122,23 @@ class PoseExerciseGridAdapter(private val poseExerciseList: ArrayList<PoseExerci
 
             when(exerciseName) {
 
-                "기본 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
+                context.getString(R.string.basicSquat) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_squat)
 
-                "와이드 스쿼트" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.wide_squat)
+                context.getString(R.string.wideSquat) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.wide_squat)
 
-                "기본 푸시업" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
+                context.getString(R.string.basicPushUp) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_push_up)
 
-                "기본 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
+                context.getString(R.string.basicLunge) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_lunge)
 
-                "왼쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_lunge)
+                context.getString(R.string.leftLunge) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_lunge)
 
-                "오른쪽 런지" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_lunge)
+                context.getString(R.string.rightLunge) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_lunge)
 
-                "기본 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
+                context.getString(R.string.basicLegRaises) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.basic_leg_raises)
 
-                "왼쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
+                context.getString(R.string.leftLegRaises) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.left_leg_raises)
 
-                "오른쪽 레그레이즈" -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
+                context.getString(R.string.rightLegRaises) -> binding.imageViewExerciseCategory.setImageResource(R.drawable.right_leg_raises)
 
             }
 

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.fitfit.R
 import com.example.fitfit.activity.MainActivity
-import com.example.fitfit.data.User
 import com.example.fitfit.databinding.CustomDialogNetworkDisconnectBinding
 import com.example.fitfit.databinding.CustomDialogTwoButtonBinding
 import com.example.fitfit.databinding.FragmentUserEditBinding
@@ -31,8 +29,6 @@ import com.example.fitfit.function.MyApplication
 import com.example.fitfit.viewModel.UserEditViewModel
 
 class UserEditFragment : Fragment() {
-
-    private val TAG = "유저 에딧 프래그먼트"
 
     lateinit var binding: FragmentUserEditBinding
     lateinit var customDialogBinding: CustomDialogTwoButtonBinding
@@ -169,15 +165,24 @@ class UserEditFragment : Fragment() {
 
         //통신 결과 관찰
         userEditViewModel.profileEditResult.observe(viewLifecycleOwner){
-            Log.d(TAG, "setObserve: $it")
+
             when(it){
+
                 "success" -> {
-                    Toast.makeText(requireContext(), "프로필 수정이 완료 되었습니다.", Toast.LENGTH_SHORT).show()
+
+                    Toast.makeText(requireContext(), getString(R.string.successEditProfile), Toast.LENGTH_SHORT).show()
+
                 }
-                "nicknameDuplicate" -> Toast.makeText(requireContext(), "사용할 수 없는 닉네임 입니다.", Toast.LENGTH_SHORT).show()
-                else -> Toast.makeText(requireContext(), "통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
+
+                "nicknameDuplicate" -> Toast.makeText(
+                    requireContext(), getString(R.string.cannotUseNickname), Toast.LENGTH_SHORT).show()
+
+                else -> Toast.makeText(requireContext(), getString(R.string.networkConnectionIsUnstable), Toast.LENGTH_SHORT).show()
+
             }
+
             this.findNavController().popBackStack()
+
         }
 
         }
@@ -244,7 +249,6 @@ class UserEditFragment : Fragment() {
     //프로필이미지뷰 셋
     private fun setCircleImageView(){
 
-        Log.d(TAG, "setCircleImageView: ${getString(R.string.baseUrl)+userEditViewModel.profileImagePath.value}")
         Glide.with(this)
                 //baseurl+쉐어드의 이미지경로
             .load(getString(R.string.baseUrl)+userEditViewModel.profileImagePath.value)

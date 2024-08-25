@@ -1,4 +1,4 @@
-package com.example.fitfit.Decorator
+package com.example.fitfit.decorator
 
 import android.content.Context
 import androidx.core.content.ContextCompat

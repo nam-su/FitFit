@@ -1,7 +1,6 @@
 package com.example.fitfit.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,28 +41,17 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
     override fun getItemCount(): Int = challengeRankList.size
     // getItemCount()
 
-    //setItems
-    fun setItems(challengeRanks: ArrayList<Rank>?) {
-        challengeRankList = challengeRankList
-        notifyDataSetChanged()
-    }
-
 
     // onBindViewHolder
     override fun onBindViewHolder(holder: ChallengeRankViewHolder, position: Int) {
 
-        holder.onBind(challengeRankList!![position])
+        holder.onBind(challengeRankList[position])
 
-        Log.d("TAG", "onBindViewHolder: $challengeRankItemClick")
         // 아이템 클릭 리스너가 null이 아닐때 클릭리스너 연동
         if(challengeRankItemClick != null) {
 
-            Log.d("TAG", "onBindViewHolder: challengeRankItemClick not null")
-
             // 레이아웃 클릭 했을 때 클릭이벤트 발생
             holder.binding.linearLayoutItem.setOnClickListener {
-
-                Log.d("TAG", "onBindViewHolder: linearLayoutItem.setOnClickListener")
 
                 challengeRankItemClick!!.onClick(it,challengeRankList[position])
 
@@ -84,39 +72,23 @@ class ChallengeRankAdapter(private var challengeRankList: ArrayList<Rank>, priva
 
             binding.rank = rank
 
-//            when(rank.ranking){
-//                1 -> {
-//                    binding.textViewRank.visibility = View.GONE
-//                    binding.imageViewRank.visibility = View.VISIBLE
-//                    Glide.with(context!!).load(R.drawable.medal_gold).into(binding.imageViewRank)
-//                }
-//                2 -> {
-//                    binding.textViewRank.visibility = View.GONE
-//                    binding.imageViewRank.visibility = View.VISIBLE
-//                    Glide.with(context!!).load(R.drawable.medal_silver).into(binding.imageViewRank)
-//
-//                }
-//                3 -> {
-//                    binding.textViewRank.visibility = View.GONE
-//                    binding.imageViewRank.visibility = View.VISIBLE
-//                    Glide.with(context!!).load(R.drawable.medal_bronze).into(binding.imageViewRank)
-//
-//                }
-//            }
-
                 when(rank.challengeName){
 
                     "기본부터 챌린지" -> {
                         binding.textView1.text = "${rank.rankingPoint}"
-                        binding.textView2.text = " / ${rank.standard} 일"
+                        binding.textView2.text = context!!.getString(R.string.rankStandardFormat,rank.standard)
                     }
 
                     "한놈만 패! 챌린지" -> {
                         binding.textView1.apply {
-                            text = "${rank.standard}"
+
+                            text = rank.standard
                             textSize = 12f
+
                         }
-                        binding.textView2.text = " ${rank.rankingPoint} 회"
+
+                        binding.textView2.text = context!!.getString(R.string.rankPointFormat,rank.rankingPoint.toString())
+
                     }
 
                 }

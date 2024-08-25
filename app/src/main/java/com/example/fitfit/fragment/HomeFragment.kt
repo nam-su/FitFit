@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,8 +39,6 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
-    private val TAG = "홈 프래그먼트"
-
     lateinit var binding: FragmentHomeBinding
     lateinit var homeViewModel: HomeViewModel
 
@@ -65,7 +62,7 @@ class HomeFragment : Fragment() {
 
 
     // onCreateView
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
         customNetworkDialogBinding = DataBindingUtil.inflate(inflater,R.layout.custom_dialog_network_disconnect,null,false)
@@ -161,7 +158,6 @@ class HomeFragment : Fragment() {
                 object : ChallengeRankAdapter.ChallengeRankItemClick {
 
                     override fun onClick(view: View, rank: Rank) {
-                        Log.d(TAG, "onClick: ${rank.id}")
 
                         // 인터넷 연결 안되어 있는 경우
                         if(!MyApplication.sharedPreferences.getNetworkStatus(requireContext())) {
@@ -196,7 +192,6 @@ class HomeFragment : Fragment() {
             // 챌린지 랭킹 아이템 클릭 리스너 설정
             totalChallengeRankAdapter.challengeRankItemClick = object : ChallengeRankAdapter.ChallengeRankItemClick {
                 override fun onClick(view: View, rank: Rank) {
-                    Log.d(TAG, "onClick: ${rank.id}")
 
                     lifecycleScope.launch {
 
@@ -309,7 +304,6 @@ class HomeFragment : Fragment() {
 
         homeViewModel.challengeName.observe(viewLifecycleOwner){
 
-            Log.d(TAG, "setObserve: $it")
             setRankingRecyclerViewAndAdapter()
 
         }

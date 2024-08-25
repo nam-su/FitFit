@@ -1,15 +1,6 @@
 package com.example.fitfit.function.pose
 
-import android.util.Log
-import kotlinx.coroutines.coroutineScope
-import kotlin.math.acos
-import kotlin.math.pow
-import kotlin.math.sqrt
-
 class Squat(): Pose() {
-
-    private val TAG = "Squat"
-
 
     // 운동 동작 감지하는 메서드
     override fun posePoseExercise(outputFeature0 : FloatArray) : Boolean{
@@ -32,8 +23,6 @@ class Squat(): Pose() {
         // 앉은 상태 감지
         if (angle in 50.0..110.0 && !sit) {
 
-            Log.d(TAG, "상태: 앉은 상태")
-
             // 잘못된 동작 있는지 확인
             if(checkBadPose(outputFeature0)) {
 
@@ -47,7 +36,6 @@ class Squat(): Pose() {
         // 선 상태 감지 및 카운트 증가
         if (angle in 150.0..180.0 && sit) {
 
-            Log.d(TAG, "상태: 앉았다가 선상태")
             sit = false
             stand = false
             return true

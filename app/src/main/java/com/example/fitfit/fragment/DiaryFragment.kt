@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +31,6 @@ import kotlinx.coroutines.launch
 
 
 class DiaryFragment : Fragment() {
-
-    private val TAG = "다이어리 프래그먼트"
 
     lateinit var binding: FragmentDiaryBinding
     lateinit var diaryViewModel: DiaryViewModel
@@ -112,8 +109,6 @@ class DiaryFragment : Fragment() {
                     // RecyclerView 설정
                     binding.recyclerView.adapter = challengeJoinAdapter
 
-                    Log.d(TAG, "setAdapter: ${challengeJoinAdapter?.itemCount}")
-
                     if(challengeJoinAdapter?.itemCount!! < 1) {
 
                         binding.textViewNonChallenge.visibility = View.VISIBLE
@@ -170,8 +165,10 @@ class DiaryFragment : Fragment() {
 
             // BottomSheet가 닫힌 후 다시 활성화
             bottomSheetDiaryFragment.setOnDismissListener {
+
                 binding.buttonStartDate.isEnabled = true
                 binding.buttonEndDate.isEnabled = true
+
             }
 
         }
@@ -207,12 +204,6 @@ class DiaryFragment : Fragment() {
         initBarChart(barChart)
 
         val filteredEntryList = diaryViewModel.getEntryArrayList().filter { it.y != 0f }
-
-        filteredEntryList.forEach{
-
-            Log.d(TAG, "setBarChart: ${it.x}, ${it.y}")
-
-        }
 
         //필터링안 데이터 비어있을때 안비어있을 때 처리
         if(filteredEntryList.isEmpty()) {

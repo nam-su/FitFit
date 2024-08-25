@@ -1,11 +1,6 @@
 package com.example.fitfit.function.pose
 
-import android.util.Log
-
 class LegRaises : Pose() {
-
-    val TAG = "레그레이즈"
-
 
     // 운동 동작 인식 메서드
     override fun posePoseExercise(outputFeature0: FloatArray): Boolean {
@@ -45,7 +40,6 @@ class LegRaises : Pose() {
         // 선 상태 감지 및 카운트 증가
         if (rightAngle in 150.0..180.0 && leftAngle in 150.0..180.0 && sit) {
 
-            Log.d(TAG, "상태: 앉았다가 선상태")
             sit = false
             stand = false
             return true

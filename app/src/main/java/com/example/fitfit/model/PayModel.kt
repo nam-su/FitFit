@@ -6,6 +6,7 @@ import com.example.fitfit.data.PaymentReadyRequest
 import com.example.fitfit.data.PaymentReadyResponse
 import com.example.fitfit.data.User
 import com.example.fitfit.function.MyApplication
+import com.example.fitfit.function.StringResource
 import com.example.fitfit.network.RetrofitBuilder
 import com.example.fitfit.network.RetrofitInterface
 import retrofit2.Response
@@ -13,8 +14,7 @@ import retrofit2.create
 
 class PayModel {
 
-    val TAG = "페이 모델"
-
+    val stringResource = StringResource.PayModelStringResource
 
     // 카카오페이 준비 단계
     suspend fun readyKakaoPay(paymentReadyRequest: PaymentReadyRequest): Response<PaymentReadyResponse> {

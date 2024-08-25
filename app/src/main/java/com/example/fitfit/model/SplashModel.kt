@@ -16,8 +16,6 @@ import retrofit2.Response
 
 class SplashModel {
 
-    private val TAG = "스플래시 모델"
-
     private val retrofitBuilder = RetrofitBuilder()
     private val retrofitInterface: RetrofitInterface = retrofitBuilder.getRetrofitObject()!!.create(RetrofitInterface::class.java)
 
