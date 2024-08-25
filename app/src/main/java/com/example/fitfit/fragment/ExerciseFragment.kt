@@ -84,6 +84,8 @@ class ExerciseFragment : Fragment() {
 
         (activity as MainActivity).visibleBottomNavi()
 
+        exerciseViewModel = ExerciseViewModel()
+
         binding.exerciseViewModel = exerciseViewModel
 
         //내 운동리스트
