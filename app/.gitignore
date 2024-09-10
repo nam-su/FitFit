@@ -1,1 +1,17 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
 /build
+/captures
+/app/src/main/java/com/example/fitfit/function/StringResource.kt
+/app/src/main/res/values/strings.xml
+.externalNativeBuild
+.cxx
+local.properties
