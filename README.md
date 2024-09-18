@@ -1,17 +1,12 @@
 ![header](https://capsule-render.vercel.app/api?type=wave&color=496FF6&height=300&section=header&text=FitFit&fontSize=60&fontColor=ffffff)
 
-<br/>
-
-<img src="https://img.shields.io/badge/팀 프로젝트-BCE0FF?style=flat-square&logoColor=000000"/>
-
 <br/><br/>
 
 <!--![App Icon](https://github.com/Oscar-World/FishingGame/blob/master/app_icon.png)
 -->
 
-<br/><br/>
+<img src="https://img.shields.io/badge/팀 프로젝트-BCE0FF?style=flat-square&logoColor=000000"/>
 
----
 
 <br/><br/>
 
