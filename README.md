@@ -78,4 +78,4 @@ FitFit은 사용자들의 건강한 라이프스타일을 지원하기 위해 �
 
 <br/><br/>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=AEE1FC&height=150&section=footer" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=496FF6&height=150&section=footer" />
